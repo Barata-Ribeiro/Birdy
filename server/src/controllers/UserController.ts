@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 // import { User } from '../entity/User';
 
 export const createUser = async (req: Request, res: Response) => {
