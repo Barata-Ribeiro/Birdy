@@ -11,18 +11,15 @@ import { User } from "./User";
 @Entity()
 export class Comment {
   @PrimaryGeneratedColumn("uuid")
-    id: string;
+  id: string;
+
+  @ManyToOne(() => User, (user) => user.comments)
+  @JoinColumn({ name: "authorID" })
+  authorID: User;
 
   @Column()
-    "comment-author": string;
-
-  @Column()
-    "comment-content": string;
+  content: string;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-    "comment-date": Date;
-
-  @ManyToOne(() => User, (user) => user.id)
-  @JoinColumn({ name: "comment-authorID" })
-    "comment-authorID": User;
+  date: Date;
 }
