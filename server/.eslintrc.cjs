@@ -12,7 +12,6 @@ module.exports = {
   plugins: ["@typescript-eslint"],
   root: true,
   rules: {
-    indent: ["error", 2],
     quotes: ["error", "double"],
     semi: ["error", "always"],
     "@typescript-eslint/explicit-function-return-type": "warn",
