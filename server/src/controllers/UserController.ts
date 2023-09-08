@@ -1,8 +1,7 @@
-import { Request, Response } from "express";
-import { DataSource } from "typeorm/data-source/DataSource";
+import { Request, Response, NextFunction } from "express";
+import dataSource from "../database/DataSource";
 import * as bcrypt from "bcrypt";
-import { User } from "src/entities/User";
-import ormconfig from "src/database/ormconfig";
+import { User } from "../entities/User";
 
 interface CreateUserRequestBody {
   username: string;
@@ -12,13 +11,14 @@ interface CreateUserRequestBody {
 
 export const createUser = async (
   req: Request,
-  res: Response
-): Promise<Response> => {
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const { username, password, email } = req.body as CreateUserRequestBody;
-  const dataBase = new DataSource(ormconfig);
 
   if (!username || !password || !email) {
-    return res.status(400).send("All fields are required.");
+    res.status(400).send("All fields are required.");
+    return;
   }
 
   const hashedPassword = bcrypt.hashSync(password, 10);
@@ -29,13 +29,14 @@ export const createUser = async (
     user.password = hashedPassword;
     user.email = email;
 
-    const userRepository = dataBase.getRepository(User);
+    const userRepository = dataSource.getRepository(User);
     const savedUser = await userRepository.save(user);
 
     const returnUser = { ...savedUser, password: undefined };
-    return res.status(201).send(returnUser);
+    res.status(201).send(returnUser);
   } catch (error) {
-    return res.status(500).send("Error creating user.");
+    res.status(500).send("Error creating user.");
+    next(error);
   }
 };
 

@@ -15,9 +15,21 @@ const startServer = async (): Promise<void> => {
     app.use(express.json());
     app.use("/api/v1/users", userRoutes);
 
-    app.use((err: Error, _req: express.Request, res: express.Response) => {
-      console.error(err.stack);
-      res.status(500).send("Something went wrong!");
+    app.use(
+      (
+        err: Error,
+        _req: express.Request,
+        res: express.Response,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+        _next: express.NextFunction
+      ) => {
+        console.error(err.stack);
+        res.status(500).send("Something went wrong!");
+      }
+    );
+
+    app.get("/", (_req, res) => {
+      res.send("Hello, World!");
     });
 
     const PORT = process.env.PORT || 3000;
