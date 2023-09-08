@@ -8,21 +8,29 @@ if (process.env.DB_TYPE !== "postgres") {
   throw new Error("Invalid DB_TYPE: Only 'postgres' is supported.");
 }
 
-const dataBase = new DataSource(ormconfig);
+const startServer = async (): Promise<void> => {
+  try {
+    const dataBase = new DataSource(ormconfig);
+    await dataBase.initialize();
 
-dataBase
-  .initialize()
-  .then(() => {
     const app = express();
-
-    // Middleware setup
     app.use(express.json());
+    app.use("/api/v1/users", userRoutes);
 
-    // Use routes
-    app.use("/user", userRoutes);
-
-    app.listen(3000, () => {
-      console.log("Server running on http://localhost:3000/");
+    app.use((err: Error, _req: express.Request, res: express.Response) => {
+      console.error(err.stack);
+      res.status(500).send("Something went wrong!");
     });
-  })
-  .catch((error) => console.log(error));
+
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}/`);
+    });
+  } catch (error) {
+    console.error("Error while starting the server:", error);
+  }
+};
+
+startServer().catch((err) => {
+  console.error("Failed to start the server:", err);
+});
