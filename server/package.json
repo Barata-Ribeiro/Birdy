@@ -9,9 +9,9 @@
     "start:prod": "node ./dist/index.js",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "test": "jest",
-    "migrate:create": "ts-node ./node_modules/typeorm/cli.js migration:create -n",
-    "migrate:up": "ts-node ./node_modules/typeorm/cli.js migration:run",
-    "migrate:down": "ts-node ./node_modules/typeorm/cli.js migration:revert"
+    "migration:create": "typeorm-ts-node-commonjs -d ./src/database/ormconfig.ts migration:generate ./src/database/migrations/default",
+    "migration:up": "typeorm-ts-node-commonjs -d ./src/database/ormconfig.ts migration:run",
+    "migration:down": "typeorm-ts-node-commonjs -d ./src/database/ormconfig.ts migration:revert"
   },
   "keywords": [],
   "author": "",

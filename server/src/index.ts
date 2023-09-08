@@ -1,8 +1,7 @@
 import "dotenv/config";
 import express from "express";
-import { DataSource } from "typeorm/data-source/DataSource";
+import dataSource from "./database/DataSource";
 import userRoutes from "./routes/user";
-import ormconfig from "./database/ormconfig";
 
 if (process.env.DB_TYPE !== "postgres") {
   throw new Error("Invalid DB_TYPE: Only 'postgres' is supported.");
@@ -10,8 +9,7 @@ if (process.env.DB_TYPE !== "postgres") {
 
 const startServer = async (): Promise<void> => {
   try {
-    const dataBase = new DataSource(ormconfig);
-    await dataBase.initialize();
+    await dataSource.initialize();
 
     const app = express();
     app.use(express.json());
