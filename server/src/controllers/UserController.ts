@@ -84,4 +84,26 @@ export class UserController {
       return res.status(500).json({ message: "Internal server error" });
     }
   }
+
+  async getAllUsers(_req: Request, res: Response): Promise<Response> {
+    try {
+      const users = await userRepository.find();
+      const responseUsers = users.map((user) => {
+        return {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+          comments: user.comments,
+          photos: user.photos,
+        };
+      });
+
+      return res.status(200).json(responseUsers);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
 }
