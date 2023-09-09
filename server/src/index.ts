@@ -7,7 +7,7 @@ import rateLimit from "express-rate-limit";
 import dataSource from "./database/DataSource";
 import userRoutes from "./routes/userRoutes";
 
-if (process.env.DB_TYPE !== "postgres") {
+if (dataSource.options.type !== "postgres") {
   throw new Error("Invalid DB_TYPE: Only 'postgres' is supported.");
 }
 

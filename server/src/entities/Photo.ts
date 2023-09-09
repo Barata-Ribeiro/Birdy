@@ -18,16 +18,16 @@ export class Photo {
   @JoinColumn({ name: "authorID" })
   authorID: User;
 
-  @Column()
+  @Column({ type: "text" })
   title: string;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   date: Date;
 
-  @Column()
-  src: string;
+  @Column({ type: "text" })
+  imageUrl: string;
 
-  @Column()
+  @Column({ type: "int" })
   total_comments: number;
 
   @Column(() => PhotoMeta)

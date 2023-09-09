@@ -17,7 +17,7 @@ export class Comment {
   @JoinColumn({ name: "authorID" })
   authorID: User;
 
-  @Column()
+  @Column({ type: "text" })
   content: string;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })

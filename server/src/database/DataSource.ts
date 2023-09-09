@@ -1,4 +1,5 @@
 import path from "path";
+import "dotenv/config";
 import { DataSource } from "typeorm";
 import { __TEST__ } from "../constants";
 

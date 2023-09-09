@@ -4,7 +4,7 @@ export class PhotoMeta {
   @Column({ type: "int" })
   size: number;
 
-  @Column({ type: "varchar" })
+  @Column({ type: "text" })
   habitat: string;
 
   @Column({ type: "int" })
