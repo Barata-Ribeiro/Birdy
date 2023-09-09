@@ -1,7 +1,11 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+
 import dataSource from "./database/DataSource";
-import userRoutes from "./routes/user";
+import userRoutes from "./routes/userRoutes";
 
 if (process.env.DB_TYPE !== "postgres") {
   throw new Error("Invalid DB_TYPE: Only 'postgres' is supported.");
@@ -12,7 +16,21 @@ const startServer = async (): Promise<void> => {
     await dataSource.initialize();
 
     const app = express();
+
+    app.use(cors() as unknown as express.RequestHandler);
+
+    app.use(helmet());
+
+    const limiter = rateLimit({
+      windowMs: 15 * 60 * 1000,
+      max: 100,
+      message: "Too many requests, please try again later.",
+    });
+
+    app.use(limiter);
+
     app.use(express.json());
+
     app.use("/api/v1/users", userRoutes);
 
     app.use(
