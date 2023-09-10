@@ -1,4 +1,5 @@
 import express from "express";
+
 import { UserController } from "../controllers/UserController";
 
 const router = express.Router();
@@ -6,7 +7,6 @@ const router = express.Router();
 const userController = new UserController();
 
 router.get("/", (req, res, next) => {
-  console.log("Accessing /users route");
   void userController.getAllUsers(req, res).catch(next);
 });
 

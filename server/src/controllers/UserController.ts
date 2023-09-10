@@ -10,12 +10,7 @@ import {
   InternalServerError,
   NotFoundError,
 } from "src/helpers/api-errors";
-
-interface CreateUserRequestBody {
-  username: string;
-  password: string;
-  email: string;
-}
+import { CreateUserRequestBody } from "../@types/birdy";
 
 export class UserController {
   async createUser(req: Request, res: Response): Promise<Response> {

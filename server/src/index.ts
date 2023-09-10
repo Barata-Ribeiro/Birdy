@@ -6,8 +6,9 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
 import dataSource from "./database/DataSource";
-import userRoutes from "./routes/userRoutes";
 import errorMiddleware from "./middlewares/error";
+import userRoutes from "./routes/userRoutes";
+import statsRoutes from "./routes/statsRoutes";
 
 if (dataSource.options.type !== "postgres") {
   throw new Error("Invalid DB_TYPE: Only 'postgres' is supported.");
@@ -28,12 +29,13 @@ const startServer = async (): Promise<void> => {
       max: 100,
       message: "Too many requests, please try again later.",
     });
-
     app.use(limiter);
 
     app.use(express.json());
 
+    // ROUTES //
     app.use("/api/v1/users", userRoutes);
+    app.use("/api/v1/stats", statsRoutes);
 
     app.use(errorMiddleware);
 
