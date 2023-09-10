@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express from "express";
+import express, { NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
@@ -33,21 +33,8 @@ const startServer = async (): Promise<void> => {
 
     app.use("/api/v1/users", userRoutes);
 
-    app.use(
-      (
-        err: Error,
-        _req: express.Request,
-        res: express.Response,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-        _next: express.NextFunction
-      ) => {
-        console.error(err.stack);
-        res.status(500).send("Something went wrong!");
-      }
-    );
-
-    app.get("/", (_req, res) => {
-      res.send("Hello, World!");
+    app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
+      return res.json("Middleware error");
     });
 
     const PORT = process.env.PORT || 3000;
