@@ -6,7 +6,7 @@ module.exports = {
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    project: true,
+    project: "./tsconfig.json",
     tsconfigRootDir: __dirname,
   },
   plugins: ["@typescript-eslint"],
@@ -16,8 +16,11 @@ module.exports = {
     semi: ["error", "always"],
     "@typescript-eslint/explicit-function-return-type": "warn",
     "@typescript-eslint/explicit-module-boundary-types": "warn",
-    "no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-unnecessary-type-assertion": "warn",
+    "@typescript-eslint/switch-exhaustiveness-check": "warn",
     "no-console": "off",
     "no-debugger": "error",
+    "no-fallthrough": "error",
   },
 };
