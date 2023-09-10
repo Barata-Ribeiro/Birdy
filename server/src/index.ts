@@ -1,11 +1,12 @@
 import "dotenv/config";
-import express, { NextFunction } from "express";
+import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
 import dataSource from "./database/DataSource";
 import userRoutes from "./routes/userRoutes";
+import errorMiddleware from "./middlewares/error";
 
 if (dataSource.options.type !== "postgres") {
   throw new Error("Invalid DB_TYPE: Only 'postgres' is supported.");
@@ -33,9 +34,7 @@ const startServer = async (): Promise<void> => {
 
     app.use("/api/v1/users", userRoutes);
 
-    app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-      return res.json("Middleware error");
-    });
+    app.use(errorMiddleware);
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
