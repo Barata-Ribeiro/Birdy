@@ -1,77 +1,31 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response } from "express";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-
-import { userRepository } from "../repositories/userRepository";
-import {
-  BadRequestError,
-  NotFoundError,
-  UnauthorizedError,
-} from "../helpers/api-errors";
-import { JwtPayload, LoginRequestBody } from "../@types/birdy";
+import { UnauthorizedError } from "src/helpers/api-errors";
+import { AuthServices } from "src/services/AuthServices";
 
 export class AuthController {
   async login(req: Request, res: Response): Promise<Response> {
-    const { email, password } = req.body as LoginRequestBody;
-
-    const existingUserByEmail = await userRepository.findOneBy({ email });
-
-    if (!existingUserByEmail)
-      throw new BadRequestError("Password or email is incorrect.");
-
-    const isPasswordCorrect = await bcrypt.compare(
-      password,
-      existingUserByEmail.password
-    );
-
-    if (!isPasswordCorrect)
-      throw new BadRequestError("Password or email is incorrect.");
-
-    const accessToken = jwt.sign(
-      { id: existingUserByEmail.id },
-      process.env.JWT_SECRET ?? "",
-      { expiresIn: "15m" }
-    );
-
-    const refreshToken = jwt.sign(
-      { id: existingUserByEmail.id },
-      process.env.REFRESH_TOKEN_SECRET ?? "",
-      { expiresIn: "7d" }
-    );
-
-    const { password: _, ...userLogin } = existingUserByEmail;
-    return res.status(200).json({ user: userLogin, accessToken, refreshToken });
+    const tokens = await AuthServices.login(req);
+    return res.status(200).json(tokens);
   }
 
   async refreshToken(req: Request, res: Response): Promise<Response> {
-    const { refreshToken } = req.body;
+    const tokens = await AuthServices.refreshToken(req, res);
+    return res.status(200).json(tokens);
+  }
 
-    if (!refreshToken) {
-      throw new BadRequestError("Refresh token is required.");
-    }
-
-    let payload: JwtPayload;
+  async logout(req: Request, res: Response): Promise<void> {
     try {
-      payload = jwt.verify(
-        refreshToken,
-        process.env.REFRESH_TOKEN_SECRET ?? ""
-      ) as JwtPayload;
-    } catch (err) {
-      throw new UnauthorizedError("Invalid refresh token.");
+      await AuthServices.logout(req, res);
+      res.clearCookie("jwt", {
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+      });
+      res.status(204).send();
+    } catch (error) {
+      if (error instanceof Error) throw new UnauthorizedError(error.message);
+      else throw new UnauthorizedError("An error occurred during logout.");
     }
-
-    const user = await userRepository.findOneBy({ id: payload.id });
-    if (!user) {
-      throw new NotFoundError("User not found.");
-    }
-
-    const accessToken = jwt.sign(
-      { id: user.id },
-      process.env.JWT_SECRET ?? "",
-      { expiresIn: "15m" }
-    );
-
-    return res.status(200).json({ accessToken });
   }
 }

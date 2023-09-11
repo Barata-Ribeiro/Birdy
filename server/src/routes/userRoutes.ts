@@ -15,7 +15,7 @@ router.post("/", (req, res, next) => {
 });
 
 router.get("/:id", (req, res, next) => {
-  void userController.getUser(req, res).catch(next);
+  void userController.getUserById(req, res).catch(next);
 });
 
 export default router;

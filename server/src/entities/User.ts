@@ -37,4 +37,7 @@ export class User {
 
   @OneToMany(() => Photo, (photo) => photo.authorID, { cascade: true })
   photos: Photo[];
+
+  @Column({ type: "text", nullable: true })
+  refreshToken?: string;
 }
