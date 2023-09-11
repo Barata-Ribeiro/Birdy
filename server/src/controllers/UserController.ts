@@ -9,7 +9,7 @@ import {
   ConflictError,
   InternalServerError,
   NotFoundError,
-} from "src/helpers/api-errors";
+} from "../helpers/api-errors";
 import { CreateUserRequestBody } from "../@types/birdy";
 
 export class UserController {

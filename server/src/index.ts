@@ -20,7 +20,13 @@ const startServer = async (): Promise<void> => {
 
     const app = express();
 
-    app.use(cors() as unknown as express.RequestHandler);
+    app.use(
+      cors({
+        origin: process.env.CORS_ORIGIN,
+        credentials: true,
+        methods: "GET, PUT, POST, OPTIONS, DELETE",
+      }) as unknown as express.RequestHandler
+    );
 
     app.use(helmet());
 
