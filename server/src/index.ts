@@ -4,6 +4,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import cookieParser from "cookie-parser";
 
 import dataSource from "./database/DataSource";
 import errorMiddleware from "./middlewares/error";
@@ -38,6 +39,8 @@ const startServer = async (): Promise<void> => {
     app.use(limiter);
 
     app.use(express.json());
+
+    app.use(cookieParser());
 
     // ROUTES //
     app.use("/api/v1/users", userRoutes);
