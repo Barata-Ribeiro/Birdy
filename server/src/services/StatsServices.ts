@@ -4,15 +4,19 @@ import { UnauthorizedError, NotFoundError } from "../helpers/api-errors";
 import { photoRepository } from "../repositories/photoRepositoty";
 import { userRepository } from "../repositories/userRepository";
 import { PhotoStats } from "../@types/birdy";
+import { User } from "../entities/User";
 
 export class StatsServices {
   static async getStats(req: Request): Promise<PhotoStats[]> {
-    const userId = req.userId;
+    const user = req.user;
 
-    if (!userId) throw new UnauthorizedError("User not authenticated.");
+    if (!user) throw new UnauthorizedError("User not authenticated.");
 
-    const user = await userRepository.findOne({ where: { id: userId } });
-    if (!user) throw new NotFoundError("User not found.");
+    const actualUser = (await userRepository.findOne({
+      where: { id: user.id as string },
+    })) as User;
+
+    if (!actualUser) throw new NotFoundError("User not found.");
 
     const userPhotos = await photoRepository.find({
       where: { authorID: user },

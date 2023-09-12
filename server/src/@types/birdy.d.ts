@@ -5,7 +5,6 @@ export type UserWithoutPassword = Omit<User, "password">;
 
 declare module "express" {
   export interface Request {
-    userId?: string;
     user?: UserWithoutPassword;
     cookies: Cookies;
   }
