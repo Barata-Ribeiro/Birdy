@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response } from "express";
-import { UnauthorizedError } from "src/helpers/api-errors";
-import { AuthServices } from "src/services/AuthServices";
+import { UnauthorizedError } from "../helpers/api-errors";
+import { AuthServices } from "../services/AuthServices";
 
 export class AuthController {
   async login(req: Request, res: Response): Promise<Response> {
-    const tokens = await AuthServices.login(req);
+    const tokens = await AuthServices.login(req, res);
     return res.status(200).json(tokens);
   }
 

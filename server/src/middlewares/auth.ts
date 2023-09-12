@@ -11,21 +11,28 @@ export const authMiddleware = async (
   _res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { authorization } = req.headers;
+  try {
+    const { authorization } = req.headers;
 
-  if (!authorization) throw new UnauthorizedError("User not authenticated.");
+    if (!authorization) throw new UnauthorizedError("User not authenticated.");
 
-  const token = authorization.split(" ")[1];
+    const token = authorization.split(" ")[1];
 
-  const { id } = jwt.verify(token, process.env.JWT_SECRET ?? "") as JwtPayload;
+    const { id } = jwt.verify(
+      token,
+      process.env.JWT_SECRET ?? ""
+    ) as JwtPayload;
 
-  const user = await userRepository.findOneBy({ id });
+    const user = await userRepository.findOneBy({ id });
 
-  if (!user) throw new UnauthorizedError("User not authenticated.");
+    if (!user) throw new UnauthorizedError("User not authenticated.");
 
-  const { password: _, ...loggedUser } = user;
+    const { password: _, ...loggedUser } = user;
 
-  req.user = loggedUser;
+    req.user = loggedUser;
 
-  next();
+    next();
+  } catch (error) {
+    next(error);
+  }
 };

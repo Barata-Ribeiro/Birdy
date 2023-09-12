@@ -17,7 +17,7 @@ import {
 } from "../@types/birdy";
 
 export class AuthServices {
-  static async login(req: Request): Promise<AuthTokens> {
+  static async login(req: Request, res: Response): Promise<AuthTokens> {
     const { email, password } = req.body as LoginRequestBody;
 
     const existingUserByEmail = await userRepository.findOneBy({ email });
@@ -47,6 +47,16 @@ export class AuthServices {
 
     existingUserByEmail.refreshToken = refreshToken;
     await userRepository.save(existingUserByEmail);
+
+    res.cookie(
+      "jwt",
+      { refreshToken: refreshToken },
+      {
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+      }
+    );
 
     return {
       accessToken: accessToken.toString(),
