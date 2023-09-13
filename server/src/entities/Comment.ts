@@ -7,6 +7,7 @@ import {
   JoinColumn,
 } from "typeorm";
 import { User } from "./User";
+import { Photo } from "./Photo";
 
 @Entity()
 export class Comment {
@@ -22,4 +23,7 @@ export class Comment {
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   date: Date;
+
+  @ManyToOne(() => Photo, (photo) => photo.comments)
+  photo: Photo;
 }

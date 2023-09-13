@@ -5,8 +5,10 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from "typeorm";
 import { User } from "./User";
+import { Comment } from "./Comment";
 import { PhotoMeta } from "./PhotoMeta";
 
 @Entity()
@@ -29,6 +31,9 @@ export class Photo {
 
   @Column({ type: "int" })
   total_comments: number;
+
+  @OneToMany(() => Comment, (comment) => comment.photo)
+  comments: Comment[];
 
   @Column(() => PhotoMeta)
   meta: PhotoMeta;

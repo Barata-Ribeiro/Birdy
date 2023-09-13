@@ -19,7 +19,7 @@ export class StatsServices {
     if (!actualUser) throw new NotFoundError("User not found.");
 
     const userPhotos = await photoRepository.find({
-      where: { authorID: user },
+      where: { authorID: actualUser },
     });
 
     const stats: PhotoStats[] = userPhotos.map((photo) => ({
