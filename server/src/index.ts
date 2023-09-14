@@ -5,6 +5,7 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
+import multer from "multer";
 
 import dataSource from "./database/DataSource";
 import errorMiddleware from "./middlewares/error";
@@ -21,6 +22,7 @@ const startServer = async (): Promise<void> => {
     await dataSource.initialize();
 
     const app = express();
+    const fileUpload = multer();
 
     app.use(
       cors({
