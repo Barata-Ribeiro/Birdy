@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request } from "express";
+
+// External Imports
 import { Photo } from "../entities/Photo";
 import { User } from "../entities/User";
 import { Comment } from "../entities/Comment";
 
+// Module Augmentation Declarations
 declare module "express" {
   export interface Request {
     user?: UserWithoutPassword;
@@ -15,8 +18,7 @@ declare module "streamifier" {
   export function createReadStream(buffer: Buffer): NodeJS.ReadableStream;
 }
 
-export type UserWithoutPassword = Omit<User, "password">;
-
+// Entity Type Definitions
 export interface User {
   id: string;
   username: string;
@@ -38,6 +40,7 @@ export interface PhotoResponse {
   habitat: string;
 }
 
+// API Request and Response Definitions
 export interface CreateUserRequestBody {
   username: string;
   email: string;
@@ -49,15 +52,19 @@ export interface LoginRequestBody {
   password: string;
 }
 
-export type JwtPayload = {
-  id: string;
-};
-
 export interface PhotoRequestBody {
   title: string;
   size: number;
   habitat: string;
 }
+
+// Utility Types
+export type UserWithoutPassword = Omit<User, "password">;
+
+// Miscellaneous Types
+export type JwtPayload = {
+  id: string;
+};
 
 export interface PhotoStats {
   id: number;
