@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
 import { PhotoServices } from "../services/PhotoServices";
-import { UnauthorizedError, BadRequestError } from "../helpers/api-errors";
-import { UserWithoutPassword, PhotoRequestBody } from "../@types/birdy";
+import { BadRequestError } from "../helpers/api-errors";
+import { PhotoRequestBody, UserWithoutPassword } from "../@types/birdy";
 
 export class PhotoController {
   private photoServices: PhotoServices;
@@ -20,7 +20,6 @@ export class PhotoController {
       const user = req.user as UserWithoutPassword;
       const file = req.file as Express.Multer.File;
 
-      if (!user) throw new UnauthorizedError("User not authenticated.");
       if (!file) throw new BadRequestError("No file provided.");
 
       const { title, size, habitat } = req.body as PhotoRequestBody;

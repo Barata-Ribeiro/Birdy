@@ -7,15 +7,15 @@ const router = express.Router();
 const authController = new AuthController();
 
 router.get("/login", (req, res, next) => {
-  void authController.login(req, res).catch(next);
+  authController.login(req, res).catch(next);
 });
 
-router.post("/refresh-token", (req, res, next) => {
-  void authController.refreshToken(req, res).catch(next);
+router.post("/token", (req, res, next) => {
+  authController.refreshToken(req, res).catch(next);
 });
 
 router.get("/logout", (req, res, next) => {
-  void authController.logout(req, res).catch(next);
+  authController.logout(req, res).catch(next);
 });
 
 export default router;

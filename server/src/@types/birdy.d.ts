@@ -86,3 +86,9 @@ export type AuthTokens = {
   accessToken: string;
   refreshToken?: string;
 };
+
+export type MiddlewareFunction = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => Promise<void>;

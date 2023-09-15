@@ -11,13 +11,17 @@ const upload = multer({ storage: storage });
 const photoController = new PhotoController();
 
 router.get("/", (req, res, next) => {
-  void photoController.getAllPhotos(req, res, next).catch(next);
+  photoController.getAllPhotos(req, res, next).catch(next);
 });
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.use(authMiddleware);
-router.post("/", upload.single("imageFile"), (req, res, next) => {
-  void photoController.uploadPhoto(req, res, next).catch(next);
-});
+router.post(
+  "/",
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  authMiddleware,
+  upload.single("imageFile"),
+  (req, res, next) => {
+    photoController.uploadPhoto(req, res, next).catch(next);
+  }
+);
 
 export default router;
