@@ -29,7 +29,7 @@ export class Photo {
   @Column({ type: "text" })
   imageUrl: string;
 
-  @Column({ type: "int" })
+  @Column({ type: "int", default: 0 })
   total_comments: number;
 
   @OneToMany(() => Comment, (comment) => comment.photo)

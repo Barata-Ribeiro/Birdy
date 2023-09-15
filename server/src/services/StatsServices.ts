@@ -13,13 +13,13 @@ export class StatsServices {
     if (!user) throw new UnauthorizedError("User not authenticated.");
 
     const actualUser = (await userRepository.findOne({
-      where: { id: user.id as string },
+      where: { id: user.id },
     })) as User;
 
     if (!actualUser) throw new NotFoundError("User not found.");
 
     const userPhotos = await photoRepository.find({
-      where: { authorID: actualUser },
+      where: { authorID: { id: actualUser.id } },
     });
 
     const stats: PhotoStats[] = userPhotos.map((photo) => ({

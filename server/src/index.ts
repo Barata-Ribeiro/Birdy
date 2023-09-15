@@ -5,13 +5,13 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
-import multer from "multer";
 
 import dataSource from "./database/DataSource";
 import errorMiddleware from "./middlewares/error";
 import userRoutes from "./routes/userRoutes";
 import statsRoutes from "./routes/statsRoutes";
 import authRoutes from "./routes/authRoutes";
+import photoRoutes from "./routes/photoRoutes";
 
 if (dataSource.options.type !== "postgres") {
   throw new Error("Invalid DB_TYPE: Only 'postgres' is supported.");
@@ -22,7 +22,7 @@ const startServer = async (): Promise<void> => {
     await dataSource.initialize();
 
     const app = express();
-    const fileUpload = multer();
+
 
     app.use(
       cors({
@@ -49,6 +49,7 @@ const startServer = async (): Promise<void> => {
     app.use("/api/v1/auth", authRoutes);
     app.use("/api/v1/users", userRoutes);
     app.use("/api/v1/stats", statsRoutes);
+    app.use("/api/v1/photos", photoRoutes);
 
     app.use(errorMiddleware);
 
