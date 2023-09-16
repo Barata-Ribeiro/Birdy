@@ -14,6 +14,10 @@ router.get("/", (req, res, next) => {
   photoController.getAllPhotos(req, res, next).catch(next);
 });
 
+router.get("/:id", (req, res, next) => {
+  photoController.getPhotoById(req, res).catch(next);
+});
+
 router.post(
   "/",
   // eslint-disable-next-line @typescript-eslint/no-misused-promises

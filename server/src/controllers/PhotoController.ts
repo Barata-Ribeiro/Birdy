@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 
 import { PhotoServices } from "../services/PhotoServices";
@@ -45,10 +46,15 @@ export class PhotoController {
   async getAllPhotos(
     _req: Request,
     res: Response,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _next: NextFunction
   ): Promise<Response> {
     const photos = await PhotoServices.getAllPhotos();
     return res.status(200).send(photos);
+  }
+
+  async getPhotoById(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params as { id: string };
+    const photo = await PhotoServices.getPhotoById(id);
+    return res.status(200).json(photo);
   }
 }

@@ -112,4 +112,19 @@ export class PhotoServices {
       };
     });
   }
+
+  static async getPhotoById(id: string): Promise<Photo> {
+    if (!id) throw new BadRequestError("Invalid photo ID.");
+
+    const parsedId = parseInt(id, 10);
+
+    const photo = await photoRepository.findOne({
+      where: { id: parsedId },
+      relations: ["authorID"],
+    });
+
+    if (!photo) throw new NotFoundError("Photo not found.");
+
+    return photo;
+  }
 }
