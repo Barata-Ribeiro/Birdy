@@ -57,4 +57,20 @@ export class PhotoController {
     const photo = await PhotoServices.getPhotoById(id);
     return res.status(200).json(photo);
   }
+
+  async deletePhoto(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
+    try {
+      const { id } = req.params as { id: string };
+      const user = req.user as UserWithoutPassword;
+
+      await PhotoServices.deletePhoto(id, user);
+      return res.status(200).send({ message: "Photo deleted successfully." });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

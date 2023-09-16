@@ -5,8 +5,13 @@ import { User } from "../entities/User";
 import { Photo } from "../entities/Photo";
 import { photoRepository } from "../repositories/photoRepositoty";
 import { userRepository } from "../repositories/userRepository";
-import { BadRequestError, NotFoundError } from "../helpers/api-errors";
 import {
+  BadRequestError,
+  InternalServerError,
+  NotFoundError,
+} from "../helpers/api-errors";
+import {
+  CloudinaryCallbackResult,
   CloudinaryResult,
   PhotoRequestBody,
   PhotoResponse,
@@ -126,5 +131,59 @@ export class PhotoServices {
     if (!photo) throw new NotFoundError("Photo not found.");
 
     return photo;
+  }
+
+  private static deletePhotoFromCloudinary(publicId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      void cloudinary.uploader.destroy(
+        publicId,
+        (error: unknown, result?: CloudinaryCallbackResult) => {
+          if (result === undefined) resolve();
+          else reject(error);
+        }
+      );
+    });
+  }
+
+  static async deletePhoto(
+    id: string,
+    user: UserWithoutPassword
+  ): Promise<void> {
+    const actualUser = (await userRepository.findOne({
+      where: { id: user.id },
+    })) as User;
+
+    if (!actualUser) throw new NotFoundError("User not found.");
+
+    if (!id) throw new BadRequestError("Invalid photo ID.");
+
+    const parsedId = parseInt(id, 10);
+
+    const photo = await photoRepository.findOne({
+      where: { id: parsedId },
+      relations: ["authorID"],
+    });
+
+    if (!photo) throw new NotFoundError("Photo not found.");
+
+    if (photo.authorID.id !== actualUser.id)
+      throw new BadRequestError("You are not the author of this photo.");
+
+    const parts = photo.imageUrl.split("/");
+    const fileName = parts.pop();
+    const publicId = fileName ? fileName.split(".")[0] : undefined;
+
+    if (!publicId) throw new Error("Failed to extract the publicId.");
+
+    try {
+      await this.deletePhotoFromCloudinary(publicId);
+    } catch (error) {
+      console.error("Error deleting from Cloudinary:", error);
+      throw new InternalServerError(
+        "Failed to delete the image from Cloudinary."
+      );
+    }
+
+    await photoRepository.remove(photo);
   }
 }

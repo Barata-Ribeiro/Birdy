@@ -107,3 +107,7 @@ export type MiddlewareFunction = (
   res: Response,
   next: NextFunction
 ) => Promise<void>;
+
+export interface CloudinaryCallbackResult {
+  result?: string;
+}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import express from "express";
 import multer from "multer";
 
@@ -20,12 +21,15 @@ router.get("/:id", (req, res, next) => {
 
 router.post(
   "/",
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   authMiddleware,
   upload.single("imageFile"),
   (req, res, next) => {
     photoController.uploadPhoto(req, res, next).catch(next);
   }
 );
+
+router.delete("/:id", authMiddleware, (req, res, next) => {
+  photoController.deletePhoto(req, res, next).catch(next);
+});
 
 export default router;
