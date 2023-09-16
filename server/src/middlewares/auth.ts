@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 import { UnauthorizedError } from "../helpers/api-errors";
 import { userRepository } from "../repositories/userRepository";
-import { JwtPayload } from "../@types/birdy";
+import { JwtPayload } from "../@types/types";
 
 export const authMiddleware = async (
   req: Request,

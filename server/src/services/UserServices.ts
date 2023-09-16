@@ -10,7 +10,7 @@ import {
   InternalServerError,
   NotFoundError,
 } from "../helpers/api-errors";
-import { CreateUserRequestBody, UserWithoutPassword } from "../@types/birdy";
+import { CreateUserRequestBody, UserWithoutPassword } from "../@types/types";
 
 class UserService {
   static async createUser(
@@ -73,7 +73,10 @@ class UserService {
 
     if (!validate(id)) throw new BadRequestError("Invalid user ID format.");
 
-    const user = await userRepository.findOneBy({ id });
+    const user = await userRepository.findOne({
+      where: { id: id },
+      relations: ["photos", "comments"],
+    });
 
     if (!user) throw new NotFoundError("User not found");
 
@@ -91,7 +94,9 @@ class UserService {
   }
 
   static async getAllUsers(): Promise<UserWithoutPassword[]> {
-    const users = await userRepository.find();
+    const users = await userRepository.find({
+      relations: ["photos", "comments"],
+    });
 
     const responseUsers: UserWithoutPassword[] = users.map((user) => ({
       id: user.id,

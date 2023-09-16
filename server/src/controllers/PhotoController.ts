@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { PhotoServices } from "../services/PhotoServices";
 import { BadRequestError } from "../helpers/api-errors";
-import { PhotoRequestBody, UserWithoutPassword } from "../@types/birdy";
+import { PhotoRequestBody, UserWithoutPassword } from "../@types/types";
 
 export class PhotoController {
   private photoServices: PhotoServices;

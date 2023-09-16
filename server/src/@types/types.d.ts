@@ -31,11 +31,26 @@ export interface User {
   refreshToken?: string;
 }
 
+export interface Photos {
+  id: number;
+  authorID: UserWithoutPassword["id"];
+  title: string;
+  date: Date;
+  imageUrl: string;
+  total_comments: number;
+  comments: Comment[];
+  meta: {
+    size: number;
+    habitat: string;
+    access: number;
+  };
+}
+
 export interface PhotoResponse {
   id: number;
+  authorID: User["id"];
   url: string;
   title: string;
-  authorID: User["id"];
   size: number;
   habitat: string;
 }

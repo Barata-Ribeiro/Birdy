@@ -10,8 +10,9 @@ import {
   CloudinaryResult,
   PhotoRequestBody,
   PhotoResponse,
+  Photos,
   UserWithoutPassword,
-} from "../@types/birdy";
+} from "../@types/types";
 
 export class PhotoServices {
   constructor() {
@@ -95,9 +96,20 @@ export class PhotoServices {
     });
   }
 
-  static async getAllPhotos(): Promise<Photo[]> {
-    const photos = await photoRepository.find();
+  static async getAllPhotos(): Promise<Photos[]> {
+    const photos = await photoRepository.find({ relations: ["authorID"] });
 
-    return photos;
+    return photos.map((photo) => {
+      return {
+        id: photo.id,
+        authorID: photo.authorID.id,
+        title: photo.title,
+        date: photo.date,
+        imageUrl: photo.imageUrl,
+        total_comments: photo.total_comments,
+        comments: photo.comments,
+        meta: photo.meta,
+      };
+    });
   }
 }

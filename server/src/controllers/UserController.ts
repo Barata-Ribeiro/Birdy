@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { CreateUserRequestBody } from "../@types/birdy";
+import { CreateUserRequestBody } from "../@types/types";
 import UserService from "../services/UserServices";
 
 export class UserController {

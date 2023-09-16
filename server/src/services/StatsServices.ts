@@ -3,15 +3,15 @@ import { Request } from "express";
 import { NotFoundError } from "../helpers/api-errors";
 import { photoRepository } from "../repositories/photoRepositoty";
 import { userRepository } from "../repositories/userRepository";
-import { PhotoStats } from "../@types/birdy";
+import { PhotoStats } from "../@types/types";
 
 export class StatsServices {
   static async getStats(req: Request): Promise<PhotoStats[]> {
     const user = req.user;
 
-    const actualUser = (await userRepository.findOne({
+    const actualUser = await userRepository.findOne({
       where: { id: user?.id },
-    }));
+    });
 
     if (!actualUser) throw new NotFoundError("User not found.");
 

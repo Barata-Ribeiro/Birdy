@@ -14,7 +14,7 @@ import {
   LoginRequestBody,
   Cookies,
   AuthTokens,
-} from "../@types/birdy";
+} from "../@types/types";
 
 export class AuthServices {
   static async login(req: Request, res: Response): Promise<AuthTokens> {
