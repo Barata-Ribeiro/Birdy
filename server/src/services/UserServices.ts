@@ -1,4 +1,3 @@
-import { Request } from "express";
 import * as bcrypt from "bcrypt";
 import { QueryFailedError } from "typeorm";
 import { validate } from "uuid";
@@ -68,9 +67,7 @@ class UserService {
     return responseUser;
   }
 
-  static async getUserById(req: Request): Promise<UserWithoutPassword> {
-    const { id } = req.params as { id: string };
-
+  static async getUserById(id: string): Promise<UserWithoutPassword> {
     if (!validate(id)) throw new BadRequestError("Invalid user ID format.");
 
     const user = await userRepository.findOne({

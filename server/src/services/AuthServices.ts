@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -9,17 +8,10 @@ import {
   NotFoundError,
   UnauthorizedError,
 } from "../helpers/api-errors";
-import {
-  JwtPayload,
-  LoginRequestBody,
-  Cookies,
-  AuthTokens,
-} from "../@types/types";
+import { JwtPayload, AuthTokens } from "../@types/types";
 
 export class AuthServices {
-  static async login(req: Request, res: Response): Promise<AuthTokens> {
-    const { email, password } = req.body as LoginRequestBody;
-
+  static async login(email: string, password: string): Promise<AuthTokens> {
     const existingUserByEmail = await userRepository.findOneBy({ email });
 
     if (!existingUserByEmail)
@@ -48,34 +40,25 @@ export class AuthServices {
     existingUserByEmail.refreshToken = refreshToken;
     await userRepository.save(existingUserByEmail);
 
-    res.cookie(
-      "jwt",
-      { refreshToken: refreshToken },
-      {
-        httpOnly: true,
-        sameSite: "none",
-        secure: true,
-      }
-    );
-
     return {
       accessToken: accessToken.toString(),
       refreshToken: refreshToken.toString(),
     };
   }
 
-  static async refreshToken(req: Request, _res: Response): Promise<AuthTokens> {
-    const cookies: Cookies = req.cookies;
-    if (!cookies?.jwt) throw new UnauthorizedError("Missing refresh token.");
-    const { refreshToken } = cookies.jwt;
-
-    if (typeof refreshToken !== "string")
+  static async refreshToken(
+    refreshTokenFromCookie: string
+  ): Promise<AuthTokens> {
+    if (typeof refreshTokenFromCookie !== "string")
       throw new BadRequestError("Refresh token is required.");
 
     let payload: JwtPayload;
     try {
       payload = <JwtPayload>(
-        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET ?? "")
+        jwt.verify(
+          refreshTokenFromCookie,
+          process.env.REFRESH_TOKEN_SECRET ?? ""
+        )
       );
     } catch (err) {
       throw new UnauthorizedError("Invalid refresh token.");
@@ -84,7 +67,7 @@ export class AuthServices {
     const user = await userRepository.findOneBy({ id: payload.id });
     if (!user) throw new NotFoundError("User not found.");
 
-    if (user.refreshToken !== refreshToken)
+    if (user.refreshToken !== refreshTokenFromCookie)
       throw new UnauthorizedError("Invalid refresh token.");
 
     const accessToken = jwt.sign(
@@ -96,12 +79,10 @@ export class AuthServices {
     return { accessToken: accessToken.toString() };
   }
 
-  static async logout(req: Request, _res: Response): Promise<void> {
-    const cookies: Cookies = req.cookies;
-    if (!cookies?.jwt) throw new UnauthorizedError("Missing refresh token.");
-    const { refreshToken } = cookies.jwt;
-
-    const user = await userRepository.findOneBy({ refreshToken });
+  static async logout(refreshTokenFromCookie: string): Promise<void> {
+    const user = await userRepository.findOneBy({
+      refreshToken: refreshTokenFromCookie,
+    });
     if (!user) throw new UnauthorizedError("Invalid refresh token.");
 
     user.refreshToken = "";

@@ -3,7 +3,7 @@ import streamifier from "streamifier";
 
 import { User } from "../entities/User";
 import { Photo } from "../entities/Photo";
-import { photoRepository } from "../repositories/photoRepositoty";
+import { photoRepository } from "../repositories/photoRepository";
 import { userRepository } from "../repositories/userRepository";
 import {
   BadRequestError,
@@ -28,60 +28,58 @@ export class PhotoServices {
     });
   }
 
-  async uploadPhoto(
+  static async uploadPhoto(
     user: UserWithoutPassword,
     file: Express.Multer.File,
     body: PhotoRequestBody
-  ): Promise<{
-    url: string;
-    title: string;
-    authorID: string;
-    size: number;
-    habitat: string;
-  }> {
-    const actualUser = (await userRepository.findOne({
-      where: { id: user.id },
-    })) as User;
-
-    if (!actualUser) throw new NotFoundError("User not found.");
-
-    if (!file.mimetype.includes("image"))
-      throw new BadRequestError("Invalid file type.");
+  ): Promise<PhotoResponse> {
+    const actualUser = await this.verifyUser(user.id);
+    this.validateFile(file);
 
     const secure_url = await this.uploadPhotoToCloudinary(file);
+    return await this.savePhotoToDB(actualUser, secure_url, body);
+  }
 
+  private static async verifyUser(userId: string): Promise<User> {
+    const actualUser = await userRepository.findOne({ where: { id: userId } });
+    if (!actualUser) throw new NotFoundError("User not found.");
+    return actualUser;
+  }
+
+  private static validateFile(file: Express.Multer.File): void {
+    if (!file.mimetype.includes("image"))
+      throw new BadRequestError("Invalid file type.");
+  }
+
+  private static async savePhotoToDB(
+    user: User,
+    imageUrl: string,
+    body: PhotoRequestBody
+  ): Promise<PhotoResponse> {
     const photo = new Photo();
-    photo.imageUrl = secure_url;
-    photo.authorID = actualUser;
+    photo.imageUrl = imageUrl;
+    photo.authorID = user;
     photo.title = body.title;
-    photo.meta = {
-      size: body.size,
-      habitat: body.habitat,
-      access: 0,
-    };
-
+    photo.meta = { size: body.size, habitat: body.habitat, access: 0 };
     await photoRepository.save(photo);
-
-    const responsePhoto: PhotoResponse = {
+    return {
       id: photo.id,
-      url: secure_url,
+      url: imageUrl,
       title: body.title,
       authorID: user.id,
       size: body.size,
       habitat: body.habitat,
     };
-
-    return responsePhoto;
   }
 
-  private async uploadPhotoToCloudinary(
+  private static async uploadPhotoToCloudinary(
     file: Express.Multer.File
   ): Promise<string> {
     const result = await this.streamUpload(file);
     return result.secure_url;
   }
 
-  private async streamUpload(
+  private static async streamUpload(
     file: Express.Multer.File
   ): Promise<CloudinaryResult> {
     return new Promise((resolve, reject) => {

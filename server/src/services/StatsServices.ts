@@ -1,14 +1,12 @@
-import { Request } from "express";
-
 import { NotFoundError } from "../helpers/api-errors";
-import { photoRepository } from "../repositories/photoRepositoty";
+import { photoRepository } from "../repositories/photoRepository";
 import { userRepository } from "../repositories/userRepository";
-import { PhotoStats } from "../@types/types";
+import { PhotoStats, UserWithoutPassword } from "../@types/types";
 
 export class StatsServices {
-  static async getStats(req: Request): Promise<PhotoStats[]> {
-    const user = req.user;
-
+  static async getStats(
+    user: UserWithoutPassword | undefined
+  ): Promise<PhotoStats[]> {
     const actualUser = await userRepository.findOne({
       where: { id: user?.id },
     });

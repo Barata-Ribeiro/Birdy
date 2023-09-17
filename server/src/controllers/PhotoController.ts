@@ -6,12 +6,6 @@ import { BadRequestError } from "../helpers/api-errors";
 import { PhotoRequestBody, UserWithoutPassword } from "../@types/types";
 
 export class PhotoController {
-  private photoServices: PhotoServices;
-
-  constructor() {
-    this.photoServices = new PhotoServices();
-  }
-
   async uploadPhoto(
     req: Request,
     res: Response,
@@ -20,23 +14,20 @@ export class PhotoController {
     try {
       const user = req.user as UserWithoutPassword;
       const file = req.file as Express.Multer.File;
-
-      if (!file) throw new BadRequestError("No file provided.");
-
       const { title, size, habitat } = req.body as PhotoRequestBody;
+
+      if (!user) throw new BadRequestError("User not authenticated.");
+      if (!file) throw new BadRequestError("No file provided.");
       if (!title || !size || !habitat)
         throw new BadRequestError(
           "Title, size, and habitat are required fields."
         );
 
-      const body: PhotoRequestBody = {
+      const result = await PhotoServices.uploadPhoto(user, file, {
         title,
         size,
         habitat,
-      };
-
-      const result = await this.photoServices.uploadPhoto(user, file, body);
-
+      });
       return res.status(200).send(result);
     } catch (error) {
       next(error);
