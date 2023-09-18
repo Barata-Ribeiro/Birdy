@@ -130,6 +130,9 @@ export class PhotoServices {
 
     if (!photo) throw new NotFoundError("Photo not found.");
 
+    photo.meta.access = (photo.meta.access || 0) + 1;
+    await photoRepository.save(photo);
+
     return {
       id: photo.id,
       authorID: photo.authorID.id,
