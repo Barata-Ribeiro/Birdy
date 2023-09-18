@@ -20,14 +20,6 @@ import {
 } from "../@types/types";
 
 export class PhotoServices {
-  constructor() {
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-    });
-  }
-
   static async uploadPhoto(
     user: UserWithoutPassword,
     file: Express.Multer.File,
@@ -72,9 +64,18 @@ export class PhotoServices {
     };
   }
 
+  private static cloudinaryConfiguration(): void {
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+  }
+
   private static async uploadPhotoToCloudinary(
     file: Express.Multer.File
   ): Promise<string> {
+    PhotoServices.cloudinaryConfiguration();
     const result = await this.streamUpload(file);
     return result.secure_url;
   }
@@ -85,6 +86,7 @@ export class PhotoServices {
     return new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         {
+          asset_folder: "Birdy_Assets",
           format: "jpg",
           transformation: [{ width: 1000, height: 1000, crop: "limit" }],
           allowed_formats: ["jpg", "png"],
@@ -116,7 +118,7 @@ export class PhotoServices {
     });
   }
 
-  static async getPhotoById(id: string): Promise<Photo> {
+  static async getPhotoById(id: string): Promise<Photos> {
     if (!id) throw new BadRequestError("Invalid photo ID.");
 
     const parsedId = parseInt(id, 10);
@@ -128,15 +130,25 @@ export class PhotoServices {
 
     if (!photo) throw new NotFoundError("Photo not found.");
 
-    return photo;
+    return {
+      id: photo.id,
+      authorID: photo.authorID.id,
+      title: photo.title,
+      date: photo.date,
+      imageUrl: photo.imageUrl,
+      total_comments: photo.total_comments,
+      comments: photo.comments,
+      meta: photo.meta,
+    };
   }
 
   private static deletePhotoFromCloudinary(publicId: string): Promise<void> {
+    PhotoServices.cloudinaryConfiguration();
     return new Promise((resolve, reject) => {
       void cloudinary.uploader.destroy(
         publicId,
         (error: unknown, result?: CloudinaryCallbackResult) => {
-          if (result === undefined) resolve();
+          if (result) resolve();
           else reject(error);
         }
       );
