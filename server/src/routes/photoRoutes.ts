@@ -15,7 +15,7 @@ router.get("/", (req, res, next) => {
   photoController.getAllPhotos(req, res, next).catch(next);
 });
 
-router.get("/:id", (req, res, next) => {
+router.get("/:photoId", (req, res, next) => {
   photoController.getPhotoById(req, res).catch(next);
 });
 
@@ -28,7 +28,7 @@ router.post(
   }
 );
 
-router.delete("/:id", authMiddleware, (req, res, next) => {
+router.delete("/:photoId", authMiddleware, (req, res, next) => {
   photoController.deletePhoto(req, res, next).catch(next);
 });
 
