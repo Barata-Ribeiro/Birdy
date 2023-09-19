@@ -12,6 +12,7 @@ import userRoutes from "./routes/userRoutes";
 import statsRoutes from "./routes/statsRoutes";
 import authRoutes from "./routes/authRoutes";
 import photoRoutes from "./routes/photoRoutes";
+import commentRoutes from "./routes/commentRoutes";
 
 if (dataSource.options.type !== "postgres") {
   throw new Error("Invalid DB_TYPE: Only 'postgres' is supported.");
@@ -22,7 +23,6 @@ const startServer = async (): Promise<void> => {
     await dataSource.initialize();
 
     const app = express();
-
 
     app.use(
       cors({
@@ -50,6 +50,7 @@ const startServer = async (): Promise<void> => {
     app.use("/api/v1/users", userRoutes);
     app.use("/api/v1/stats", statsRoutes);
     app.use("/api/v1/photos", photoRoutes);
+    app.use("/api/v1/photos", commentRoutes);
 
     app.use(errorMiddleware);
 
