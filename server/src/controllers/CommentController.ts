@@ -2,10 +2,9 @@
 
 import { Request, Response, NextFunction } from "express";
 
-import { CommentServices } from "src/services/CommentServices";
+import { CommentServices } from "../services/CommentServices";
 
 import { BadRequestError } from "../helpers/api-errors";
-import { UserWithoutPassword } from "../@types/types";
 
 export class CommentController {
   async createComment(

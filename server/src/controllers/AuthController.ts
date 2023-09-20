@@ -2,7 +2,7 @@
 import { Request, Response } from "express";
 import { UnauthorizedError } from "../helpers/api-errors";
 import { AuthServices } from "../services/AuthServices";
-import { LoginRequestBody } from "src/@types/types";
+import { LoginRequestBody } from "../@types/types";
 
 export class AuthController {
   async login(req: Request, res: Response): Promise<Response> {

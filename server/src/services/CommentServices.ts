@@ -7,7 +7,7 @@ import { UserWithoutPassword } from "../@types/types";
 
 import { photoRepository } from "../repositories/photoRepository";
 import { userRepository } from "../repositories/userRepository";
-import { commentRepository } from "../repositories/commentRepositoy";
+import { commentRepository } from "../repositories/commentRepository";
 
 import { BadRequestError, NotFoundError } from "../helpers/api-errors";
 
