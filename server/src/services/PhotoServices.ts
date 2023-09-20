@@ -118,10 +118,10 @@ export class PhotoServices {
     });
   }
 
-  static async getPhotoById(id: string): Promise<Photos> {
-    if (!id) throw new BadRequestError("Invalid photo ID.");
+  static async getPhotoById(photoId: string): Promise<Photos> {
+    if (!photoId) throw new BadRequestError("Invalid photo ID.");
 
-    const parsedId = parseInt(id, 10);
+    const parsedId = parseInt(photoId, 10);
 
     const photo = await photoRepository.findOne({
       where: { id: parsedId },
@@ -159,7 +159,7 @@ export class PhotoServices {
   }
 
   static async deletePhoto(
-    id: string,
+    photoId: string,
     user: UserWithoutPassword
   ): Promise<void> {
     const actualUser = (await userRepository.findOne({
@@ -168,9 +168,9 @@ export class PhotoServices {
 
     if (!actualUser) throw new NotFoundError("User not found.");
 
-    if (!id) throw new BadRequestError("Invalid photo ID.");
+    if (!photoId) throw new BadRequestError("Invalid photo ID.");
 
-    const parsedId = parseInt(id, 10);
+    const parsedId = parseInt(photoId, 10);
 
     const photo = await photoRepository.findOne({
       where: { id: parsedId },

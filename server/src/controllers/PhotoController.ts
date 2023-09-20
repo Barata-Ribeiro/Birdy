@@ -44,8 +44,8 @@ export class PhotoController {
   }
 
   async getPhotoById(req: Request, res: Response): Promise<Response> {
-    const { id } = req.params as { id: string };
-    const photo = await PhotoServices.getPhotoById(id);
+    const { photoId } = req.params as { photoId: string };
+    const photo = await PhotoServices.getPhotoById(photoId);
     return res.status(200).json(photo);
   }
 
@@ -55,10 +55,10 @@ export class PhotoController {
     next: NextFunction
   ): Promise<Response | void> {
     try {
-      const { id } = req.params as { id: string };
+      const { photoId } = req.params as { photoId: string };
       const user = req.user as UserWithoutPassword;
 
-      await PhotoServices.deletePhoto(id, user);
+      await PhotoServices.deletePhoto(photoId, user);
       return res.status(200).send({ message: "Photo deleted successfully." });
     } catch (error) {
       next(error);
