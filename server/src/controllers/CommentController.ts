@@ -1,30 +1,94 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { Request, Response, NextFunction } from "express";
 
-import { CommentService } from "../services/CommentService";
+import { CommentServices } from "src/services/CommentServices";
+
 import { BadRequestError } from "../helpers/api-errors";
+import { UserWithoutPassword } from "../@types/types";
 
 export class CommentController {
   async createComment(
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response> {}
+  ): Promise<Response | void> {
+    try {
+      const user = req.user;
+      if (!user) throw new BadRequestError("User not authenticated.");
+
+      const { photoId } = req.params as { photoId: string };
+      if (!photoId) throw new BadRequestError("No photo ID provided.");
+
+      const { comment } = req.body as { comment: string };
+      if (!comment) throw new BadRequestError("No comment provided.");
+
+      const result = await CommentServices.createComment(
+        user,
+        comment,
+        photoId
+      );
+
+      return res.status(201).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
 
   async getAllCommentsForPhoto(
     req: Request,
     res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+    _next: NextFunction
+  ): Promise<Response> {
+    const { photoId } = req.params as { photoId: string };
+    if (!photoId) throw new BadRequestError("No photo ID provided.");
+
+    const comments = await CommentServices.getAllCommentsForPhoto(photoId);
+    return res.status(200).json(comments);
+  }
 
   async getCommentById(
     req: Request,
     res: Response,
-    next: NextFunction
-  ): Promise<Response> {}
+    _next: NextFunction
+  ): Promise<Response> {
+    if (typeof req.params.photoId !== "string")
+      throw new BadRequestError("No photo ID provided.");
+
+    const photoId = req.params.photoId;
+
+    if (typeof req.params.commentId !== "string")
+      throw new BadRequestError("No comment ID provided.");
+
+    const commentId = req.params.commentId;
+
+    const comment = await CommentServices.getCommentById(photoId, commentId);
+    return res.status(200).json(comment);
+  }
 
   async deleteCommentById(
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response> {}
+  ): Promise<Response | void> {
+    try {
+      const user = req.user;
+      if (!user) throw new BadRequestError("User not authenticated.");
+
+      if (typeof req.params.photoId !== "string")
+        throw new BadRequestError("No photo ID provided.");
+
+      const photoId = req.params.photoId;
+
+      if (typeof req.params.commentId !== "string")
+        throw new BadRequestError("No comment ID provided.");
+
+      const commentId = req.params.commentId;
+
+      await CommentServices.deleteCommentById(user, photoId, commentId);
+      return res.status(200).send({ message: "Comment deleted successfully." });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
