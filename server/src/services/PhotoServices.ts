@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
+import { validate } from "uuid";
 
 import { User } from "../entities/User";
 import { Photo } from "../entities/Photo";
@@ -86,7 +87,7 @@ export class PhotoServices {
     return new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         {
-          asset_folder: "Birdy_Assets",
+          folder: "birdy_uploads",
           format: "jpg",
           transformation: [{ width: 1000, height: 1000, crop: "limit" }],
           allowed_formats: ["jpg", "png"],
@@ -119,12 +120,10 @@ export class PhotoServices {
   }
 
   static async getPhotoById(photoId: string): Promise<Photos> {
-    if (!photoId) throw new BadRequestError("Invalid photo ID.");
-
-    const parsedId = parseInt(photoId, 10);
+    if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
     const photo = await photoRepository.findOne({
-      where: { id: parsedId },
+      where: { id: photoId },
       relations: ["authorID"],
     });
 
@@ -168,12 +167,10 @@ export class PhotoServices {
 
     if (!actualUser) throw new NotFoundError("User not found.");
 
-    if (!photoId) throw new BadRequestError("Invalid photo ID.");
-
-    const parsedId = parseInt(photoId, 10);
+    if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
     const photo = await photoRepository.findOne({
-      where: { id: parsedId },
+      where: { id: photoId },
       relations: ["authorID"],
     });
 
@@ -184,7 +181,11 @@ export class PhotoServices {
 
     const parts = photo.imageUrl.split("/");
     const fileName = parts.pop();
-    const publicId = fileName ? fileName.split(".")[0] : undefined;
+    const folderName = parts.pop();
+    const publicId =
+      folderName && fileName
+        ? `${folderName}/${fileName.split(".")[0]}`
+        : undefined;
 
     if (!publicId) throw new Error("Failed to extract the publicId.");
 

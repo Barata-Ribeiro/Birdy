@@ -13,8 +13,8 @@ import { PhotoMeta } from "./PhotoMeta";
 
 @Entity()
 export class Photo {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @ManyToOne(() => User, (user) => user.photos)
   @JoinColumn({ name: "authorID" })

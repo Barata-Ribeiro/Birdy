@@ -19,10 +19,10 @@ export class CommentServices {
   ): Promise<Comment> {
     const actualUser = await this.verifyUser(user.id);
 
-    const parsedPhotoId = parseInt(photoId, 10);
+    if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
     const photo = await photoRepository.findOne({
-      where: { id: parsedPhotoId },
+      where: { id: photoId },
       relations: ["authorID"],
     });
 
@@ -47,10 +47,10 @@ export class CommentServices {
   }
 
   static async getAllCommentsForPhoto(photoId: string): Promise<Comment[]> {
-    const parsedPhotoId = parseInt(photoId, 10);
+    if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
     const photo = await photoRepository.findOne({
-      where: { id: parsedPhotoId },
+      where: { id: photoId },
       relations: ["authorID"],
     });
 
@@ -63,10 +63,10 @@ export class CommentServices {
     photoId: string,
     commentId: string
   ): Promise<Comment> {
-    const parsedPhotoId = parseInt(photoId, 10);
+    if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
     const photo = await photoRepository.findOne({
-      where: { id: parsedPhotoId },
+      where: { id: photoId },
       relations: ["authorID"],
     });
 
@@ -95,10 +95,10 @@ export class CommentServices {
 
     const actualUser = await this.verifyUser(user.id);
 
-    const parsedPhotoId = parseInt(photoId, 10);
+    if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
     const photo = await photoRepository.findOne({
-      where: { id: parsedPhotoId },
+      where: { id: photoId },
       relations: ["authorID"],
     });
 

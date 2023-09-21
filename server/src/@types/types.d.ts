@@ -32,7 +32,7 @@ export interface User {
 }
 
 export interface Photos {
-  id: number;
+  id: string;
   authorID: UserWithoutPassword["id"];
   title: string;
   date: Date;
@@ -47,7 +47,7 @@ export interface Photos {
 }
 
 export interface PhotoResponse {
-  id: number;
+  id: string;
   authorID: User["id"];
   url: string;
   title: string;
@@ -82,7 +82,7 @@ export type JwtPayload = {
 };
 
 export interface PhotoStats {
-  id: number;
+  id: string;
   title: string;
   hits: number;
 }

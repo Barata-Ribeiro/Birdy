@@ -2,7 +2,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import { PhotoServices } from "../services/PhotoServices";
-import { BadRequestError } from "../helpers/api-errors";
+import { BadRequestError, UnauthorizedError } from "../helpers/api-errors";
 import { PhotoRequestBody, UserWithoutPassword } from "../@types/types";
 
 export class PhotoController {
@@ -16,7 +16,7 @@ export class PhotoController {
       const file = req.file as Express.Multer.File;
       const { title, size, habitat } = req.body as PhotoRequestBody;
 
-      if (!user) throw new BadRequestError("User not authenticated.");
+      if (!user) throw new UnauthorizedError("User not authenticated.");
       if (!file) throw new BadRequestError("No file provided.");
       if (!title || !size || !habitat)
         throw new BadRequestError(
@@ -57,6 +57,8 @@ export class PhotoController {
     try {
       const { photoId } = req.params as { photoId: string };
       const user = req.user as UserWithoutPassword;
+
+      if (!user) throw new UnauthorizedError("User not authenticated.");
 
       await PhotoServices.deletePhoto(photoId, user);
       return res.status(200).send({ message: "Photo deleted successfully." });

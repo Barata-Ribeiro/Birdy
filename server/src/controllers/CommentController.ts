@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from "express";
 
 import { CommentServices } from "../services/CommentServices";
 
-import { BadRequestError } from "../helpers/api-errors";
+import { BadRequestError, UnauthorizedError } from "../helpers/api-errors";
 
 export class CommentController {
   async createComment(
@@ -14,7 +14,7 @@ export class CommentController {
   ): Promise<Response | void> {
     try {
       const user = req.user;
-      if (!user) throw new BadRequestError("User not authenticated.");
+      if (!user) throw new UnauthorizedError("User not authenticated.");
 
       const { photoId } = req.params as { photoId: string };
       if (!photoId) throw new BadRequestError("No photo ID provided.");
@@ -72,7 +72,7 @@ export class CommentController {
   ): Promise<Response | void> {
     try {
       const user = req.user;
-      if (!user) throw new BadRequestError("User not authenticated.");
+      if (!user) throw new UnauthorizedError("User not authenticated.");
 
       if (typeof req.params.photoId !== "string")
         throw new BadRequestError("No photo ID provided.");
