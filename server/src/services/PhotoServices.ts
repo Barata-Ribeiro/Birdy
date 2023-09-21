@@ -103,17 +103,26 @@ export class PhotoServices {
   }
 
   static async getAllPhotos(): Promise<Photos[]> {
-    const photos = await photoRepository.find({ relations: ["authorID"] });
+    const photos = await photoRepository.find({
+      relations: ["authorID", "comments", "comments.authorID"],
+    });
 
     return photos.map((photo) => {
       return {
         id: photo.id,
         authorID: photo.authorID.id,
+        authorName: photo.authorID.username,
         title: photo.title,
         date: photo.date,
         imageUrl: photo.imageUrl,
         total_comments: photo.total_comments,
-        comments: photo.comments,
+        comments: photo.comments.map((comment) => ({
+          id: comment.id,
+          authorID: comment.authorID.id,
+          authorName: comment.authorID.username,
+          content: comment.content,
+          date: comment.date,
+        })),
         meta: photo.meta,
       };
     });
@@ -124,7 +133,7 @@ export class PhotoServices {
 
     const photo = await photoRepository.findOne({
       where: { id: photoId },
-      relations: ["authorID"],
+      relations: ["authorID", "comments", "comments.authorID"],
     });
 
     if (!photo) throw new NotFoundError("Photo not found.");
@@ -135,11 +144,18 @@ export class PhotoServices {
     return {
       id: photo.id,
       authorID: photo.authorID.id,
+      authorName: photo.authorID.username,
       title: photo.title,
       date: photo.date,
       imageUrl: photo.imageUrl,
       total_comments: photo.total_comments,
-      comments: photo.comments,
+      comments: photo.comments.map((comment) => ({
+        id: comment.id,
+        authorID: comment.authorID.id,
+        authorName: comment.authorID.username,
+        content: comment.content,
+        date: comment.date,
+      })),
       meta: photo.meta,
     };
   }

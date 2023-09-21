@@ -17,11 +17,22 @@ export const authMiddleware = async (
     if (!authorization) throw new UnauthorizedError("User not authenticated.");
 
     const token = authorization.split(" ")[1];
+    let id: string;
 
-    const { id } = jwt.verify(
-      token,
-      process.env.JWT_SECRET ?? ""
-    ) as JwtPayload;
+    try {
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET ?? ""
+      ) as JwtPayload;
+      id = decoded.id;
+    } catch (error) {
+      if (error instanceof jwt.JsonWebTokenError)
+        return next(
+          new UnauthorizedError("You have provided an invalid token.")
+        );
+
+      return next(error);
+    }
 
     const user = await userRepository.findOneBy({ id });
 

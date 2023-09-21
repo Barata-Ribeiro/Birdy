@@ -3,7 +3,11 @@ import { validate } from "uuid";
 import { User } from "../entities/User";
 import { Comment } from "../entities/Comment";
 
-import { UserWithoutPassword } from "../@types/types";
+import {
+  Comment as InterfaceComment,
+  CommentResponse,
+  UserWithoutPassword,
+} from "../@types/types";
 
 import { photoRepository } from "../repositories/photoRepository";
 import { userRepository } from "../repositories/userRepository";
@@ -16,7 +20,7 @@ export class CommentServices {
     user: UserWithoutPassword,
     comment: string,
     photoId: string
-  ): Promise<Comment> {
+  ): Promise<CommentResponse> {
     const actualUser = await this.verifyUser(user.id);
 
     if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
@@ -37,7 +41,20 @@ export class CommentServices {
     await photoRepository.save(photo);
     await commentRepository.save(userComment);
 
-    return userComment;
+    return {
+      id: userComment.id,
+      authorID: userComment.authorID.id,
+      content: userComment.content,
+      date: userComment.date,
+      photo: {
+        id: photo.id,
+        authorID: photo.authorID.id,
+        url: photo.imageUrl,
+        title: photo.title,
+        size: photo.meta.size,
+        habitat: photo.meta.habitat,
+      },
+    };
   }
 
   private static async verifyUser(userId: string): Promise<User> {
@@ -46,28 +63,36 @@ export class CommentServices {
     return actualUser;
   }
 
-  static async getAllCommentsForPhoto(photoId: string): Promise<Comment[]> {
+  static async getAllCommentsForPhoto(
+    photoId: string
+  ): Promise<InterfaceComment[]> {
     if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
     const photo = await photoRepository.findOne({
       where: { id: photoId },
-      relations: ["authorID"],
+      relations: ["authorID", "comments", "comments.authorID"],
     });
 
     if (!photo) throw new NotFoundError("Photo not found.");
 
-    return photo.comments;
+    return photo.comments.map((comment) => ({
+      id: comment.id,
+      authorID: comment.authorID.id,
+      authorName: comment.authorID.username,
+      content: comment.content,
+      date: comment.date,
+    }));
   }
 
   static async getCommentById(
     photoId: string,
     commentId: string
-  ): Promise<Comment> {
+  ): Promise<InterfaceComment> {
     if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
     const photo = await photoRepository.findOne({
       where: { id: photoId },
-      relations: ["authorID"],
+      relations: ["authorID", "comments", "comments.authorID"],
     });
 
     if (!photo) throw new NotFoundError("Photo not found.");
@@ -77,12 +102,18 @@ export class CommentServices {
 
     const comment = await commentRepository.findOne({
       where: { id: commentId },
-      relations: ["authorID"],
+      relations: ["authorID", "photo", "photo.authorID"],
     });
 
     if (!comment) throw new NotFoundError("Comment not found.");
 
-    return comment;
+    return {
+      id: comment.id,
+      authorID: comment.authorID.id,
+      authorName: comment.authorID.username,
+      content: comment.content,
+      date: comment.date,
+    };
   }
 
   static async deleteCommentById(

@@ -4,7 +4,6 @@ import { Request } from "express";
 // External Imports
 import { Photo } from "../entities/Photo";
 import { User } from "../entities/User";
-import { Comment } from "../entities/Comment";
 
 // Module Augmentation Declarations
 declare module "express" {
@@ -34,6 +33,7 @@ export interface User {
 export interface Photos {
   id: string;
   authorID: UserWithoutPassword["id"];
+  authorName?: UserWithoutPassword["username"];
   title: string;
   date: Date;
   imageUrl: string;
@@ -46,13 +46,30 @@ export interface Photos {
   };
 }
 
+export interface Comment {
+  id: string;
+  authorID: UserWithoutPassword["id"];
+  authorName?: UserWithoutPassword["username"];
+  content: string;
+  date: Date;
+  photo?: Photo;
+}
+
 export interface PhotoResponse {
   id: string;
-  authorID: User["id"];
+  authorID: UserWithoutPassword["id"];
   url: string;
   title: string;
   size: number;
   habitat: string;
+}
+
+export interface CommentResponse {
+  id: string;
+  authorID: UserWithoutPassword["id"];
+  content: string;
+  date: Date;
+  photo: PhotoResponse;
 }
 
 // API Request and Response Definitions
