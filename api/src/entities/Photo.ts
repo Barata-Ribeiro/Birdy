@@ -6,35 +6,44 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  UpdateDateColumn,
 } from "typeorm";
 import { User } from "./User";
 import { Comment } from "./Comment";
 import { PhotoMeta } from "./PhotoMeta";
 
-@Entity()
+@Entity("photos")
 export class Photo {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @ManyToOne(() => User, (user) => user.photos)
-  @JoinColumn({ name: "authorID" })
-  authorID: User;
+  @JoinColumn({ name: "authorID", referencedColumnName: "id" })
+  author: User;
+
+  @Column()
+  authorID: string;
+
+  @Column({ type: "varchar", length: 20 })
+  authorName: string;
 
   @Column({ type: "text" })
   title: string;
 
-  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-  date: Date;
-
-  @Column({ type: "text" })
+  @Column({ type: "varchar", length: 2048 })
   imageUrl: string;
-
-  @Column({ type: "int", default: 0 })
-  total_comments: number;
-
-  @OneToMany(() => Comment, (comment) => comment.photo)
-  comments: Comment[];
 
   @Column(() => PhotoMeta)
   meta: PhotoMeta;
+
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  updatedAt: Date;
+
+  @OneToMany(() => Comment, (comment) => comment.photo, {
+    onDelete: "CASCADE",
+  })
+  comments: Comment[];
 }

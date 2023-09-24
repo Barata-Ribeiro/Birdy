@@ -2,11 +2,17 @@ import { Column } from "typeorm";
 
 export class PhotoMeta {
   @Column({ type: "int" })
-  size: number;
+  birdSize: number;
 
   @Column({ type: "text" })
-  habitat: string;
+  birdHabitat: string;
 
-  @Column({ type: "int" })
-  access: number;
+  @Column({ type: "int", default: 0 })
+  total_comments: number;
+
+  @Column({ type: "int", default: 0 })
+  hits: number;
+
+  @Column({ type: "int", default: 0 })
+  likes: number;
 }

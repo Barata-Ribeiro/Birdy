@@ -5,24 +5,34 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { User } from "./User";
 import { Photo } from "./Photo";
 
-@Entity()
+@Entity("comments")
 export class Comment {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @ManyToOne(() => User, (user) => user.comments)
-  @JoinColumn({ name: "authorID" })
-  authorID: User;
+  @JoinColumn({ name: "authorID", referencedColumnName: "id" })
+  author: User;
+
+  @Column()
+  authorID: string;
+
+  @Column({ type: "varchar", length: 20 })
+  authorName: string;
 
   @Column({ type: "text" })
   content: string;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-  date: Date;
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  updatedAt: Date;
 
   @ManyToOne(() => Photo, (photo) => photo.comments)
   photo: Photo;
