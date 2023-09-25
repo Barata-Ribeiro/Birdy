@@ -18,18 +18,6 @@ declare module "streamifier" {
 }
 
 // Entity Type Definitions
-export interface User {
-  id: string;
-  username: string;
-  password: string;
-  email: string;
-  createdAt: Date;
-  updatedAt: Date;
-  comments: Comment[];
-  photos: Photo[];
-  refreshToken?: string;
-}
-
 export interface Photos {
   id: string;
   authorID: UserWithoutPassword["id"];
@@ -101,7 +89,9 @@ export type JwtPayload = {
 export interface PhotoStats {
   id: string;
   title: string;
+  comments: number;
   hits: number;
+  likes: number;
 }
 
 type CloudinaryResult = {
