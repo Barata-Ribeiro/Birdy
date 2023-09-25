@@ -41,13 +41,13 @@ export class Photo {
     cascade: true,
     onDelete: "CASCADE",
   })
-  likes: UserLikes[];
+  likes?: UserLikes[];
 
   @OneToMany(() => Comment, (comment) => comment.photo, {
     cascade: true,
     onDelete: "CASCADE",
   })
-  comments: Comment[];
+  comments?: Comment[];
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;

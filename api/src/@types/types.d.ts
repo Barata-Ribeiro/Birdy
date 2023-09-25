@@ -17,49 +17,6 @@ declare module "streamifier" {
   export function createReadStream(buffer: Buffer): NodeJS.ReadableStream;
 }
 
-// Entity Type Definitions
-export interface Photos {
-  id: string;
-  authorID: UserWithoutPassword["id"];
-  authorName?: UserWithoutPassword["username"];
-  title: string;
-  date: Date;
-  imageUrl: string;
-  total_comments: number;
-  comments: Comment[];
-  meta: {
-    size: number;
-    habitat: string;
-    access: number;
-  };
-}
-
-export interface Comment {
-  id: string;
-  authorID: UserWithoutPassword["id"];
-  authorName?: UserWithoutPassword["username"];
-  content: string;
-  date: Date;
-  photo?: Photo;
-}
-
-export interface PhotoResponse {
-  id: string;
-  authorID: UserWithoutPassword["id"];
-  url: string;
-  title: string;
-  size: number;
-  habitat: string;
-}
-
-export interface CommentResponse {
-  id: string;
-  authorID: UserWithoutPassword["id"];
-  content: string;
-  date: Date;
-  photo: PhotoResponse;
-}
-
 // API Request and Response Definitions
 export interface CreateUserRequestBody {
   username: string;

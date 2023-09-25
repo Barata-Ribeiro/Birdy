@@ -16,9 +16,9 @@ export class StatsServices {
     const stats: PhotoStats[] = userPhotos.map((photo) => ({
       id: photo.id,
       title: photo.title,
-      comments: photo.meta.total_comments,
-      hits: photo.meta.total_hits,
-      likes: photo.meta.total_likes,
+      comments: photo.meta.total_comments ?? 0,
+      hits: photo.meta.total_hits ?? 0,
+      likes: photo.meta.total_likes ?? 0,
     }));
 
     return stats;

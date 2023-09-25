@@ -8,11 +8,11 @@ export class PhotoMeta {
   birdHabitat: string;
 
   @Column({ type: "int", default: 0 })
-  total_comments: number;
+  total_comments?: number;
 
   @Column({ type: "int", default: 0 })
-  total_hits: number;
+  total_hits?: number;
 
   @Column({ type: "int", default: 0 })
-  total_likes: number;
+  total_likes?: number;
 }
