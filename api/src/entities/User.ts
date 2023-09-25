@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { Comment } from "./Comment";
 import { Photo } from "./Photo";
+import { UserLikes } from "./UserLikes";
 
 @Entity("users")
 export class User {
@@ -26,24 +27,30 @@ export class User {
   @Index()
   email: string;
 
-  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-  updatedAt: Date;
-
   @OneToMany(() => Comment, (comment) => comment.authorID, {
     cascade: true,
     onDelete: "CASCADE",
   })
-  comments: Comment[];
+  comments?: Comment[];
 
   @OneToMany(() => Photo, (photo) => photo.authorID, {
     cascade: true,
     onDelete: "CASCADE",
   })
-  photos: Photo[];
+  photos?: Photo[];
+
+  @OneToMany(() => UserLikes, (userLikes) => userLikes.user, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
+  likes?: UserLikes[];
 
   @Column({ type: "text", nullable: true })
   refreshToken?: string;
+
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  updatedAt: Date;
 }

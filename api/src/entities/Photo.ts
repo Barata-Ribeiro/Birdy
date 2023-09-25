@@ -11,6 +11,7 @@ import {
 import { User } from "./User";
 import { Comment } from "./Comment";
 import { PhotoMeta } from "./PhotoMeta";
+import { UserLikes } from "./UserLikes";
 
 @Entity("photos")
 export class Photo {
@@ -36,14 +37,21 @@ export class Photo {
   @Column(() => PhotoMeta)
   meta: PhotoMeta;
 
+  @OneToMany(() => UserLikes, (userLikes) => userLikes.photo, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
+  likes: UserLikes[];
+
+  @OneToMany(() => Comment, (comment) => comment.photo, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
+  comments: Comment[];
+
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;
 
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   updatedAt: Date;
-
-  @OneToMany(() => Comment, (comment) => comment.photo, {
-    onDelete: "CASCADE",
-  })
-  comments: Comment[];
 }

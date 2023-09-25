@@ -28,12 +28,12 @@ export class Comment {
   @Column({ type: "text" })
   content: string;
 
+  @ManyToOne(() => Photo, (photo) => photo.comments)
+  photo: Photo;
+
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;
 
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   updatedAt: Date;
-
-  @ManyToOne(() => Photo, (photo) => photo.comments)
-  photo: Photo;
 }

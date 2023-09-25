@@ -11,8 +11,8 @@ export class PhotoMeta {
   total_comments: number;
 
   @Column({ type: "int", default: 0 })
-  hits: number;
+  total_hits: number;
 
   @Column({ type: "int", default: 0 })
-  likes: number;
+  total_likes: number;
 }
