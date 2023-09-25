@@ -3,58 +3,43 @@ import { validate } from "uuid";
 import { User } from "../entities/User";
 import { Comment } from "../entities/Comment";
 
-import {
-  Comment as InterfaceComment,
-  CommentResponse,
-  UserWithoutPassword,
-} from "../@types/types";
+import { UserWithoutPassword } from "../@types/types";
 
 import { photoRepository } from "../repositories/photoRepository";
 import { userRepository } from "../repositories/userRepository";
 import { commentRepository } from "../repositories/commentRepository";
 
 import { BadRequestError, NotFoundError } from "../helpers/api-errors";
+import { CommentResponseDTO } from "../dto/CommentResponseDTO";
 
 export class CommentServices {
   static async createComment(
     user: UserWithoutPassword,
     comment: string,
     photoId: string
-  ): Promise<CommentResponse> {
+  ): Promise<CommentResponseDTO> {
     const actualUser = await this.verifyUser(user.id);
 
     if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
     const photo = await photoRepository.findOne({
       where: { id: photoId },
-      relations: ["authorID"],
+      relations: ["author"],
     });
 
     if (!photo) throw new NotFoundError("Photo not found.");
 
     const userComment = new Comment();
-    userComment.authorID = actualUser;
+    userComment.authorID = actualUser.id;
+    userComment.authorName = actualUser.username;
     userComment.content = comment;
     userComment.photo = photo;
-    photo.total_comments += 1;
+    photo.meta.total_comments! += 1;
 
     await photoRepository.save(photo);
     await commentRepository.save(userComment);
 
-    return {
-      id: userComment.id,
-      authorID: userComment.authorID.id,
-      content: userComment.content,
-      date: userComment.date,
-      photo: {
-        id: photo.id,
-        authorID: photo.authorID.id,
-        url: photo.imageUrl,
-        title: photo.title,
-        size: photo.meta.size,
-        habitat: photo.meta.habitat,
-      },
-    };
+    return userComment;
   }
 
   private static async verifyUser(userId: string): Promise<User> {
@@ -65,34 +50,39 @@ export class CommentServices {
 
   static async getAllCommentsForPhoto(
     photoId: string
-  ): Promise<InterfaceComment[]> {
+  ): Promise<CommentResponseDTO[]> {
     if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
     const photo = await photoRepository.findOne({
       where: { id: photoId },
-      relations: ["authorID", "comments", "comments.authorID"],
+      relations: ["author", "comments"],
     });
 
     if (!photo) throw new NotFoundError("Photo not found.");
 
-    return photo.comments.map((comment) => ({
-      id: comment.id,
-      authorID: comment.authorID.id,
-      authorName: comment.authorID.username,
-      content: comment.content,
-      date: comment.date,
-    }));
+    if (!photo.comments) return [];
+
+    return photo.comments.map((comment) => {
+      const responseDTO = new CommentResponseDTO();
+      responseDTO.id = comment.id;
+      responseDTO.authorID = comment.authorID;
+      responseDTO.authorName = comment.authorName;
+      responseDTO.content = comment.content;
+      responseDTO.createdAt = comment.createdAt;
+      responseDTO.updatedAt = comment.updatedAt;
+      return responseDTO;
+    });
   }
 
   static async getCommentById(
     photoId: string,
     commentId: string
-  ): Promise<InterfaceComment> {
+  ): Promise<CommentResponseDTO> {
     if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
     const photo = await photoRepository.findOne({
       where: { id: photoId },
-      relations: ["authorID", "comments", "comments.authorID"],
+      relations: ["author", "comments"],
     });
 
     if (!photo) throw new NotFoundError("Photo not found.");
@@ -102,18 +92,19 @@ export class CommentServices {
 
     const comment = await commentRepository.findOne({
       where: { id: commentId },
-      relations: ["authorID", "photo", "photo.authorID"],
+      relations: ["author", "photo"],
     });
 
     if (!comment) throw new NotFoundError("Comment not found.");
 
-    return {
-      id: comment.id,
-      authorID: comment.authorID.id,
-      authorName: comment.authorID.username,
-      content: comment.content,
-      date: comment.date,
-    };
+    const responseDTO = new CommentResponseDTO();
+    responseDTO.id = comment.id;
+    responseDTO.authorID = comment.authorID;
+    responseDTO.authorName = comment.authorName;
+    responseDTO.content = comment.content;
+    responseDTO.createdAt = comment.createdAt;
+    responseDTO.updatedAt = comment.updatedAt;
+    return responseDTO;
   }
 
   static async deleteCommentById(
@@ -145,11 +136,15 @@ export class CommentServices {
 
     if (!comment) throw new NotFoundError("Comment not found.");
 
-    if (comment.authorID.id !== actualUser.id)
+    if (comment.authorID !== actualUser.id)
       throw new BadRequestError("You are not the author of this comment.");
 
-    if (photo.total_comments > 0) photo.total_comments -= 1;
-    else throw new BadRequestError("Comments count is already zero.");
+    photo.meta.total_comments = (photo.meta.total_comments ?? 0) + 1;
+
+    if ((photo.meta.total_comments ?? 0) <= 0)
+      throw new BadRequestError("Comments count is already zero.");
+
+    photo.meta.total_comments -= 1;
 
     await photoRepository.save(photo);
     await commentRepository.remove(comment);

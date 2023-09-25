@@ -3,18 +3,19 @@ import { QueryFailedError } from "typeorm";
 import { validate } from "uuid";
 
 import { userRepository } from "../repositories/userRepository";
+import { UserResponseDTO } from "../dto/UserResponseDTO";
+import { CreateUserRequestBody } from "../@types/types";
 import {
   BadRequestError,
   ConflictError,
   InternalServerError,
   NotFoundError,
 } from "../helpers/api-errors";
-import { CreateUserRequestBody, UserWithoutPassword } from "../@types/types";
 
 class UserService {
   static async createUser(
     data: CreateUserRequestBody
-  ): Promise<UserWithoutPassword> {
+  ): Promise<UserResponseDTO> {
     const { username, password, email } = data;
 
     if (!username || !password || !email)
@@ -25,6 +26,14 @@ class UserService {
 
     if (existingUserByEmail || existingUserByUsername)
       throw new ConflictError("User already exists.");
+
+    const isEmailValid = (email: string): boolean => {
+      const regex = /^[A-Za-z0-9_!#$%&'*+/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/gm;
+      return regex.test(email);
+    };
+
+    if (!isEmailValid(email))
+      throw new BadRequestError("Invalid email format.");
 
     const isPasswordStrong = (password: string): boolean => {
       const regex =
@@ -54,58 +63,28 @@ class UserService {
       throw new InternalServerError("Internal server error");
     }
 
-    const responseUser: UserWithoutPassword = {
-      id: newUser.id,
-      username: newUser.username,
-      email: newUser.email,
-      createdAt: newUser.createdAt,
-      updatedAt: newUser.updatedAt,
-      comments: newUser.comments,
-      photos: newUser.photos,
-    };
-
-    return responseUser;
+    return UserResponseDTO.fromEntity(newUser);
   }
 
-  static async getUserById(id: string): Promise<UserWithoutPassword> {
+  static async getUserById(id: string): Promise<UserResponseDTO> {
     if (!validate(id)) throw new BadRequestError("Invalid user ID format.");
 
     const user = await userRepository.findOne({
-      where: { id: id },
-      relations: ["photos", "comments"],
+      where: { id },
+      relations: ["photos", "comments", "likes"],
     });
 
     if (!user) throw new NotFoundError("User not found");
 
-    const responseUser: UserWithoutPassword = {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-      comments: user.comments,
-      photos: user.photos,
-    };
-
-    return responseUser;
+    return UserResponseDTO.fromEntity(user);
   }
 
-  static async getAllUsers(): Promise<UserWithoutPassword[]> {
+  static async getAllUsers(): Promise<UserResponseDTO[]> {
     const users = await userRepository.find({
-      relations: ["photos", "comments"],
+      relations: ["photos", "photos.comments", "comments", "likes"],
     });
 
-    const responseUsers: UserWithoutPassword[] = users.map((user) => ({
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-      comments: user.comments,
-      photos: user.photos,
-    }));
-
-    return responseUsers;
+    return users.map((user) => UserResponseDTO.fromEntity(user));
   }
 }
 
