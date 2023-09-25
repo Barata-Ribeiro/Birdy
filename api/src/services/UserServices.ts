@@ -2,20 +2,20 @@ import * as bcrypt from "bcrypt";
 import { QueryFailedError } from "typeorm";
 import { validate } from "uuid";
 
-import { User } from "../entities/User";
 import { userRepository } from "../repositories/userRepository";
+import { UserResponseDTO } from "../dto/UserResponseDTO";
+import { CreateUserRequestBody } from "../@types/types";
 import {
   BadRequestError,
   ConflictError,
   InternalServerError,
   NotFoundError,
 } from "../helpers/api-errors";
-import { CreateUserRequestBody, UserWithoutPassword } from "../@types/types";
 
 class UserService {
   static async createUser(
     data: CreateUserRequestBody
-  ): Promise<UserWithoutPassword> {
+  ): Promise<UserResponseDTO> {
     const { username, password, email } = data;
 
     if (!username || !password || !email)
@@ -63,42 +63,35 @@ class UserService {
       throw new InternalServerError("Internal server error");
     }
 
-    return UserService.createResponseUser(newUser);
+    return UserResponseDTO.fromEntity(newUser);
   }
 
-  static async getUserById(id: string): Promise<UserWithoutPassword> {
+  static async getUserById(id: string): Promise<UserResponseDTO> {
     if (!validate(id)) throw new BadRequestError("Invalid user ID format.");
 
     const user = await userRepository.findOne({
-      where: { id: id },
+      where: { id },
       relations: ["photos", "comments", "likes"],
     });
 
     if (!user) throw new NotFoundError("User not found");
 
-    return UserService.createResponseUser(user);
+    return UserResponseDTO.fromEntity(user);
   }
 
-  static async getAllUsers(): Promise<UserWithoutPassword[]> {
-    const users = await userRepository.find({
-      relations: ["photos", "comments", "likes"],
-    });
+  static async getAllUsers(): Promise<UserResponseDTO[]> {
+    try {
+      const users = await userRepository.find({
+        relations: ["photos", "comments", "likes"],
+      });
+      return users.map((user) => UserResponseDTO.fromEntity(user));
+    } catch (error) {
+      console.error("Error loading users with relations:", error);
+      throw error; // Re-throw the error after logging it
+    }
 
-    return users.map(UserService.createResponseUser);
+    // return users.map((user) => UserResponseDTO.fromEntity(user));
   }
-
-  private static createResponseUser = (user: User): UserWithoutPassword => {
-    return {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      comments: user.comments,
-      photos: user.photos,
-      likes: user.likes,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    };
-  };
 }
 
 export default UserService;

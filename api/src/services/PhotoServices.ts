@@ -17,6 +17,7 @@ import {
   PhotoRequestBody,
   UserWithoutPassword,
 } from "../@types/types";
+import { PhotoResponseDTO } from "../dto/PhotoResponseDTO";
 
 export class PhotoServices {
   static async uploadPhoto(
@@ -99,15 +100,27 @@ export class PhotoServices {
     });
   }
 
-  static async getAllPhotos(): Promise<Photo[]> {
+  static async getAllPhotos(): Promise<PhotoResponseDTO[]> {
     const photos = await photoRepository.find({
       relations: ["author", "comments"],
     });
 
-    return photos;
+    return photos.map((photo) => {
+      const responseDTO = new PhotoResponseDTO();
+      responseDTO.id = photo.id;
+      responseDTO.authorID = photo.authorID;
+      responseDTO.authorName = photo.authorName;
+      responseDTO.title = photo.title;
+      responseDTO.imageUrl = photo.imageUrl;
+      responseDTO.meta = photo.meta;
+      responseDTO.comments = photo.comments ?? [];
+      responseDTO.createdAt = photo.createdAt;
+      responseDTO.updatedAt = photo.updatedAt;
+      return responseDTO;
+    });
   }
 
-  static async getPhotoById(photoId: string): Promise<Photo> {
+  static async getPhotoById(photoId: string): Promise<PhotoResponseDTO> {
     if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
     const photo = await photoRepository.findOne({
@@ -120,7 +133,17 @@ export class PhotoServices {
     photo.meta.total_hits = (photo.meta.total_hits || 0) + 1;
     await photoRepository.save(photo);
 
-    return photo;
+    const responseDTO = new PhotoResponseDTO();
+    responseDTO.id = photo.id;
+    responseDTO.authorID = photo.authorID;
+    responseDTO.authorName = photo.authorName;
+    responseDTO.title = photo.title;
+    responseDTO.imageUrl = photo.imageUrl;
+    responseDTO.meta = photo.meta;
+    responseDTO.comments = photo.comments ?? [];
+    responseDTO.createdAt = photo.createdAt;
+    responseDTO.updatedAt = photo.updatedAt;
+    return responseDTO;
   }
 
   private static deletePhotoFromCloudinary(publicId: string): Promise<void> {

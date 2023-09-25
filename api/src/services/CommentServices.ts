@@ -10,6 +10,7 @@ import { userRepository } from "../repositories/userRepository";
 import { commentRepository } from "../repositories/commentRepository";
 
 import { BadRequestError, NotFoundError } from "../helpers/api-errors";
+import { CommentResponseDTO } from "../dto/CommentResponseDTO";
 
 export class CommentServices {
   static async createComment(
@@ -47,7 +48,9 @@ export class CommentServices {
     return actualUser;
   }
 
-  static async getAllCommentsForPhoto(photoId: string): Promise<Comment[]> {
+  static async getAllCommentsForPhoto(
+    photoId: string
+  ): Promise<CommentResponseDTO[]> {
     if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
     const photo = await photoRepository.findOne({
@@ -59,13 +62,22 @@ export class CommentServices {
 
     if (!photo.comments) return [];
 
-    return photo.comments.map((comment) => comment);
+    return photo.comments.map((comment) => {
+      const responseDTO = new CommentResponseDTO();
+      responseDTO.id = comment.id;
+      responseDTO.authorID = comment.authorID;
+      responseDTO.authorName = comment.authorName;
+      responseDTO.content = comment.content;
+      responseDTO.createdAt = comment.createdAt;
+      responseDTO.updatedAt = comment.updatedAt;
+      return responseDTO;
+    });
   }
 
   static async getCommentById(
     photoId: string,
     commentId: string
-  ): Promise<Comment> {
+  ): Promise<CommentResponseDTO> {
     if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
     const photo = await photoRepository.findOne({
@@ -85,7 +97,14 @@ export class CommentServices {
 
     if (!comment) throw new NotFoundError("Comment not found.");
 
-    return comment;
+    const responseDTO = new CommentResponseDTO();
+    responseDTO.id = comment.id;
+    responseDTO.authorID = comment.authorID;
+    responseDTO.authorName = comment.authorName;
+    responseDTO.content = comment.content;
+    responseDTO.createdAt = comment.createdAt;
+    responseDTO.updatedAt = comment.updatedAt;
+    return responseDTO;
   }
 
   static async deleteCommentById(
