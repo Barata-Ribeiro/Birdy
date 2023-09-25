@@ -2,6 +2,7 @@ import * as bcrypt from "bcrypt";
 import { QueryFailedError } from "typeorm";
 import { validate } from "uuid";
 
+import { User } from "../entities/User";
 import { userRepository } from "../repositories/userRepository";
 import {
   BadRequestError,
@@ -25,6 +26,14 @@ class UserService {
 
     if (existingUserByEmail || existingUserByUsername)
       throw new ConflictError("User already exists.");
+
+    const isEmailValid = (email: string): boolean => {
+      const regex = /^[A-Za-z0-9_!#$%&'*+/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/gm;
+      return regex.test(email);
+    };
+
+    if (!isEmailValid(email))
+      throw new BadRequestError("Invalid email format.");
 
     const isPasswordStrong = (password: string): boolean => {
       const regex =
@@ -54,17 +63,7 @@ class UserService {
       throw new InternalServerError("Internal server error");
     }
 
-    const responseUser: UserWithoutPassword = {
-      id: newUser.id,
-      username: newUser.username,
-      email: newUser.email,
-      createdAt: newUser.createdAt,
-      updatedAt: newUser.updatedAt,
-      comments: newUser.comments,
-      photos: newUser.photos,
-    };
-
-    return responseUser;
+    return UserService.createResponseUser(newUser);
   }
 
   static async getUserById(id: string): Promise<UserWithoutPassword> {
@@ -72,41 +71,34 @@ class UserService {
 
     const user = await userRepository.findOne({
       where: { id: id },
-      relations: ["photos", "comments"],
+      relations: ["photos", "comments", "likes"],
     });
 
     if (!user) throw new NotFoundError("User not found");
 
-    const responseUser: UserWithoutPassword = {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-      comments: user.comments,
-      photos: user.photos,
-    };
-
-    return responseUser;
+    return UserService.createResponseUser(user);
   }
 
   static async getAllUsers(): Promise<UserWithoutPassword[]> {
     const users = await userRepository.find({
-      relations: ["photos", "comments"],
+      relations: ["photos", "comments", "likes"],
     });
 
-    const responseUsers: UserWithoutPassword[] = users.map((user) => ({
+    return users.map(UserService.createResponseUser);
+  }
+
+  private static createResponseUser = (user: User): UserWithoutPassword => {
+    return {
       id: user.id,
       username: user.username,
       email: user.email,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
       comments: user.comments,
       photos: user.photos,
-    }));
-
-    return responseUsers;
-  }
+      likes: user.likes,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+  };
 }
 
 export default UserService;
