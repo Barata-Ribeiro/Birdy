@@ -2,7 +2,6 @@
 import { Request } from "express";
 
 // External Imports
-import { Photo } from "../entities/Photo";
 import { User } from "../entities/User";
 
 // Module Augmentation Declarations

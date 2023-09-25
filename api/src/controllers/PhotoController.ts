@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { PhotoServices } from "../services/PhotoServices";
 import { BadRequestError, UnauthorizedError } from "../helpers/api-errors";
-import { PhotoRequestBody, UserWithoutPassword } from "../@types/types";
+import { PhotoRequestBody } from "../@types/types";
 
 export class PhotoController {
   async uploadPhoto(
@@ -12,7 +12,7 @@ export class PhotoController {
     next: NextFunction
   ): Promise<Response | void> {
     try {
-      const user = req.user as UserWithoutPassword;
+      const user = req.user;
       const file = req.file as Express.Multer.File;
       const { title, size, habitat } = req.body as PhotoRequestBody;
 
@@ -56,7 +56,7 @@ export class PhotoController {
   ): Promise<Response | void> {
     try {
       const { photoId } = req.params as { photoId: string };
-      const user = req.user as UserWithoutPassword;
+      const user = req.user;
 
       if (!user) throw new UnauthorizedError("User not authenticated.");
 
