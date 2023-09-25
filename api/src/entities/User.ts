@@ -27,13 +27,13 @@
     @Index()
     email: string;
 
-    @OneToMany(() => Comment, (comment) => comment.authorID, {
+    @OneToMany(() => Comment, (comment) => comment.author, {
       cascade: true,
       onDelete: "CASCADE",
     })
     comments?: Comment[];
 
-    @OneToMany(() => Photo, (photo) => photo.authorID, {
+    @OneToMany(() => Photo, (photo) => photo.author, {
       cascade: true,
       onDelete: "CASCADE",
     })

@@ -80,17 +80,11 @@ class UserService {
   }
 
   static async getAllUsers(): Promise<UserResponseDTO[]> {
-    try {
-      const users = await userRepository.find({
-        relations: ["photos", "comments", "likes"],
-      });
-      return users.map((user) => UserResponseDTO.fromEntity(user));
-    } catch (error) {
-      console.error("Error loading users with relations:", error);
-      throw error; // Re-throw the error after logging it
-    }
+    const users = await userRepository.find({
+      relations: ["photos", "photos.comments", "comments", "likes"],
+    });
 
-    // return users.map((user) => UserResponseDTO.fromEntity(user));
+    return users.map((user) => UserResponseDTO.fromEntity(user));
   }
 }
 

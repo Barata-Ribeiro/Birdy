@@ -17,14 +17,14 @@ export class CommentServices {
     user: UserWithoutPassword,
     comment: string,
     photoId: string
-  ): Promise<Comment> {
+  ): Promise<CommentResponseDTO> {
     const actualUser = await this.verifyUser(user.id);
 
     if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
     const photo = await photoRepository.findOne({
       where: { id: photoId },
-      relations: ["authorID"],
+      relations: ["author"],
     });
 
     if (!photo) throw new NotFoundError("Photo not found.");
@@ -82,7 +82,7 @@ export class CommentServices {
 
     const photo = await photoRepository.findOne({
       where: { id: photoId },
-      relations: ["authorID", "comments", "comments.authorID"],
+      relations: ["author", "comments"],
     });
 
     if (!photo) throw new NotFoundError("Photo not found.");
