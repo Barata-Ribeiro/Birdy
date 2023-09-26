@@ -32,36 +32,20 @@ export class LikeServices {
       relations: ["user", "photo"],
     });
 
-    if (userLike) {
-      userLike.isActive = !userLike.isActive;
-      await userLikeRepository.save(userLike);
-
-      if (userLike.isActive) actualPhoto.meta.total_likes! += 1;
-      else if (actualPhoto.meta.total_likes! > 0)
-        actualPhoto.meta.total_likes! -= 1;
-    } else {
-      const inactiveUserLike = await userLikeRepository.findOne({
-        where: {
-          userId: actualUser.id,
-          photoId: actualPhoto.id,
-          isActive: false,
-        },
-        relations: ["user", "photo"],
+    if (!userLike) {
+      userLike = userLikeRepository.create({
+        userId: actualUser.id,
+        photoId: actualPhoto.id,
+        isActive: false,
       });
-
-      if (inactiveUserLike) {
-        inactiveUserLike.isActive = true;
-        userLike = await userLikeRepository.save(inactiveUserLike);
-      } else {
-        const newUserLike = userLikeRepository.create({
-          userId: actualUser.id,
-          photoId: actualPhoto.id,
-          isActive: true,
-        });
-        userLike = await userLikeRepository.save(newUserLike);
-      }
-      actualPhoto.meta.total_likes! += 1;
     }
+
+    userLike.isActive = !userLike.isActive;
+    await userLikeRepository.save(userLike);
+
+    if (userLike.isActive) actualPhoto.meta.total_likes! += 1;
+    else if (actualPhoto.meta.total_likes! > 0)
+      actualPhoto.meta.total_likes! -= 1;
 
     await photoRepository.save(actualPhoto);
 
