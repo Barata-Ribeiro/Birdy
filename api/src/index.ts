@@ -28,30 +28,49 @@ const startServer = async (): Promise<void> => {
       cors({
         origin: process.env.CORS_ORIGIN,
         credentials: true,
-        methods: "GET, PUT, POST, OPTIONS, DELETE",
+        methods: "GET, POST, DELETE",
       }) as unknown as express.RequestHandler
     );
 
     app.use(helmet());
 
     const limiter = rateLimit({
-      windowMs: 15 * 60 * 1000,
+      windowMs: 15 * 60 * 1000, // 15 minutes
       max: 100,
       message: "Too many requests, please try again later.",
     });
+
     app.use(limiter);
+
+    const authLimiter = rateLimit({
+      windowMs: 5 * 60 * 1000, // 5 minutes
+      max: 10,
+      message: "Too many authentication attempts, please try again later.",
+    });
+
+    const readLimiter = rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100,
+      message: "Too many requests, please try again later.",
+    });
+
+    const writeLimiter = rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 50,
+      message: "Too many requests, please try again later.",
+    });
 
     app.use(express.json());
 
     app.use(cookieParser());
 
     // ROUTES //
-    app.use("/api/v1/auth", authRoutes);
-    app.use("/api/v1/users", userRoutes);
-    app.use("/api/v1/stats", statsRoutes);
-    app.use("/api/v1/photos", photoRoutes);
-    app.use("/api/v1/photos", userLikesRoutes);
-    app.use("/api/v1/photos", commentRoutes);
+    app.use("/api/v1/auth", authLimiter, authRoutes);
+    app.use("/api/v1/users", readLimiter, userRoutes);
+    app.use("/api/v1/stats", readLimiter, statsRoutes);
+    app.use("/api/v1/photos", writeLimiter, photoRoutes);
+    app.use("/api/v1/photos", writeLimiter, userLikesRoutes);
+    app.use("/api/v1/photos", writeLimiter, commentRoutes);
 
     app.use(errorMiddleware);
 
