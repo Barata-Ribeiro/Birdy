@@ -9,8 +9,8 @@ export class UserLikesResponseDTO {
   static fromEntity(like: UserLikes): UserLikesResponseDTO {
     const dto = new UserLikesResponseDTO();
     dto.id = like.id;
-    dto.userId = like.user.id;
-    dto.photoId = like.photo.id;
+    dto.userId = like.userId;
+    dto.photoId = like.photoId;
     dto.likedAt = like.likedAt;
     return dto;
   }

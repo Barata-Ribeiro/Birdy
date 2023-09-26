@@ -102,7 +102,7 @@ export class PhotoServices {
 
   static async getAllPhotos(): Promise<PhotoResponseDTO[]> {
     const photos = await photoRepository.find({
-      relations: ["author", "comments"],
+      relations: ["author", "likes", "comments"],
     });
 
     return photos.map((photo) => PhotoResponseDTO.fromEntity(photo));
@@ -113,7 +113,7 @@ export class PhotoServices {
 
     const photo = await photoRepository.findOne({
       where: { id: photoId },
-      relations: ["author", "comments"],
+      relations: ["author", "likes", "comments"],
     });
 
     if (!photo) throw new NotFoundError("Photo not found.");
@@ -151,7 +151,7 @@ export class PhotoServices {
 
     const photo = await photoRepository.findOne({
       where: { id: photoId },
-      relations: ["authorID"],
+      relations: ["author"],
     });
 
     if (!photo) throw new NotFoundError("Photo not found.");

@@ -16,12 +16,18 @@ export class UserLikes {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: "user_id", referencedColumnName: "id" })
+  @Column()
+  userId: string;
+
+  @ManyToOne(() => User, (user) => user.likes, { eager: true })
+  @JoinColumn({ name: "userId", referencedColumnName: "id" })
   user: User;
 
-  @ManyToOne(() => Photo)
-  @JoinColumn({ name: "photo_id", referencedColumnName: "id" })
+  @Column()
+  photoId: string;
+
+  @ManyToOne(() => Photo, (photo) => photo.likes, { eager: true })
+  @JoinColumn({ name: "photoId", referencedColumnName: "id" })
   photo: Photo;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
