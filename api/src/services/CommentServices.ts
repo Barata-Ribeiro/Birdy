@@ -62,16 +62,9 @@ export class CommentServices {
 
     if (!photo.comments) return [];
 
-    return photo.comments.map((comment) => {
-      const responseDTO = new CommentResponseDTO();
-      responseDTO.id = comment.id;
-      responseDTO.authorID = comment.authorID;
-      responseDTO.authorName = comment.authorName;
-      responseDTO.content = comment.content;
-      responseDTO.createdAt = comment.createdAt;
-      responseDTO.updatedAt = comment.updatedAt;
-      return responseDTO;
-    });
+    return photo.comments.map((comment) =>
+      CommentResponseDTO.fromEntity(comment)
+    );
   }
 
   static async getCommentById(
@@ -97,14 +90,7 @@ export class CommentServices {
 
     if (!comment) throw new NotFoundError("Comment not found.");
 
-    const responseDTO = new CommentResponseDTO();
-    responseDTO.id = comment.id;
-    responseDTO.authorID = comment.authorID;
-    responseDTO.authorName = comment.authorName;
-    responseDTO.content = comment.content;
-    responseDTO.createdAt = comment.createdAt;
-    responseDTO.updatedAt = comment.updatedAt;
-    return responseDTO;
+    return CommentResponseDTO.fromEntity(comment);
   }
 
   static async deleteCommentById(
