@@ -1,5 +1,7 @@
 import {
   Entity,
+  Unique,
+  Column,
   ManyToOne,
   JoinColumn,
   PrimaryGeneratedColumn,
@@ -9,6 +11,7 @@ import { User } from "./User";
 import { Photo } from "./Photo";
 
 @Entity("user_likes")
+@Unique(["user", "photo"])
 export class UserLikes {
   @PrimaryGeneratedColumn("uuid")
   id: string;
@@ -23,4 +26,7 @@ export class UserLikes {
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   likedAt: Date;
+
+  @Column({ type: "boolean", default: true })
+  isActive: boolean;
 }
