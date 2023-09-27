@@ -71,7 +71,14 @@ class UserService {
 
     const user = await userRepository.findOne({
       where: { id },
-      relations: ["photos", "comments", "likes"],
+      relations: [
+        "photos",
+        "photos.comments",
+        "comments",
+        "likes",
+        "likes.photo",
+        "likes.user",
+      ],
     });
 
     if (!user) throw new NotFoundError("User not found");
@@ -81,7 +88,14 @@ class UserService {
 
   static async getAllUsers(): Promise<UserResponseDTO[]> {
     const users = await userRepository.find({
-      relations: ["photos", "photos.comments", "comments", "likes"],
+      relations: [
+        "photos",
+        "photos.comments",
+        "comments",
+        "likes",
+        "likes.photo",
+        "likes.user",
+      ],
     });
 
     return users.map((user) => UserResponseDTO.fromEntity(user));

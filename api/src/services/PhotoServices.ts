@@ -102,22 +102,10 @@ export class PhotoServices {
 
   static async getAllPhotos(): Promise<PhotoResponseDTO[]> {
     const photos = await photoRepository.find({
-      relations: ["author", "comments"],
+      relations: ["author", "likes", "comments"],
     });
 
-    return photos.map((photo) => {
-      const responseDTO = new PhotoResponseDTO();
-      responseDTO.id = photo.id;
-      responseDTO.authorID = photo.authorID;
-      responseDTO.authorName = photo.authorName;
-      responseDTO.title = photo.title;
-      responseDTO.imageUrl = photo.imageUrl;
-      responseDTO.meta = photo.meta;
-      responseDTO.comments = photo.comments ?? [];
-      responseDTO.createdAt = photo.createdAt;
-      responseDTO.updatedAt = photo.updatedAt;
-      return responseDTO;
-    });
+    return photos.map((photo) => PhotoResponseDTO.fromEntity(photo));
   }
 
   static async getPhotoById(photoId: string): Promise<PhotoResponseDTO> {
@@ -125,7 +113,7 @@ export class PhotoServices {
 
     const photo = await photoRepository.findOne({
       where: { id: photoId },
-      relations: ["author", "comments"],
+      relations: ["author", "likes", "comments"],
     });
 
     if (!photo) throw new NotFoundError("Photo not found.");
@@ -133,17 +121,7 @@ export class PhotoServices {
     photo.meta.total_hits = (photo.meta.total_hits || 0) + 1;
     await photoRepository.save(photo);
 
-    const responseDTO = new PhotoResponseDTO();
-    responseDTO.id = photo.id;
-    responseDTO.authorID = photo.authorID;
-    responseDTO.authorName = photo.authorName;
-    responseDTO.title = photo.title;
-    responseDTO.imageUrl = photo.imageUrl;
-    responseDTO.meta = photo.meta;
-    responseDTO.comments = photo.comments ?? [];
-    responseDTO.createdAt = photo.createdAt;
-    responseDTO.updatedAt = photo.updatedAt;
-    return responseDTO;
+    return PhotoResponseDTO.fromEntity(photo);
   }
 
   private static deletePhotoFromCloudinary(publicId: string): Promise<void> {
@@ -173,7 +151,7 @@ export class PhotoServices {
 
     const photo = await photoRepository.findOne({
       where: { id: photoId },
-      relations: ["authorID"],
+      relations: ["author"],
     });
 
     if (!photo) throw new NotFoundError("Photo not found.");
