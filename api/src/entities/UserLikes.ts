@@ -19,14 +19,14 @@ export class UserLikes {
   @Column()
   userId: string;
 
-  @ManyToOne(() => User, (user) => user.likes, { eager: true })
+  @ManyToOne(() => User, (user) => user.likes)
   @JoinColumn({ name: "userId", referencedColumnName: "id" })
   user: User;
 
   @Column()
   photoId: string;
 
-  @ManyToOne(() => Photo, (photo) => photo.likes, { eager: true })
+  @ManyToOne(() => Photo, (photo) => photo.likes)
   @JoinColumn({ name: "photoId", referencedColumnName: "id" })
   photo: Photo;
 
