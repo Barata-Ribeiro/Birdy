@@ -4,6 +4,10 @@ import { userRepository } from "../repositories/userRepository";
 import { photoRepository } from "../repositories/photoRepository";
 import { userLikeRepository } from "../repositories/likeRepository";
 
+import { User } from "../entities/User";
+import { Photo } from "../entities/Photo";
+import { UserLikes } from "../entities/UserLikes";
+
 import { UserLikesResponseDTO } from "../dto/UserLikesResponseDTO";
 
 import { BadRequestError, NotFoundError } from "../helpers/api-errors";
@@ -14,41 +18,61 @@ export class LikeServices {
     user: UserWithoutPassword,
     photoId: string
   ): Promise<UserLikesResponseDTO> {
-    if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
+    const actualUser = await this.verifyUser(user.id);
 
-    const [actualUser, actualPhoto] = await Promise.all([
-      userRepository.findOne({ where: { id: user.id } }),
-      photoRepository.findOne({
-        where: { id: photoId },
-        relations: ["author", "likes", "comments"],
-      }),
-    ]);
+    const actualPhoto = await this.verifyPhoto(photoId);
+    if (actualUser.id === actualPhoto.authorID)
+      throw new BadRequestError("You cannot like your own photo.");
 
-    if (!actualUser) throw new NotFoundError("User not found.");
-    if (!actualPhoto) throw new NotFoundError("Photo not found.");
-
-    let userLike = await userLikeRepository.findOne({
+    const userLike = await userLikeRepository.findOne({
       where: { userId: actualUser.id, photoId: actualPhoto.id },
-      relations: ["user", "photo"],
     });
 
-    if (!userLike) {
-      userLike = userLikeRepository.create({
-        userId: actualUser.id,
-        photoId: actualPhoto.id,
-        isActive: false,
-      });
-    }
-
-    userLike.isActive = !userLike.isActive;
-    await userLikeRepository.save(userLike);
-
-    if (userLike.isActive) actualPhoto.meta.total_likes! += 1;
-    else if (actualPhoto.meta.total_likes! > 0)
+    if (userLike) {
+      await userLikeRepository.remove(userLike);
       actualPhoto.meta.total_likes! -= 1;
+      await photoRepository.save(actualPhoto);
+      return UserLikesResponseDTO.fromEntity(
+        userLike,
+        false,
+        actualPhoto.meta.total_likes
+      );
+    } else {
+      const newUserLike = new UserLikes();
+      newUserLike.userId = actualUser.id;
+      newUserLike.user = actualUser;
+      newUserLike.photoId = actualPhoto.id;
+      newUserLike.photo = actualPhoto;
+      actualPhoto.meta.total_likes! += 1;
+      await photoRepository.save(actualPhoto);
+      await userLikeRepository.save(newUserLike);
+      return UserLikesResponseDTO.fromEntity(
+        newUserLike,
+        true,
+        actualPhoto.meta.total_likes
+      );
+    }
+  }
 
-    await photoRepository.save(actualPhoto);
+  private static async verifyUser(userId: string): Promise<User> {
+    if (!validate(userId)) throw new BadRequestError("Invalid User ID.");
 
-    return UserLikesResponseDTO.fromEntity(userLike);
+    const actualUser = await userRepository.findOne({ where: { id: userId } });
+
+    if (!actualUser) throw new NotFoundError("User not found.");
+
+    return actualUser;
+  }
+
+  private static async verifyPhoto(photoId: string): Promise<Photo> {
+    if (!validate(photoId)) throw new BadRequestError("Invalid Photo ID.");
+
+    const actualPhoto = await photoRepository.findOne({
+      where: { id: photoId },
+    });
+
+    if (!actualPhoto) throw new NotFoundError("Photo not found.");
+
+    return actualPhoto;
   }
 }

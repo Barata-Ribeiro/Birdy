@@ -32,7 +32,4 @@ export class UserLikes {
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   likedAt: Date;
-
-  @Column({ type: "boolean", default: true })
-  isActive: boolean;
 }
