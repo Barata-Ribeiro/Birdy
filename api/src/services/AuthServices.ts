@@ -9,6 +9,7 @@ import {
   UnauthorizedError,
 } from "../helpers/api-errors";
 import { JwtPayload, AuthTokens } from "../@types/types";
+import { Request } from "express";
 
 export class AuthServices {
   static async login(email: string, password: string): Promise<AuthTokens> {
@@ -87,5 +88,31 @@ export class AuthServices {
 
     user.refreshToken = "";
     await userRepository.save(user);
+  }
+
+  static async forgotPassword(email: string, req: Request): Promise<void> {
+    const existingUserByEmail = await userRepository.findOneBy({ email });
+
+    if (!existingUserByEmail)
+      throw new BadRequestError("This email appears to be incorrect.");
+
+    const secretKey = process.env.JWT_SECRET + existingUserByEmail.password;
+
+    const payload = {
+      id: existingUserByEmail.id,
+      email: existingUserByEmail.email,
+    };
+
+    const token = jwt.sign(payload, secretKey, { expiresIn: "15m" });
+
+    const recoverLink = `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/auth/reset-password/${existingUserByEmail.id}/${token}`;
+
+    const emailMessage = `Hello🖖, there, ${existingUserByEmail.username}!\n\n
+
+    We have received a request to reset your password. Please click on the following link to reset your password: ${recoverLink}\n\n
+
+    This link will expire in 15 minutes. If you did not request this, please ignore this email and your password will remain unchanged.\n\n`;
   }
 }

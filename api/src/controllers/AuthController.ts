@@ -53,7 +53,7 @@ export class AuthController {
   async forgotPassword(req: Request, res: Response): Promise<Response> {
     const { email } = req.body as LoginRequestBody;
 
-    await AuthServices.forgotPassword(email);
+    await AuthServices.forgotPassword(email, req);
     return res.status(200).send({
       message: "An email has been sent to reset your password.",
     });
