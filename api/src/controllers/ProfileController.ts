@@ -13,6 +13,6 @@ export class ProfileController {
     if (!validate(id)) throw new BadRequestError("Invalid user ID.");
 
     const profile = await ProfileServices.getProfile(id);
-    return res.status(201).json(profile);
+    return res.status(200).json(profile);
   }
 }
