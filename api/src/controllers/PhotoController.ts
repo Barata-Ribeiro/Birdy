@@ -28,7 +28,7 @@ export class PhotoController {
         size,
         habitat,
       });
-      return res.status(200).send(result);
+      return res.status(201).send(result);
     } catch (error) {
       next(error);
     }

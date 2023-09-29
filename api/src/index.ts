@@ -9,11 +9,11 @@ import cookieParser from "cookie-parser";
 import dataSource from "./database/DataSource";
 import errorMiddleware from "./middlewares/error";
 import userRoutes from "./routes/userRoutes";
-import statsRoutes from "./routes/statsRoutes";
 import authRoutes from "./routes/authRoutes";
 import photoRoutes from "./routes/photoRoutes";
 import userLikesRoutes from "./routes/userLikesRoutes";
 import commentRoutes from "./routes/commentRoutes";
+import profileRoutes from "./routes/profileRoutes";
 
 if (dataSource.options.type !== "postgres")
   throw new Error("Invalid DB_TYPE: Only 'postgres' is supported.");
@@ -67,7 +67,7 @@ const startServer = async (): Promise<void> => {
     // ROUTES //
     app.use("/api/v1/auth", authLimiter, authRoutes);
     app.use("/api/v1/users", readLimiter, userRoutes);
-    app.use("/api/v1/stats", readLimiter, statsRoutes);
+    app.use("/api/v1/profile", readLimiter, profileRoutes);
     app.use("/api/v1/photos", writeLimiter, photoRoutes);
     app.use("/api/v1/photos", writeLimiter, userLikesRoutes);
     app.use("/api/v1/photos", writeLimiter, commentRoutes);
