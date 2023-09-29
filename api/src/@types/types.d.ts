@@ -42,14 +42,6 @@ export type JwtPayload = {
   id: string;
 };
 
-export interface PhotoStats {
-  id: string;
-  title: string;
-  comments: number;
-  hits: number;
-  likes: number;
-}
-
 type CloudinaryResult = {
   secure_url: string;
 };
