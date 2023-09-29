@@ -41,10 +41,32 @@ export class AuthController {
         sameSite: "none",
         secure: true,
       });
-      res.status(204).send();
+      res.status(200).json({
+        message: "Successfully logged out.",
+      });
     } catch (error) {
       if (error instanceof Error) throw new UnauthorizedError(error.message);
       else throw new UnauthorizedError("An error occurred during logout.");
     }
+  }
+
+  async forgotPassword(req: Request, res: Response): Promise<Response> {
+    const { email } = req.body as LoginRequestBody;
+
+    await AuthServices.forgotPassword(email);
+    return res.status(200).send({
+      message: "An email has been sent to reset your password.",
+    });
+  }
+
+  async resetPassword(req: Request, res: Response): Promise<Response> {
+    const { id, token } = req.params as { id: string; token: string };
+
+    const { password } = req.body as LoginRequestBody;
+
+    await AuthServices.resetPassword(id, token, password);
+    return res.status(200).send({
+      message: "Your password has been reset.",
+    });
   }
 }
