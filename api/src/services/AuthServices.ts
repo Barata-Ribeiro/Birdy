@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import nodemailer, { SendMailOptions } from "nodemailer";
 
 import { userRepository } from "../repositories/userRepository";
 import {
@@ -90,6 +91,26 @@ export class AuthServices {
     await userRepository.save(user);
   }
 
+  private static async sendMail(options: SendMailOptions): Promise<void> {
+    const transporter = nodemailer.createTransport({
+      host: process.env.ORIGIN_HOST,
+      port: Number(process.env.ORIGIN_PORT),
+      auth: {
+        user: process.env.ORIGIN_AUTH_USER,
+        pass: process.env.ORIGIN_AUTH_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.ORIGIN_MAIL_FROM,
+      to: options.to,
+      subject: options.subject,
+      text: options.text,
+    };
+
+    await transporter.sendMail(mailOptions);
+  }
+
   static async forgotPassword(email: string, req: Request): Promise<void> {
     const existingUserByEmail = await userRepository.findOneBy({ email });
 
@@ -114,5 +135,11 @@ export class AuthServices {
     We have received a request to reset your password. Please click on the following link to reset your password: ${recoverLink}\n\n
 
     This link will expire in 15 minutes. If you did not request this, please ignore this email and your password will remain unchanged.\n\n`;
+
+    await this.sendMail({
+      to: existingUserByEmail.email,
+      subject: "Birdy - Password Reset",
+      text: emailMessage,
+    });
   }
 }
