@@ -6,6 +6,7 @@ import nodemailer, { SendMailOptions } from "nodemailer";
 import { userRepository } from "../repositories/userRepository";
 import {
   BadRequestError,
+  InternalServerError,
   NotFoundError,
   UnauthorizedError,
 } from "../helpers/api-errors";
@@ -136,10 +137,16 @@ export class AuthServices {
 
     This link will expire in 15 minutes. If you did not request this, please ignore this email and your password will remain unchanged.\n\n`;
 
-    await this.sendMail({
-      to: existingUserByEmail.email,
-      subject: "Birdy - Password Reset",
-      text: emailMessage,
-    });
+    try {
+      await this.sendMail({
+        to: existingUserByEmail.email,
+        subject: "Birdy - Password Reset",
+        text: emailMessage,
+      });
+    } catch (error) {
+      throw new InternalServerError(
+        "There was an error sending the email for password reset. Please, try again later."
+      );
+    }
   }
 }
