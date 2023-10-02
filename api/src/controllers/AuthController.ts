@@ -60,11 +60,11 @@ export class AuthController {
   }
 
   async resetPassword(req: Request, res: Response): Promise<Response> {
-    const { id, token } = req.params as { id: string; token: string };
+    const { userId, token } = req.params as { userId: string; token: string };
 
     const { password } = req.body as LoginRequestBody;
 
-    await AuthServices.resetPassword(id, token, password);
+    await AuthServices.resetPassword(userId, token, password);
     return res.status(200).send({
       message: "Your password has been reset.",
     });
