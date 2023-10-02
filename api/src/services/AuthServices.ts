@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import bcrypt from "bcrypt";
+import { Request } from "express";
+import { validate } from "uuid";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 import nodemailer, { SendMailOptions } from "nodemailer";
 
 import { userRepository } from "../repositories/userRepository";
@@ -11,7 +13,6 @@ import {
   UnauthorizedError,
 } from "../helpers/api-errors";
 import { JwtPayload, AuthTokens } from "../@types/types";
-import { Request } from "express";
 
 export class AuthServices {
   static async login(email: string, password: string): Promise<AuthTokens> {
@@ -148,5 +149,41 @@ export class AuthServices {
         "There was an error sending the email for password reset. Please, try again later."
       );
     }
+  }
+
+  static async resetPassword(
+    userId: string,
+    token: string,
+    password: string
+  ): Promise<void> {
+    if (!validate(userId)) throw new BadRequestError("Invalid user id.");
+
+    const existingUserById = await userRepository.findOneBy({ id: userId });
+    if (!existingUserById) throw new NotFoundError("User not found.");
+
+    const secretKey = process.env.JWT_SECRET + existingUserById.password;
+
+    let payload: JwtPayload;
+    try {
+      payload = <JwtPayload>jwt.verify(token, secretKey);
+    } catch (error) {
+      throw new UnauthorizedError("Invalid or expired token.");
+    }
+    if (payload.id !== existingUserById.id)
+      throw new UnauthorizedError("Invalid or expired token.");
+
+    const isPasswordStrong = (password: string): boolean => {
+      const regex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      return regex.test(password);
+    };
+
+    if (!isPasswordStrong(password))
+      throw new BadRequestError("Password is too weak.");
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    existingUserById.password = hashedPassword;
+    existingUserById.refreshToken = "";
+    await userRepository.save(existingUserById);
   }
 }
