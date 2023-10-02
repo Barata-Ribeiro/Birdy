@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import bcrypt from "bcrypt";
+import { Request } from "express";
+import { validate } from "uuid";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import nodemailer, { SendMailOptions } from "nodemailer";
 
 import { userRepository } from "../repositories/userRepository";
 import {
   BadRequestError,
+  InternalServerError,
   NotFoundError,
   UnauthorizedError,
 } from "../helpers/api-errors";
@@ -87,5 +91,99 @@ export class AuthServices {
 
     user.refreshToken = "";
     await userRepository.save(user);
+  }
+
+  private static async sendMail(options: SendMailOptions): Promise<void> {
+    const transporter = nodemailer.createTransport({
+      host: process.env.ORIGIN_HOST,
+      port: Number(process.env.ORIGIN_PORT),
+      auth: {
+        user: process.env.ORIGIN_AUTH_USER,
+        pass: process.env.ORIGIN_AUTH_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.ORIGIN_MAIL_FROM,
+      to: options.to,
+      subject: options.subject,
+      text: options.text,
+    };
+
+    await transporter.sendMail(mailOptions);
+  }
+
+  static async forgotPassword(email: string, req: Request): Promise<void> {
+    const existingUserByEmail = await userRepository.findOneBy({ email });
+
+    if (!existingUserByEmail)
+      throw new BadRequestError("This email appears to be incorrect.");
+
+    const secretKey = process.env.JWT_SECRET + existingUserByEmail.password;
+
+    const payload = {
+      id: existingUserByEmail.id,
+      email: existingUserByEmail.email,
+    };
+
+    const token = jwt.sign(payload, secretKey, { expiresIn: "15m" });
+
+    const recoverLink = `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/auth/reset-password/${existingUserByEmail.id}/${token}`;
+
+    const emailMessage = `Hello🖖, there, ${existingUserByEmail.username}!\n\n
+
+    We have received a request to reset your password. Please click on the following link to reset your password: ${recoverLink}\n\n
+
+    This link will expire in 15 minutes. If you did not request this, please ignore this email and your password will remain unchanged.\n\n`;
+
+    try {
+      await this.sendMail({
+        to: existingUserByEmail.email,
+        subject: "Birdy - Password Reset",
+        text: emailMessage,
+      });
+    } catch (error) {
+      throw new InternalServerError(
+        "There was an error sending the email for password reset. Please, try again later."
+      );
+    }
+  }
+
+  static async resetPassword(
+    userId: string,
+    token: string,
+    password: string
+  ): Promise<void> {
+    if (!validate(userId)) throw new BadRequestError("Invalid user id.");
+
+    const existingUserById = await userRepository.findOneBy({ id: userId });
+    if (!existingUserById) throw new NotFoundError("User not found.");
+
+    const secretKey = process.env.JWT_SECRET + existingUserById.password;
+
+    let payload: JwtPayload;
+    try {
+      payload = <JwtPayload>jwt.verify(token, secretKey);
+    } catch (error) {
+      throw new UnauthorizedError("Invalid or expired token.");
+    }
+    if (payload.id !== existingUserById.id)
+      throw new UnauthorizedError("Invalid or expired token.");
+
+    const isPasswordStrong = (password: string): boolean => {
+      const regex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      return regex.test(password);
+    };
+
+    if (!isPasswordStrong(password))
+      throw new BadRequestError("Password is too weak.");
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    existingUserById.password = hashedPassword;
+    existingUserById.refreshToken = "";
+    await userRepository.save(existingUserById);
   }
 }
