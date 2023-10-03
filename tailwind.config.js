@@ -4,6 +4,10 @@ export default {
 	darkMode: "media",
 	theme: {
 		extend: {
+			container: {
+				center: true,
+				padding: "1rem",
+			},
 			colors: {
 				mantis: {
 					50: "hsl(94, 41%, 97%)",

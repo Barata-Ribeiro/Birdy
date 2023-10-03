@@ -9,6 +9,9 @@
 		@apply font-body;
 		@apply text-mantis-950;
 		@apply bg-mantis-50;
+
+		@apply dark:text-mantis-50;
+		@apply dark:bg-mantis-950;
 	}
 
 	h1,
@@ -16,8 +19,12 @@
 	h3,
 	h4,
 	h5,
-	h6 {
+	h6,
+	a,
+	button {
 		@apply font-heading;
 		@apply text-mantis-950;
+
+		@apply dark:text-mantis-50;
 	}
 }

@@ -25,7 +25,7 @@ module.exports = {
 		"@typescript-eslint/no-non-null-assertion": "off",
 		"@typescript-eslint/no-unused-vars": "off",
 		"tailwindcss/classnames-order": "warn",
-		"tailwindcss/no-custom-classname": "warn",
+		"tailwindcss/no-custom-classname": "off",
 		"tailwindcss/no-contradicting-classname": "error",
 	},
 	settings: {
