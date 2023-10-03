@@ -1,0 +1,30 @@
+#navbarToggler .line {
+	transition:
+		y 300ms ease-in 300ms,
+		rotate 300ms ease-in,
+		opacity 0ms 300ms;
+	transform-origin: center;
+}
+
+#navbarToggler[aria-expanded="true"] .line {
+	transition:
+		y 300ms ease-in,
+		rotate 300ms ease-in 300ms,
+		opacity 0ms 300ms;
+}
+
+#navbarToggler[aria-expanded="true"] :is(.top, .bottom) {
+	y: 45;
+}
+
+#navbarToggler[aria-expanded="true"] .top {
+	rotate: 45deg;
+}
+
+#navbarToggler[aria-expanded="true"] .middle {
+	opacity: 0;
+}
+
+#navbarToggler[aria-expanded="true"] .bottom {
+	rotate: -45deg;
+}
