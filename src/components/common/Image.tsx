@@ -4,6 +4,7 @@ import styles from "./Image.module.css";
 interface ImageProps {
 	alt: string;
 	src: string;
+	className?: string;
 }
 
 const Image: React.FC<ImageProps> = ({ alt, ...props }) => {
