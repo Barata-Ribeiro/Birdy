@@ -1,11 +1,11 @@
 import React from "react";
+import { Link, NavLink } from "react-router-dom";
 
 import "./Header.css";
 
 import ListItem from "./common/ListItem";
-
 import BurgerMenu from "../assets/BurgerMenu.svg?react";
-import { NavLink } from "react-router-dom";
+import MainButton from "./shared/MainButton";
 
 const links = {
 	about: "/about",
@@ -21,7 +21,7 @@ const Navbar = () => {
 	};
 
 	return (
-		<header className="flex w-full items-center bg-white">
+		<header className="flex w-full items-center bg-green-spring-50 dark:bg-green-spring-950">
 			<div className="container">
 				<div className="relative -mx-4 flex items-center justify-between">
 					{/* LOGO */}
@@ -52,8 +52,8 @@ const Navbar = () => {
 							<nav
 								id="navbarCollapse"
 								className={`absolute right-4 top-full z-50 w-full 
-                max-w-[250px] rounded-lg bg-white px-6 py-5 shadow 
-                lg:static lg:block lg:w-full lg:max-w-full 
+                max-w-[250px] rounded-lg bg-white px-6 py-5 shadow lg:static 
+                lg:block lg:w-full lg:max-w-full lg:bg-transparent 
                 lg:shadow-none ${!open && "hidden"} `}
 								aria-label="Primary navigation"
 							>
@@ -71,7 +71,7 @@ const Navbar = () => {
 													className={({ isActive }) =>
 														isActive
 															? "flex rounded-sm bg-mantis-200 px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex"
-															: "flex py-2 text-base font-normal text-gray-900 lg:ml-12 lg:inline-flex"
+															: "flex py-2 text-base font-normal text-gray-900 hover:text-bright-turquoise-500 lg:ml-12 lg:inline-flex"
 													}
 												>
 													Sign In
@@ -82,7 +82,7 @@ const Navbar = () => {
 													to="/signup"
 													className={({ isActive }) =>
 														isActive
-															? "flex rounded-sm bg-mantis-400 px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex"
+															? "flex rounded-sm bg-mantis-400 px-2 py-2 text-base font-medium text-gray-900 hover:text-bright-turquoise-500 lg:ml-12 lg:inline-flex"
 															: "flex rounded-sm bg-mantis-600 px-2 py-2 text-base font-normal text-gray-900 lg:ml-12 lg:inline-flex"
 													}
 												>
@@ -96,20 +96,20 @@ const Navbar = () => {
 						</div>
 
 						{/* SIGN IN/UP BUTTONS */}
-						<div className="hidden justify-end pr-16 sm:flex lg:pr-0">
-							<a
-								href="/sign-in"
-								className=" px-7 py-3 text-base font-medium hover:text-bright-turquoise-500"
+						<div className="hidden justify-end gap-2 pr-16 sm:flex lg:pr-0">
+							<Link
+								to="/sign-in"
+								className=" px-7 py-3 text-base hover:text-bright-turquoise-500"
 							>
 								Sign in
-							</a>
+							</Link>
 
-							<a
-								href="/sign-up"
-								className="rounded-lg bg-mantis-600 px-7 py-3 text-base font-medium text-white hover:bg-mantis-400"
+							<MainButton
+								NavToLink={"/signup"}
+								padding={"px-7 py-3 font-medium"}
 							>
 								Sign Up
-							</a>
+							</MainButton>
 						</div>
 					</div>
 				</div>

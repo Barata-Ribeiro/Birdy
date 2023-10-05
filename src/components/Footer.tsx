@@ -1,24 +1,34 @@
-import React from "react";
+import { Link } from "react-router-dom";
+import MainButton from "./shared/MainButton";
+
+const footerLinkes = {
+	privacy: "/privacy-policy",
+	terms: "/terms-of-use",
+	github: "https://github.com/Barata-Ribeiro/Birdy",
+};
 
 const Footer = () => {
 	return (
 		<footer className="bg-green-spring-50 dark:bg-green-spring-950">
 			<div className="container mx-auto px-6 py-8">
 				<div className="flex flex-col items-center text-center">
-					<a href="#">
+					<Link to="/">
 						<img
 							className="h-20 w-auto"
 							src="https://www.kadencewp.com/wp-content/uploads/2020/10/alogo-1.svg"
-							alt=""
+							alt="Logo"
 						/>
-					</a>
+					</Link>
 
 					<p className="mx-auto mt-4 max-w-md text-green-spring-500 dark:text-green-spring-400">
 						Lorem ipsum dolor sit amet consectetur adipisicing elit.
 					</p>
 
-					<div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-center">
-						<button className="order-1 mt-3 flex w-full items-center justify-center rounded-md border p-2 text-sm capitalize tracking-wide text-green-spring-600 transition-colors duration-300 hover:bg-green-spring-50 focus:outline-none focus:ring focus:ring-green-spring-300/40 dark:border-green-spring-400 dark:text-green-spring-300 dark:hover:bg-green-spring-800 sm:mx-2 sm:mt-0 sm:w-auto">
+					<div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-center">
+						<Link
+							to="https://github.com/Barata-Ribeiro/Birdy"
+							className="order-1 mt-3 flex w-full items-center justify-center rounded-md border p-2 text-sm capitalize tracking-wide text-green-spring-600 transition-colors duration-300 hover:bg-green-spring-100 focus:outline-none focus:ring focus:ring-green-spring-300/40 dark:border-green-spring-400 dark:text-green-spring-300 dark:hover:bg-green-spring-800 sm:mt-0 sm:w-auto"
+						>
 							<svg
 								className="mx-1 h-5 w-5"
 								viewBox="0 0 24 24"
@@ -32,11 +42,10 @@ const Footer = () => {
 							</svg>
 
 							<span className="mx-1">View Demo</span>
-						</button>
-
-						<button className="w-full rounded-md bg-mantis-600 px-5 py-2 text-sm capitalize tracking-wide text-green-spring-50 transition-colors duration-300 hover:bg-mantis-400 focus:outline-none focus:ring focus:ring-blue-300/80 sm:order-2 sm:mx-2 sm:w-auto">
-							Get started
-						</button>
+						</Link>
+						<MainButton NavToLink={"/signup"} padding={"px-5 py-2"}>
+							Sign Up
+						</MainButton>
 					</div>
 				</div>
 
@@ -49,32 +58,15 @@ const Footer = () => {
 					</p>
 
 					<div className="-mx-2 mt-3 flex sm:mt-0">
-						<a
-							href="#"
-							className="mx-2 text-sm text-green-spring-500 transition-colors duration-300 hover:text-green-spring-500 dark:hover:text-green-spring-300"
-							aria-label="Reddit"
-						>
-							{" "}
-							Teams{" "}
-						</a>
-
-						<a
-							href="#"
-							className="mx-2 text-sm text-green-spring-500 transition-colors duration-300 hover:text-green-spring-500 dark:hover:text-green-spring-300"
-							aria-label="Reddit"
-						>
-							{" "}
-							Privacy{" "}
-						</a>
-
-						<a
-							href="#"
-							className="mx-2 text-sm text-green-spring-500 transition-colors duration-300 hover:text-green-spring-500 dark:hover:text-green-spring-300"
-							aria-label="Reddit"
-						>
-							{" "}
-							Cookies{" "}
-						</a>
+						{Object.entries(footerLinkes).map(([key, value]) => (
+							<Link
+								key={key}
+								to={value}
+								className="mx-2 text-sm text-green-spring-600 transition-colors duration-300 hover:text-bright-turquoise-500 dark:text-green-spring-400 dark:hover:text-bright-turquoise-200"
+							>
+								{key}
+							</Link>
+						))}
 					</div>
 				</div>
 			</div>
