@@ -3,22 +3,19 @@ import { NavLink } from "react-router-dom";
 
 interface ListItemProps {
 	ToLink: string;
-	navItemStyles: string;
 	children: ReactNode;
 }
 
-const ListItem = ({
-	children,
-	navItemStyles,
-	ToLink,
-}: PropsWithChildren<ListItemProps>) => {
+const ListItem = ({ children, ToLink }: PropsWithChildren<ListItemProps>) => {
 	return (
 		<li>
 			<NavLink
 				to={ToLink}
-				className={`flex py-2 text-base font-medium lg:ml-12 lg:inline-flex ${navItemStyles} {isActive =>
-    "nav-link" + (!isActive ? " bg-mantis-200" : "")
-  }`}
+				className={({ isActive }) =>
+					isActive
+						? `flex rounded-sm bg-mantis-200 px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex`
+						: `flex py-2 text-base font-normal text-gray-900 lg:ml-12 lg:inline-flex`
+				}
 			>
 				{children}
 			</NavLink>

@@ -5,6 +5,7 @@ import "./Header.css";
 import ListItem from "./common/ListItem";
 
 import BurgerMenu from "../assets/BurgerMenu.svg?react";
+import { NavLink } from "react-router-dom";
 
 const links = {
 	about: "/about",
@@ -56,16 +57,40 @@ const Navbar = () => {
                 lg:shadow-none ${!open && "hidden"} `}
 								aria-label="Primary navigation"
 							>
-								<ul className="block lg:flex">
+								<ul className="flex flex-col gap-2 lg:flex-row lg:gap-0">
 									{Object.entries(links).map(([key, value]) => (
-										<ListItem
-											key={key}
-											ToLink={value}
-											navItemStyles="text-gray-900"
-										>
+										<ListItem key={key} ToLink={value}>
 											{key}
 										</ListItem>
 									))}
+									{open && (
+										<>
+											<li>
+												<NavLink
+													to="/signin"
+													className={({ isActive }) =>
+														isActive
+															? "flex rounded-sm bg-mantis-200 px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex"
+															: "flex py-2 text-base font-normal text-gray-900 lg:ml-12 lg:inline-flex"
+													}
+												>
+													Sign In
+												</NavLink>
+											</li>
+											<li>
+												<NavLink
+													to="/signup"
+													className={({ isActive }) =>
+														isActive
+															? "flex rounded-sm bg-mantis-400 px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex"
+															: "flex rounded-sm bg-mantis-600 px-2 py-2 text-base font-normal text-gray-900 lg:ml-12 lg:inline-flex"
+													}
+												>
+													Sign Up
+												</NavLink>
+											</li>
+										</>
+									)}
 								</ul>
 							</nav>
 						</div>
