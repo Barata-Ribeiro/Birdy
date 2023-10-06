@@ -15,10 +15,23 @@ const links = {
 
 const Navbar = () => {
 	const [open, setOpen] = React.useState(false);
+	const headerButtonsRef = React.useRef<HTMLDivElement>(null);
+	const [showHeaderButtons, setShowHeaderButtons] = React.useState(false);
 
 	const handleToggle = () => {
 		setOpen((prevOpen) => !prevOpen);
 	};
+
+	React.useEffect(() => {
+		if (
+			headerButtonsRef.current &&
+			headerButtonsRef.current.offsetParent === null
+		) {
+			setShowHeaderButtons(true);
+		} else {
+			setShowHeaderButtons(false);
+		}
+	}, [open]);
 
 	return (
 		<header className="flex w-full items-center bg-green-spring-50 dark:bg-green-spring-950">
@@ -63,7 +76,7 @@ const Navbar = () => {
 											{key}
 										</ListItem>
 									))}
-									{open && (
+									{open && showHeaderButtons && (
 										<>
 											<li>
 												<NavLink
@@ -96,7 +109,11 @@ const Navbar = () => {
 						</div>
 
 						{/* SIGN IN/UP BUTTONS */}
-						<div className="hidden justify-end gap-2 pr-16 sm:flex lg:pr-0">
+						<div
+							ref={headerButtonsRef}
+							id="headerButtons"
+							className="hidden justify-end gap-2 pr-16 sm:flex lg:pr-0"
+						>
 							<Link
 								to="/sign-in"
 								className=" px-7 py-3 text-base hover:text-bright-turquoise-500"
