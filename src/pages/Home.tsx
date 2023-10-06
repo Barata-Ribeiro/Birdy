@@ -13,7 +13,7 @@ const Home = () => {
 		const generateRandomNumbers = () => {
 			const uniqueRandomNumbers = new Set<number>();
 			while (uniqueRandomNumbers.size < 15) {
-				const randomNumber = Math.floor(Math.random() * 100) + 1;
+				const randomNumber = Math.floor(Math.random() * 1000) + 1;
 				uniqueRandomNumbers.add(randomNumber);
 			}
 			setRandomNumbers(Array.from(uniqueRandomNumbers));
@@ -45,21 +45,21 @@ const Home = () => {
 							>
 								<span className="flex items-center gap-2">
 									<FaEye />
-									95398
+									{Math.floor(Math.random() * 100000)}
 								</span>
 								<span className="flex items-center gap-2">
 									<FaHeart />
-									4356
+									{Math.floor(Math.random() * 10000)}
 								</span>
 								<span className="flex items-center gap-2">
 									<FaRegComments />
-									324
+									{Math.floor(Math.random() * 1000)}
 								</span>
 							</div>
 							<Image
 								alt=""
 								className="rounded-md"
-								src={`https://source.unsplash.com/random/${number}`}
+								src={`https://source.unsplash.com/random/${number}/?bird`}
 							/>
 						</a>
 					</li>
