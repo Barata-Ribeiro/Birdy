@@ -1,6 +1,10 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { FaGithub, FaLinkedinIn, FaFolder } from "react-icons/fa";
 
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
+import LostPassword from "./LostPassword";
+import ResetPassword from "./ResetPassword";
 import NotFound from "../NotFound";
 
 const Login = () => {
@@ -59,7 +63,7 @@ const Login = () => {
 			{/* FORMS */}
 			<div
 				className="relative z-0 flex w-full items-center justify-center text-center lg:w-1/2"
-				style={{ backgroundColor: "#161616" }}
+				style={{ backgroundColor: "hsl(100, 6%, 10%)" }}
 			>
 				<div
 					className="absolute inset-0 z-10 items-center bg-gray-500 bg-cover bg-no-repeat lg:hidden"
@@ -74,10 +78,10 @@ const Login = () => {
 				</div>
 				<div className="z-20 w-fit py-6">
 					<Routes>
-						{/* <Route path="/up" element={<SignIn />} /> */}
-						{/* <Route path="/in" element={<SignUp />} /> */}
-						{/* <Route path="/password-lost" element={<LostPassword />} /> */}
-						{/* <Route path="/password-reset" element={<ResetPassword />} /> */}
+						<Route path="/up" element={<SignIn />} />
+						<Route path="/in" element={<SignUp />} />
+						<Route path="/password-lost" element={<LostPassword />} />
+						<Route path="/password-reset" element={<ResetPassword />} />
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</div>
