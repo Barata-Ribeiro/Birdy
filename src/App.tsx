@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Sign from "./pages/sign/Sign";
 
 const HeaderMemory = memo(() => <Header />);
 const FooterMemory = memo(() => <Footer />);
@@ -16,13 +17,13 @@ function App() {
 	return (
 		<BrowserRouter>
 			<HeaderMemory />
-			<main className="AppBody">
+			<main className="container">
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/about" element={<About />} />
 					<Route path="/contact" element={<Contact />} />
-					{/* <Route path="singup/*" element={<Login />} />
-					<Route
+					<Route path="sign/*" element={<Sign />} />
+					{/* <Route
 						path="dashboard/*"
 						element={
 							<ProtectedRoute>

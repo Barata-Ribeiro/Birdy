@@ -44,7 +44,7 @@ const Footer = () => {
 
 							<span className="mx-1">Repository</span>
 						</Link>
-						<MainButton NavToLink={"/signup"} padding={"px-5 py-2"}>
+						<MainButton NavToLink={"/sign/up"} customClasses={"px-5 py-2"}>
 							Sign Up
 						</MainButton>
 					</div>

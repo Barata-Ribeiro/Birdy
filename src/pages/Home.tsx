@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 
 import { FaEye, FaHeart, FaRegComments } from "react-icons/fa";
 
-import Image from "../components/common/Image";
-import Head from "../components/common/Head";
+import Image from "../components/helpers/Image";
+import Head from "../components/helpers/Head";
 
 const Home = () => {
 	const [randomNumbers, setRandomNumbers] = useState<number[]>([]);
@@ -23,7 +23,7 @@ const Home = () => {
 	}, []);
 
 	return (
-		<section className="container">
+		<section>
 			<Head
 				title="Feed"
 				description="Welcome to the Birdy social network! This is the feed with all the photos from our users."

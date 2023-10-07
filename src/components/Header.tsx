@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 
 import "./Header.css";
 
-import ListItem from "./common/ListItem";
+import ListItem from "./helpers/ListItem";
 import BurgerMenu from "../assets/BurgerMenu.svg?react";
 import MainButton from "./shared/MainButton";
 
@@ -34,7 +34,7 @@ const Navbar = () => {
 	}, [open]);
 
 	return (
-		<header className="flex w-full items-center bg-green-spring-50 dark:bg-green-spring-950">
+		<header className="sticky top-0 z-50 flex w-full items-center bg-green-spring-50 shadow-sm dark:bg-green-spring-950">
 			<div className="container">
 				<div className="relative -mx-4 flex items-center justify-between">
 					{/* LOGO */}
@@ -80,7 +80,7 @@ const Navbar = () => {
 										<>
 											<li>
 												<NavLink
-													to="/signin"
+													to="/sign/in"
 													className={({ isActive }) =>
 														isActive
 															? "flex rounded-sm bg-mantis-200 px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex"
@@ -92,7 +92,7 @@ const Navbar = () => {
 											</li>
 											<li>
 												<NavLink
-													to="/signup"
+													to="/sign/up"
 													className={({ isActive }) =>
 														isActive
 															? "flex rounded-sm bg-mantis-400 px-2 py-2 text-base font-medium text-gray-900 hover:text-bright-turquoise-500 lg:ml-12 lg:inline-flex"
@@ -115,15 +115,15 @@ const Navbar = () => {
 							className="hidden justify-end gap-2 pr-16 sm:flex lg:pr-0"
 						>
 							<Link
-								to="/sign-in"
+								to="/sign/in"
 								className=" px-7 py-3 text-base hover:text-bright-turquoise-500"
 							>
 								Sign in
 							</Link>
 
 							<MainButton
-								NavToLink={"/signup"}
-								padding={"px-7 py-3 font-medium"}
+								NavToLink={"/sign/up"}
+								customClasses={"px-7 py-3 font-medium"}
 							>
 								Sign Up
 							</MainButton>

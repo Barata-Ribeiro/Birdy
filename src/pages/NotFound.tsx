@@ -1,10 +1,10 @@
-import Image from "../components/common/Image";
-import Head from "../components/common/Head";
+import Image from "../components/helpers/Image";
+import Head from "../components/helpers/Head";
 import MainButton from "../components/shared/MainButton";
 
 const NotFound = () => {
 	return (
-		<section className="container flex h-screen w-screen items-center justify-center">
+		<section className="flex items-center justify-center py-12 lg:py-24">
 			<Head
 				title="404"
 				description="This isn't the page you're looking for..."
@@ -19,11 +19,12 @@ const NotFound = () => {
 					<p className="mb-8 text-center text-gray-500 md:text-lg">
 						The page you’re looking for doesn’t exist.
 					</p>
-					<MainButton NavToLink="/" padding="px-6 py-2 font-semibold w-fit">
+					<MainButton NavToLink="/" customClasses="px-6 py-2 font-semibold">
 						Go home
 					</MainButton>
 				</div>
-				<div className="mt-4">
+
+				<div className="mt-4 lg:mt-0">
 					<Image
 						src="https://source.unsplash.com/random/?bird"
 						alt="Random bird photograph from Unsplash, https://unsplash.com/"
