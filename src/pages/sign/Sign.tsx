@@ -78,11 +78,11 @@ const Login = () => {
 				</div>
 				<div className="z-20 w-fit py-6">
 					<Routes>
-						<Route path="/up" element={<SignIn />} />
-						<Route path="/in" element={<SignUp />} />
+						<Route path="/up" element={<SignUp />} />
+						<Route path="/in" element={<SignIn />} />
 						<Route path="/password-lost" element={<LostPassword />} />
 						<Route path="/password-reset" element={<ResetPassword />} />
-						<Route path="*" element={<NotFound />} />
+						<Route path="*" element={<NotFound hideImage={true} />} />
 					</Routes>
 				</div>
 			</div>

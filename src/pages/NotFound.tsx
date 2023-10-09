@@ -2,7 +2,7 @@ import Image from "../components/helpers/Image";
 import Head from "../components/helpers/Head";
 import MainButton from "../components/shared/MainButton";
 
-const NotFound = () => {
+const NotFound = ({ hideImage = false }) => {
 	return (
 		<section className="flex items-center justify-center py-12 lg:py-24">
 			<Head
@@ -24,13 +24,15 @@ const NotFound = () => {
 					</MainButton>
 				</div>
 
-				<div className="mt-4 lg:mt-0">
-					<Image
-						src="https://source.unsplash.com/random/?bird"
-						alt="Random bird photograph from Unsplash, https://unsplash.com/"
-						className="aspect-square max-h-[32rem] rounded-md object-cover"
-					/>
-				</div>
+				{!hideImage && (
+					<div className="mt-4 lg:mt-0">
+						<Image
+							src="https://source.unsplash.com/random/?bird"
+							alt="Random bird photograph from Unsplash, https://unsplash.com/"
+							className="aspect-square max-h-[32rem] rounded-md object-cover"
+						/>
+					</div>
+				)}
 			</div>
 		</section>
 	);
