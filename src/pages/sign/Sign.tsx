@@ -61,10 +61,7 @@ const Login = () => {
 			</div>
 
 			{/* FORMS */}
-			<div
-				className="relative z-0 flex w-full items-center justify-center text-center lg:w-1/2"
-				style={{ backgroundColor: "hsl(100, 6%, 10%)" }}
-			>
+			<div className="relative z-0 flex w-full items-center justify-center text-center dark:bg-green-spring-950 lg:w-1/2">
 				<div
 					className="absolute inset-0 z-10 items-center bg-gray-500 bg-cover bg-no-repeat lg:hidden"
 					style={{
@@ -76,7 +73,7 @@ const Login = () => {
 				>
 					<div className="absolute inset-0 z-0 bg-black opacity-60"></div>
 				</div>
-				<div className="z-20 w-fit py-6">
+				<div className="z-20 w-full py-6">
 					<Routes>
 						<Route path="/up" element={<SignUp />} />
 						<Route path="/in" element={<SignIn />} />
