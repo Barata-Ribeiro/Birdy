@@ -25,7 +25,7 @@ const SignUp = () => {
 			>
 				<div className="pb-2 pt-4">
 					<Input
-						label={"username"}
+						label={"Username"}
 						type={"text"}
 						name={"username"}
 						inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
@@ -33,7 +33,7 @@ const SignUp = () => {
 				</div>
 				<div className="pb-2 pt-4">
 					<Input
-						label={"email"}
+						label={"Email"}
 						type={"email"}
 						name={"email"}
 						inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
@@ -41,9 +41,17 @@ const SignUp = () => {
 				</div>
 				<div className="pb-2 pt-4">
 					<Input
-						label={"password"}
+						label={"Password"}
 						type={"password"}
 						name={"password"}
+						inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+					/>
+				</div>
+				<div className="pb-2 pt-4">
+					<Input
+						label={"Confirm Password"}
+						type={"password"}
+						name={"confirmPassword"}
 						inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
 					/>
 				</div>

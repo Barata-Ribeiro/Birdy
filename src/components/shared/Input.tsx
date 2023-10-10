@@ -22,15 +22,15 @@ const Input = ({
 }: InputProps) => {
 	return (
 		<>
-			<label className="sr-only" htmlFor={name}>
-				{label.charAt(0).toUpperCase() + name.slice(1)}
+			<label className="sr-only capitalize" htmlFor={name}>
+				{label}
 			</label>
 			<input
 				className={inputClasses}
 				type={type}
 				name={name}
 				id={name}
-				placeholder={name.charAt(0).toUpperCase() + name.slice(1)}
+				placeholder={label}
 				value={value}
 				onChange={onChange}
 				onBlur={onBlur}

@@ -24,7 +24,7 @@ const LostPassword = () => {
 			>
 				<div className="pb-2 pt-4">
 					<Input
-						label={"email"}
+						label={"Email"}
 						type={"email"}
 						name={"email"}
 						inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
