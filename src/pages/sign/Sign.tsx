@@ -78,7 +78,10 @@ const Login = () => {
 						<Route path="/up" element={<SignUp />} />
 						<Route path="/in" element={<SignIn />} />
 						<Route path="/password-lost" element={<LostPassword />} />
-						<Route path="/password-reset" element={<ResetPassword />} />
+						<Route
+							path="/password-reset/:userId/:token"
+							element={<ResetPassword />}
+						/>
 						<Route path="*" element={<NotFound hideImage={true} />} />
 					</Routes>
 				</div>
