@@ -66,6 +66,9 @@ The Birdy API is a robust and scalable backend service designed to support Birdy
    # CORS Configuration
    CORS_ORIGIN=YOUR_ALLOWED_ORIGIN
 
+   # Front-end Configuration
+   FRONTEND_ORIGIN=YOUR_ALLOWED_FRONTEND_ORIGIN
+
    # Cloudinary Configuration
    CLOUDINARY_CLOUD_NAME=YOUR_CLOUDINARY_CLOUD_NAME
    CLOUDINARY_API_KEY=YOUR_CLOUDINARY_API_KEY
