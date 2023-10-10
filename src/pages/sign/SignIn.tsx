@@ -4,6 +4,7 @@ import { FaGithub, FaLinkedinIn, FaFolder } from "react-icons/fa";
 
 import Head from "../../components/helpers/Head";
 import Input from "../../components/shared/Input";
+import FormButton from "../../components/shared/FormButton";
 
 const SignIn = () => {
 	const handleSubmit = async (event: React.FormEvent) => {
@@ -47,9 +48,15 @@ const SignIn = () => {
 					</Link>
 				</div>
 				<div className="px-4 pb-2 pt-4">
-					<button className="block w-full rounded-full bg-mantis-600 p-4 text-lg uppercase tracking-wide text-green-spring-50 transition-colors duration-300 hover:bg-mantis-400 focus:outline-none focus:ring focus:ring-blue-300/80">
-						sign in
-					</button>
+					<FormButton customClasses="p-4 text-lg rounded-2xl">login</FormButton>
+				</div>
+				<div className="mt-2 text-center">
+					<Link
+						to="../up"
+						className="text-green-spring-600 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200"
+					>
+						Don't have an account? Sign Up!
+					</Link>
 				</div>
 
 				<div className="inset-x-0 mt-16 flex justify-center space-x-4 p-4 text-center lg:hidden">
