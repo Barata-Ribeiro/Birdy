@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Sign from "./pages/sign/Sign";
+import Dashboard from "./pages/profile/Dashboard";
 
 const HeaderMemory = memo(() => <Header />);
 const FooterMemory = memo(() => <Footer />);
@@ -23,16 +24,7 @@ function App() {
 					<Route path="/about" element={<About />} />
 					<Route path="/contact" element={<Contact />} />
 					<Route path="sign/*" element={<Sign />} />
-					{/* <Route
-						path="dashboard/*"
-						element={
-							<ProtectedRoute>
-								<User />
-							</ProtectedRoute>
-						}
-					/> */}
-					{/* <Route path="photo/:photoId" element={<Photo />} />
-					<Route path="profile/:userId" element={<UserProfile />} /> */}
+					<Route path="dashboard/*" element={<Dashboard />} />
 					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</main>
