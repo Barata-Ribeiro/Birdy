@@ -29,7 +29,7 @@ const Home = () => {
 				description="Welcome to the Birdy social network! This is the feed with all the photos from our users."
 			/>
 
-			<ul className="my-4 columns-1 gap-2 sm:columns-2 sm:gap-4 md:columns-3 lg:columns-4 [&>li:not(:first-child)]:mt-4">
+			<ul className="my-4 columns-1 gap-2 px-4 sm:columns-2 sm:gap-4 sm:px-0 md:columns-3 lg:columns-4 [&>li:not(:first-child)]:mt-4">
 				{randomNumbers.map((number) => (
 					<li key={number}>
 						<a
