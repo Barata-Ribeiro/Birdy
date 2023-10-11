@@ -122,7 +122,7 @@ const Navbar = () => {
 							</Link>
 
 							<MainButton
-								NavToLink={"/sign/up"}
+								to={"/sign/up"}
 								customClasses={"px-7 py-3 font-medium"}
 							>
 								Sign Up

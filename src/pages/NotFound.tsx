@@ -19,7 +19,7 @@ const NotFound = ({ hideImage = false }) => {
 					<p className="mb-8 text-center text-gray-500 md:text-lg">
 						The page you’re looking for doesn’t exist.
 					</p>
-					<MainButton NavToLink="/" customClasses="px-6 py-2 font-semibold">
+					<MainButton to="/" customClasses="px-6 py-2 font-semibold">
 						Go home
 					</MainButton>
 				</div>
