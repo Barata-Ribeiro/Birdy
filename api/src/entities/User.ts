@@ -1,56 +1,65 @@
-  import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    CreateDateColumn,
-    UpdateDateColumn,
-    OneToMany,
-    Index,
-  } from "typeorm";
-  import { Comment } from "./Comment";
-  import { Photo } from "./Photo";
-  import { UserLikes } from "./UserLikes";
+import {
+	Entity,
+	PrimaryGeneratedColumn,
+	Column,
+	CreateDateColumn,
+	UpdateDateColumn,
+	OneToMany,
+	Index,
+} from "typeorm";
+import { Comment } from "./Comment";
+import { Photo } from "./Photo";
+import { UserLikes } from "./UserLikes";
 
-  @Entity("users")
-  export class User {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+@Entity("users")
+export class User {
+	@PrimaryGeneratedColumn("uuid")
+	id: string;
 
-    @Column({ type: "varchar", length: 20, unique: true, nullable: false })
-    @Index()
-    username: string;
+	@Column({ type: "varchar", length: 20, unique: true, nullable: false })
+	@Index()
+	username: string;
 
-    @Column({ type: "varchar", length: 128, nullable: false })
-    password: string;
+	@Column({ type: "varchar", length: 128, nullable: false })
+	password: string;
 
-    @Column({ type: "varchar", length: 255, unique: true, nullable: false })
-    @Index()
-    email: string;
+	@Column({ type: "varchar", length: 255, unique: true, nullable: false })
+	@Index()
+	email: string;
 
-    @OneToMany(() => Comment, (comment) => comment.author, {
-      cascade: true,
-      onDelete: "CASCADE",
-    })
-    comments?: Comment[];
+	@Column({ type: "varchar" })
+	avatarUrl: string;
 
-    @OneToMany(() => Photo, (photo) => photo.author, {
-      cascade: true,
-      onDelete: "CASCADE",
-    })
-    photos?: Photo[];
+	@Column({ type: "varchar" })
+	coverImageUrl: string;
 
-    @OneToMany(() => UserLikes, (userLikes) => userLikes.user, {
-      cascade: true,
-      onDelete: "CASCADE",
-    })
-    likes?: UserLikes[];
+	@Column({ type: "varchar", length: 150 })
+	biography: string;
 
-    @Column({ type: "text", nullable: true })
-    refreshToken?: string;
+	@OneToMany(() => Comment, (comment) => comment.author, {
+		cascade: true,
+		onDelete: "CASCADE",
+	})
+	comments?: Comment[];
 
-    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-    createdAt: Date;
+	@OneToMany(() => Photo, (photo) => photo.author, {
+		cascade: true,
+		onDelete: "CASCADE",
+	})
+	photos?: Photo[];
 
-    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-    updatedAt: Date;
-  }
+	@OneToMany(() => UserLikes, (userLikes) => userLikes.user, {
+		cascade: true,
+		onDelete: "CASCADE",
+	})
+	likes?: UserLikes[];
+
+	@Column({ type: "text", nullable: true })
+	refreshToken?: string;
+
+	@CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+	createdAt: Date;
+
+	@UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+	updatedAt: Date;
+}
