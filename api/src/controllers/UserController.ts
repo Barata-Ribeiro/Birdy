@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import { User } from "../entities/User";
 import { CreateUserRequestBody, EditProfileRequest } from "../@types/types";
+import { BadRequestError } from "../helpers/api-errors";
 import UserService from "../services/UserServices";
 
 export class UserController {
@@ -33,5 +34,15 @@ export class UserController {
 
 		const user = await UserService.editUserProfile(id, userData);
 		return res.status(200).json(user);
+	}
+
+	async deleteUserById(req: Request, res: Response): Promise<Response | void> {
+		const { id } = req.params as { id: string };
+
+		if (typeof req.params.id !== "string")
+			throw new BadRequestError("No user ID provided.");
+
+		await UserService.deleteUserById(id);
+		return res.status(204).send({ message: "User deleted successfully." });
 	}
 }
