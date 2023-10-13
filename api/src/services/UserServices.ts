@@ -169,10 +169,19 @@ class UserService {
 		return EditProfileResponseDTO.fromEntity(actualUser);
 	}
 
-	static async deleteUserById(id: string): Promise<void> {
-		if (!validate(id)) throw new BadRequestError("Invalid user ID.");
+	static async deleteUserById(userId: string): Promise<void> {
+		if (!validate(userId)) throw new BadRequestError("Invalid user ID.");
 
-		const actualUser = await userRepository.findOneBy({ id });
+		const actualUser = await userRepository.findOneBy({ id: userId });
+		if (!actualUser) throw new NotFoundError("User not found.");
+
+		await userRepository.remove(actualUser);
+	}
+
+	static async deleteOwnAccount(userId: string): Promise<void> {
+		if (!validate(userId)) throw new BadRequestError("Invalid user ID.");
+
+		const actualUser = await userRepository.findOneBy({ id: userId });
 		if (!actualUser) throw new NotFoundError("User not found.");
 
 		await userRepository.remove(actualUser);

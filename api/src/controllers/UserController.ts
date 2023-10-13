@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { User } from "../entities/User";
 import { CreateUserRequestBody, EditProfileRequest } from "../@types/types";
-import { BadRequestError } from "../helpers/api-errors";
+import { BadRequestError, UnauthorizedError } from "../helpers/api-errors";
 import UserService from "../services/UserServices";
 
 export class UserController {
@@ -13,8 +13,8 @@ export class UserController {
 	}
 
 	async getUserById(req: Request, res: Response): Promise<Response> {
-		const { id } = req.params as { id: string };
-		const user = await UserService.getUserById(id);
+		const { userId } = req.params as { userId: string };
+		const user = await UserService.getUserById(userId);
 		return res.status(200).json(user);
 	}
 
@@ -37,12 +37,25 @@ export class UserController {
 	}
 
 	async deleteUserById(req: Request, res: Response): Promise<Response | void> {
-		const { id } = req.params as { id: string };
+		const { userId } = req.params as { userId: string };
 
 		if (typeof req.params.id !== "string")
 			throw new BadRequestError("No user ID provided.");
 
-		await UserService.deleteUserById(id);
-		return res.status(204).send({ message: "User deleted successfully." });
+		await UserService.deleteUserById(userId);
+		return res.status(200).send({ message: "User deleted successfully." });
+	}
+
+	async deleteOwnAccount(
+		req: Request,
+		res: Response
+	): Promise<Response | void> {
+		const user = req.user;
+		if (!user) throw new UnauthorizedError("User not authenticated.");
+
+		const { id } = user;
+
+		await UserService.deleteOwnAccount(id);
+		return res.status(200).send({ message: "Account deleted successfully." });
 	}
 }

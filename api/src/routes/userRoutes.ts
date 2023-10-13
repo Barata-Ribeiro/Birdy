@@ -18,7 +18,7 @@ router.post("/", (req, res, next) => {
 	userController.createUser(req, res).catch(next);
 });
 
-router.get("/:id", (req, res, next) => {
+router.get("/:userId", (req, res, next) => {
 	userController.getUserById(req, res).catch(next);
 });
 
@@ -27,12 +27,16 @@ router.patch("/", authMiddleware, (req, res, next) => {
 });
 
 router.delete(
-	"/:id",
+	"/:userId",
 	authMiddleware,
 	authAdminMiddleware,
 	(req, res, next) => {
 		userController.deleteUserById(req, res).catch(next);
 	}
 );
+
+router.delete("/delete-account", authMiddleware, (req, res, next) => {
+	userController.deleteOwnAccount(req, res).catch(next);
+});
 
 export default router;
