@@ -4,7 +4,8 @@ import { validate } from "uuid";
 
 import { userRepository } from "../repositories/userRepository";
 import { UserResponseDTO } from "../dto/UserResponseDTO";
-import { CreateUserRequestBody } from "../@types/types";
+import { EditProfileResponseDTO } from "../dto/EditProfileResponseDTO";
+import { CreateUserRequestBody, EditUserRequestBody } from "../@types/types";
 import {
 	BadRequestError,
 	ConflictError,
@@ -106,6 +107,66 @@ class UserService {
 		});
 
 		return users.map((user) => UserResponseDTO.fromEntity(user));
+	}
+
+	static async editUserProfile(
+		id: string,
+		userData: EditUserRequestBody
+	): Promise<EditProfileResponseDTO> {
+		if (!validate(id)) throw new BadRequestError("Invalid user ID.");
+
+		const actualUser = await userRepository.findOneBy({ id });
+		if (!actualUser) throw new NotFoundError("User not found.");
+
+		const {
+			username,
+			password,
+			newPassword,
+			avatarUrl,
+			coverImageUrl,
+			biography,
+		} = userData;
+
+		if (username) {
+			const existingUserByUsername = await userRepository.findOneBy({
+				username,
+			});
+
+			if (existingUserByUsername && existingUserByUsername.id !== id)
+				throw new ConflictError("Username already taken.");
+
+			actualUser.username = username;
+		}
+
+		if (password && newPassword) {
+			const isPasswordMatching = await bcrypt.compare(
+				password,
+				actualUser.password
+			);
+
+			if (!isPasswordMatching)
+				throw new BadRequestError("Current password is incorrect.");
+
+			const isPasswordStrong = (newPassword: string): boolean => {
+				const regex =
+					/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+				return regex.test(newPassword);
+			};
+
+			if (!isPasswordStrong(newPassword))
+				throw new BadRequestError("Password is too weak.");
+
+			const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+			actualUser.password = hashedNewPassword;
+		}
+
+		if (avatarUrl) actualUser.avatarUrl = avatarUrl;
+		if (coverImageUrl) actualUser.coverImageUrl = coverImageUrl;
+		if (biography) actualUser.biography = biography;
+
+		await userRepository.save(actualUser);
+
+		return EditProfileResponseDTO.fromEntity(actualUser);
 	}
 }
 
