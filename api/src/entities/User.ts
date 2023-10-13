@@ -57,6 +57,13 @@ export class User {
 	@Column({ type: "text", nullable: true })
 	refreshToken?: string;
 
+	@Column({
+		type: "enum",
+		enum: ["member", "admin"],
+		default: "member",
+	})
+	role: string;
+
 	@CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
 	createdAt: Date;
 

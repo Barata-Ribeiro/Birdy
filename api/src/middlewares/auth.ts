@@ -7,43 +7,45 @@ import { userRepository } from "../repositories/userRepository";
 import { JwtPayload } from "../@types/types";
 
 export const authMiddleware = async (
-  req: Request,
-  _res: Response,
-  next: NextFunction
+	req: Request,
+	_res: Response,
+	next: NextFunction
 ): Promise<void> => {
-  try {
-    const { authorization } = req.headers;
+	try {
+		const { authorization } = req.headers;
 
-    if (!authorization) throw new UnauthorizedError("User not authenticated.");
+		if (!authorization) throw new UnauthorizedError("User not authenticated.");
 
-    const token = authorization.split(" ")[1];
-    let id: string;
+		const token = authorization.split(" ")[1];
+		let id: string;
 
-    try {
-      const decoded = jwt.verify(
-        token,
-        process.env.JWT_SECRET ?? ""
-      ) as JwtPayload;
-      id = decoded.id;
-    } catch (error) {
-      if (error instanceof jwt.JsonWebTokenError)
-        return next(
-          new UnauthorizedError("You have provided an invalid token.")
-        );
+		try {
+			const decoded = jwt.verify(
+				token,
+				process.env.JWT_SECRET ?? ""
+			) as JwtPayload;
+			id = decoded.id;
+		} catch (error) {
+			if (error instanceof jwt.JsonWebTokenError)
+				return next(
+					new UnauthorizedError("You have provided an invalid token.")
+				);
 
-      return next(error);
-    }
+			return next(error);
+		}
 
-    const user = await userRepository.findOneBy({ id });
+		const user = await userRepository.findOneBy({ id });
 
-    if (!user) throw new UnauthorizedError("User not authenticated.");
+		if (!user) throw new UnauthorizedError("User not authenticated.");
 
-    const { password: _, ...loggedUser } = user;
+		const { password: _, ...loggedUser } = user;
+		req.user = {
+			...loggedUser,
+			role: user.role,
+		};
 
-    req.user = loggedUser;
-
-    next();
-  } catch (error) {
-    next(error);
-  }
+		next();
+	} catch (error) {
+		next(error);
+	}
 };
