@@ -1,10 +1,16 @@
 import React from "react";
+import { Routes, Route } from "react-router-dom";
+import { BiSolidPhotoAlbum } from "react-icons/bi";
 import { FaChartPie, FaUpload, FaSignOutAlt } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
 
 import Image from "../../components/helpers/Image";
 import MainButton from "../../components/shared/MainButton";
 import EditProfileModal from "./EditProfileModal";
+import NotFound from "../NotFound";
+import ProfilePhotos from "./ProfilePhotos";
+import ProfileStats from "./ProfileStats";
+import ProfileUpload from "./ProfileUpload";
 
 const Dashboard = () => {
 	const [modal, setModal] = React.useState(false);
@@ -59,26 +65,44 @@ const Dashboard = () => {
 				<div className="mt-2 flex flex-1 flex-col items-center justify-end px-8 lg:items-end">
 					<div className="mt-2 flex shrink-0 flex-wrap items-center justify-center gap-2 whitespace-nowrap">
 						<MainButton
-							to={"/stats"}
+							to={"/dashboard"}
 							customClasses={"flex gap-2 items-center px-4 py-2 text-sm"}
 						>
-							<FaChartPie /> Stats
+							<BiSolidPhotoAlbum size={18} />
+							<span className="max-sm:hidden">Photos</span>
 						</MainButton>
 						<MainButton
-							to={"/upload"}
+							to={"../dashboard/stats"}
 							customClasses={"flex gap-2 items-center px-4 py-2 text-sm"}
 						>
-							<FaUpload /> Upload Photo
+							<FaChartPie size={18} />
+							<span className="max-sm:hidden">Stats</span>
+						</MainButton>
+						<MainButton
+							to={"../dashboard/upload"}
+							customClasses={"flex gap-2 items-center px-4 py-2 text-sm"}
+						>
+							<FaUpload size={18} />
+							<span className="max-sm:hidden">New Post</span>
 						</MainButton>
 						<MainButton
 							onClick={() => alert("You have been logged out")}
 							to={"/sign/in"}
 							customClasses={"flex gap-2 items-center px-4 py-2 text-sm"}
 						>
-							<FaSignOutAlt /> Sign Out
+							<FaSignOutAlt size={18} />
+							<span className="max-sm:hidden">Sign Out</span>
 						</MainButton>
 					</div>
 				</div>
+			</div>
+			<div className="w-full text-center">
+				<Routes>
+					<Route path="/" element={<ProfilePhotos />} />
+					<Route path="/stats" element={<ProfileStats />} />
+					<Route path="/upload" element={<ProfileUpload />} />
+					<Route path="*" element={<NotFound hideImage={true} />} />
+				</Routes>
 			</div>
 		</>
 	);
