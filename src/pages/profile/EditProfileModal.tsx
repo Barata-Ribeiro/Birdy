@@ -111,7 +111,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
 						<FormButton
 							type="button"
 							onClick={onClose}
-							customClasses="rounded w-fit bg-green-spring-300 px-4 py-2 hover:bg-green-spring-400 dark:bg-green-spring-600 dark:hover:bg-green-spring-700"
+							customClasses="rounded w-fit !bg-green-spring-300 px-4 py-2 hover:!bg-green-spring-400 dark:!bg-green-spring-600 dark:!hover:bg-green-spring-700"
 						>
 							Cancel
 						</FormButton>

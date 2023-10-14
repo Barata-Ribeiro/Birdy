@@ -35,14 +35,22 @@ const Dashboard = () => {
 						<p className="text-2xl">User Name</p>
 						<FaUser />
 					</div>
-					<p className="text-gray-700">jasonbourne@cia.com</p>
+					<p className="text-green-spring-700">jasonbourne@cia.com</p>
+					<p className="mb-3 mt-1 max-w-md text-center text-green-spring-700">
+						Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+						accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
+						quae ab illo inventore
+					</p>
 					<ul className="flex items-center gap-2">
 						<li>
-							<p className="text-sm text-gray-500">239847 Photos</p>
+							<p className="text-sm text-green-spring-500">239847 Photos</p>
 						</li>
 						<li>|</li>
 						<li>
-							<button onClick={handleModal} className="text-sm text-gray-500">
+							<button
+								onClick={handleModal}
+								className="text-sm text-green-spring-500"
+							>
 								Edit Profile
 							</button>
 						</li>
