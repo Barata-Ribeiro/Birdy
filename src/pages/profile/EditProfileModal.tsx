@@ -81,11 +81,37 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
 							}
 						/>
 					</div>
+					<div className="mb-4">
+						<p className="mb-1 block text-gray-700 dark:text-green-spring-500">
+							Change Cover Image
+						</p>
+						<Input
+							label={"Url"}
+							type={"text"}
+							name={"coverImageUrl"}
+							inputClasses={
+								"text-gray-700 dark:text-green-spring-500 w-full rounded border p-2"
+							}
+						/>
+					</div>
+					<div className="mb-4">
+						<p className="mb-1 block text-gray-700 dark:text-green-spring-500">
+							Change Biography
+						</p>
+						<Input
+							label={"Your Biography"}
+							type={"text"}
+							name={"biography"}
+							inputClasses={
+								"text-gray-700 dark:text-green-spring-500 w-full rounded border p-2"
+							}
+						/>
+					</div>
 					<div className="flex justify-end gap-2">
 						<FormButton
 							type="button"
 							onClick={onClose}
-							customClasses="rounded w-fit bg-gray-300 px-4 py-2 hover:bg-gray-400 dark:bg-mantis-600 dark:hover:bg-mantis-700"
+							customClasses="rounded w-fit bg-green-spring-300 px-4 py-2 hover:bg-green-spring-400 dark:bg-green-spring-600 dark:hover:bg-green-spring-700"
 						>
 							Cancel
 						</FormButton>
