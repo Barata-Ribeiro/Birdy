@@ -59,7 +59,7 @@ const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
 			<div className="z-50 w-11/12 rounded-lg bg-green-spring-50 p-8 dark:bg-mantis-950 md:w-1/2">
 				<button
 					onClick={onClose}
-					className="float-right text-gray-500 hover:text-gray-700"
+					className="float-right text-green-spring-500 hover:text-green-spring-700"
 				>
 					<CgClose size={24} />
 				</button>
@@ -75,11 +75,11 @@ const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
 				<p className="mb-4 text-right text-sm">
 					To delete, press and hold the "Delete" button.
 				</p>
-				<div className="mb-4 flex justify-end gap-2">
+				<div className="mb-4 flex justify-center gap-2 sm:justify-end">
 					<FormButton
 						type="button"
 						onClick={onClose}
-						customClasses="rounded !w-fit !bg-green-spring-300 px-4 py-2 hover:!bg-green-spring-400 dark:!bg-green-spring-600 dark:!hover:bg-green-spring-700"
+						customClasses="rounded sm:!w-fit !bg-green-spring-300 px-4 py-2 hover:!bg-green-spring-400 dark:!bg-green-spring-600 dark:!hover:bg-green-spring-700"
 					>
 						Cancel
 					</FormButton>
@@ -88,7 +88,7 @@ const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
 						onMouseUp={handleMouseUp}
 						onMouseLeave={handleMouseUp}
 						role="Delete Account"
-						customClasses="rounded px-4 py-2 !w-fit !bg-red-600 hover:!bg-red-400"
+						customClasses="rounded px-4 py-2 sm:!w-fit !bg-red-600 hover:!bg-red-400"
 					>
 						{isDeleting ? `${progress}%` : "Delete"}
 					</FormButton>

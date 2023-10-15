@@ -65,7 +65,7 @@ const Navbar = () => {
 							<nav
 								id="navbarCollapse"
 								className={`absolute right-4 top-full z-50 w-full 
-                max-w-[250px] rounded-lg bg-white px-6 py-5 shadow lg:static 
+                max-w-[250px] rounded-lg bg-green-spring-50 px-6 py-5 shadow lg:static 
                 lg:block lg:w-full lg:max-w-full lg:bg-transparent 
                 lg:shadow-none ${!open && "hidden"} `}
 								aria-label="Primary navigation"

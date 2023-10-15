@@ -43,7 +43,7 @@ const Dashboard = () => {
 				<div className="-mt-20 flex flex-col items-center">
 					<img
 						src="https://source.unsplash.com/random/?selfie"
-						className="h-40 w-40 rounded-full border-4 border-white object-cover"
+						className="h-40 w-40 rounded-full border-4 border-green-spring-50 object-cover"
 					/>
 					<div className="mt-2 flex items-center space-x-2">
 						<p className="text-2xl">User Name</p>
