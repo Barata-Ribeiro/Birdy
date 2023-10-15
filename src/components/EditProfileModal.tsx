@@ -1,8 +1,8 @@
 import React from "react";
 import { CgClose } from "react-icons/cg";
 
-import Input from "../../components/shared/Input";
-import FormButton from "../../components/shared/FormButton";
+import Input from "./shared/Input";
+import FormButton from "./shared/FormButton";
 
 interface EditProfileModalProps {
 	isOpen: boolean;
@@ -63,6 +63,14 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
 							label={"New Password"}
 							type={"password"}
 							name={"passwordNew"}
+							inputClasses={
+								"mb-2 text-gray-700 dark:text-green-spring-500 w-full rounded border p-2"
+							}
+						/>
+						<Input
+							label={"Confirm New Password"}
+							type={"password"}
+							name={"confirmPasswordNew"}
 							inputClasses={
 								"text-gray-700 dark:text-green-spring-500 w-full rounded border p-2"
 							}
