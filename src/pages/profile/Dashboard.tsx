@@ -6,30 +6,38 @@ import { FaUser } from "react-icons/fa6";
 
 import Image from "../../components/helpers/Image";
 import MainButton from "../../components/shared/MainButton";
-import EditProfileModal from "./EditProfileModal";
+import EditProfileModal from "../../components/EditProfileModal";
 import NotFound from "../NotFound";
 import ProfilePhotos from "./ProfilePhotos";
 import ProfileStats from "./ProfileStats";
 import ProfileUpload from "./ProfileUpload";
+import DeleteProfileModal from "../../components/DeleteProfileModal";
 
 const Dashboard = () => {
-	const [modal, setModal] = React.useState(false);
+	const [editModal, setEditModal] = React.useState(false);
+	const [deleteModal, setDeleteModal] = React.useState(false);
 
-	const handleModal = (e?: React.MouseEvent) => {
+	const handleEditModal = (e?: React.MouseEvent) => {
 		e?.preventDefault();
-		setModal(!modal);
+		setEditModal(!editModal);
+	};
+
+	const handleDeleteModal = (e?: React.MouseEvent) => {
+		e?.preventDefault();
+		setDeleteModal(!deleteModal);
 	};
 
 	return (
 		<>
 			<EditProfileModal
-				isOpen={modal}
-				onClose={handleModal}
+				isOpen={editModal}
+				onClose={handleEditModal}
 				onSubmit={() => {
 					console.log("Data updated");
-					handleModal();
+					handleEditModal();
 				}}
 			/>
+			<DeleteProfileModal isOpen={deleteModal} onClose={handleDeleteModal} />
 			<div className="bg-mantis-100 pb-8">
 				<div className="h-[250px] w-full bg-[url('https://source.unsplash.com/random/?bird')] bg-cover bg-center"></div>
 				<div className="-mt-20 flex flex-col items-center">
@@ -54,10 +62,19 @@ const Dashboard = () => {
 						<li>|</li>
 						<li>
 							<button
-								onClick={handleModal}
+								onClick={handleEditModal}
 								className="text-sm text-green-spring-500"
 							>
 								Edit Profile
+							</button>
+						</li>
+						<li>|</li>
+						<li>
+							<button
+								onClick={handleDeleteModal}
+								className="text-sm text-red-400"
+							>
+								Delete Account
 							</button>
 						</li>
 					</ul>
