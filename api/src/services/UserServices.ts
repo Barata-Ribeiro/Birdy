@@ -6,6 +6,7 @@ import { userRepository } from "../repositories/userRepository";
 import { UserResponseDTO } from "../dto/UserResponseDTO";
 import { EditProfileResponseDTO } from "../dto/EditProfileResponseDTO";
 import { CreateUserRequestBody, EditUserRequestBody } from "../@types/types";
+import { PhotoServices } from "./PhotoServices";
 import {
 	BadRequestError,
 	ConflictError,
@@ -175,6 +176,8 @@ class UserService {
 		const actualUser = await userRepository.findOneBy({ id: userId });
 		if (!actualUser) throw new NotFoundError("User not found.");
 
+		await PhotoServices.deleteAllPhotos(actualUser.id);
+
 		await userRepository.remove(actualUser);
 	}
 
@@ -183,6 +186,8 @@ class UserService {
 
 		const actualUser = await userRepository.findOneBy({ id: userId });
 		if (!actualUser) throw new NotFoundError("User not found.");
+
+		await PhotoServices.deleteAllPhotos(actualUser.id);
 
 		await userRepository.remove(actualUser);
 	}

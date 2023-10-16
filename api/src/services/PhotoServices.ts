@@ -7,177 +7,209 @@ import { Photo } from "../entities/Photo";
 import { photoRepository } from "../repositories/photoRepository";
 import { userRepository } from "../repositories/userRepository";
 import {
-  BadRequestError,
-  InternalServerError,
-  NotFoundError,
+	BadRequestError,
+	InternalServerError,
+	NotFoundError,
 } from "../helpers/api-errors";
 import {
-  CloudinaryCallbackResult,
-  CloudinaryResult,
-  PhotoRequestBody,
-  UserWithoutPassword,
+	CloudinaryCallbackResult,
+	CloudinaryResult,
+	PhotoRequestBody,
+	UserWithoutPassword,
 } from "../@types/types";
 import { PhotoResponseDTO } from "../dto/PhotoResponseDTO";
 
 export class PhotoServices {
-  static async uploadPhoto(
-    user: UserWithoutPassword,
-    file: Express.Multer.File,
-    body: PhotoRequestBody
-  ): Promise<Photo> {
-    const actualUser = await this.verifyUser(user.id);
-    this.validateFile(file);
+	static async uploadPhoto(
+		user: UserWithoutPassword,
+		file: Express.Multer.File,
+		body: PhotoRequestBody
+	): Promise<Photo> {
+		const actualUser = await this.verifyUser(user.id);
+		this.validateFile(file);
 
-    const secure_url = await this.uploadPhotoToCloudinary(file);
-    return await this.savePhotoToDB(actualUser, secure_url, body);
-  }
+		const secure_url = await this.uploadPhotoToCloudinary(file);
+		return await this.savePhotoToDB(actualUser, secure_url, body);
+	}
 
-  private static async verifyUser(userId: string): Promise<User> {
-    const actualUser = await userRepository.findOne({ where: { id: userId } });
-    if (!actualUser) throw new NotFoundError("User not found.");
-    return actualUser;
-  }
+	private static async verifyUser(userId: string): Promise<User> {
+		const actualUser = await userRepository.findOne({ where: { id: userId } });
+		if (!actualUser) throw new NotFoundError("User not found.");
+		return actualUser;
+	}
 
-  private static validateFile(file: Express.Multer.File): void {
-    if (!file.mimetype.includes("image"))
-      throw new BadRequestError("Invalid file type.");
-  }
+	private static validateFile(file: Express.Multer.File): void {
+		if (!file.mimetype.includes("image"))
+			throw new BadRequestError("Invalid file type.");
+	}
 
-  private static async savePhotoToDB(
-    user: UserWithoutPassword,
-    imageUrl: string,
-    body: PhotoRequestBody
-  ): Promise<Photo> {
-    const photo = new Photo();
-    photo.authorID = user.id;
-    photo.authorName = user.username;
-    photo.title = body.title;
-    photo.imageUrl = imageUrl;
-    photo.meta = {
-      birdSize: body.size,
-      birdHabitat: body.habitat,
-    };
+	private static async savePhotoToDB(
+		user: UserWithoutPassword,
+		imageUrl: string,
+		body: PhotoRequestBody
+	): Promise<Photo> {
+		const photo = new Photo();
+		photo.authorID = user.id;
+		photo.authorName = user.username;
+		photo.title = body.title;
+		photo.imageUrl = imageUrl;
+		photo.meta = {
+			birdSize: body.size,
+			birdHabitat: body.habitat,
+		};
 
-    await photoRepository.save(photo);
+		await photoRepository.save(photo);
 
-    return photo;
-  }
+		return photo;
+	}
 
-  private static cloudinaryConfiguration(): void {
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-    });
-  }
+	private static cloudinaryConfiguration(): void {
+		cloudinary.config({
+			cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+			api_key: process.env.CLOUDINARY_API_KEY,
+			api_secret: process.env.CLOUDINARY_API_SECRET,
+		});
+	}
 
-  private static async uploadPhotoToCloudinary(
-    file: Express.Multer.File
-  ): Promise<string> {
-    PhotoServices.cloudinaryConfiguration();
-    const result = await this.streamUpload(file);
-    return result.secure_url;
-  }
+	private static async uploadPhotoToCloudinary(
+		file: Express.Multer.File
+	): Promise<string> {
+		PhotoServices.cloudinaryConfiguration();
+		const result = await this.streamUpload(file);
+		return result.secure_url;
+	}
 
-  private static async streamUpload(
-    file: Express.Multer.File
-  ): Promise<CloudinaryResult> {
-    return new Promise((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        {
-          folder: "birdy_uploads",
-          format: "jpg",
-          transformation: [{ width: 1000, height: 1000, crop: "limit" }],
-          allowed_formats: ["jpg", "png"],
-        },
-        (error: unknown, result?: CloudinaryResult) => {
-          if (result) resolve(result);
-          else reject(error);
-        }
-      );
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-      streamifier.createReadStream(file.buffer).pipe(stream);
-    });
-  }
+	private static async streamUpload(
+		file: Express.Multer.File
+	): Promise<CloudinaryResult> {
+		return new Promise((resolve, reject) => {
+			const stream = cloudinary.uploader.upload_stream(
+				{
+					folder: "birdy_uploads",
+					format: "jpg",
+					transformation: [{ width: 1000, height: 1000, crop: "limit" }],
+					allowed_formats: ["jpg", "png"],
+				},
+				(error: unknown, result?: CloudinaryResult) => {
+					if (result) resolve(result);
+					else reject(error);
+				}
+			);
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+			streamifier.createReadStream(file.buffer).pipe(stream);
+		});
+	}
 
-  static async getAllPhotos(): Promise<PhotoResponseDTO[]> {
-    const photos = await photoRepository.find({
-      relations: ["author", "likes", "comments"],
-    });
+	static async getAllPhotos(): Promise<PhotoResponseDTO[]> {
+		const photos = await photoRepository.find({
+			relations: ["author", "likes", "comments"],
+		});
 
-    return photos.map((photo) => PhotoResponseDTO.fromEntity(photo));
-  }
+		return photos.map((photo) => PhotoResponseDTO.fromEntity(photo));
+	}
 
-  static async getPhotoById(photoId: string): Promise<PhotoResponseDTO> {
-    if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
+	static async getPhotoById(photoId: string): Promise<PhotoResponseDTO> {
+		if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
-    const photo = await photoRepository.findOne({
-      where: { id: photoId },
-      relations: ["author", "likes", "comments"],
-    });
+		const photo = await photoRepository.findOne({
+			where: { id: photoId },
+			relations: ["author", "likes", "comments"],
+		});
 
-    if (!photo) throw new NotFoundError("Photo not found.");
+		if (!photo) throw new NotFoundError("Photo not found.");
 
-    photo.meta.total_hits = (photo.meta.total_hits || 0) + 1;
-    await photoRepository.save(photo);
+		photo.meta.total_hits = (photo.meta.total_hits || 0) + 1;
+		await photoRepository.save(photo);
 
-    return PhotoResponseDTO.fromEntity(photo);
-  }
+		return PhotoResponseDTO.fromEntity(photo);
+	}
 
-  private static deletePhotoFromCloudinary(publicId: string): Promise<void> {
-    PhotoServices.cloudinaryConfiguration();
-    return new Promise((resolve, reject) => {
-      void cloudinary.uploader.destroy(
-        publicId,
-        (error: unknown, result?: CloudinaryCallbackResult) => {
-          if (result) resolve();
-          else reject(error);
-        }
-      );
-    });
-  }
+	private static deletePhotoFromCloudinary(publicId: string): Promise<void> {
+		PhotoServices.cloudinaryConfiguration();
+		return new Promise((resolve, reject) => {
+			void cloudinary.uploader.destroy(
+				publicId,
+				(error: unknown, result?: CloudinaryCallbackResult) => {
+					if (result) resolve();
+					else reject(error);
+				}
+			);
+		});
+	}
 
-  static async deletePhoto(
-    photoId: string,
-    user: UserWithoutPassword
-  ): Promise<void> {
-    const actualUser = await userRepository.findOne({
-      where: { id: user.id },
-    });
+	static async deletePhoto(
+		photoId: string,
+		user: UserWithoutPassword
+	): Promise<void> {
+		const actualUser = await userRepository.findOne({
+			where: { id: user.id },
+		});
 
-    if (!actualUser) throw new NotFoundError("User not found.");
+		if (!actualUser) throw new NotFoundError("User not found.");
 
-    if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
+		if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
-    const photo = await photoRepository.findOne({
-      where: { id: photoId },
-      relations: ["author"],
-    });
+		const photo = await photoRepository.findOne({
+			where: { id: photoId },
+			relations: ["author"],
+		});
 
-    if (!photo) throw new NotFoundError("Photo not found.");
+		if (!photo) throw new NotFoundError("Photo not found.");
 
-    if (photo.authorID !== actualUser.id)
-      throw new BadRequestError("You are not the author of this photo.");
+		if (photo.authorID !== actualUser.id)
+			throw new BadRequestError("You are not the author of this photo.");
 
-    const parts = photo.imageUrl.split("/");
-    const fileName = parts.pop();
-    const folderName = parts.pop();
-    const publicId =
-      folderName && fileName
-        ? `${folderName}/${fileName.split(".")[0]}`
-        : undefined;
+		const parts = photo.imageUrl.split("/");
+		const fileName = parts.pop();
+		const folderName = parts.pop();
+		const publicId =
+			folderName && fileName
+				? `${folderName}/${fileName.split(".")[0]}`
+				: undefined;
 
-    if (!publicId) throw new Error("Failed to extract the publicId.");
+		if (!publicId) throw new Error("Failed to extract the publicId.");
 
-    try {
-      await this.deletePhotoFromCloudinary(publicId);
-    } catch (error) {
-      console.error("Error deleting from Cloudinary:", error);
-      throw new InternalServerError(
-        "Failed to delete the image from Cloudinary."
-      );
-    }
+		try {
+			await this.deletePhotoFromCloudinary(publicId);
+		} catch (error) {
+			console.error("Error deleting from Cloudinary:", error);
+			throw new InternalServerError(
+				"Failed to delete the image from Cloudinary."
+			);
+		}
 
-    await photoRepository.remove(photo);
-  }
+		await photoRepository.remove(photo);
+	}
+
+	static async deleteAllPhotos(userId: string): Promise<void> {
+		const photos = await photoRepository.find({
+			where: { authorID: userId },
+			relations: ["author", "likes", "comments"],
+		});
+
+		if (!photos) throw new NotFoundError("Photos not found.");
+
+		for (const photo of photos) {
+			const parts = photo.imageUrl.split("/");
+			const fileName = parts.pop();
+			const folderName = parts.pop();
+			const publicId =
+				folderName && fileName
+					? `${folderName}/${fileName.split(".")[0]}`
+					: undefined;
+
+			if (!publicId) throw new Error("Failed to extract the publicId.");
+
+			try {
+				await this.deletePhotoFromCloudinary(publicId);
+			} catch (error) {
+				console.error("Error deleting from Cloudinary:", error);
+				throw new InternalServerError(
+					"Failed to delete all images from the Cloudinary server."
+				);
+			}
+
+			await photoRepository.remove(photo);
+		}
+	}
 }
