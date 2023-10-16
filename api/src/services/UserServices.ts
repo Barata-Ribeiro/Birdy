@@ -2,10 +2,13 @@ import * as bcrypt from "bcrypt";
 import { QueryFailedError } from "typeorm";
 import { validate } from "uuid";
 
+import dataSource from "../database/ormconfig";
+import { User } from "../entities/User";
+import { CreateUserRequestBody, EditUserRequestBody } from "../@types/types";
+
 import { userRepository } from "../repositories/userRepository";
 import { UserResponseDTO } from "../dto/UserResponseDTO";
 import { EditProfileResponseDTO } from "../dto/EditProfileResponseDTO";
-import { CreateUserRequestBody, EditUserRequestBody } from "../@types/types";
 import { PhotoServices } from "./PhotoServices";
 import {
 	BadRequestError,
@@ -173,23 +176,51 @@ class UserService {
 	static async deleteUserById(userId: string): Promise<void> {
 		if (!validate(userId)) throw new BadRequestError("Invalid user ID.");
 
-		const actualUser = await userRepository.findOneBy({ id: userId });
-		if (!actualUser) throw new NotFoundError("User not found.");
+		await dataSource.manager.transaction(async (transactionalEntityManager) => {
+			try {
+				const actualUser = await transactionalEntityManager.findOne(User, {
+					where: { id: userId },
+				});
+				if (!actualUser) throw new NotFoundError("User not found.");
 
-		await PhotoServices.deleteAllPhotos(actualUser.id);
+				await PhotoServices.deleteAllPhotos(
+					transactionalEntityManager,
+					actualUser.id
+				);
 
-		await userRepository.remove(actualUser);
+				await transactionalEntityManager.remove(actualUser);
+			} catch (error) {
+				console.error("Transaction failed:", error);
+				throw new InternalServerError(
+					"An error occurred during the deletion process."
+				);
+			}
+		});
 	}
 
 	static async deleteOwnAccount(userId: string): Promise<void> {
 		if (!validate(userId)) throw new BadRequestError("Invalid user ID.");
 
-		const actualUser = await userRepository.findOneBy({ id: userId });
-		if (!actualUser) throw new NotFoundError("User not found.");
+		await dataSource.manager.transaction(async (transactionalEntityManager) => {
+			try {
+				const actualUser = await transactionalEntityManager.findOne(User, {
+					where: { id: userId },
+				});
+				if (!actualUser) throw new NotFoundError("User not found.");
 
-		await PhotoServices.deleteAllPhotos(actualUser.id);
+				await PhotoServices.deleteAllPhotos(
+					transactionalEntityManager,
+					actualUser.id
+				);
 
-		await userRepository.remove(actualUser);
+				await transactionalEntityManager.remove(actualUser);
+			} catch (error) {
+				console.error("Transaction failed:", error);
+				throw new InternalServerError(
+					"An error occurred during the deletion process."
+				);
+			}
+		});
 	}
 }
 

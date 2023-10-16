@@ -1,3 +1,4 @@
+import { EntityManager } from "typeorm";
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
 import { validate } from "uuid";
@@ -181,35 +182,39 @@ export class PhotoServices {
 		await photoRepository.remove(photo);
 	}
 
-	static async deleteAllPhotos(userId: string): Promise<void> {
-		const photos = await photoRepository.find({
+	static async deleteAllPhotos(
+		transactionalEntityManager: EntityManager,
+		userId: string
+	): Promise<void> {
+		const photos = await transactionalEntityManager.find(Photo, {
 			where: { authorID: userId },
 			relations: ["author", "likes", "comments"],
 		});
 
-		if (!photos) throw new NotFoundError("Photos not found.");
+		if (!photos || photos.length === 0) return;
 
-		for (const photo of photos) {
-			const parts = photo.imageUrl.split("/");
-			const fileName = parts.pop();
-			const folderName = parts.pop();
-			const publicId =
-				folderName && fileName
+		const publicIds = photos
+			.map((photo) => {
+				const parts = photo.imageUrl.split("/");
+				const fileName = parts.pop();
+				const folderName = parts.pop();
+				return folderName && fileName
 					? `${folderName}/${fileName.split(".")[0]}`
-					: undefined;
+					: null;
+			})
+			.filter((id): id is string => id !== null);
 
-			if (!publicId) throw new Error("Failed to extract the publicId.");
-
-			try {
-				await this.deletePhotoFromCloudinary(publicId);
-			} catch (error) {
-				console.error("Error deleting from Cloudinary:", error);
-				throw new InternalServerError(
-					"Failed to delete all images from the Cloudinary server."
-				);
+		try {
+      PhotoServices.cloudinaryConfiguration();
+			for (let i = 0; i < publicIds.length; i += 100) {
+				const batch = publicIds.slice(i, i + 100);
+				await cloudinary.api.delete_resources(batch);
 			}
-
-			await photoRepository.remove(photo);
+		} catch (error) {
+			console.error("Error deleting from Cloudinary:", error);
+			throw new InternalServerError("Failed to delete images from Cloudinary.");
 		}
+
+		await transactionalEntityManager.remove(photos);
 	}
 }
