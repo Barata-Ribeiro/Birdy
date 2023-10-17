@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./Image.module.css";
 
 interface ImageProps {
 	alt: string;
@@ -17,9 +16,16 @@ const Image: React.FC<ImageProps> = ({ alt, ...props }) => {
 	};
 
 	return (
-		<div className={styles.wrapper}>
-			{skeleton && <div className={styles.skeleton}></div>}
-			<img onLoad={handleLoad} className={styles.img} alt={alt} {...props} />
+		<div className="grid">
+			{skeleton && (
+				<div className="absolute h-full w-full animate-pulse bg-gradient-to-r from-green-spring-300 via-green-spring-50 to-green-spring-300"></div>
+			)}
+			<img
+				onLoad={handleLoad}
+				className="block max-w-full object-cover opacity-0 transition-opacity duration-200"
+				alt={alt}
+				{...props}
+			/>
 		</div>
 	);
 };

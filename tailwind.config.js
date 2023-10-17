@@ -52,6 +52,16 @@ export default {
 				heading: ["Montserrat", "sans"],
 				body: ["Lora", "serif"],
 			},
+			animation: {
+				pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite", // example of adding custom animation
+				skeleton: "skeleton 1.5s infinite linear",
+			},
+			keyframes: {
+				skeleton: {
+					"0%": { backgroundPosition: "0px" },
+					"100%": { backgroundPosition: "-200%" },
+				},
+			},
 		},
 	},
 	plugins: [],

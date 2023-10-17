@@ -28,3 +28,12 @@
 		@apply dark:text-mantis-50;
 	}
 }
+
+@keyframes skeleton {
+	0% {
+		background-position: 0px;
+	}
+	100% {
+		background-position: -200%;
+	}
+}
