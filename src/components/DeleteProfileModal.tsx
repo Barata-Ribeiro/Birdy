@@ -45,8 +45,8 @@ const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
 		};
 	}, [isDeleting, navigate]);
 
-	const handleMouseDown = () => setIsDeleting(true);
-	const handleMouseUp = () => {
+	const handleInteractionStart = () => setIsDeleting(true);
+	const handleInteractionEnd = () => {
 		setIsDeleting(false);
 		setProgress(0);
 	};
@@ -84,9 +84,14 @@ const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
 						Cancel
 					</FormButton>
 					<FormButton
-						onMouseDown={handleMouseDown}
-						onMouseUp={handleMouseUp}
-						onMouseLeave={handleMouseUp}
+						// Eventos do mouse
+						onMouseDown={handleInteractionStart}
+						onMouseUp={handleInteractionEnd}
+						onMouseLeave={handleInteractionEnd}
+						// Eventos de toque
+						onTouchStart={handleInteractionStart}
+						onTouchEnd={handleInteractionEnd}
+						onTouchCancel={handleInteractionEnd}
 						role="Delete Account"
 						customClasses="rounded px-4 py-2 sm:!w-fit !bg-red-600 hover:!bg-red-400"
 					>

@@ -22,6 +22,8 @@ const Navbar = () => {
 		setOpen((prevOpen) => !prevOpen);
 	};
 
+	const handleLinkClick = () => setOpen(false);
+
 	React.useEffect(() => {
 		if (
 			headerButtonsRef.current &&
@@ -36,7 +38,7 @@ const Navbar = () => {
 	return (
 		<header className="sticky top-0 z-50 flex w-full items-center bg-green-spring-50 shadow-sm dark:bg-green-spring-950">
 			<div className="container">
-				<div className="relative -mx-4 flex items-center justify-between">
+				<div className="relative flex items-center justify-between">
 					{/* LOGO */}
 					<div className="w-60 max-w-full px-4">
 						<a href="/" className="block w-full py-5">
@@ -64,15 +66,24 @@ const Navbar = () => {
 
 							<nav
 								id="navbarCollapse"
-								className={`absolute right-4 top-full z-50 w-full 
-                max-w-[250px] rounded-lg bg-green-spring-50 px-6 py-5 shadow lg:static 
-                lg:block lg:w-full lg:max-w-full lg:bg-transparent 
-                lg:shadow-none ${!open && "hidden"} `}
+								className={`absolute right-4 top-full z-50 w-full max-w-[250px] rounded-lg 
+                            bg-green-spring-50 px-6 py-5 shadow transition-all duration-300 ease-out 
+                            lg:static lg:block lg:w-full 
+                            lg:max-w-full lg:bg-transparent lg:shadow-none 
+                            ${
+															open
+																? "visible translate-y-0 opacity-100"
+																: "invisible -translate-y-10 opacity-0"
+														}`}
 								aria-label="Primary navigation"
 							>
 								<ul className="flex flex-col gap-2 lg:flex-row lg:gap-0">
 									{Object.entries(links).map(([key, value]) => (
-										<ListItem key={key} ToLink={value}>
+										<ListItem
+											key={key}
+											ToLink={value}
+											onClick={handleLinkClick}
+										>
 											{key}
 										</ListItem>
 									))}
@@ -86,6 +97,7 @@ const Navbar = () => {
 															? "flex rounded-sm bg-mantis-200 px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex"
 															: "flex py-2 text-base font-normal text-gray-900 hover:text-bright-turquoise-500 lg:ml-12 lg:inline-flex"
 													}
+													onClick={handleLinkClick}
 												>
 													Sign In
 												</NavLink>
@@ -98,6 +110,7 @@ const Navbar = () => {
 															? "flex rounded-sm bg-mantis-400 px-2 py-2 text-base font-medium text-gray-900 hover:text-bright-turquoise-500 lg:ml-12 lg:inline-flex"
 															: "flex rounded-sm bg-mantis-600 px-2 py-2 text-base font-normal text-gray-900 lg:ml-12 lg:inline-flex"
 													}
+													onClick={handleLinkClick}
 												>
 													Sign Up
 												</NavLink>
