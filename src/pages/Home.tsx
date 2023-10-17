@@ -12,9 +12,11 @@ const Home = () => {
 	useEffect(() => {
 		const generateRandomNumbers = () => {
 			const uniqueRandomNumbers = new Set<number>();
-			while (uniqueRandomNumbers.size < 15) {
+			while (uniqueRandomNumbers.size < 16) {
 				const randomNumber = Math.floor(Math.random() * 1000) + 1;
-				uniqueRandomNumbers.add(randomNumber);
+				if (!uniqueRandomNumbers.has(randomNumber))
+					uniqueRandomNumbers.add(randomNumber);
+				else generateRandomNumbers();
 			}
 			setRandomNumbers(Array.from(uniqueRandomNumbers));
 		};
@@ -23,15 +25,15 @@ const Home = () => {
 	}, []);
 
 	return (
-		<section>
+		<section className="my-4">
 			<Head
 				title="Feed"
 				description="Welcome to the Birdy social network! This is the feed with all the photos from our users."
 			/>
 
-			<ul className="my-4 columns-1 gap-2 px-4 sm:columns-2 sm:gap-4 sm:px-0 md:columns-3 lg:columns-4 [&>li:not(:first-child)]:mt-4">
+			<ul className="masonry sm:masonry-sm md:masonry-md px-4 sm:px-0 [&>li:not(:first-child)]:mt-4">
 				{randomNumbers.map((number) => (
-					<li key={number}>
+					<li key={number} className="break-inside">
 						<a
 							href=""
 							className="relative"
@@ -58,7 +60,7 @@ const Home = () => {
 							</div>
 							<Image
 								alt=""
-								className="rounded-md"
+								className="rounded-md object-cover"
 								src={`https://source.unsplash.com/random/${number}/?bird`}
 							/>
 						</a>

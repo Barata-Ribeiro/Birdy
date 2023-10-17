@@ -113,14 +113,12 @@ const Dashboard = () => {
 					</div>
 				</div>
 			</div>
-			<div className="w-full text-center">
-				<Routes>
-					<Route path="/" element={<ProfilePhotos />} />
-					<Route path="/stats" element={<ProfileStats />} />
-					<Route path="/upload" element={<ProfileUpload />} />
-					<Route path="*" element={<NotFound hideImage={true} />} />
-				</Routes>
-			</div>
+			<Routes>
+				<Route path="/" element={<ProfilePhotos />} />
+				<Route path="/stats" element={<ProfileStats />} />
+				<Route path="/upload" element={<ProfileUpload />} />
+				<Route path="*" element={<NotFound hideImage={true} />} />
+			</Routes>
 		</>
 	);
 };
