@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import mkcert from 'vite-plugin-mkcert'
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 
@@ -8,5 +9,6 @@ export default defineConfig({
 	build: {
 		sourcemap: true,
 	},
-	plugins: [react(), svgr()],
+  server: { https: true},
+	plugins: [react(), svgr(), mkcert()],
 });
