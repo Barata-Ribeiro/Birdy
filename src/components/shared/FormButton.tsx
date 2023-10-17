@@ -12,7 +12,7 @@ const FormButton = ({
 	//p-4 text-lg
 	return (
 		<button
-			className={`${customClasses} block w-full bg-mantis-600 uppercase tracking-wide text-green-spring-50 transition-colors duration-300 hover:bg-mantis-400 focus:outline-none focus:ring focus:ring-blue-300/80`}
+			className={`${customClasses} block w-full select-none bg-mantis-600 uppercase tracking-wide text-green-spring-50 transition-colors duration-300 hover:bg-mantis-400 focus:outline-none focus:ring focus:ring-blue-300/80`}
 			{...props}
 		>
 			{children}
