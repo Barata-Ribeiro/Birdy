@@ -1,6 +1,7 @@
-import { useState, FormEvent, ChangeEvent } from "react";
-import Input from "../../components/shared/Input";
+import React from "react";
+
 import FormButton from "../../components/shared/FormButton";
+import Input from "../../components/shared/Input";
 
 type ImageUploadState = {
 	preview: string | undefined;
@@ -8,17 +9,17 @@ type ImageUploadState = {
 };
 
 const ProfileUpload = () => {
-	const [imageUpload, setImageUpload] = useState<ImageUploadState>({
+	const [imageUpload, setImageUpload] = React.useState<ImageUploadState>({
 		preview: undefined,
 		raw: undefined,
 	});
 
-	const handleSubmit = (event: FormEvent) => {
+	const handleSubmit = (event: React.FormEvent) => {
 		event.preventDefault();
 		console.log("SUBMIT");
 	};
 
-	const handleImgChange = (event: ChangeEvent<HTMLInputElement>) => {
+	const handleImgChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const target = event.target as HTMLInputElement;
 		if (target.files && target.files[0]) {
 			setImageUpload({

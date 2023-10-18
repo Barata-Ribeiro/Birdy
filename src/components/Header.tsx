@@ -3,8 +3,8 @@ import { Link, NavLink } from "react-router-dom";
 
 import "./Header.css";
 
-import ListItem from "./helpers/ListItem";
 import BurgerMenu from "../assets/BurgerMenu.svg?react";
+import ListItem from "./helpers/ListItem";
 import MainButton from "./shared/MainButton";
 
 const links = {

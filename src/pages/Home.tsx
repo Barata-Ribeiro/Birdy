@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
+import React from "react";
 
 import { FaEye, FaHeart, FaRegComments } from "react-icons/fa";
 
-import Image from "../components/helpers/Image";
 import Head from "../components/helpers/Head";
+import Image from "../components/helpers/Image";
 
 const Home = () => {
-	const [randomNumbers, setRandomNumbers] = useState<number[]>([]);
-	const [hoveredNumber, setHoveredNumber] = useState<number | null>(null);
+	const [randomNumbers, setRandomNumbers] = React.useState<number[]>([]);
+	const [hoveredNumber, setHoveredNumber] = React.useState<number | null>(null);
 
-	useEffect(() => {
+	React.useEffect(() => {
 		const generateRandomNumbers = () => {
 			const uniqueRandomNumbers = new Set<number>();
 			while (uniqueRandomNumbers.size < 16) {

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import { CgClose } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
 
 import FormButton from "./shared/FormButton";
 
@@ -13,11 +13,11 @@ const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
 	isOpen,
 	onClose,
 }) => {
-	const [isDeleting, setIsDeleting] = useState(false);
-	const [progress, setProgress] = useState(0);
+	const [isDeleting, setIsDeleting] = React.useState(false);
+	const [progress, setProgress] = React.useState(0);
 	const navigate = useNavigate();
 
-	useEffect(() => {
+	React.useEffect(() => {
 		let start: number | null = null;
 		let animationFrameId: number | null = null;
 

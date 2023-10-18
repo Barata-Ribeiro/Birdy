@@ -1,4 +1,3 @@
-import { PropsWithChildren } from "react";
 import { NavLink } from "react-router-dom";
 
 interface ListItemProps {
@@ -10,7 +9,7 @@ const ListItem = ({
 	children,
 	ToLink,
 	onClick,
-}: PropsWithChildren<ListItemProps>) => {
+}: React.PropsWithChildren<ListItemProps>) => {
 	return (
 		<li>
 			<NavLink
