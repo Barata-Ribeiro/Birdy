@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 import "./Header.css";
@@ -14,9 +14,9 @@ const links = {
 };
 
 const Navbar = () => {
-	const [open, setOpen] = React.useState(false);
-	const headerButtonsRef = React.useRef<HTMLDivElement>(null);
-	const [showHeaderButtons, setShowHeaderButtons] = React.useState(false);
+	const [open, setOpen] = useState(false);
+	const headerButtonsRef = useRef<HTMLDivElement>(null);
+	const [showHeaderButtons, setShowHeaderButtons] = useState(false);
 
 	const handleToggle = () => {
 		setOpen((prevOpen) => !prevOpen);
@@ -24,7 +24,7 @@ const Navbar = () => {
 
 	const handleLinkClick = () => setOpen(false);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (
 			headerButtonsRef.current &&
 			headerButtonsRef.current.offsetParent === null

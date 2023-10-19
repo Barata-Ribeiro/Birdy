@@ -1,8 +1,8 @@
-import React from "react";
+import { FC } from "react";
 import { CgClose } from "react-icons/cg";
 
-import Input from "./shared/Input";
 import FormButton from "./shared/FormButton";
+import Input from "./shared/Input";
 
 interface EditProfileModalProps {
 	isOpen: boolean;
@@ -10,7 +10,7 @@ interface EditProfileModalProps {
 	onSubmit: () => void;
 }
 
-const EditProfileModal: React.FC<EditProfileModalProps> = ({
+const EditProfileModal: FC<EditProfileModalProps> = ({
 	isOpen,
 	onClose,
 	onSubmit,

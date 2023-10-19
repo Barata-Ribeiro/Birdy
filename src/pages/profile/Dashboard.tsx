@@ -1,28 +1,27 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { MouseEvent, useState } from "react";
 import { BiSolidPhotoAlbum } from "react-icons/bi";
-import { FaChartPie, FaUpload, FaSignOutAlt } from "react-icons/fa";
+import { FaChartPie, FaSignOutAlt, FaUpload } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
+import { Route, Routes } from "react-router-dom";
 
-import Image from "../../components/helpers/Image";
-import MainButton from "../../components/shared/MainButton";
+import DeleteProfileModal from "../../components/DeleteProfileModal";
 import EditProfileModal from "../../components/EditProfileModal";
+import MainButton from "../../components/shared/MainButton";
 import NotFound from "../NotFound";
 import ProfilePhotos from "./ProfilePhotos";
 import ProfileStats from "./ProfileStats";
 import ProfileUpload from "./ProfileUpload";
-import DeleteProfileModal from "../../components/DeleteProfileModal";
 
 const Dashboard = () => {
-	const [editModal, setEditModal] = React.useState(false);
-	const [deleteModal, setDeleteModal] = React.useState(false);
+	const [editModal, setEditModal] = useState(false);
+	const [deleteModal, setDeleteModal] = useState(false);
 
-	const handleEditModal = (e?: React.MouseEvent) => {
+	const handleEditModal = (e?: MouseEvent) => {
 		e?.preventDefault();
 		setEditModal(!editModal);
 	};
 
-	const handleDeleteModal = (e?: React.MouseEvent) => {
+	const handleDeleteModal = (e?: MouseEvent) => {
 		e?.preventDefault();
 		setDeleteModal(!deleteModal);
 	};

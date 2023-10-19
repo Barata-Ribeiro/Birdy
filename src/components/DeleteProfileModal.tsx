@@ -1,4 +1,4 @@
-import React from "react";
+import { FC, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 
@@ -9,15 +9,15 @@ interface DeleteProfileModalProps {
 	onClose: () => void;
 }
 
-const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
+const DeleteProfileModal: FC<DeleteProfileModalProps> = ({
 	isOpen,
 	onClose,
 }) => {
-	const [isDeleting, setIsDeleting] = React.useState(false);
-	const [progress, setProgress] = React.useState(0);
+	const [isDeleting, setIsDeleting] = useState(false);
+	const [progress, setProgress] = useState(0);
 	const navigate = useNavigate();
 
-	React.useEffect(() => {
+	useEffect(() => {
 		let start: number | null = null;
 		let animationFrameId: number | null = null;
 

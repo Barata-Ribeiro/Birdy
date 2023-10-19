@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface FetchState<T> {
 	data: T | null;
@@ -10,14 +10,14 @@ const useFetch = <T>(
 	url: RequestInfo | URL,
 	options?: RequestInit | undefined
 ): FetchState<T> => {
-	const [data, setData] = React.useState<T | null>(null);
-	const [loading, setLoading] = React.useState(false);
-	const [error, setError] = React.useState<string | null>(null);
+	const [data, setData] = useState<T | null>(null);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 
-	const optionsRef = React.useRef(options);
+	const optionsRef = useRef(options);
 	optionsRef.current = options;
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const controller = new AbortController();
 		const { signal } = controller;
 

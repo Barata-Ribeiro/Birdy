@@ -1,11 +1,11 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-import { FaGithub, FaLinkedinIn, FaFolder } from "react-icons/fa";
+import { FaFolder, FaGithub, FaLinkedinIn } from "react-icons/fa";
+import { Route, Routes } from "react-router-dom";
 
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
+import NotFound from "../NotFound";
 import LostPassword from "./LostPassword";
 import ResetPassword from "./ResetPassword";
-import NotFound from "../NotFound";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 const Login = () => {
 	return (

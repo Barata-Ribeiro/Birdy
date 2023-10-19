@@ -1,4 +1,4 @@
-import React from "react";
+import { FC, SyntheticEvent, useState } from "react";
 
 interface ImageProps {
 	alt: string;
@@ -6,10 +6,10 @@ interface ImageProps {
 	className?: string;
 }
 
-const Image: React.FC<ImageProps> = ({ alt, ...props }) => {
-	const [skeleton, setSkeleton] = React.useState(true);
+const Image: FC<ImageProps> = ({ alt, ...props }) => {
+	const [skeleton, setSkeleton] = useState(true);
 
-	const handleLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+	const handleLoad = (event: SyntheticEvent<HTMLImageElement>) => {
 		const target = event.currentTarget;
 		setSkeleton(false);
 		target.style.opacity = "1";

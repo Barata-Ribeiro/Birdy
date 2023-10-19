@@ -1,5 +1,5 @@
-import Image from "../components/helpers/Image";
 import Head from "../components/helpers/Head";
+import Image from "../components/helpers/Image";
 import MainButton from "../components/shared/MainButton";
 
 const NotFound = ({ hideImage = false }) => {

@@ -1,12 +1,12 @@
-import React from "react";
+import { FC, useEffect } from "react";
 
 interface HeadProps {
 	title: string;
 	description?: string;
 }
 
-const Head: React.FC<HeadProps> = (props) => {
-	React.useEffect(() => {
+const Head: FC<HeadProps> = (props) => {
+	useEffect(() => {
 		document.title = `${props.title} | Birdy`;
 
 		const metaDescription = document.querySelector('meta[name="description"]');

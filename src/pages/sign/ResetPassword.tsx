@@ -1,15 +1,15 @@
-import React from "react";
+import { FormEvent } from "react";
+import { FaFolder, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
-import { FaGithub, FaLinkedinIn, FaFolder } from "react-icons/fa";
 
 import Head from "../../components/helpers/Head";
-import Input from "../../components/shared/Input";
 import FormButton from "../../components/shared/FormButton";
+import Input from "../../components/shared/Input";
 
 const ResetPassword = () => {
 	const { userId, token } = useParams();
 
-	const handleSubmit = async (event: React.FormEvent) => {
+	const handleSubmit = async (event: FormEvent) => {
 		event.preventDefault();
 		console.log("SUBMIT");
 	};

@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 
 interface ValidationTypes {
 	[key: string]: {
@@ -26,8 +26,8 @@ const types: ValidationTypes = {
 };
 
 const useForm = (type: string | false) => {
-	const [value, setValue] = React.useState<string>("");
-	const [error, setError] = React.useState<string | null>(null);
+	const [value, setValue] = useState<string>("");
+	const [error, setError] = useState<string | null>(null);
 
 	const validate = (value: string): boolean => {
 		if (type === false) return true;
