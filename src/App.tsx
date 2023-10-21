@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/profile/Dashboard";
 import Sign from "./pages/sign/Sign";
+import TermsOfUse from "./pages/TermsOfUse";
 
 const HeaderMemory = memo(() => <Header />);
 const FooterMemory = memo(() => <Footer />);
@@ -25,6 +26,7 @@ function App() {
 					<Route path="/contact" element={<Contact />} />
 					<Route path="sign/*" element={<Sign />} />
 					<Route path="dashboard/*" element={<Dashboard />} />
+					<Route path="/terms-of-use" element={<TermsOfUse />} />
 					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</main>
