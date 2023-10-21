@@ -1,10 +1,10 @@
 import React from "react";
+import { FaFolder, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { FaGithub, FaLinkedinIn, FaFolder } from "react-icons/fa";
 
 import Head from "../../components/helpers/Head";
-import Input from "../../components/shared/Input";
 import FormButton from "../../components/shared/FormButton";
+import Input from "../../components/shared/Input";
 
 const SignUp = () => {
 	const handleSubmit = async (event: React.FormEvent) => {
@@ -54,6 +54,26 @@ const SignUp = () => {
 						name={"confirmPassword"}
 						inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
 					/>
+				</div>
+				<div className="flex items-center justify-end gap-2">
+					<input
+						className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+						type="checkbox"
+						name="terms-of-use"
+						id="terms-of-use"
+						required
+						aria-required
+					/>{" "}
+					<label
+						htmlFor="terms-of-use"
+						className="text-left text-mantis-950 dark:text-mantis-50"
+					>
+						I've read and accepted the{" "}
+						<Link to={"/terms-of-use"} className="font-semibold underline">
+							Terms of Use
+						</Link>
+						.
+					</label>
 				</div>
 				<div className="px-4 pb-2 pt-4">
 					<FormButton customClasses="p-4 text-lg rounded-2xl">
