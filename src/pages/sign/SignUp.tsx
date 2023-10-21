@@ -57,7 +57,7 @@ const SignUp = () => {
 				</div>
 				<div className="flex items-center justify-end gap-2">
 					<input
-						className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+						className="h-4 w-4 rounded border-green-spring-300 bg-green-spring-100 text-bright-turquoise-600 focus:ring-2 focus:ring-bright-turquoise-500 dark:border-green-spring-600 dark:bg-green-spring-700 dark:ring-offset-green-spring-800 dark:focus:ring-bright-turquoise-600"
 						type="checkbox"
 						name="terms-of-use"
 						id="terms-of-use"
@@ -69,7 +69,10 @@ const SignUp = () => {
 						className="text-left text-mantis-950 dark:text-mantis-50"
 					>
 						I've read and accepted the{" "}
-						<Link to={"/terms-of-use"} className="font-semibold underline">
+						<Link
+							to={"/terms-of-use"}
+							className="font-semibold text-green-spring-600 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200"
+						>
 							Terms of Use
 						</Link>
 						.
