@@ -23,7 +23,7 @@ const ResetPassword = () => {
 			<h1 className="my-6 text-2xl">LOGO HERE!</h1>
 			<form
 				onSubmit={handleSubmit}
-				className="mx-auto w-full px-4 sm:w-2/3 lg:px-0"
+				className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0"
 			>
 				<div className="pb-2 pt-4">
 					<Input
@@ -31,6 +31,10 @@ const ResetPassword = () => {
 						type={"password"}
 						name={"password"}
 						inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						required
+						aria-required="true"
+						// aria-invalid=""
+						// aria-describedby=""
 					/>
 				</div>
 				<div className="pb-2 pt-4">
@@ -39,6 +43,10 @@ const ResetPassword = () => {
 						type={"password"}
 						name={"confirmPassword"}
 						inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						required
+						aria-required="true"
+						// aria-invalid=""
+						// aria-describedby=""
 					/>
 				</div>
 				<div className="text-right">
@@ -50,7 +58,7 @@ const ResetPassword = () => {
 					</Link>
 				</div>
 				<div className="px-4 pb-2 pt-4">
-					<FormButton customClasses="p-4 text-lg rounded-2xl">
+					<FormButton customClasses="p-4 text-lg rounded-2xl group-invalid:pointer-events-none group-invalid:opacity-30">
 						reset password
 					</FormButton>
 				</div>

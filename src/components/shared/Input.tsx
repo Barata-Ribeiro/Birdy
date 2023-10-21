@@ -1,4 +1,6 @@
-interface InputProps {
+import { FC, InputHTMLAttributes } from "react";
+
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label: string;
 	type: string;
 	name: string;
@@ -7,10 +9,12 @@ interface InputProps {
 	value?: string;
 	onChange?: React.ChangeEventHandler<HTMLInputElement>;
 	onBlur?: React.FocusEventHandler<HTMLInputElement>;
+	ariaInvalid?: boolean;
+	ariaDescribedby?: string;
 	error?: string;
 }
 
-const Input = ({
+const Input: FC<InputProps> = ({
 	label,
 	type,
 	name,
@@ -19,14 +23,17 @@ const Input = ({
 	onChange,
 	onBlur,
 	error,
-}: InputProps) => {
+	ariaInvalid,
+	ariaDescribedby,
+	...props
+}) => {
 	return (
 		<>
 			<label className="sr-only capitalize" htmlFor={name}>
 				{label}
 			</label>
 			<input
-				className={inputClasses}
+				className={`${inputClasses} text-mantis-950 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500`}
 				type={type}
 				name={name}
 				id={name}
@@ -34,8 +41,19 @@ const Input = ({
 				value={value}
 				onChange={onChange}
 				onBlur={onBlur}
+				aria-invalid={ariaInvalid ? "true" : "false"}
+				aria-describedby={ariaDescribedby}
+				{...props}
 			/>
-			{error && <p className="">{error}</p>}
+			{error && (
+				<p
+					className="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block"
+					role="alert"
+					id={`error-${name}`}
+				>
+					{error}
+				</p>
+			)}
 		</>
 	);
 };
