@@ -1,6 +1,12 @@
+import Head from "../components/helpers/Head";
+
 const PrivacyPolicy = () => {
 	return (
 		<section className="mx-auto my-6 flex max-w-5xl flex-col gap-6 px-4 sm:px-0">
+			<Head
+				title="Privacy Policy"
+				description="This is the privacy policy of our site. As a user of our site, you must ensure that you read the privacy policy and understand how we store, use, and/or maintain your information."
+			/>
 			<h1 className="text-center text-4xl font-medium">
 				Privacy Policy for Birdy
 			</h1>

@@ -1,8 +1,14 @@
 import { Link } from "react-router-dom";
 
+import Head from "../components/helpers/Head";
+
 const TermsOfUse = () => {
 	return (
 		<section className="mx-auto my-6 flex max-w-5xl flex-col gap-6 px-4 sm:px-0">
+			<Head
+				title="Terms of Use"
+				description="This are the terms of use of Birdy. This page is protected by copyright and trademark laws. Please read these terms carefully."
+			/>
 			<h1 className="text-center text-4xl font-medium">Website Terms of Use</h1>
 
 			<p>Version 1.0 - October, 21st of 2023.</p>
