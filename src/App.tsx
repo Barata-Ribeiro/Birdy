@@ -8,9 +8,10 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfUse from "./pages/TermsOfUse";
 import Dashboard from "./pages/profile/Dashboard";
 import Sign from "./pages/sign/Sign";
-import TermsOfUse from "./pages/TermsOfUse";
 
 const HeaderMemory = memo(() => <Header />);
 const FooterMemory = memo(() => <Footer />);
@@ -26,6 +27,7 @@ function App() {
 					<Route path="/contact" element={<Contact />} />
 					<Route path="sign/*" element={<Sign />} />
 					<Route path="dashboard/*" element={<Dashboard />} />
+					<Route path="/privacy-policy" element={<PrivacyPolicy />} />
 					<Route path="/terms-of-use" element={<TermsOfUse />} />
 					<Route path="*" element={<NotFound />} />
 				</Routes>
