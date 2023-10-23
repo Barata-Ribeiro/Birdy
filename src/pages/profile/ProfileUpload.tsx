@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 
+import Head from "../../components/helpers/Head";
 import FormButton from "../../components/shared/FormButton";
 import Input from "../../components/shared/Input";
 
@@ -31,6 +32,11 @@ const ProfileUpload = () => {
 
 	return (
 		<section className="p-4 sm:px-0">
+			<Head
+				title="Upload"
+				description="In this page you can upload new bird photographs to share with the world."
+			/>
+
 			<h1 className="text-center text-2xl">Post Your Picture!</h1>
 			<div className="mx-0 grid grid-cols-1 items-center gap-4 pt-4 md:grid-cols-2">
 				<form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">

@@ -2,12 +2,14 @@ import { MouseEvent, useState } from "react";
 import { BiSolidPhotoAlbum } from "react-icons/bi";
 import { FaChartPie, FaSignOutAlt, FaUpload } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
+import { MdAdminPanelSettings } from "react-icons/md";
 import { Route, Routes } from "react-router-dom";
 
 import DeleteProfileModal from "../../components/DeleteProfileModal";
 import EditProfileModal from "../../components/EditProfileModal";
 import MainButton from "../../components/shared/MainButton";
 import NotFound from "../NotFound";
+import ProfileAdmin from "./ProfileAdmin";
 import ProfilePhotos from "./ProfilePhotos";
 import ProfileStats from "./ProfileStats";
 import ProfileUpload from "./ProfileUpload";
@@ -88,6 +90,13 @@ const Dashboard = () => {
 							<span className="max-sm:hidden">Photos</span>
 						</MainButton>
 						<MainButton
+							to={"../dashboard/admin"}
+							customClasses={"flex gap-2 items-center px-4 py-2 text-sm"}
+						>
+							<MdAdminPanelSettings size={18} />{" "}
+							<span className="max-sm:hidden">Admin</span>
+						</MainButton>
+						<MainButton
 							to={"../dashboard/stats"}
 							customClasses={"flex gap-2 items-center px-4 py-2 text-sm"}
 						>
@@ -114,6 +123,7 @@ const Dashboard = () => {
 			</div>
 			<Routes>
 				<Route path="/" element={<ProfilePhotos />} />
+				<Route path="/admin" element={<ProfileAdmin />} />
 				<Route path="/stats" element={<ProfileStats />} />
 				<Route path="/upload" element={<ProfileUpload />} />
 				<Route path="*" element={<NotFound hideImage={true} />} />

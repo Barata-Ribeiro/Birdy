@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaEye, FaHeart, FaRegComments } from "react-icons/fa";
 
+import Head from "../../components/helpers/Head";
 import Image from "../../components/helpers/Image";
 
 const ProfilePhotos = () => {
@@ -24,6 +25,11 @@ const ProfilePhotos = () => {
 
 	return (
 		<section className="my-4">
+			<Head
+				title="Your Photos"
+				description="In this page you'll find all the photos you have uploaded."
+			/>
+
 			<ul className="masonry sm:masonry-sm md:masonry-md px-4 sm:px-0 [&>li:not(:first-child)]:mt-4">
 				{randomNumbers.map((number) => (
 					<li key={number} className="break-inside">

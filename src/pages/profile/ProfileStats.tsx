@@ -6,6 +6,7 @@ import {
 	VictoryLabel,
 	VictoryPie,
 } from "victory";
+import Head from "../../components/helpers/Head";
 
 type GraphData = {
 	x: string;
@@ -61,6 +62,11 @@ const ProfileStats = () => {
 
 	return (
 		<section className="p-4 sm:px-0">
+			<Head
+				title="Stats"
+				description="In this page, you have access to your profile stats such as your total hits, likes, and comments."
+			/>
+
 			<h1 className="text-center text-2xl">Your Stats</h1>
 			<article className="my-4 grid grid-cols-2 gap-6">
 				<div className="col-span-full flex justify-around rounded-lg p-4 font-heading font-medium shadow-lg">
