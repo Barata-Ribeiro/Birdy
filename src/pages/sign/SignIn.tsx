@@ -28,7 +28,7 @@ const SignIn = () => {
 						label={"Email"}
 						type={"email"}
 						name={"email"}
-						inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
 						required
 						aria-required="true"
 						// aria-invalid=""
@@ -40,7 +40,7 @@ const SignIn = () => {
 						label={"Password"}
 						type={"password"}
 						name={"password"}
-						inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
 						required
 						aria-required="true"
 						// aria-invalid=""
@@ -50,7 +50,7 @@ const SignIn = () => {
 				<div className="text-right">
 					<Link
 						to="../password-lost"
-						className="text-green-spring-600 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200"
+						className="text-green-spring-50 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600"
 					>
 						Forgot your password?
 					</Link>
@@ -63,7 +63,7 @@ const SignIn = () => {
 				<div className="mt-2 text-center">
 					<Link
 						to="../up"
-						className="text-green-spring-600 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200"
+						className="text-green-spring-50 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600"
 					>
 						Don't have an account? Sign Up!
 					</Link>
@@ -72,7 +72,7 @@ const SignIn = () => {
 				<div className="inset-x-0 mt-16 flex justify-center space-x-4 p-4 text-center lg:hidden">
 					<a
 						href="https://github.com/Barata-Ribeiro/Birdy"
-						className="text-mantis-50"
+						className="text-green-spring-50"
 						target="_blank"
 						rel="noopener noreferrer"
 						title="Birdy - Repository"
@@ -83,7 +83,7 @@ const SignIn = () => {
 						href="https://www.linkedin.com/in/jo%C3%A3o-mendes-jorge-barata-ribeiro-645073118/"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="text-mantis-50"
+						className="text-green-spring-50"
 						title="Barata Ribeiro - LinkedIn"
 					>
 						<FaLinkedinIn size={24} />
@@ -92,7 +92,7 @@ const SignIn = () => {
 						href="https://barataribeiro.com/"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="text-mantis-50"
+						className="text-green-spring-50"
 						title="Barata Ribeiro - Portfolio"
 					>
 						<FaFolder size={24} />

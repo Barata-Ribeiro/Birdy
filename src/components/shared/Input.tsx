@@ -33,7 +33,7 @@ const Input: FC<InputProps> = ({
 				{label}
 			</label>
 			<input
-				className={`${inputClasses} text-mantis-950 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500`}
+				className={`${inputClasses} block w-full rounded-lg border-green-spring-50 text-mantis-950 focus:border-bright-turquoise-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-2 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500`}
 				type={type}
 				name={name}
 				id={name}
