@@ -56,11 +56,11 @@ const Dashboard = () => {
 						accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
 						quae ab illo inventore
 					</p>
-					<ul className="flex items-center gap-2">
+					<ul className="flex flex-col items-center gap-3 sm:flex-row sm:gap-2">
 						<li>
 							<p className="text-sm text-green-spring-500">239847 Photos</p>
 						</li>
-						<li>|</li>
+						<li className="hidden sm:block">|</li>
 						<li>
 							<button
 								onClick={handleEditModal}
@@ -69,7 +69,7 @@ const Dashboard = () => {
 								Edit Profile
 							</button>
 						</li>
-						<li>|</li>
+						<li className="hidden sm:block">|</li>
 						<li>
 							<button
 								onClick={handleDeleteModal}
