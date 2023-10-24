@@ -68,7 +68,7 @@ const ProfileStats = () => {
 			/>
 
 			<h1 className="text-center text-2xl">Your Stats</h1>
-			<article className="my-4 grid grid-cols-2 gap-6">
+			<article className="my-4 grid grid-cols-1 gap-6 lg:grid-cols-2">
 				<div className="col-span-full flex justify-around rounded-lg p-4 font-heading font-medium shadow-lg">
 					<p>
 						Total Hits:{" "}
