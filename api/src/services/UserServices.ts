@@ -2,20 +2,20 @@ import * as bcrypt from "bcrypt";
 import { QueryFailedError } from "typeorm";
 import { validate } from "uuid";
 
+import { CreateUserRequestBody, EditUserRequestBody } from "../@types/types";
 import dataSource from "../database/ormconfig";
 import { User } from "../entities/User";
-import { CreateUserRequestBody, EditUserRequestBody } from "../@types/types";
 
-import { userRepository } from "../repositories/userRepository";
-import { UserResponseDTO } from "../dto/UserResponseDTO";
 import { EditProfileResponseDTO } from "../dto/EditProfileResponseDTO";
-import { PhotoServices } from "./PhotoServices";
+import { UserResponseDTO } from "../dto/UserResponseDTO";
 import {
 	BadRequestError,
 	ConflictError,
 	InternalServerError,
 	NotFoundError,
 } from "../helpers/api-errors";
+import { userRepository } from "../repositories/userRepository";
+import { PhotoServices } from "./PhotoServices";
 
 class UserService {
 	static async createUser(
@@ -171,31 +171,6 @@ class UserService {
 		await userRepository.save(actualUser);
 
 		return EditProfileResponseDTO.fromEntity(actualUser);
-	}
-
-	static async deleteUserById(userId: string): Promise<void> {
-		if (!validate(userId)) throw new BadRequestError("Invalid user ID.");
-
-		await dataSource.manager.transaction(async (transactionalEntityManager) => {
-			try {
-				const actualUser = await transactionalEntityManager.findOne(User, {
-					where: { id: userId },
-				});
-				if (!actualUser) throw new NotFoundError("User not found.");
-
-				await PhotoServices.deleteAllPhotos(
-					transactionalEntityManager,
-					actualUser.id
-				);
-
-				await transactionalEntityManager.remove(actualUser);
-			} catch (error) {
-				console.error("Transaction failed:", error);
-				throw new InternalServerError(
-					"An error occurred during the deletion process."
-				);
-			}
-		});
 	}
 
 	static async deleteOwnAccount(userId: string): Promise<void> {

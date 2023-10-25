@@ -2,20 +2,24 @@
 
 import express from "express";
 
-import { UserController } from "../controllers/UserController";
+import { AdminController } from "src/controllers/AdminController";
 import { authMiddleware } from "../middlewares/auth";
 import { authAdminMiddleware } from "../middlewares/authAdmin";
 
 const router = express.Router();
 
-const userController = new UserController();
+const adminController = new AdminController();
+
+router.get("/", authMiddleware, authAdminMiddleware, (req, res, next) => {
+	adminController.getUserByUsername(req, res).catch(next);
+});
 
 router.delete(
 	"/:userId",
 	authMiddleware,
 	authAdminMiddleware,
 	(req, res, next) => {
-		userController.deleteUserById(req, res).catch(next);
+		adminController.deleteUserById(req, res).catch(next);
 	}
 );
 
