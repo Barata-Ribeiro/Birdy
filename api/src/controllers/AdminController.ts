@@ -6,7 +6,7 @@ import AdminService from "../services/AdminServices";
 export class AdminController {
 	async getUserByUsername(req: Request, res: Response): Promise<Response> {
 		const { username } = req.params as { username: string };
-		const user = await AdminService.getUserById(username);
+		const user = await AdminService.getUserByUsername(username);
 		return res.status(200).json(user);
 	}
 

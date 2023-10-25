@@ -1,6 +1,8 @@
 import { validate } from "uuid";
 
+import { userRepository } from "src/repositories/userRepository";
 import dataSource from "../database/DataSource";
+import { UserResponseDTO } from "../dto/UserResponseDTO";
 import { User } from "../entities/User";
 import {
 	BadRequestError,
@@ -10,6 +12,24 @@ import {
 import { PhotoServices } from "./PhotoServices";
 
 class AdminService {
+	static async getUserByUsername(username: string): Promise<UserResponseDTO> {
+		const user = await userRepository.findOne({
+			where: { username },
+			relations: [
+				"photos",
+				"photos.comments",
+				"comments",
+				"likes",
+				"likes.photo",
+				"likes.user",
+			],
+		});
+
+		if (!user) throw new NotFoundError("User not found");
+
+		return UserResponseDTO.fromEntity(user);
+	}
+
 	static async deleteUserById(userId: string): Promise<void> {
 		if (!validate(userId)) throw new BadRequestError("Invalid user ID.");
 
