@@ -1,19 +1,20 @@
-import "dotenv/config";
-import "express-async-errors";
-import express from "express";
-import cors from "cors";
-import helmet from "helmet";
-import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
+import cors from "cors";
+import "dotenv/config";
+import express from "express";
+import "express-async-errors";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
 
 import dataSource from "./database/DataSource";
 import errorMiddleware from "./middlewares/error";
-import userRoutes from "./routes/userRoutes";
+import adminRoutes from "./routes/adminRoutes";
 import authRoutes from "./routes/authRoutes";
-import photoRoutes from "./routes/photoRoutes";
-import userLikesRoutes from "./routes/userLikesRoutes";
 import commentRoutes from "./routes/commentRoutes";
+import photoRoutes from "./routes/photoRoutes";
 import profileRoutes from "./routes/profileRoutes";
+import userLikesRoutes from "./routes/userLikesRoutes";
+import userRoutes from "./routes/userRoutes";
 
 if (dataSource.options.type !== "postgres")
 	throw new Error("Invalid DB_TYPE: Only 'postgres' is supported.");
@@ -67,6 +68,7 @@ const startServer = async (): Promise<void> => {
 		// ROUTES //
 		app.use("/api/v1/auth", authLimiter, authRoutes);
 		app.use("/api/v1/users", readLimiter, userRoutes);
+		app.use("/api/v1/admin", readLimiter, adminRoutes);
 		app.use("/api/v1/profile", readLimiter, profileRoutes);
 		app.use("/api/v1/photos", writeLimiter, photoRoutes);
 		app.use("/api/v1/photos", writeLimiter, userLikesRoutes);

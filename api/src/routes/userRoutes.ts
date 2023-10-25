@@ -4,7 +4,6 @@ import express from "express";
 
 import { UserController } from "../controllers/UserController";
 import { authMiddleware } from "../middlewares/auth";
-import { authAdminMiddleware } from "../middlewares/authAdmin";
 
 const router = express.Router();
 
@@ -25,15 +24,6 @@ router.get("/:userId", (req, res, next) => {
 router.patch("/", authMiddleware, (req, res, next) => {
 	userController.editUserProfile(req, res).catch(next);
 });
-
-router.delete(
-	"/:userId",
-	authMiddleware,
-	authAdminMiddleware,
-	(req, res, next) => {
-		userController.deleteUserById(req, res).catch(next);
-	}
-);
 
 router.delete("/delete-account", authMiddleware, (req, res, next) => {
 	userController.deleteOwnAccount(req, res).catch(next);
