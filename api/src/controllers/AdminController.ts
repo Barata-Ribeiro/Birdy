@@ -40,6 +40,26 @@ export class AdminController {
 		}
 	}
 
+	async deletePhotoById(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	): Promise<Response | void> {
+		try {
+			this.verifyUserAuth(req);
+
+			if (typeof req.params.photoId !== "string")
+				throw new BadRequestError("No photo ID provided.");
+
+			const { photoId } = req.params as { photoId: string };
+
+			await AdminService.deletePhotoById(photoId);
+			return res.status(200).send({ message: "Photo deleted successfully." });
+		} catch (error) {
+			next(error);
+		}
+	}
+
 	async deleteUserById(req: Request, res: Response): Promise<Response | void> {
 		this.verifyUserAuth(req);
 

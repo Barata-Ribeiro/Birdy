@@ -66,6 +66,37 @@ class AdminService {
 		return;
 	}
 
+	static async deletePhotoById(photoId: string): Promise<void> {
+		if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
+
+		const photo = await photoRepository.findOne({
+			where: { id: photoId },
+			relations: ["author", "comments", "likes"],
+		});
+
+		if (!photo) throw new NotFoundError("Photo not found.");
+
+		const parts = photo.imageUrl.split("/");
+		const fileName = parts.pop();
+		const folderName = parts.pop();
+		const publicId =
+			folderName && fileName
+				? `${folderName}/${fileName.split(".")[0]}`
+				: undefined;
+
+		if (!publicId) throw new Error("Failed to extract the publicId.");
+		try {
+			await PhotoServices.deletePhotoForAdmin(publicId);
+		} catch (error) {
+			console.error("Error deleting from Cloudinary:", error);
+			throw new InternalServerError(
+				"Failed to delete the image from Cloudinary."
+			);
+		}
+
+		await photoRepository.remove(photo);
+	}
+
 	static async deleteUserById(userId: string): Promise<void> {
 		if (!validate(userId)) throw new BadRequestError("Invalid user ID.");
 
