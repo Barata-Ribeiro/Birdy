@@ -1,17 +1,8 @@
-import { EntityManager } from "typeorm";
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
+import { EntityManager } from "typeorm";
 import { validate } from "uuid";
 
-import { User } from "../entities/User";
-import { Photo } from "../entities/Photo";
-import { photoRepository } from "../repositories/photoRepository";
-import { userRepository } from "../repositories/userRepository";
-import {
-	BadRequestError,
-	InternalServerError,
-	NotFoundError,
-} from "../helpers/api-errors";
 import {
 	CloudinaryCallbackResult,
 	CloudinaryResult,
@@ -19,6 +10,15 @@ import {
 	UserWithoutPassword,
 } from "../@types/types";
 import { PhotoResponseDTO } from "../dto/PhotoResponseDTO";
+import { Photo } from "../entities/Photo";
+import { User } from "../entities/User";
+import {
+	BadRequestError,
+	InternalServerError,
+	NotFoundError,
+} from "../helpers/api-errors";
+import { photoRepository } from "../repositories/photoRepository";
+import { userRepository } from "../repositories/userRepository";
 
 export class PhotoServices {
 	static async uploadPhoto(
@@ -96,7 +96,6 @@ export class PhotoServices {
 					else reject(error);
 				}
 			);
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 			streamifier.createReadStream(file.buffer).pipe(stream);
 		});
 	}
@@ -137,6 +136,9 @@ export class PhotoServices {
 			);
 		});
 	}
+
+	public static deletePhotoForAdmin = (publicId: string): Promise<void> =>
+		this.deletePhotoFromCloudinary(publicId);
 
 	static async deletePhoto(
 		photoId: string,
@@ -205,7 +207,7 @@ export class PhotoServices {
 			.filter((id): id is string => id !== null);
 
 		try {
-      PhotoServices.cloudinaryConfiguration();
+			PhotoServices.cloudinaryConfiguration();
 			for (let i = 0; i < publicIds.length; i += 100) {
 				const batch = publicIds.slice(i, i + 100);
 				await cloudinary.api.delete_resources(batch);
