@@ -2,7 +2,7 @@
 
 import express from "express";
 
-import { AdminController } from "src/controllers/AdminController";
+import { AdminController } from "../controllers/AdminController";
 import { authMiddleware } from "../middlewares/auth";
 import { authAdminMiddleware } from "../middlewares/authAdmin";
 
@@ -13,6 +13,15 @@ const adminController = new AdminController();
 router.get("/", authMiddleware, authAdminMiddleware, (req, res, next) => {
 	adminController.getUserByUsername(req, res).catch(next);
 });
+
+router.delete(
+	"/:photoId/comments/:commentId",
+	authMiddleware,
+	authAdminMiddleware,
+	(req, res, next) => {
+		adminController.deleteCommentById(req, res, next).catch(next);
+	}
+);
 
 router.delete(
 	"/:userId",

@@ -1,6 +1,5 @@
 import { validate } from "uuid";
 
-import { userRepository } from "src/repositories/userRepository";
 import dataSource from "../database/DataSource";
 import { UserResponseDTO } from "../dto/UserResponseDTO";
 import { User } from "../entities/User";
@@ -9,6 +8,9 @@ import {
 	InternalServerError,
 	NotFoundError,
 } from "../helpers/api-errors";
+import { commentRepository } from "../repositories/commentRepository";
+import { photoRepository } from "../repositories/photoRepository";
+import { userRepository } from "../repositories/userRepository";
 import { PhotoServices } from "./PhotoServices";
 
 class AdminService {
@@ -28,6 +30,40 @@ class AdminService {
 		if (!user) throw new NotFoundError("User not found");
 
 		return UserResponseDTO.fromEntity(user);
+	}
+
+	static async deleteCommentById(
+		photoId: string,
+		commentId: string
+	): Promise<void> {
+		if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
+
+		const photo = await photoRepository.findOne({
+			where: { id: photoId },
+			relations: ["author", "comments"],
+		});
+
+		if (!photo) throw new NotFoundError("Photo not found.");
+
+		if (!validate(commentId)) throw new BadRequestError("Invalid comment ID.");
+
+		const comment = await commentRepository.findOne({
+			where: { id: commentId },
+			relations: ["author", "photo"],
+		});
+
+		if (!comment) throw new NotFoundError("Comment not found.");
+
+		photo.meta.total_comments = (photo.meta.total_comments ?? 0) + 1;
+
+		if ((photo.meta.total_comments ?? 0) <= 0)
+			throw new BadRequestError("Comments count is already zero.");
+
+		photo.meta.total_comments -= 1;
+
+		await photoRepository.save(photo);
+		await commentRepository.remove(comment);
+		return;
 	}
 
 	static async deleteUserById(userId: string): Promise<void> {
