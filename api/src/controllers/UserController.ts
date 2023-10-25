@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 
-import { User } from "../entities/User";
 import { CreateUserRequestBody, EditProfileRequest } from "../@types/types";
-import { BadRequestError, UnauthorizedError } from "../helpers/api-errors";
+import { User } from "../entities/User";
+import { UnauthorizedError } from "../helpers/api-errors";
 import UserService from "../services/UserServices";
 
 export class UserController {
@@ -34,16 +34,6 @@ export class UserController {
 
 		const user = await UserService.editUserProfile(id, userData);
 		return res.status(200).json(user);
-	}
-
-	async deleteUserById(req: Request, res: Response): Promise<Response | void> {
-		const { userId } = req.params as { userId: string };
-
-		if (typeof req.params.id !== "string")
-			throw new BadRequestError("No user ID provided.");
-
-		await UserService.deleteUserById(userId);
-		return res.status(200).send({ message: "User deleted successfully." });
 	}
 
 	async deleteOwnAccount(
