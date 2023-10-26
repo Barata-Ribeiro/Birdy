@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import Photo from "./pages/Photo";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfUse from "./pages/TermsOfUse";
+import User from "./pages/User";
 import Dashboard from "./pages/profile/Dashboard";
 import Sign from "./pages/sign/Sign";
 
@@ -29,6 +30,7 @@ function App() {
 					<Route path="sign/*" element={<Sign />} />
 					<Route path="dashboard/*" element={<Dashboard />} />
 					<Route path="photo/:id" element={<Photo />} />
+					<Route path="user/:id" element={<User />} />
 					<Route path="/privacy-policy" element={<PrivacyPolicy />} />
 					<Route path="/terms-of-use" element={<TermsOfUse />} />
 					<Route path="*" element={<NotFound />} />
