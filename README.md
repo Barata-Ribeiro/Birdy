@@ -86,6 +86,11 @@ The Birdy API is a robust and scalable backend service designed to support Birdy
 
    # Refresh Token Configuration
    REFRESH_TOKEN_SECRET=YOUR_REFRESH_TOKEN_SECRET
+
+   # Seed Configuration
+   ADMIN_USERNAME=YOUR_ADMIN_USERNAME
+   ADMIN_EMAIL=YOUR_ADMIN_EMAIL
+   ADMIN_PASSWORD=YOUR_ADMIN_PASSWORD
    ```
 
 5. Run the development server for the API:
@@ -109,6 +114,7 @@ api
 │   ├── middlewares
 │   ├── repositories
 │   ├── routes
+│   ├── seeds
 │   ├── services
 │   ├── constants.ts
 │   └── index.ts
