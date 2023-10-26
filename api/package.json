@@ -1,63 +1,66 @@
 {
-  "name": "birdy-api",
-  "version": "1.0.0",
-  "private": "true",
-  "description": "The main Restful API for Birdy, a Instagram-like social media for bird enthusiasts.",
-  "author": {
-    "name": "Barata Ribeiro",
-    "email": "j.mendes1920@gmail.com",
-    "url": "https://barataribeiro.com/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Barata-Ribeiro/Birdy.git"
-  },
-  "main": "index.js",
-  "scripts": {
-    "start": "nodemon src/index.ts",
-    "build": "tsc",
-    "start:prod": "node ./dist/index.js",
-    "lint": "eslint 'src/**/*.{ts,tsx}'",
-    "test": "jest",
-    "migration:create": "typeorm-ts-node-commonjs -d ./src/database/ormconfig.ts migration:generate ./src/database/migrations/default",
-    "migration:up": "typeorm-ts-node-commonjs -d ./src/database/ormconfig.ts migration:run",
-    "migration:down": "typeorm-ts-node-commonjs -d ./src/database/ormconfig.ts migration:revert"
-  },
-  "keywords": [],
-  "license": "MIT",
-  "dependencies": {
-    "bcrypt": "^5.1.1",
-    "cloudinary": "^1.41.0",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "express-async-errors": "^3.1.1",
-    "express-rate-limit": "^7.1.2",
-    "helmet": "^7.0.0",
-    "jsonwebtoken": "^9.0.2",
-    "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.9.7",
-    "pg": "^8.11.3",
-    "streamifier": "^0.1.1",
-    "ts-node": "^10.9.1",
-    "typeorm": "^0.3.17",
-    "typescript": "^5.2.2"
-  },
-  "devDependencies": {
-    "@types/bcrypt": "^5.0.1",
-    "@types/cookie-parser": "^1.4.5",
-    "@types/cors": "^2.8.15",
-    "@types/express": "^4.17.20",
-    "@types/jsonwebtoken": "^9.0.4",
-    "@types/multer": "^1.4.9",
-    "@types/node": "^20.8.8",
-    "@types/nodemailer": "^6.4.13",
-    "@types/streamifier": "^0.1.1",
-    "@types/uuid": "^9.0.6",
-    "@typescript-eslint/eslint-plugin": "^6.9.0",
-    "@typescript-eslint/parser": "^6.9.0",
-    "eslint": "^8.52.0",
-    "nodemon": "^3.0.1"
-  }
+	"name": "birdy-api",
+	"version": "1.0.0",
+	"private": "true",
+	"description": "The main Restful API for Birdy, a Instagram-like social media for bird enthusiasts.",
+	"author": {
+		"name": "Barata Ribeiro",
+		"email": "j.mendes1920@gmail.com",
+		"url": "https://barataribeiro.com/"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Barata-Ribeiro/Birdy.git"
+	},
+	"main": "index.js",
+	"scripts": {
+		"start": "nodemon src/index.ts",
+		"build": "tsc",
+		"start:prod": "node ./dist/index.js",
+		"lint": "eslint 'src/**/*.{ts,tsx}'",
+		"test": "jest",
+		"migration:create": "typeorm-ts-node-commonjs -d ./src/database/ormconfig.ts migration:generate ./src/database/migrations/default",
+		"migration:up": "typeorm-ts-node-commonjs -d ./src/database/ormconfig.ts migration:run",
+		"migration:down": "typeorm-ts-node-commonjs -d ./src/database/ormconfig.ts migration:revert",
+		"seed:run": "ts-node ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d ./src/database/ormconfig.ts",
+		"seed:create": "ts-node ./node_modules/typeorm-extension/bin/cli.cjs seed:create -d ./src/database/ormconfig.ts"
+	},
+	"keywords": [],
+	"license": "MIT",
+	"dependencies": {
+		"bcrypt": "^5.1.1",
+		"cloudinary": "^1.41.0",
+		"cookie-parser": "^1.4.6",
+		"cors": "^2.8.5",
+		"dotenv": "^16.3.1",
+		"express": "^4.18.2",
+		"express-async-errors": "^3.1.1",
+		"express-rate-limit": "^7.1.2",
+		"helmet": "^7.0.0",
+		"jsonwebtoken": "^9.0.2",
+		"multer": "^1.4.5-lts.1",
+		"nodemailer": "^6.9.7",
+		"pg": "^8.11.3",
+		"streamifier": "^0.1.1",
+		"ts-node": "^10.9.1",
+		"typeorm": "^0.3.17",
+		"typeorm-extension": "^3.1.1",
+		"typescript": "^5.2.2"
+	},
+	"devDependencies": {
+		"@types/bcrypt": "^5.0.1",
+		"@types/cookie-parser": "^1.4.5",
+		"@types/cors": "^2.8.15",
+		"@types/express": "^4.17.20",
+		"@types/jsonwebtoken": "^9.0.4",
+		"@types/multer": "^1.4.9",
+		"@types/node": "^20.8.8",
+		"@types/nodemailer": "^6.4.13",
+		"@types/streamifier": "^0.1.1",
+		"@types/uuid": "^9.0.6",
+		"@typescript-eslint/eslint-plugin": "^6.9.0",
+		"@typescript-eslint/parser": "^6.9.0",
+		"eslint": "^8.52.0",
+		"nodemon": "^3.0.1"
+	}
 }
