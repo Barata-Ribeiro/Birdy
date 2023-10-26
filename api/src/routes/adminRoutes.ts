@@ -23,9 +23,14 @@ router.delete(
 	}
 );
 
-router.delete("/:photoId", authMiddleware, (req, res, next) => {
-	adminController.deletePhotoById(req, res, next).catch(next);
-});
+router.delete(
+	"/:photoId",
+	authMiddleware,
+	authAdminMiddleware,
+	(req, res, next) => {
+		adminController.deletePhotoById(req, res, next).catch(next);
+	}
+);
 
 router.delete(
 	"/:userId",
