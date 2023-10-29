@@ -7,9 +7,7 @@ export type authLoginRequest = {
 export type authForgotPasswordRequest = { email: string };
 
 export type authResetPasswordRequest = {
-	userId: string;
-	token: string;
-	body: string;
+	password: string;
 };
 
 // USER TYPES
@@ -27,3 +25,6 @@ export type userEditProfileRequest = {
 	coverImageUrl?: string;
 	biography?: string;
 };
+
+// ADMIN TYPES
+export type adminGetUserByUsername = { username: string };

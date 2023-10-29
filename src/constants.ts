@@ -1,4 +1,5 @@
 import {
+	adminGetUserByUsername,
 	authForgotPasswordRequest,
 	authLoginRequest,
 	authResetPasswordRequest,
@@ -85,11 +86,11 @@ export const AUTH_FORGOT_PASSWORD = (body: authForgotPasswordRequest) => {
  * @param token - The password reset token.
  * @param body - Request body containing the user's new password.
  */
-export const AUTH_RESET_PASSWORD = ({
-	userId,
-	token,
-	body,
-}: authResetPasswordRequest) => {
+export const AUTH_RESET_PASSWORD = (
+	userId: string,
+	token: string,
+	body: authResetPasswordRequest
+) => {
 	return {
 		url: `${__API_URL__}/auth/reset-password/${userId}/${token}`,
 		options: {
@@ -188,6 +189,91 @@ export const USER_EDIT_PROFILE = (
 export const USER_DELETE_OWN_ACCOUNT = (token: string) => {
 	return {
 		url: `${__API_URL__}/users/delete-account`,
+		options: {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+		},
+	};
+};
+
+// ADMIN CONSTANTS
+/**
+ * An admin can get a certain user by searching for their username.
+ * @param body - Request body containing the username.
+ * @param token - The admin's access token.
+ */
+export const ADMIN_GET_USER_BY_USERNAME = (
+	body: adminGetUserByUsername,
+	token: string
+) => {
+	return {
+		url: `${__API_URL__}/admin/`,
+		options: {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: JSON.stringify(body),
+		},
+	};
+};
+
+/**
+ * An admin can delete a comment by its ID. To be precise, this is assigned
+ * to a button, allowing the admin to delete any comment in a particular post.
+ * @param photoId - The photo ID.
+ * @param commentId - The comment ID.
+ * @param token - The admin's access token.
+ */
+export const ADMIN_DELETE_COMMENT_BY_ID = (
+	photoId: string,
+	commentId: string,
+	token: string
+) => {
+	return {
+		url: `${__API_URL__}/admin/${photoId}/comments/${commentId}`,
+		options: {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+		},
+	};
+};
+
+/**
+ * An admin can delete a photo by its ID. To be precise, this is assigned
+ * to a button, allowing the admin to delete the photo post from its page.
+ * @param photoId - The photo ID.
+ * @param token - The user's access token.
+ */
+export const ADMIN_DELETE_PHOTO_BY_ID = (photoId: string, token: string) => {
+	return {
+		url: `${__API_URL__}/admin/${photoId}`,
+		options: {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+		},
+	};
+};
+
+/**
+ * An admin can delete a user by its ID. For the admin to aquire a user's
+ * ID, it must first require the user by its 'username' in the admin's dashboard.
+ * @param userId - The user ID.
+ * @param token - The admin's access token.
+ */
+export const ADMIN_DELETE_USER_BY_ID = (userId: string, token: string) => {
+	return {
+		url: `${__API_URL__}/admin/${userId}`,
 		options: {
 			method: "DELETE",
 			headers: {
