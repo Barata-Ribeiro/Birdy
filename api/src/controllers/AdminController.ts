@@ -10,7 +10,7 @@ export class AdminController {
 	}
 	async getUserByUsername(req: Request, res: Response): Promise<Response> {
 		this.verifyUserAuth(req);
-		const { username } = req.params as { username: string };
+		const { username } = req.body as { username: string };
 		const userToGet = await AdminService.getUserByUsername(username);
 		return res.status(200).json(userToGet);
 	}
