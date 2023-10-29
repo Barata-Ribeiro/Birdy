@@ -1,7 +1,9 @@
 import {
-	authForgotPassword,
+	authForgotPasswordRequest,
 	authLoginRequest,
-	authResetPassword,
+	authResetPasswordRequest,
+	userCreateRequest,
+	userEditProfileRequest,
 } from "./@types/constants";
 
 export const __API_URL__: string = "http://localhost:3000/api/v1/";
@@ -64,7 +66,7 @@ export const AUTH_LOGOUT = () => {
  * Request a password reset link.
  * @param body - Request body containing the user's email.
  */
-export const AUTH_FORGOT_PASSWORD = (body: authForgotPassword) => {
+export const AUTH_FORGOT_PASSWORD = (body: authForgotPasswordRequest) => {
 	return {
 		url: `${__API_URL__}/auth/forgot-password`,
 		options: {
@@ -87,7 +89,7 @@ export const AUTH_RESET_PASSWORD = ({
 	userId,
 	token,
 	body,
-}: authResetPassword) => {
+}: authResetPasswordRequest) => {
 	return {
 		url: `${__API_URL__}/auth/reset-password/${userId}/${token}`,
 		options: {
@@ -96,6 +98,102 @@ export const AUTH_RESET_PASSWORD = ({
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(body),
+		},
+	};
+};
+
+// USER CONSTANTS
+/**
+ * Creates a new user account.
+ * @param body - Request body containing the user's information.
+ * It requires the username, email, and password.
+ */
+export const USER_CREATE = (body: userCreateRequest) => {
+	return {
+		url: `${__API_URL__}/users`,
+		options: {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(body),
+		},
+	};
+};
+
+/**
+ * Get a list of all users. This is used preferred for pages that
+ * require public information from one's profile.
+ */
+export const USER_GET_ALL = () => {
+	return {
+		url: `${__API_URL__}/users`,
+		options: {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		},
+	};
+};
+
+/**
+ * Get information about a specific user. A preferred way of
+ * aquiring the user's public profile information. And show it in
+ * its own profile page.
+ * @param userId - The user's ID.
+ */
+export const USER_GET_BY_ID = (userId: string) => {
+	return {
+		url: `${__API_URL__}/users/${userId}`,
+		options: {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		},
+	};
+};
+
+/**
+ * Edit the user's profile. This route is used to update the user's information by
+ * using optional parameters in the body. The user can edit its own 'username', 'password',
+ * 'avatarUrl', 'coverImageUrl', and 'biography'.
+ * @param body - Request body containing the user's updated information.
+ * @param token - The user's access token.
+ */
+export const USER_EDIT_PROFILE = (
+	body: userEditProfileRequest,
+	token: string
+) => {
+	return {
+		url: `${__API_URL__}/users/`,
+		options: {
+			method: "PATCH",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: JSON.stringify(body),
+		},
+	};
+};
+
+/**
+ * This request is where the user can delete their account. It is a permanent
+ * action and cannot be undone. More information can be found in the
+ * api files.
+ * @param token - The user's access token.
+ */
+export const USER_DELETE_OWN_ACCOUNT = (token: string) => {
+	return {
+		url: `${__API_URL__}/users/delete-account`,
+		options: {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
 		},
 	};
 };
