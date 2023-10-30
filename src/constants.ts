@@ -199,6 +199,24 @@ export const USER_DELETE_OWN_ACCOUNT = (token: string) => {
 	};
 };
 
+// PROFILE CONSTANT
+/** *
+ * Retrieve the user's profile stats such as the total views, comments, likes...
+ * @param token - The user's access token.
+ */
+export const GET_OWN_PROFILE_STATS = (token: string) => {
+	return {
+		url: `${__API_URL__}/profile/`,
+		options: {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+		},
+	};
+};
+
 // ADMIN CONSTANTS
 /**
  * An admin can get a certain user by searching for their username.
