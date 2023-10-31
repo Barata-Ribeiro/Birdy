@@ -14,7 +14,7 @@ export const __API_URL__: string = "http://localhost:3000/api/v1/";
 /**
  * Authenticate a user with their email and password.
  *
- * @param body - Request body containing the user's email and password.
+ * @param authLoginRequest body - Request body containing the user's email and password.
  */
 export const AUTH_LOGIN = (body: authLoginRequest) => {
 	return {
@@ -68,7 +68,7 @@ export const AUTH_LOGOUT = () => {
 /**
  * Request a password reset link.
  *
- * @param body - Request body containing the user's email.
+ * @param authForgotPasswordRequest body - Request body containing the user's email.
  */
 export const AUTH_FORGOT_PASSWORD = (body: authForgotPasswordRequest) => {
 	return {
@@ -86,9 +86,9 @@ export const AUTH_FORGOT_PASSWORD = (body: authForgotPasswordRequest) => {
 /**
  * Reset the user's password.
  *
- * @param userId - The user's ID.
- * @param token - The password reset token.
- * @param body - Request body containing the user's new password.
+ * @param string userId - The user's ID.
+ * @param string token - The password reset token.
+ * @param authResetPasswordRequest body - Request body containing the user's new password.
  */
 export const AUTH_RESET_PASSWORD = (
 	userId: string,
@@ -111,7 +111,7 @@ export const AUTH_RESET_PASSWORD = (
 /**
  * Creates a new user account.
  *
- * @param body - Request body containing the user's information.
+ * @param userCreateRequest body - Request body containing the user's information.
  * It requires the username, email, and password.
  */
 export const USER_CREATE = (body: userCreateRequest) => {
@@ -148,7 +148,7 @@ export const USER_GET_ALL = () => {
  * aquiring the user's public profile information. And show it in
  * its own profile page.
  *
- * @param userId - The user's ID.
+ * @param string userId - The user's ID.
  */
 export const USER_GET_BY_ID = (userId: string) => {
 	return {
@@ -167,8 +167,8 @@ export const USER_GET_BY_ID = (userId: string) => {
  * using optional parameters in the body. The user can edit its own 'username', 'password',
  * 'avatarUrl', 'coverImageUrl', and 'biography'.
  *
- * @param body - Request body containing the user's updated information.
- * @param token - The user's access token.
+ * @param userEditProfileRequest body - Request body containing the user's updated information.
+ * @param string token - The user's access token.
  */
 export const USER_EDIT_PROFILE = (
 	body: userEditProfileRequest,
@@ -192,7 +192,7 @@ export const USER_EDIT_PROFILE = (
  * action and cannot be undone. More information can be found in the
  * api files.
  *
- * @param token - The user's access token.
+ * @param string token - The user's access token.
  */
 export const USER_DELETE_OWN_ACCOUNT = (token: string) => {
 	return {
@@ -211,7 +211,7 @@ export const USER_DELETE_OWN_ACCOUNT = (token: string) => {
 /** *
  * Retrieve the user's profile stats such as the total views, comments, likes...
  *
- * @param token - The user's access token.
+ * @param string token - The user's access token.
  */
 export const GET_OWN_PROFILE_STATS = (token: string) => {
 	return {
@@ -230,8 +230,8 @@ export const GET_OWN_PROFILE_STATS = (token: string) => {
 /**
  * An admin can get a certain user by searching for their username.
  *
- * @param body - Request body containing the username.
- * @param token - The admin's access token.
+ * @param adminGetUserByUsername body - Request body containing the username.
+ * @param string token - The admin's access token.
  */
 export const ADMIN_GET_USER_BY_USERNAME = (
 	body: adminGetUserByUsername,
@@ -254,9 +254,9 @@ export const ADMIN_GET_USER_BY_USERNAME = (
  * An admin can delete a comment by its ID. To be precise, this is assigned
  * to a button, allowing the admin to delete any comment in a particular post.
  *
- * @param photoId - The photo ID.
- * @param commentId - The comment ID.
- * @param token - The admin's access token.
+ * @param string photoId - The photo ID.
+ * @param string commentId - The comment ID.
+ * @param string token - The admin's access token.
  */
 export const ADMIN_DELETE_COMMENT_BY_ID = (
 	photoId: string,
@@ -279,8 +279,8 @@ export const ADMIN_DELETE_COMMENT_BY_ID = (
  * An admin can delete a photo by its ID. To be precise, this is assigned
  * to a button, allowing the admin to delete the photo post from its page.
  *
- * @param photoId - The photo ID.
- * @param token - The user's access token.
+ * @param string photoId - The photo ID.
+ * @param string token - The user's access token.
  */
 export const ADMIN_DELETE_PHOTO_BY_ID = (photoId: string, token: string) => {
 	return {
@@ -299,8 +299,8 @@ export const ADMIN_DELETE_PHOTO_BY_ID = (photoId: string, token: string) => {
  * An admin can delete a user by its ID. For the admin to aquire a user's
  * ID, it must first require the user by its 'username' in the admin's dashboard.
  *
- * @param userId - The user ID.
- * @param token - The admin's access token.
+ * @param string userId - The user ID.
+ * @param string token - The admin's access token.
  */
 export const ADMIN_DELETE_USER_BY_ID = (userId: string, token: string) => {
 	return {
@@ -319,9 +319,9 @@ export const ADMIN_DELETE_USER_BY_ID = (userId: string, token: string) => {
 /**
  * Creates a new comment for the given photo.
  *
- * @param photoId - The ID of the photo to create the comment for.
- * @param token - The user's access token.
- * @param body - The comment to create.
+ * @param string photoId - The ID of the photo to create the comment for.
+ * @param string token - The user's access token.
+ * @param userCreateComment body - The comment to create.
  */
 export const COMMENT_CREATE = (
 	photoId: string,
@@ -344,7 +344,7 @@ export const COMMENT_CREATE = (
 /**
  * Gets all comments for the given photo.
  *
- * @param photoId - The ID of the photo to get the comments for.
+ * @param string photoId - The ID of the photo to get the comments for.
  */
 export const COMMENT_GET_ALL = (photoId: string) => {
 	return {
@@ -361,8 +361,8 @@ export const COMMENT_GET_ALL = (photoId: string) => {
 /**
  * Gets a specific comment for the given photo.
  *
- * @param photoId - The ID of the photo to get the comment for.
- * @param commentId - The ID of the comment to get.
+ * @param string photoId - The ID of the photo to get the comment for.
+ * @param string commentId - The ID of the comment to get.
  */
 export const COMMENT_GET_BY_ID = (photoId: string, commentId: string) => {
 	return {
@@ -379,9 +379,9 @@ export const COMMENT_GET_BY_ID = (photoId: string, commentId: string) => {
 /**
  * Deletes a specific comment for the given photo.
  *
- * @param photoId - The ID of the photo to delete the comment for.
- * @param commentId - The ID of the comment to delete.
- * @param token - The user's access token.
+ * @param string photoId - The ID of the photo to delete the comment for.
+ * @param string commentId - The ID of the comment to delete.
+ * @param string token - The user's access token.
  */
 export const COMMENT_DELETE_BY_ID = (
 	photoId: string,
@@ -404,8 +404,8 @@ export const COMMENT_DELETE_BY_ID = (
 /**
  * Functions that returns the fetch's object to toggle the user's liking of a photo.
  *
- * @param photoId - The ID of the photo to toggle the like for.
- * @param token - The user's access token.
+ * @param string photoId - The ID of the photo to toggle the like for.
+ * @param string token - The user's access token.
  */
 export const TOGGLE_LIKE = (photoId: string, token: string) => {
 	return {
@@ -420,4 +420,72 @@ export const TOGGLE_LIKE = (photoId: string, token: string) => {
 	};
 };
 
-//
+// USER PHOTO CONSTANTS
+/**
+ * Functions that returns the fetch's object for uploading a photo to the backend.
+ *
+ * @param string token - The user's access token.
+ * @param FormData formData - The form data containing the photo to upload.
+ */
+export const PHOTO_POST = (token: string, formData: FormData) => {
+	return {
+		url: `${__API_URL__}/photos/`,
+		options: {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+			body: formData,
+		},
+	};
+};
+
+/**
+ * Functions that returns the fetch's object containing the URL and options for making a GET request to retrieve a list of all photos.
+ */
+export const PHOTOS_GET_ALL = () => {
+	return {
+		url: `${__API_URL__}/photos/`,
+		options: {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		},
+	};
+};
+
+/**
+ * Functions that returns the fetch's object containing the URL and options for making a GET request to retrieve a specific photo based on its ID.
+ *
+ * @param photoId - The ID of the photo to retrieve
+ */
+export const PHOTOS_GET_BY_ID = (photoId: string) => {
+	return {
+		url: `${__API_URL__}/photos/${photoId}`,
+		options: {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		},
+	};
+};
+
+/**
+ * Functions that returns the fetch's object containing the URL and options for making a DELETE request allowing a user to delete one of their own photos.
+ *
+ * @param string photoId - The ID of the photo to delete
+ * @param string token - The user's access token.
+ */
+export const PHOTO_DELETE = (photoId: string, token: string) => {
+	return {
+		url: `${__API_URL__}/photos/${photoId}`,
+		options: {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+		},
+	};
+};
