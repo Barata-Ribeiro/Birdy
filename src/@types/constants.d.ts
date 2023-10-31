@@ -28,3 +28,6 @@ export type userEditProfileRequest = {
 
 // ADMIN TYPES
 export type adminGetUserByUsername = { username: string };
+
+// COMMENT TYPES
+export type userCreateComment = { comment: string };

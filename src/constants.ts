@@ -3,6 +3,7 @@ import {
 	authForgotPasswordRequest,
 	authLoginRequest,
 	authResetPasswordRequest,
+	userCreateComment,
 	userCreateRequest,
 	userEditProfileRequest,
 } from "./@types/constants";
@@ -12,6 +13,7 @@ export const __API_URL__: string = "http://localhost:3000/api/v1/";
 //AUTHENTICATION CONSTANTS
 /**
  * Authenticate a user with their email and password.
+ *
  * @param body - Request body containing the user's email and password.
  */
 export const AUTH_LOGIN = (body: authLoginRequest) => {
@@ -65,6 +67,7 @@ export const AUTH_LOGOUT = () => {
 
 /**
  * Request a password reset link.
+ *
  * @param body - Request body containing the user's email.
  */
 export const AUTH_FORGOT_PASSWORD = (body: authForgotPasswordRequest) => {
@@ -82,6 +85,7 @@ export const AUTH_FORGOT_PASSWORD = (body: authForgotPasswordRequest) => {
 
 /**
  * Reset the user's password.
+ *
  * @param userId - The user's ID.
  * @param token - The password reset token.
  * @param body - Request body containing the user's new password.
@@ -106,6 +110,7 @@ export const AUTH_RESET_PASSWORD = (
 // USER CONSTANTS
 /**
  * Creates a new user account.
+ *
  * @param body - Request body containing the user's information.
  * It requires the username, email, and password.
  */
@@ -142,6 +147,7 @@ export const USER_GET_ALL = () => {
  * Get information about a specific user. A preferred way of
  * aquiring the user's public profile information. And show it in
  * its own profile page.
+ *
  * @param userId - The user's ID.
  */
 export const USER_GET_BY_ID = (userId: string) => {
@@ -160,6 +166,7 @@ export const USER_GET_BY_ID = (userId: string) => {
  * Edit the user's profile. This route is used to update the user's information by
  * using optional parameters in the body. The user can edit its own 'username', 'password',
  * 'avatarUrl', 'coverImageUrl', and 'biography'.
+ *
  * @param body - Request body containing the user's updated information.
  * @param token - The user's access token.
  */
@@ -184,6 +191,7 @@ export const USER_EDIT_PROFILE = (
  * This request is where the user can delete their account. It is a permanent
  * action and cannot be undone. More information can be found in the
  * api files.
+ *
  * @param token - The user's access token.
  */
 export const USER_DELETE_OWN_ACCOUNT = (token: string) => {
@@ -202,6 +210,7 @@ export const USER_DELETE_OWN_ACCOUNT = (token: string) => {
 // PROFILE CONSTANT
 /** *
  * Retrieve the user's profile stats such as the total views, comments, likes...
+ *
  * @param token - The user's access token.
  */
 export const GET_OWN_PROFILE_STATS = (token: string) => {
@@ -220,6 +229,7 @@ export const GET_OWN_PROFILE_STATS = (token: string) => {
 // ADMIN CONSTANTS
 /**
  * An admin can get a certain user by searching for their username.
+ *
  * @param body - Request body containing the username.
  * @param token - The admin's access token.
  */
@@ -243,6 +253,7 @@ export const ADMIN_GET_USER_BY_USERNAME = (
 /**
  * An admin can delete a comment by its ID. To be precise, this is assigned
  * to a button, allowing the admin to delete any comment in a particular post.
+ *
  * @param photoId - The photo ID.
  * @param commentId - The comment ID.
  * @param token - The admin's access token.
@@ -267,6 +278,7 @@ export const ADMIN_DELETE_COMMENT_BY_ID = (
 /**
  * An admin can delete a photo by its ID. To be precise, this is assigned
  * to a button, allowing the admin to delete the photo post from its page.
+ *
  * @param photoId - The photo ID.
  * @param token - The user's access token.
  */
@@ -286,12 +298,98 @@ export const ADMIN_DELETE_PHOTO_BY_ID = (photoId: string, token: string) => {
 /**
  * An admin can delete a user by its ID. For the admin to aquire a user's
  * ID, it must first require the user by its 'username' in the admin's dashboard.
+ *
  * @param userId - The user ID.
  * @param token - The admin's access token.
  */
 export const ADMIN_DELETE_USER_BY_ID = (userId: string, token: string) => {
 	return {
 		url: `${__API_URL__}/admin/${userId}`,
+		options: {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+		},
+	};
+};
+
+// COMMENT CONSTANTS
+/**
+ * Creates a new comment for the given photo.
+ *
+ * @param photoId - The ID of the photo to create the comment for.
+ * @param token - The user's access token.
+ * @param body - The comment to create.
+ */
+export const COMMENT_CREATE = (
+	photoId: string,
+	token: string,
+	body: userCreateComment
+) => {
+	return {
+		url: `${__API_URL__}/photos/${photoId}/comments`,
+		options: {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: JSON.stringify(body),
+		},
+	};
+};
+
+/**
+ * Gets all comments for the given photo.
+ *
+ * @param photoId - The ID of the photo to get the comments for.
+ */
+export const COMMENT_GET_ALL = (photoId: string) => {
+	return {
+		url: `${__API_URL__}/photos/${photoId}/comments`,
+		options: {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		},
+	};
+};
+
+/**
+ * Gets a specific comment for the given photo.
+ *
+ * @param photoId - The ID of the photo to get the comment for.
+ * @param commentId - The ID of the comment to get.
+ */
+export const COMMENT_GET_BY_ID = (photoId: string, commentId: string) => {
+	return {
+		url: `${__API_URL__}/photos/${photoId}/comments/${commentId}`,
+		options: {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		},
+	};
+};
+
+/**
+ * Deletes a specific comment for the given photo.
+ *
+ * @param photoId - The ID of the photo to delete the comment for.
+ * @param commentId - The ID of the comment to delete.
+ * @param token - The user's access token.
+ */
+export const COMMENT_DELETE_BY_ID = (
+	photoId: string,
+	commentId: string,
+	token: string
+) => {
+	return {
+		url: `${__API_URL__}/photos/${photoId}/comments/${commentId}`,
 		options: {
 			method: "DELETE",
 			headers: {
