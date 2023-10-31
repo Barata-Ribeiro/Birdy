@@ -399,3 +399,25 @@ export const COMMENT_DELETE_BY_ID = (
 		},
 	};
 };
+
+// USER LIKING CONSTANT
+/**
+ * Functions that returns the fetch's object to toggle the user's liking of a photo.
+ *
+ * @param photoId - The ID of the photo to toggle the like for.
+ * @param token - The user's access token.
+ */
+export const TOGGLE_LIKE = (photoId: string, token: string) => {
+	return {
+		url: `${__API_URL__}/photos/${photoId}/like`,
+		options: {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+		},
+	};
+};
+
+//
