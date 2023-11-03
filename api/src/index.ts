@@ -27,10 +27,20 @@ const startServer = async (): Promise<void> => {
 
 		app.use(
 			cors({
-				origin: process.env.CORS_ORIGIN,
+				origin: [
+					"http://localhost:3000",
+					"https://cyan-gifted-bandicoot.cyclic.app",
+				],
+				methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+				allowedHeaders: [
+					"Content-Type",
+					"Authorization",
+					"Accept",
+					"X-Requested-With",
+				],
 				credentials: true,
-				methods: "GET, POST, PATCH, DELETE",
-			}) as unknown as express.RequestHandler
+				optionsSuccessStatus: 204,
+			})
 		);
 
 		app.use(helmet());
