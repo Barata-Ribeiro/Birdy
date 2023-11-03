@@ -3,7 +3,7 @@ import path from "path";
 import { DataSource, DataSourceOptions } from "typeorm";
 import { SeederOptions } from "typeorm-extension";
 
-import { MainSeeder } from "src/seeds/MainSeeder";
+import { MainSeeder } from "../seeds/MainSeeder";
 import { __TEST__ } from "../constants";
 
 const selectedDatabasePort: number = process.env.DB_PORT
