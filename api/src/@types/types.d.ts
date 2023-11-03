@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Request } from "express";
+import { NextFunction, Request, Response } from "express";
 
 // External Imports
 import { User } from "../entities/User";
