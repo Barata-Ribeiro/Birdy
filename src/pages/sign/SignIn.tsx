@@ -5,8 +5,12 @@ import { Link } from "react-router-dom";
 import Head from "../../components/helpers/Head";
 import FormButton from "../../components/shared/FormButton";
 import Input from "../../components/shared/Input";
+import useForm from "../../hooks/useForm";
 
 const SignIn = () => {
+	const email = useForm();
+	const password = useForm();
+
 	const handleSubmit = async (event: FormEvent) => {
 		event.preventDefault();
 		console.log("SUBMIT");
@@ -25,26 +29,34 @@ const SignIn = () => {
 			>
 				<div className="pb-2 pt-4">
 					<Input
-						label={"Email"}
-						type={"email"}
-						name={"email"}
+						label="Email"
+						type="email"
+						name="email"
 						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						value={email.value}
+						onChange={email.onChange}
+						onBlur={email.onBlur}
+						error={email.error}
+						aria-invalid={email.error ? "true" : "false"}
+						aria-describedby={email.error ? `error-${email.value}` : undefined}
 						required
-						aria-required="true"
-						// aria-invalid=""
-						// aria-describedby=""
 					/>
 				</div>
 				<div className="pb-2 pt-4">
 					<Input
-						label={"Password"}
-						type={"password"}
-						name={"password"}
+						label="Password"
+						type="password"
+						name="password"
 						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						value={password.value}
+						onChange={password.onChange}
+						onBlur={password.onBlur}
+						error={password.error}
+						aria-invalid={password.error ? "true" : "false"}
+						aria-describedby={
+							password.error ? `error-${password.value}` : undefined
+						}
 						required
-						aria-required="true"
-						// aria-invalid=""
-						// aria-describedby=""
 					/>
 				</div>
 				<div className="text-right">

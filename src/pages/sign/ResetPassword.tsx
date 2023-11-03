@@ -1,17 +1,37 @@
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { FaFolder, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 
 import Head from "../../components/helpers/Head";
 import FormButton from "../../components/shared/FormButton";
 import Input from "../../components/shared/Input";
+import useForm from "../../hooks/useForm";
 
 const ResetPassword = () => {
 	const { userId, token } = useParams();
 
+	const password = useForm("password");
+	const confirmPassword = useForm();
+
+	const [errorConfirmPassword, setErrorConfirmPassword] = useState<
+		string | undefined
+	>(undefined);
+
+	useEffect(() => {
+		if (password.value !== undefined) {
+			if (password.value !== confirmPassword.value)
+				setErrorConfirmPassword("Passwords do not match!");
+			else setErrorConfirmPassword(undefined);
+		}
+	}, [password, confirmPassword]);
+
 	const handleSubmit = async (event: FormEvent) => {
 		event.preventDefault();
-		console.log("SUBMIT");
+
+		const isPasswordValid = password.validate();
+		const isConfirmPasswordValid = password.value === confirmPassword.value;
+
+		if (isPasswordValid && isConfirmPasswordValid) console.log("SUBMIT");
 	};
 
 	return (
@@ -27,14 +47,19 @@ const ResetPassword = () => {
 			>
 				<div className="pb-2 pt-4">
 					<Input
-						label={"Password"}
-						type={"password"}
-						name={"password"}
+						label="Password"
+						type="password"
+						name="password"
 						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						value={password.value}
+						onChange={password.onChange}
+						onBlur={password.onBlur}
+						error={password.error}
+						aria-invalid={password.error ? "true" : "false"}
+						aria-describedby={
+							password.error ? `error-${password.value}` : undefined
+						}
 						required
-						aria-required="true"
-						// aria-invalid=""
-						// aria-describedby=""
 					/>
 				</div>
 				<div className="pb-2 pt-4">
@@ -43,10 +68,19 @@ const ResetPassword = () => {
 						type={"password"}
 						name={"confirmPassword"}
 						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						value={confirmPassword.value}
+						onChange={confirmPassword.onChange}
+						onBlur={confirmPassword.onBlur}
+						error={errorConfirmPassword || confirmPassword.error}
+						aria-invalid={
+							errorConfirmPassword || confirmPassword.error ? "true" : "false"
+						}
+						aria-describedby={
+							errorConfirmPassword || confirmPassword.error
+								? `error-${errorConfirmPassword || confirmPassword.error}`
+								: undefined
+						}
 						required
-						aria-required="true"
-						// aria-invalid=""
-						// aria-describedby=""
 					/>
 				</div>
 				<div className="text-right">
