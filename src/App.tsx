@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 
+import Cookies from "./components/helpers/Cookies";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
@@ -22,6 +23,7 @@ function App() {
 	return (
 		<BrowserRouter>
 			<HeaderMemory />
+			<Cookies />
 			<main className="container">
 				<Routes>
 					<Route path="/" element={<Home />} />
