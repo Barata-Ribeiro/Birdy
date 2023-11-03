@@ -1,15 +1,45 @@
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { FaFolder, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 import Head from "../../components/helpers/Head";
 import FormButton from "../../components/shared/FormButton";
 import Input from "../../components/shared/Input";
+import useForm from "../../hooks/useForm";
 
 const SignUp = () => {
+	const username = useForm("username");
+	const email = useForm("email");
+	const password = useForm("password");
+	const confirmPassword = useForm();
+
+	const [errorConfirmPassword, setErrorConfirmPassword] = useState<
+		string | undefined
+	>(undefined);
+
+	useEffect(() => {
+		if (password.value !== undefined) {
+			if (password.value !== confirmPassword.value)
+				setErrorConfirmPassword("Passwords do not match!");
+			else setErrorConfirmPassword(undefined);
+		}
+	}, [password, confirmPassword]);
+
 	const handleSubmit = async (event: FormEvent) => {
 		event.preventDefault();
-		console.log("SUBMIT");
+
+		const isUsernameValid = username.validate();
+		const isEmailValid = email.validate();
+		const isPasswordValid = password.validate();
+		const isConfirmPasswordValid = password.value === confirmPassword.value;
+
+		if (
+			isUsernameValid &&
+			isEmailValid &&
+			isPasswordValid &&
+			isConfirmPasswordValid
+		)
+			console.log("SUBMIT");
 	};
 
 	return (
@@ -25,38 +55,51 @@ const SignUp = () => {
 			>
 				<div className="pb-2 pt-4">
 					<Input
-						label={"Username"}
-						type={"text"}
-						name={"username"}
+						label="Username"
+						type="text"
+						name="username"
 						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						value={username.value}
+						onChange={username.onChange}
+						onBlur={username.onBlur}
+						error={username.error}
+						aria-invalid={username.error ? "true" : "false"}
+						aria-describedby={
+							username.error ? `error-${username.value}` : undefined
+						}
 						required
-						aria-required="true"
-						// aria-invalid=""
-						// aria-describedby=""
 					/>
 				</div>
 				<div className="pb-2 pt-4">
 					<Input
-						label={"Email"}
-						type={"email"}
-						name={"email"}
+						label="Email"
+						type="email"
+						name="email"
 						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						value={email.value}
+						onChange={email.onChange}
+						onBlur={email.onBlur}
+						error={email.error}
+						aria-invalid={email.error ? "true" : "false"}
+						aria-describedby={email.error ? `error-${email.value}` : undefined}
 						required
-						aria-required="true"
-						// aria-invalid=""
-						// aria-describedby=""
 					/>
 				</div>
 				<div className="pb-2 pt-4">
 					<Input
-						label={"Password"}
-						type={"password"}
-						name={"password"}
+						label="Password"
+						type="password"
+						name="password"
 						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						value={password.value}
+						onChange={password.onChange}
+						onBlur={password.onBlur}
+						error={password.error}
+						aria-invalid={password.error ? "true" : "false"}
+						aria-describedby={
+							password.error ? `error-${password.value}` : undefined
+						}
 						required
-						aria-required="true"
-						// aria-invalid=""
-						// aria-describedby=""
 					/>
 				</div>
 				<div className="pb-2 pt-4">
@@ -65,10 +108,19 @@ const SignUp = () => {
 						type={"password"}
 						name={"confirmPassword"}
 						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						value={confirmPassword.value}
+						onChange={confirmPassword.onChange}
+						onBlur={confirmPassword.onBlur}
+						error={errorConfirmPassword || confirmPassword.error}
+						aria-invalid={
+							errorConfirmPassword || confirmPassword.error ? "true" : "false"
+						}
+						aria-describedby={
+							errorConfirmPassword || confirmPassword.error
+								? `error-${errorConfirmPassword || confirmPassword.error}`
+								: undefined
+						}
 						required
-						aria-required="true"
-						// aria-invalid=""
-						// aria-describedby=""
 					/>
 				</div>
 				<div className="flex items-center justify-end gap-2">
@@ -77,10 +129,8 @@ const SignUp = () => {
 						type="checkbox"
 						name="terms-of-use"
 						id="terms-of-use"
-						required
 						aria-required="true"
-						// aria-invalid=""
-						// aria-describedby=""
+						required
 					/>{" "}
 					<label
 						htmlFor="terms-of-use"
