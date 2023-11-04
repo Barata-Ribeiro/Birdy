@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { validate } from "uuid";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import { default as bcrypt } from "bcrypt";
 import nodemailer, { SendMailOptions } from "nodemailer";
 
 import { userRepository } from "../repositories/userRepository";

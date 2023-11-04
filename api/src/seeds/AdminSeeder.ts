@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import * as bcrypt from "bcrypt";
+import { default as bcrypt } from "bcrypt";
 import "dotenv/config";
 import { DataSource } from "typeorm";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";

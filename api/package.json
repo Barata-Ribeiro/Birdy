@@ -13,9 +13,9 @@
 		"type": "git",
 		"url": "https://github.com/Barata-Ribeiro/Birdy.git"
 	},
-	"main": "src/index.js",
+	"main": "dist/src/index.js",
 	"scripts": {
-		"start": "node src/index.js",
+		"start": "node dist/src/index.js",
 		"dev": "nodemon ./src/index.ts",
 		"build": "rm -rf dist && tsc --build",
 		"lint": "eslint './src/**/*.{ts,tsx}'",
@@ -55,6 +55,7 @@
 		"multer": "^1.4.5-lts.1",
 		"nodemailer": "^6.9.7",
 		"pg": "^8.11.3",
+		"reflect-metadata": "^0.1.13",
 		"streamifier": "^0.1.1",
 		"ts-node": "^10.9.1",
 		"typeorm": "^0.3.17",

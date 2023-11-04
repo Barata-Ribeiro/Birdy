@@ -1,4 +1,4 @@
-import * as bcrypt from "bcrypt";
+import { default as bcrypt } from "bcrypt";
 import { QueryFailedError } from "typeorm";
 import { validate } from "uuid";
 
