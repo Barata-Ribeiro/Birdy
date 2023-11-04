@@ -27,10 +27,7 @@ const startServer = async (): Promise<void> => {
 
 		app.use(
 			cors({
-				origin: [
-					"http://localhost:3000",
-					"https://cyan-gifted-bandicoot.cyclic.app",
-				],
+				origin: ["http://localhost:3000", `${process.env.CORS_ORIGIN}`],
 				methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
 				allowedHeaders: [
 					"Content-Type",
@@ -84,11 +81,15 @@ const startServer = async (): Promise<void> => {
 		app.use("/api/v1/photos", writeLimiter, userLikesRoutes);
 		app.use("/api/v1/photos", writeLimiter, commentRoutes);
 
+		app.use("*", (_req, res) => {
+			res.json({ msg: "no route handler found" }).end();
+		});
+
 		app.use(errorMiddleware);
 
 		const PORT = process.env.PORT || 3000;
 		app.listen(PORT, () => {
-			console.log("Server is running on port: " + PORT);
+			console.log(`Server is running on port ${PORT}, enjoy!`);
 		});
 	} catch (error) {
 		console.error("Error while starting the server:", error);

@@ -15,9 +15,9 @@
 	"main": "src/index.js",
 	"scripts": {
 		"start": "node src/index.js",
-		"dev": "nodemon src/index.ts",
-		"build": "tsc",
-		"lint": "eslint 'src/**/*.{ts,tsx}'",
+		"dev": "nodemon ./src/index.ts",
+		"build": "rm -rf dist && tsc --build",
+		"lint": "eslint './src/**/*.{ts,tsx}'",
 		"migration:create": "typeorm-ts-node-commonjs -d ./src/database/ormconfig.ts migration:generate ./src/database/migrations/default",
 		"migration:up": "typeorm-ts-node-commonjs -d ./src/database/ormconfig.ts migration:run",
 		"migration:down": "typeorm-ts-node-commonjs -d ./src/database/ormconfig.ts migration:revert",
