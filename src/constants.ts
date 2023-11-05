@@ -403,7 +403,7 @@ export const COMMENT_DELETE_BY_ID = (
 
 // USER LIKING CONSTANT
 /**
- * Functions that returns the fetch's object to toggle the user's liking of a photo.
+ * Function that returns the fetch's object to toggle the user's liking of a photo.
  *
  * @param string photoId - The ID of the photo to toggle the like for.
  * @param string token - The user's access token.
@@ -423,7 +423,7 @@ export const TOGGLE_LIKE = (photoId: string, token: string) => {
 
 // USER PHOTO CONSTANTS
 /**
- * Functions that returns the fetch's object for uploading a photo to the backend.
+ * Function that returns the fetch's object for uploading a photo to the backend.
  *
  * @param string token - The user's access token.
  * @param FormData formData - The form data containing the photo to upload.
@@ -432,6 +432,7 @@ export const PHOTO_POST = (token: string, formData: FormData) => {
 	return {
 		url: `${__API_URL__}/photos/`,
 		options: {
+			method: "POST",
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -441,7 +442,7 @@ export const PHOTO_POST = (token: string, formData: FormData) => {
 };
 
 /**
- * Functions that returns the fetch's object containing the URL and options for making a GET request to retrieve a list of all photos.
+ * Function that returns the fetch's object containing the URL and options for making a GET request to retrieve a list of all photos.
  */
 export const PHOTOS_GET_ALL = () => {
 	return {
@@ -456,7 +457,7 @@ export const PHOTOS_GET_ALL = () => {
 };
 
 /**
- * Functions that returns the fetch's object containing the URL and options for making a GET request to retrieve a specific photo based on its ID.
+ * Function that returns the fetch's object containing the URL and options for making a GET request to retrieve a specific photo based on its ID.
  *
  * @param photoId - The ID of the photo to retrieve
  */
@@ -473,7 +474,7 @@ export const PHOTOS_GET_BY_ID = (photoId: string) => {
 };
 
 /**
- * Functions that returns the fetch's object containing the URL and options for making a DELETE request allowing a user to delete one of their own photos.
+ * Function that returns the fetch's object containing the URL and options for making a DELETE request allowing a user to delete one of their own photos.
  *
  * @param string photoId - The ID of the photo to delete
  * @param string token - The user's access token.

@@ -8,20 +8,17 @@ import {
 
 type AsyncState<T> = {
 	loading: boolean;
-	data: T;
-	error: string;
+	data: T | null;
+	error: string | null;
 };
 
 type AsyncReducers<T> = SliceCaseReducers<AsyncState<T>>;
 
-type AsyncSliceConfiguration<T> = {
+type AsyncSliceConfiguration<T, U extends unknown[]> = {
 	name: string;
 	initialState: AsyncState<T>;
 	reducers: ValidateSliceCaseReducers<AsyncState<T>, AsyncReducers<T>>;
-	fetchConfig: (arg: unknown) => {
-		url: string;
-		options?: RequestInit;
-	};
+	fetchConfig: (...args: U) => { url: string; options?: RequestInit };
 };
 
 /**
@@ -39,8 +36,8 @@ type AsyncSliceConfiguration<T> = {
  * @returns An object with the slice and asyncAction properties.
  * The slice property is the slice created by createSlice, and the asyncAction property is an asynchronous action that can be dispatched to start the fetch process.
  */
-const createAsyncSlice = <T extends null>(
-	config: AsyncSliceConfiguration<T>
+const createAsyncSlice = <T extends null, U extends unknown[]>(
+	config: AsyncSliceConfiguration<T, U>
 ) => {
 	const slice = createSlice({
 		name: config.name,
@@ -99,20 +96,22 @@ const createAsyncSlice = <T extends null>(
 
 	const { fetchStarted, fetchSuccess, fetchError } = slice.actions;
 
-	const asyncAction = (payload: T) => async (dispatch: Dispatch) => {
-		try {
-			dispatch(fetchStarted());
+	const asyncAction =
+		(...args: U) =>
+		async (dispatch: Dispatch) => {
+			try {
+				dispatch(fetchStarted());
 
-			const { url, options } = config.fetchConfig(payload);
-			const response = await fetch(url, options);
-			const data = await response.json();
-			if (!response.ok) throw new Error(data.message || "An error occurred");
-			return dispatch(fetchSuccess(data));
-		} catch (error) {
-			if (error instanceof Error) dispatch(fetchError(error.message));
-			else dispatch(fetchError(String(error)));
-		}
-	};
+				const { url, options } = config.fetchConfig(...args);
+				const response = await fetch(url, options);
+				const data = await response.json();
+				if (!response.ok) throw new Error(data.message || "An error occurred");
+				return dispatch(fetchSuccess(data));
+			} catch (error) {
+				if (error instanceof Error) dispatch(fetchError(error.message));
+				else dispatch(fetchError(String(error)));
+			}
+		};
 
 	return { ...slice, asyncAction };
 };
