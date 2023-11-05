@@ -8,7 +8,8 @@ import {
 	userEditProfileRequest,
 } from "./@types/constants";
 
-export const __API_URL__: string = "http://localhost:3000/api/v1/";
+export const __API_URL__: string =
+	"http://localhost:3000/api/v1" || import.meta.env.env.API_URL.toString();
 
 //AUTHENTICATION CONSTANTS
 /**
