@@ -25,6 +25,8 @@ const startServer = async (): Promise<void> => {
 
 		const app = express();
 
+		app.set("trust proxy", true);
+
 		app.use(
 			cors({
 				origin: ["http://localhost:3000", `${process.env.CORS_ORIGIN}`],
