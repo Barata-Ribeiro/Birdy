@@ -14,7 +14,7 @@ router.post("/token", (req, res, next) => {
   authController.refreshToken(req, res).catch(next);
 });
 
-router.get("/logout", (req, res, next) => {
+router.post("/logout", (req, res, next) => {
   authController.logout(req, res).catch(next);
 });
 

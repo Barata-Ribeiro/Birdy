@@ -52,14 +52,13 @@ export const AUTH_REFRESH_TOKEN = () => {
  * Log the user out. The cookie will be deleted through the
  * http request method on the backend.
  */
-export const AUTH_LOGOUT = (refreshToken: string) => {
+export const AUTH_LOGOUT = () => {
 	return {
 		url: `${__API_URL__}/auth/logout`,
 		options: {
-			method: "GET",
+			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: `Bearer ${refreshToken}`,
 			},
 			credentials: "include" as RequestCredentials,
 		},
