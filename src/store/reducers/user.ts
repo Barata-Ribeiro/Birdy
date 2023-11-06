@@ -12,7 +12,7 @@ const slice = createAsyncSlice({
 	name: "user",
 	initialState: {
 		loading: false,
-		data: undefined,
+		data: null,
 		error: null,
 	},
 	reducers: {},

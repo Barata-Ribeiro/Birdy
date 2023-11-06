@@ -9,7 +9,7 @@ import {
 } from "./@types/constants";
 
 export const __API_URL__: string =
-	"http://localhost:3000/api/v1" || import.meta.env.env.API_URL.toString();
+	import.meta.env.VITE_API_URL || "http://localhost:3000/api/v1";
 
 //AUTHENTICATION CONSTANTS
 /**

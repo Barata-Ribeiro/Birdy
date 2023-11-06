@@ -16,11 +16,15 @@ const counter = (state = 0, action: { type: string; payload?: number }) => {
 	}
 };
 
+import photoPost from "./reducers/photoPost";
+import token from "./reducers/token";
+import user from "./reducers/user";
+
 /**
  * Creates the store with the given reducers and middleware.
  */
 const store = configureStore({
-	reducer: combineReducers({ counter }),
+	reducer: combineReducers({ counter, user, token, photoPost }),
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });
 
