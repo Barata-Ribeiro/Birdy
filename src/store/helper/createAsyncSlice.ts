@@ -99,7 +99,9 @@ const createAsyncSlice = <T, U extends unknown[]>(
 				dispatch(fetchStarted());
 
 				const { url, options } = config.fetchConfig(...args);
+				console.log("THE URL: " + url, "THE OPTIONS: ", options);
 				const response = await fetch(url, options);
+				console.log("THE RESPONSE: " + response);
 				const data = await response.json();
 				if (!response.ok) throw new Error(data.message || "An error occurred");
 				return dispatch(fetchSuccess(data));

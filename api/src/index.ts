@@ -25,28 +25,36 @@ const startServer = async (): Promise<void> => {
 
 		const app = express();
 
-		app.set("trust proxy", true);
+		app.set("trust proxy", 1);
+
+		app.use(cors());
 
 		app.use(
-			cors({
-				origin: [
-					"http://localhost:3000",
-					`${process.env.CORS_ORIGIN}`,
-					`${process.env.FRONTEND_ORIGIN}`,
-				],
-				methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-				allowedHeaders: [
-					"Content-Type",
-					"Authorization",
-					"Accept",
-					"X-Requested-With",
-				],
-				credentials: true,
-				optionsSuccessStatus: 204,
+			helmet({
+				crossOriginResourcePolicy: false,
 			})
 		);
+		app.use(helmet.noSniff());
+		app.use(helmet.xssFilter());
+		app.use(helmet.ieNoOpen());
+		app.disable("x-powered-by");
 
-		app.use(helmet());
+		app.use(function (req, res, next) {
+			res.header("Access-Control-Allow-Origin", "*");
+			res.header("Access-Control-Allow-Methods", "GET,PUT,PATCH,POST,DELETE,OPTIONS");
+			res.header(
+				"Access-Control-Allow-Headers",
+				"x-openrtb-version,Content-Type,*"
+			);
+			res.header("X-Frame-Options", "ALLOWALL");
+			if (req.method === "OPTIONS") {
+				console.log("INFO: Browser send OPTIONS request.");
+				res.statusCode = 204;
+				return res.end();
+			} else {
+				return next();
+			}
+		});
 
 		const limiter = rateLimit({
 			windowMs: 15 * 60 * 1000, // 15 minutes
@@ -86,10 +94,6 @@ const startServer = async (): Promise<void> => {
 		app.use("/api/v1/photos", writeLimiter, photoRoutes);
 		app.use("/api/v1/photos", writeLimiter, userLikesRoutes);
 		app.use("/api/v1/photos", writeLimiter, commentRoutes);
-
-		app.use("*", (_req, res) => {
-			res.json({ msg: "no route handler found" }).end();
-		});
 
 		app.use(errorMiddleware);
 

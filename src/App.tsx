@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Footer from "./components/Footer";
@@ -15,6 +15,7 @@ import TermsOfUse from "./pages/TermsOfUse";
 import User from "./pages/User";
 import Dashboard from "./pages/profile/Dashboard";
 import Sign from "./pages/sign/Sign";
+import { autoLogin } from "./store/reducers/user";
 import { useAppDispatch, useAppSelector } from "./store/useStore";
 
 const HeaderMemory = memo(() => <Header />);
@@ -23,6 +24,11 @@ const FooterMemory = memo(() => <Footer />);
 function App() {
 	const count = useAppSelector((state) => state.counter);
 	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		dispatch(autoLogin());
+	}, [dispatch]);
+
 	return (
 		<BrowserRouter>
 			<HeaderMemory />
