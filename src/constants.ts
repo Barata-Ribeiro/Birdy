@@ -25,16 +25,15 @@ export const AUTH_LOGIN = (body: authLoginRequest) => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			credentials: "include",
+			credentials: "include" as RequestCredentials,
 			body: JSON.stringify(body),
 		},
 	};
 };
 
 /**
- * Refresh the user's access token. This is used to keep the user logged in.
- * It generates a new access token every 15 minutes, as long as the refresh
- * token is still valid.
+ * As long as a refresh token is present in the cookie, the user will receive a new access token
+ * to be stored in the localStorage.
  */
 export const AUTH_REFRESH_TOKEN = () => {
 	return {
@@ -44,7 +43,7 @@ export const AUTH_REFRESH_TOKEN = () => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			credentials: "include",
+			credentials: "include" as RequestCredentials,
 		},
 	};
 };
@@ -53,15 +52,16 @@ export const AUTH_REFRESH_TOKEN = () => {
  * Log the user out. The cookie will be deleted through the
  * http request method on the backend.
  */
-export const AUTH_LOGOUT = () => {
+export const AUTH_LOGOUT = (refreshToken: string) => {
 	return {
 		url: `${__API_URL__}/auth/logout`,
 		options: {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
+				Authorization: `Bearer ${refreshToken}`,
 			},
-			credentials: "include",
+			credentials: "include" as RequestCredentials,
 		},
 	};
 };
