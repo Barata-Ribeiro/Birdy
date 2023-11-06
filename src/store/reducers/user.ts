@@ -1,15 +1,10 @@
-import { AUTH_LOGIN } from "../../constants";
+import { AUTH_LOGIN, AUTH_LOGOUT } from "../../constants";
 import { AppThunk } from "../configureStore";
 import createAsyncSlice from "../helper/createAsyncSlice";
 
 type UserCredentials = {
 	email: string;
 	password: string;
-};
-
-type AuthTokens = {
-	accessToken: string;
-	refreshToken: string;
 };
 
 const slice = createAsyncSlice({
@@ -41,5 +36,17 @@ export const userLogin =
 			dispatch(fetchError((error as Error).message));
 		}
 	};
+
+export const userLogout = (): AppThunk => async (dispatch) => {
+	dispatch(resetUserState());
+	const { url, options } = AUTH_LOGOUT();
+	try {
+		const response = await fetch(url, options);
+		if (response.ok) window.localStorage.removeItem("accessToken");
+		else console.error("Logout failed", response.status);
+	} catch (error) {
+		console.error("Error during logout", error);
+	}
+};
 
 export default slice.reducer;
