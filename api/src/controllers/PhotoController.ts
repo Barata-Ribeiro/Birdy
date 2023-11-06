@@ -1,69 +1,73 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 
-import { PhotoServices } from "../services/PhotoServices";
-import { BadRequestError, UnauthorizedError } from "../helpers/api-errors";
 import { PhotoRequestBody } from "../@types/types";
+import { BadRequestError, UnauthorizedError } from "../helpers/api-errors";
+import { PhotoServices } from "../services/PhotoServices";
 
 export class PhotoController {
-  async uploadPhoto(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response | void> {
-    try {
-      const user = req.user;
-      const file = req.file as Express.Multer.File;
-      const { title, size, habitat } = req.body as PhotoRequestBody;
+	async uploadPhoto(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	): Promise<Response | void> {
+		try {
+			const user = req.user;
+			const file = req.file as Express.Multer.File;
+			const { title, size, habitat } = req.body as PhotoRequestBody;
 
-      if (!user) throw new UnauthorizedError("User not authenticated.");
-      if (!file) throw new BadRequestError("No file provided.");
-      if (!title || !size || !habitat)
-        throw new BadRequestError(
-          "Title, size, and habitat are required fields."
-        );
+			if (!user) throw new UnauthorizedError("User not authenticated.");
+			if (!file) throw new BadRequestError("No file provided.");
+			if (!title || !size || !habitat)
+				throw new BadRequestError(
+					"Title, size, and habitat are required fields."
+				);
 
-      const result = await PhotoServices.uploadPhoto(user, file, {
-        title,
-        size,
-        habitat,
-      });
-      return res.status(201).send(result);
-    } catch (error) {
-      next(error);
-    }
-  }
+			const result = await PhotoServices.uploadPhoto(user, file, {
+				title,
+				size,
+				habitat,
+			});
+			return res.status(201).send(result);
+		} catch (error) {
+			next(error);
+		}
+	}
 
-  async getAllPhotos(
-    _req: Request,
-    res: Response,
-    _next: NextFunction
-  ): Promise<Response> {
-    const photos = await PhotoServices.getAllPhotos();
-    return res.status(200).send(photos);
-  }
+	async getAllPhotos(
+		req: Request,
+		res: Response,
+		_next: NextFunction
+	): Promise<Response> {
+		const page = parseInt(req.query.page as string) || 1;
+		const total = parseInt(req.query.limit as string) || 5;
+		const userId = req.query.userId as string;
 
-  async getPhotoById(req: Request, res: Response): Promise<Response> {
-    const { photoId } = req.params as { photoId: string };
-    const photo = await PhotoServices.getPhotoById(photoId);
-    return res.status(200).json(photo);
-  }
+		const photos = await PhotoServices.getAllPhotos(page, total, userId);
+		return res.status(200).send(photos);
+	}
 
-  async deletePhoto(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response | void> {
-    try {
-      const { photoId } = req.params as { photoId: string };
-      const user = req.user;
+	async getPhotoById(req: Request, res: Response): Promise<Response> {
+		const { photoId } = req.params as { photoId: string };
+		const photo = await PhotoServices.getPhotoById(photoId);
+		return res.status(200).json(photo);
+	}
 
-      if (!user) throw new UnauthorizedError("User not authenticated.");
+	async deletePhoto(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	): Promise<Response | void> {
+		try {
+			const { photoId } = req.params as { photoId: string };
+			const user = req.user;
 
-      await PhotoServices.deletePhoto(photoId, user);
-      return res.status(200).send({ message: "Photo deleted successfully." });
-    } catch (error) {
-      next(error);
-    }
-  }
+			if (!user) throw new UnauthorizedError("User not authenticated.");
+
+			await PhotoServices.deletePhoto(photoId, user);
+			return res.status(200).send({ message: "Photo deleted successfully." });
+		} catch (error) {
+			next(error);
+		}
+	}
 }

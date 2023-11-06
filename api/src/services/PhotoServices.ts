@@ -9,6 +9,7 @@ import {
 	PhotoRequestBody,
 	UserWithoutPassword,
 } from "../@types/types";
+import { PhotoQueryResponseDTO } from "../dto/PhotoQueryResponseDTO";
 import { PhotoResponseDTO } from "../dto/PhotoResponseDTO";
 import { Photo } from "../entities/Photo";
 import { User } from "../entities/User";
@@ -100,12 +101,27 @@ export class PhotoServices {
 		});
 	}
 
-	static async getAllPhotos(): Promise<PhotoResponseDTO[]> {
-		const photos = await photoRepository.find({
-			relations: ["author", "likes", "comments"],
-		});
+	static async getAllPhotos(
+		page: number,
+		limit: number,
+		userId?: string
+	): Promise<PhotoQueryResponseDTO[]> {
+		if (page < 1 || limit < 1)
+			throw new BadRequestError("Page and limit must be positive integers.");
 
-		return photos.map((photo) => PhotoResponseDTO.fromEntity(photo));
+		const [photos, totalPhotos] = await photoRepository
+			.createQueryBuilder("photo")
+			.leftJoinAndSelect("photo.author", "author")
+			.leftJoinAndSelect("photo.likes", "likes")
+			.leftJoinAndSelect("photo.comments", "comments")
+			.where(userId ? "photo.authorID = :userId" : "1=1", { userId })
+			.take(limit)
+			.skip((page - 1) * limit)
+			.getManyAndCount();
+
+		if ((page - 1) * limit >= totalPhotos && page !== 1) return [];
+
+		return photos.map((photo) => PhotoQueryResponseDTO.fromEntity(photo));
 	}
 
 	static async getPhotoById(photoId: string): Promise<PhotoResponseDTO> {
