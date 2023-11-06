@@ -1,6 +1,7 @@
 import { AUTH_LOGIN, AUTH_LOGOUT } from "../../constants";
 import { AppThunk } from "../configureStore";
 import createAsyncSlice from "../helper/createAsyncSlice";
+import { refreshToken } from "./token";
 
 type UserCredentials = {
 	email: string;
@@ -8,7 +9,7 @@ type UserCredentials = {
 };
 
 const slice = createAsyncSlice({
-	name: "",
+	name: "user",
 	initialState: {
 		loading: false,
 		data: undefined,
@@ -46,6 +47,20 @@ export const userLogout = (): AppThunk => async (dispatch) => {
 		else console.error("Logout failed", response.status);
 	} catch (error) {
 		console.error("Error during logout", error);
+	}
+	window.localStorage.clear();
+};
+
+export const autoLogin = (): AppThunk => async (dispatch, getState) => {
+	const { token } = getState();
+
+	if (token?.data?.token) {
+		try {
+			dispatch(refreshToken());
+		} catch (error) {
+			console.error("Error during auto login:", error);
+			dispatch(userLogout());
+		}
 	}
 };
 
