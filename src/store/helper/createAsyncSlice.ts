@@ -1,5 +1,6 @@
 import {
 	Dispatch,
+	Draft,
 	PayloadAction,
 	SliceCaseReducers,
 	ValidateSliceCaseReducers,
@@ -36,17 +37,12 @@ type AsyncSliceConfiguration<T, U extends unknown[]> = {
  * @returns An object with the slice and asyncAction properties.
  * The slice property is the slice created by createSlice, and the asyncAction property is an asynchronous action that can be dispatched to start the fetch process.
  */
-const createAsyncSlice = <T extends null, U extends unknown[]>(
+const createAsyncSlice = <T, U extends unknown[]>(
 	config: AsyncSliceConfiguration<T, U>
 ) => {
 	const slice = createSlice({
 		name: config.name,
-		initialState: {
-			...config.initialState,
-			loading: false,
-			data: null,
-			error: null,
-		},
+		initialState: config.initialState,
 		reducers: {
 			/**
 			 * - fetchStarted: Dispatched when the data fetch process has started. Sets the loading flag to true.
@@ -64,7 +60,7 @@ const createAsyncSlice = <T extends null, U extends unknown[]>(
        */
 			fetchSuccess(state, action: PayloadAction<T>) {
 				state.loading = false;
-				state.data = action.payload;
+				state.data = action.payload as Draft<T> | null;
 				state.error = null;
 			},
 			/**
@@ -74,7 +70,7 @@ const createAsyncSlice = <T extends null, U extends unknown[]>(
 			 * @param state - The initial state of the slice of the store.
 			 * @param action - The action that was dispatched. In this case the payload is the error that occurred.
 			 */
-			fetchError(state, action: PayloadAction<T>) {
+			fetchError(state, action: PayloadAction<string>) {
 				state.loading = false;
 				state.data = null;
 				state.error = action.payload;
