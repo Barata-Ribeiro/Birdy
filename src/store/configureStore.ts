@@ -5,17 +5,6 @@ import {
 	configureStore,
 } from "@reduxjs/toolkit";
 
-const counter = (state = 0, action: { type: string; payload?: number }) => {
-	switch (action.type) {
-		case "INCREMENT":
-			return state + 1;
-		case "DECREMENT":
-			return state - 1;
-		default:
-			return state;
-	}
-};
-
 import photoPost from "./reducers/photoPost";
 import token from "./reducers/token";
 import user from "./reducers/user";
@@ -24,7 +13,7 @@ import user from "./reducers/user";
  * Creates the store with the given reducers and middleware.
  */
 const store = configureStore({
-	reducer: combineReducers({ counter, user, token, photoPost }),
+	reducer: combineReducers({ user, token, photoPost }),
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });
 

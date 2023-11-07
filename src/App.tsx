@@ -34,23 +34,6 @@ function App() {
 			<HeaderMemory />
 			<Cookies />
 			<main className="container">
-				<div className="flex flex-col items-center justify-center">
-					<h1>Total: {count}</h1>
-					<div className="flex gap-2">
-						<button
-							className="rounded-lg bg-mantis-300 px-4 py-2"
-							onClick={() => dispatch({ type: "INCREMENT" })}
-						>
-							+
-						</button>
-						<button
-							className="rounded-lg bg-mantis-300 px-4 py-2"
-							onClick={() => dispatch({ type: "DECREMENT" })}
-						>
-							-
-						</button>
-					</div>
-				</div>
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/about" element={<About />} />
