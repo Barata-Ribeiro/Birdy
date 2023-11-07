@@ -1,16 +1,15 @@
 import { PHOTO_POST } from "../../constants";
 import createAsyncSlice from "../helper/createAsyncSlice";
 
-const slice = createAsyncSlice<null, [string, FormData]>({
+const slice = createAsyncSlice({
 	name: "photoPost",
-
 	initialState: {
 		loading: false,
 		data: null,
 		error: null,
 	},
 	reducers: {},
-	fetchConfig: (token: string, formData: FormData) =>
+	fetchConfig: ({ token, formData }: { token: string; formData: FormData }) =>
 		PHOTO_POST(token, formData),
 });
 

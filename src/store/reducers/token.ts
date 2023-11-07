@@ -2,11 +2,7 @@ import { AUTH_REFRESH_TOKEN } from "../../constants";
 import { AppThunk } from "../configureStore";
 import createAsyncSlice from "../helper/createAsyncSlice";
 
-type TokensState = {
-	token: string | null;
-};
-
-const slice = createAsyncSlice<TokensState, []>({
+const slice = createAsyncSlice({
 	name: "token",
 
 	initialState: {
