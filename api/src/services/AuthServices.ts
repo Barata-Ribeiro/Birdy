@@ -1,20 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { validate } from "uuid";
-import jwt from "jsonwebtoken";
 import { default as bcrypt } from "bcrypt";
+import jwt from "jsonwebtoken";
 import nodemailer, { SendMailOptions } from "nodemailer";
+import { validate } from "uuid";
 
-import { userRepository } from "../repositories/userRepository";
+import { AuthTokens, JwtPayload } from "../@types/types";
+import { UserLoginResponseDTO } from "../dto/UserLoginResponseDTO";
 import {
 	BadRequestError,
 	InternalServerError,
 	NotFoundError,
 	UnauthorizedError,
 } from "../helpers/api-errors";
-import { JwtPayload, AuthTokens } from "../@types/types";
+import { userRepository } from "../repositories/userRepository";
 
 export class AuthServices {
-	static async login(email: string, password: string): Promise<AuthTokens> {
+	static async login(
+		email: string,
+		password: string
+	): Promise<UserLoginResponseDTO> {
 		const existingUserByEmail = await userRepository.findOneBy({ email });
 
 		if (!existingUserByEmail)
@@ -43,10 +47,14 @@ export class AuthServices {
 		existingUserByEmail.refreshToken = refreshToken;
 		await userRepository.save(existingUserByEmail);
 
-		return {
-			accessToken: accessToken.toString(),
-			refreshToken: refreshToken.toString(),
-		};
+		const userLoginDTO = UserLoginResponseDTO.fromEntity(
+			existingUserByEmail,
+			accessToken
+		);
+
+		userLoginDTO.refreshToken = refreshToken.toString();
+
+		return userLoginDTO;
 	}
 
 	static async refreshToken(
