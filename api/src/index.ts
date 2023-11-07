@@ -28,19 +28,6 @@ const startServer = async (): Promise<void> => {
 		app.set("trust proxy", 1);
 
 		app.use(function (_req, res, next) {
-			res.header("Access-Control-Allow-Origin", "*");
-			res.header("Access-Control-Allow-Credentials", "true");
-			res.header(
-				"Allow-Control-Allow-Methods",
-				"GET,OPTIONS,PATCH,DELETE,POST,PUT"
-			);
-			res.header(
-				"Allow-Control-Allow-Headers",
-				"X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
-			);
-
-			res.header("X-Frame-Options", "DENY");
-
 			app.use(
 				cors({
 					origin: process.env.CORS_ORIGIN?.split(","),
@@ -68,6 +55,19 @@ const startServer = async (): Promise<void> => {
 					optionsSuccessStatus: 201,
 				})
 			);
+
+			res.setHeader("Access-Control-Allow-Origin", "*");
+			res.setHeader("Access-Control-Allow-Credentials", "true");
+			res.setHeader(
+				"Allow-Control-Allow-Methods",
+				"GET,OPTIONS,PATCH,DELETE,POST,PUT"
+			);
+			res.setHeader(
+				"Allow-Control-Allow-Headers",
+				"X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
+			);
+
+			res.header("X-Frame-Options", "DENY");
 
 			next();
 		});

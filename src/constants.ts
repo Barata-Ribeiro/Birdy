@@ -22,6 +22,7 @@ export const AUTH_LOGIN = (body: authLoginRequest) => {
 		url: `${__API_URL__}/auth/login`,
 		options: {
 			method: "POST",
+			mode: "no-cors",
 			headers: {
 				"Content-Type": "application/json",
 			},
