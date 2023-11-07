@@ -452,10 +452,18 @@ export const PHOTO_POST = (token: string, formData: FormData) => {
 
 /**
  * Function that returns the fetch's object containing the URL and options for making a GET request to retrieve a list of all photos.
+ * @param {number} page - The current page number for pagination.
+ * @param {number} limit - The number of photos to fetch per page.
+ * @param {string} [userId] - The ID of the user to filter photos by (optional).
  */
-export const PHOTOS_GET_ALL = () => {
+export const PHOTOS_GET_ALL = (page = 1, limit = 5, userId?: string) => {
+	const queryParams = new URLSearchParams({
+		page: page.toString(),
+		limit: limit.toString(),
+		...(userId && { userId }),
+	});
 	return {
-		url: `${__API_URL__}/photos/`,
+		url: `${__API_URL__}/photos/?${queryParams}`,
 		options: {
 			method: "GET",
 			headers: {
