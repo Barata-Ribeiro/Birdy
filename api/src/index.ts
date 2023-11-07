@@ -27,7 +27,50 @@ const startServer = async (): Promise<void> => {
 
 		app.set("trust proxy", 1);
 
-		app.use(cors());
+		app.use(function (_req, res, next) {
+			res.header("Access-Control-Allow-Origin", "*");
+			res.header("Access-Control-Allow-Credentials", "true");
+			res.header(
+				"Allow-Control-Allow-Methods",
+				"GET,OPTIONS,PATCH,DELETE,POST,PUT"
+			);
+			res.header(
+				"Allow-Control-Allow-Headers",
+				"X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
+			);
+
+			res.header("X-Frame-Options", "DENY");
+
+			app.use(
+				cors({
+					origin: process.env.CORS_ORIGIN?.split(","),
+					methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+					allowedHeaders: [
+						"Accept",
+						"Accept-Version",
+						"Authorization",
+						"Cache-Control",
+						"Content-Length",
+						"Content-Type",
+						"Date",
+						"DNT",
+						"Origin",
+						"Range",
+						"User-Agent",
+						" X-Api-Version",
+						"X-CSRF-Token",
+						"X-Requested-With",
+						"x-openrtb-version",
+					],
+					exposedHeaders: ["Content-Length", "Content-Range"],
+					credentials: true,
+					preflightContinue: true,
+					optionsSuccessStatus: 201,
+				})
+			);
+
+			next();
+		});
 
 		app.use(
 			helmet({
@@ -39,61 +82,26 @@ const startServer = async (): Promise<void> => {
 		app.use(helmet.ieNoOpen());
 		app.disable("x-powered-by");
 
-		app.use(function (req, res, next) {
-			res.header("Access-Control-Allow-Origin", "*");
-			res.header("Access-Control-Allow-Methods", "GET,PUT,PATCH,POST,DELETE,OPTIONS");
-			res.header(
-				"Access-Control-Allow-Headers",
-				"x-openrtb-version,Content-Type,*"
-			);
-			res.header("X-Frame-Options", "ALLOWALL");
-			if (req.method === "OPTIONS") {
-				console.log("INFO: Browser send OPTIONS request.");
-				res.statusCode = 204;
-				return res.end();
-			} else {
-				return next();
-			}
-		});
-
 		const limiter = rateLimit({
 			windowMs: 15 * 60 * 1000, // 15 minutes
-			max: 100,
+			max: 1000,
 			message: "Too many requests, please try again later.",
 		});
 
 		app.use(limiter);
-
-		const authLimiter = rateLimit({
-			windowMs: 5 * 60 * 1000, // 5 minutes
-			max: 10,
-			message: "Too many authentication attempts, please try again later.",
-		});
-
-		const readLimiter = rateLimit({
-			windowMs: 15 * 60 * 1000, // 15 minutes
-			max: 100,
-			message: "Too many requests, please try again later.",
-		});
-
-		const writeLimiter = rateLimit({
-			windowMs: 15 * 60 * 1000, // 15 minutes
-			max: 50,
-			message: "Too many requests, please try again later.",
-		});
 
 		app.use(express.json());
 
 		app.use(cookieParser());
 
 		// ROUTES //
-		app.use("/api/v1/auth", authLimiter, authRoutes);
-		app.use("/api/v1/users", readLimiter, userRoutes);
-		app.use("/api/v1/admin", readLimiter, adminRoutes);
-		app.use("/api/v1/profile", readLimiter, profileRoutes);
-		app.use("/api/v1/photos", writeLimiter, photoRoutes);
-		app.use("/api/v1/photos", writeLimiter, userLikesRoutes);
-		app.use("/api/v1/photos", writeLimiter, commentRoutes);
+		app.use("/api/v1/auth", limiter, authRoutes);
+		app.use("/api/v1/users", limiter, userRoutes);
+		app.use("/api/v1/admin", limiter, adminRoutes);
+		app.use("/api/v1/profile", limiter, profileRoutes);
+		app.use("/api/v1/photos", limiter, photoRoutes);
+		app.use("/api/v1/photos", limiter, userLikesRoutes);
+		app.use("/api/v1/photos", limiter, commentRoutes);
 
 		app.use(errorMiddleware);
 
