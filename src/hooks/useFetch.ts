@@ -1,54 +1,72 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-interface FetchState<T> {
-	data: T | null;
-	loading: boolean;
-	error: string | null;
+interface FetchResult<T> {
+	response: Response | null;
+	json: T | null;
 }
 
-const useFetch = <T>(
-	url: RequestInfo | URL,
-	options?: RequestInit | undefined
-): FetchState<T> => {
+type ErrorResponse = {
+	message: string;
+};
+
+const useFetch = <T>() => {
 	const [data, setData] = useState<T | null>(null);
-	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(false);
+	const abortControllerRef = useRef<AbortController | null>(null);
 
-	const optionsRef = useRef(options);
-	optionsRef.current = options;
+	const request = useCallback(
+		async (url: string, options?: RequestInit): Promise<FetchResult<T>> => {
+			let response: Response | null = null;
+			let json: T | null = null;
 
-	useEffect(() => {
-		const controller = new AbortController();
-		const { signal } = controller;
-
-		const fetchData = async () => {
-			setLoading(true);
-			setData(null);
+			const abortController = new AbortController();
+			abortControllerRef.current = abortController;
+			const { signal } = abortController;
 
 			try {
-				const response = await fetch(url, {
-					signal,
-					...optionsRef.current,
-				});
-				if (!response.ok) throw new Error(`Error: ${response.status}`);
-				const json = (await response.json()) as T;
-				if (!signal.aborted) setData(json);
+				setError(null);
+				setLoading(true);
+
+				response = await fetch(url, { ...options, signal });
+				const tempJson = await response.json();
+				if (!response.ok) {
+					if ("message" in tempJson)
+						throw new Error(
+							tempJson.message || "Network response was not ok..."
+						);
+					else
+						throw new Error(
+							"Network response was not ok and error message is unknown"
+						);
+				}
+
+				json = tempJson as T;
 			} catch (err) {
-				if (!signal.aborted && err instanceof Error) setError(err.message);
-				console.error(err);
+				if (err instanceof Error) {
+					if (err.name !== "AbortError") {
+						json = null;
+						setError(err.message);
+					}
+				} else String(err);
 			} finally {
-				if (!signal.aborted) setLoading(false);
+				if (!signal.aborted) {
+					setData(json);
+					setLoading(false);
+				}
 			}
-		};
+			return { response, json };
+		},
+		[]
+	);
 
-		fetchData();
-
+	useEffect(() => {
 		return () => {
-			controller.abort();
+			abortControllerRef.current?.abort();
 		};
-	}, [url]);
+	}, []);
 
-	return { data, loading, error };
+	return { data, error, loading, request };
 };
 
 export default useFetch;

@@ -25,7 +25,6 @@ export const AUTH_LOGIN = (body: authLoginRequest) => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			credentials: "include" as RequestCredentials,
 			body: JSON.stringify(body),
 		},
 	};
@@ -182,6 +181,7 @@ export const USER_EDIT_PROFILE = (
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
+			credentials: "include" as RequestCredentials,
 			body: JSON.stringify(body),
 		},
 	};
@@ -203,6 +203,7 @@ export const USER_DELETE_OWN_ACCOUNT = (token: string) => {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
+			credentials: "include" as RequestCredentials,
 		},
 	};
 };
@@ -222,6 +223,7 @@ export const GET_OWN_PROFILE_STATS = (token: string) => {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
+			credentials: "include" as RequestCredentials,
 		},
 	};
 };
@@ -246,6 +248,7 @@ export const ADMIN_GET_USER_BY_USERNAME = (
 				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify(body),
+			credentials: "include" as RequestCredentials,
 		},
 	};
 };
@@ -271,6 +274,7 @@ export const ADMIN_DELETE_COMMENT_BY_ID = (
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
+			credentials: "include" as RequestCredentials,
 		},
 	};
 };
@@ -291,6 +295,7 @@ export const ADMIN_DELETE_PHOTO_BY_ID = (photoId: string, token: string) => {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
+			credentials: "include" as RequestCredentials,
 		},
 	};
 };
@@ -311,6 +316,7 @@ export const ADMIN_DELETE_USER_BY_ID = (userId: string, token: string) => {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
+			credentials: "include" as RequestCredentials,
 		},
 	};
 };
@@ -336,6 +342,7 @@ export const COMMENT_CREATE = (
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
+			credentials: "include" as RequestCredentials,
 			body: JSON.stringify(body),
 		},
 	};
@@ -396,6 +403,7 @@ export const COMMENT_DELETE_BY_ID = (
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
+			credentials: "include" as RequestCredentials,
 		},
 	};
 };
@@ -416,6 +424,7 @@ export const TOGGLE_LIKE = (photoId: string, token: string) => {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
+			credentials: "include" as RequestCredentials,
 		},
 	};
 };
@@ -435,6 +444,7 @@ export const PHOTO_POST = (token: string, formData: FormData) => {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
+			credentials: "include" as RequestCredentials,
 			body: formData,
 		},
 	};
@@ -487,6 +497,7 @@ export const PHOTO_DELETE = (photoId: string, token: string) => {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
+			credentials: "include" as RequestCredentials,
 		},
 	};
 };
