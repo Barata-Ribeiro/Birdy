@@ -2,16 +2,24 @@ import { FormEvent, useEffect, useState } from "react";
 import { FaFolder, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
+import Error from "../../components/helpers/Error";
 import Head from "../../components/helpers/Head";
 import FormButton from "../../components/shared/FormButton";
 import Input from "../../components/shared/Input";
+import { USER_CREATE } from "../../constants";
+import useFetch from "../../hooks/useFetch";
 import useForm from "../../hooks/useForm";
+import { userLogin } from "../../store/reducers/user";
+import { useAppDispatch } from "../../store/useStore";
 
 const SignUp = () => {
 	const username = useForm("username");
 	const email = useForm("email");
 	const password = useForm("password");
 	const confirmPassword = useForm();
+
+	const { loading, error, request } = useFetch();
+	const dispatch = useAppDispatch();
 
 	const [errorConfirmPassword, setErrorConfirmPassword] = useState<
 		string | undefined
@@ -38,8 +46,20 @@ const SignUp = () => {
 			isEmailValid &&
 			isPasswordValid &&
 			isConfirmPasswordValid
-		)
-			console.log("SUBMIT");
+		) {
+			try {
+				const { url, options } = USER_CREATE({
+					username: username.value,
+					email: email.value,
+					password: password.value,
+				});
+				const { response } = await request(url, options);
+				if (response?.ok)
+					dispatch(userLogin({ email: email.value, password: password.value }));
+			} catch (error) {
+				console.error(error);
+			}
+		}
 	};
 
 	return (
@@ -147,10 +167,14 @@ const SignUp = () => {
 					</label>
 				</div>
 				<div className="px-4 pb-2 pt-4">
-					<FormButton customClasses="p-4 text-lg rounded-2xl group-invalid:pointer-events-none group-invalid:opacity-30">
+					<FormButton
+						customClasses="p-4 text-lg rounded-2xl group-invalid:pointer-events-none group-invalid:opacity-30"
+						isLoading={loading}
+					>
 						create account
 					</FormButton>
 				</div>
+				<Error error={error} />
 				<div className="mt-2 text-center">
 					<Link
 						to="../in"
