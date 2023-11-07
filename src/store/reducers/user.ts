@@ -28,10 +28,12 @@ export const userLogin =
 		try {
 			const actionResult = await dispatch(fetchUser(credentials));
 			if (actionResult?.payload) {
-				const tokens = actionResult.payload;
-				if (tokens && tokens.accessToken)
-					window.localStorage.setItem("accessToken", tokens.accessToken);
-				else console.error("Authentication tokens are missing in the payload");
+				const { accessToken, refreshToken, ...userData } = actionResult.payload;
+				if (accessToken) {
+					window.localStorage.setItem("accessToken", accessToken);
+					dispatch(slice.actions.fetchSuccess(userData));
+				} else
+					console.error("Authentication tokens are missing in the payload");
 			}
 		} catch (error) {
 			dispatch(fetchError((error as Error).message));
