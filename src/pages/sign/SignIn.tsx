@@ -6,17 +6,15 @@ import Head from "../../components/helpers/Head";
 import FormButton from "../../components/shared/FormButton";
 import Input from "../../components/shared/Input";
 import useForm from "../../hooks/useForm";
-import { userLogin } from "../../store/reducers/user";
-import { useAppDispatch, useAppSelector } from "../../store/useStore";
+import { userLogin } from "../../store/features/user";
+import { useAppDispatch, useAppSelector } from "../../store/redux-hooks";
 
 const SignIn = () => {
 	const email = useForm();
 	const password = useForm();
 
 	const dispatch = useAppDispatch();
-	const { token, user } = useAppSelector((state) => state);
-	const loading = token.loading || user.loading;
-	const error = token.error | user.error;
+	const token = useAppSelector((state) => state.token);
 
 	const handleSubmit = async (event: FormEvent) => {
 		event.preventDefault();

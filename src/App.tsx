@@ -15,14 +15,13 @@ import TermsOfUse from "./pages/TermsOfUse";
 import User from "./pages/User";
 import Dashboard from "./pages/profile/Dashboard";
 import Sign from "./pages/sign/Sign";
-import { autoLogin } from "./store/reducers/user";
-import { useAppDispatch, useAppSelector } from "./store/useStore";
+import { autoLogin } from "./store/features/user";
+import { useAppDispatch } from "./store/redux-hooks";
 
 const HeaderMemory = memo(() => <Header />);
 const FooterMemory = memo(() => <Footer />);
 
 function App() {
-	const count = useAppSelector((state) => state.counter);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {

@@ -9,8 +9,8 @@ import Input from "../../components/shared/Input";
 import { USER_CREATE } from "../../constants";
 import useFetch from "../../hooks/useFetch";
 import useForm from "../../hooks/useForm";
-import { userLogin } from "../../store/reducers/user";
-import { useAppDispatch } from "../../store/useStore";
+import { userLogin } from "../../store/features/user";
+import { useAppDispatch } from "../../store/redux-hooks";
 
 const SignUp = () => {
 	const username = useForm("username");

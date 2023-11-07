@@ -3,7 +3,6 @@ module.exports = {
 	env: { browser: true, es2020: true },
 	extends: [
 		"eslint:recommended",
-		"plugin:@typescript-eslint/recommended",
 		"plugin:react-hooks/recommended",
 		"plugin:prettier/recommended",
 		"plugin:tailwindcss/recommended",
@@ -14,16 +13,14 @@ module.exports = {
 		"vite.config.ts",
 		"tailwind.config.js",
 	],
-	parser: "@typescript-eslint/parser",
 	parserOptions: {
-		project: ["tsconfig.json"],
+		ecmaVersion: 11, // es2020 equivalente a ecmaVersion: 11
+		sourceType: "module",
 	},
 	plugins: ["react-refresh", "react-hooks", "tailwindcss", "prettier"],
 	rules: {
 		"prettier/prettier": ["error", {}, { usePrettierrc: true }],
 		"react-refresh/only-export-components": "off",
-		"@typescript-eslint/no-non-null-assertion": "off",
-		"@typescript-eslint/no-unused-vars": "off",
 		"tailwindcss/classnames-order": "warn",
 		"tailwindcss/no-custom-classname": "off",
 		"tailwindcss/no-contradicting-classname": "error",
@@ -33,4 +30,22 @@ module.exports = {
 			version: "detect",
 		},
 	},
+	overrides: [
+		{
+			files: ["*.ts", "*.tsx"],
+			parser: "@typescript-eslint/parser",
+			parserOptions: {
+				project: ["tsconfig.json"],
+			},
+			plugins: ["@typescript-eslint"],
+			extends: ["plugin:@typescript-eslint/recommended"],
+			rules: {
+				"@typescript-eslint/no-non-null-assertion": "off",
+				"@typescript-eslint/no-unused-vars": "off",
+			},
+		},
+		{
+			files: ["*.js", "*.jsx"],
+		},
+	],
 };
