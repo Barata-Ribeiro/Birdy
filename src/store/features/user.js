@@ -4,6 +4,9 @@ import { refreshToken } from "./token";
 
 const slice = createAsyncSlice({
 	name: "user",
+	initialState: {
+		data: window.localStorage.getItem("userData") || null,
+	},
 	fetchConfig: (credentials) => AUTH_LOGIN(credentials),
 });
 
@@ -17,6 +20,7 @@ export const userLogin = (credentials) => async (dispatch) => {
 		const { accessToken, refreshToken, ...userData } = actionResult.payload;
 		if (accessToken) {
 			window.localStorage.setItem("accessToken", accessToken);
+			window.localStorage.setItem("userData", JSON.stringify(userData));
 			dispatch(slice.actions.fetchSuccess(userData));
 		} else console.error("Authentication tokens are missing in the payload");
 	} catch (error) {
@@ -29,8 +33,10 @@ export const userLogout = () => async (dispatch) => {
 	const { url, options } = AUTH_LOGOUT();
 	try {
 		const response = await fetch(url, options);
-		if (response.ok) window.localStorage.removeItem("accessToken");
-		else console.error("Logout failed", response.status);
+		if (response.ok) {
+			window.localStorage.removeItem("accessToken");
+			window.localStorage.removeItem("userData");
+		} else console.error("Logout failed", response.status);
 	} catch (error) {
 		console.error("Error during logout", error);
 	}
@@ -52,15 +58,11 @@ const isTokenExpired = (accessToken) => {
 
 export const autoLogin = () => async (dispatch, getState) => {
 	const { token } = getState();
+	const userData = JSON.parse(window.localStorage.getItem("userData") || "{}");
 
-	if (token?.data?.token && isTokenExpired(token?.data?.token)) {
-		try {
-			dispatch(refreshToken());
-		} catch (error) {
-			console.error("Error during auto login:", error);
-			dispatch(userLogout());
-		}
-	}
+	if (token && !isTokenExpired(token))
+		dispatch(slice.actions.fetchSuccess(userData));
+	else if (token && isTokenExpired(token)) dispatch(refreshToken());
 };
 
 export default slice.reducer;
