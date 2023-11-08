@@ -8,6 +8,8 @@ import { Route, Routes } from "react-router-dom";
 import DeleteProfileModal from "../../components/DeleteProfileModal";
 import EditProfileModal from "../../components/EditProfileModal";
 import MainButton from "../../components/shared/MainButton";
+import useFetch from "../../hooks/useFetch";
+import { useAppDispatch, useAppSelector } from "../../store/redux-hooks";
 import NotFound from "../NotFound";
 import ProfileAdmin from "./ProfileAdmin";
 import ProfilePhotos from "./ProfilePhotos";
@@ -17,6 +19,15 @@ import ProfileUpload from "./ProfileUpload";
 const Dashboard = () => {
 	const [editModal, setEditModal] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
+
+	const dispatch = useAppDispatch();
+	const {
+		data,
+		loading: reduxLoading,
+		error: reduxError,
+	} = useAppSelector((state) => state.user);
+
+	const { loading: fetchLoading, error: fetchError, request } = useFetch();
 
 	const handleEditModal = (e?: MouseEvent) => {
 		e?.preventDefault();
@@ -43,14 +54,14 @@ const Dashboard = () => {
 				<div className="h-[250px] w-full bg-[url('https://source.unsplash.com/random/?bird')] bg-cover bg-center"></div>
 				<div className="-mt-20 flex flex-col items-center">
 					<img
-						src="https://source.unsplash.com/random/?selfie"
+						src={data.avatarUrl}
 						className="h-40 w-40 rounded-full border-4 border-green-spring-50 object-cover"
 					/>
 					<div className="mt-2 flex items-center space-x-2">
-						<p className="text-2xl">User Name</p>
+						<p className="text-2xl">{data.username}</p>
 						<FaUser />
 					</div>
-					<p className="text-green-spring-700">jasonbourne@cia.com</p>
+					<p className="text-green-spring-700">{data.email}</p>
 					<p className="mb-3 mt-1 max-w-md text-center text-green-spring-700">
 						Sed ut perspiciatis unde omnis iste natus error sit voluptatem
 						accusantium doloremque laudantium, totam rem aperiam, eaque ipsa

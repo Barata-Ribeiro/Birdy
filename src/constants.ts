@@ -8,8 +8,7 @@ import {
 	userEditProfileRequest,
 } from "./@types/constants";
 
-export const __API_URL__: string =
-	import.meta.env.VITE_API_URL || "http://localhost:3000/api/v1";
+export const __API_URL__: string = "http://localhost:3000/api/v1";
 
 //AUTHENTICATION CONSTANTS
 /**
@@ -22,10 +21,10 @@ export const AUTH_LOGIN = (body: authLoginRequest) => {
 		url: `${__API_URL__}/auth/login`,
 		options: {
 			method: "POST",
-			mode: "no-cors",
 			headers: {
 				"Content-Type": "application/json",
 			},
+			credentials: "include" as RequestCredentials,
 			body: JSON.stringify(body),
 		},
 	};

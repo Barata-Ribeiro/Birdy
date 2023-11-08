@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 
 import Cookies from "./components/helpers/Cookies";
+import ProtectedRoute from "./components/helpers/ProtectedRoute";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
@@ -38,7 +39,14 @@ function App() {
 					<Route path="/about" element={<About />} />
 					<Route path="/contact" element={<Contact />} />
 					<Route path="sign/*" element={<Sign />} />
-					<Route path="dashboard/*" element={<Dashboard />} />
+					<Route
+						path="dashboard/*"
+						element={
+							<ProtectedRoute>
+								<Dashboard />
+							</ProtectedRoute>
+						}
+					/>
 					<Route path="photo/:id" element={<Photo />} />
 					<Route path="user/:id" element={<User />} />
 					<Route path="/privacy-policy" element={<PrivacyPolicy />} />
