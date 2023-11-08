@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import nodemailer, { SendMailOptions } from "nodemailer";
 import { validate } from "uuid";
 
-import { AuthTokens, JwtPayload } from "../@types/types";
+import { JwtPayload } from "../@types/types";
 import { UserLoginResponseDTO } from "../dto/UserLoginResponseDTO";
 import {
 	BadRequestError,
@@ -59,7 +59,7 @@ export class AuthServices {
 
 	static async refreshToken(
 		refreshTokenFromCookie: string
-	): Promise<AuthTokens> {
+	): Promise<UserLoginResponseDTO> {
 		if (typeof refreshTokenFromCookie !== "string")
 			throw new BadRequestError("Refresh token is required.");
 
@@ -87,7 +87,12 @@ export class AuthServices {
 			{ expiresIn: "15m" }
 		);
 
-		return { accessToken: accessToken.toString() };
+		const userLoginDTO = UserLoginResponseDTO.fromEntityWithoutRefreshToken(
+			user,
+			accessToken
+		);
+
+		return userLoginDTO;
 	}
 
 	static async logout(refreshTokenFromCookie: string): Promise<void> {
