@@ -1,10 +1,13 @@
 import { AUTH_REFRESH_TOKEN } from "../../constants";
 import createAsyncSlice from "../helper/createAsyncSlice";
+import { userLogout } from "./user";
 
 const slice = createAsyncSlice({
 	name: "token",
-	data: {
-		token: window.localStorage.getItem("accessToken") || null,
+	initialState: {
+		data: {
+			token: window.localStorage.getItem("accessToken") || null,
+		},
 	},
 	fetchConfig: () => AUTH_REFRESH_TOKEN(),
 });
@@ -15,15 +18,18 @@ export const { resetState: resetTokenState } = slice.actions;
 export const refreshToken = () => async (dispatch) => {
 	try {
 		const actionResult = await dispatch(fetchToken());
-
 		if (actionResult?.payload) {
 			const newAccessToken = actionResult.payload;
-			if (newAccessToken && newAccessToken.token)
-				window.localStorage.setItem("accessToken", newAccessToken.token);
+			if (newAccessToken)
+				window.localStorage.setItem("accessToken", newAccessToken.accessToken);
 			else console.error("New access token is missing in the payload");
-		} else console.error("Token fetch was not fulfilled");
+		} else {
+			console.error("Token fetch was not fulfilled");
+			dispatch(userLogout());
+		}
 	} catch (error) {
 		console.error("Error refreshing token:", error);
+		dispatch(userLogout());
 	}
 };
 

@@ -13,7 +13,6 @@ const { resetState: resetUserState, fetchError } = slice.actions;
 export const userLogin = (credentials) => async (dispatch) => {
 	try {
 		const actionResult = await dispatch(fetchUser(credentials));
-		console.log(actionResult);
 		// eslint-disable-next-line no-unused-vars
 		const { accessToken, refreshToken, ...userData } = actionResult.payload;
 		if (accessToken) {
@@ -38,10 +37,23 @@ export const userLogout = () => async (dispatch) => {
 	window.localStorage.clear();
 };
 
+const isTokenExpired = (accessToken) => {
+	try {
+		const payloadBase64 = accessToken.split(".")[1];
+		const decodedJson = atob(payloadBase64);
+		const decoded = JSON.parse(decodedJson);
+		const exp = decoded.exp;
+		const now = Date.now().valueOf() / 1000;
+		return now > exp;
+	} catch (error) {
+		return false;
+	}
+};
+
 export const autoLogin = () => async (dispatch, getState) => {
 	const { token } = getState();
 
-	if (token?.data?.token) {
+	if (token?.data?.token && isTokenExpired(token?.data?.token)) {
 		try {
 			dispatch(refreshToken());
 		} catch (error) {
