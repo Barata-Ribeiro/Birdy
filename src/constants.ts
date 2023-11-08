@@ -8,7 +8,8 @@ import {
 	userEditProfileRequest,
 } from "./@types/constants";
 
-export const __API_URL__: string = "http://localhost:3000/api/v1";
+export const __API_URL__: string =
+	import.meta.env.VITE_API_URL || "http://localhost:3000/api/v1";
 
 //AUTHENTICATION CONSTANTS
 /**
@@ -469,6 +470,7 @@ export const PHOTOS_GET_ALL = (page = 1, limit = 5, userId?: string) => {
 			headers: {
 				"Content-Type": "application/json",
 			},
+			credentials: "include" as RequestCredentials,
 		},
 	};
 };

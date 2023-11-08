@@ -58,9 +58,9 @@ const isTokenExpired = (accessToken) => {
 
 export const autoLogin = () => async (dispatch, getState) => {
 	const { token } = getState();
-	const userData = JSON.parse(window.localStorage.getItem("userData") || "{}");
+	const userData = JSON.parse(window.localStorage.getItem("userData") || null);
 
-	if (token && !isTokenExpired(token))
+	if (!token && !isTokenExpired(token))
 		dispatch(slice.actions.fetchSuccess(userData));
 	else if (token && isTokenExpired(token)) dispatch(refreshToken());
 };

@@ -22,7 +22,7 @@ const Image: FC<ImageProps> = ({ alt, ...props }) => {
 			)}
 			<img
 				onLoad={handleLoad}
-				className="block max-w-full object-cover opacity-0 transition-opacity duration-200"
+				className="h-auto max-w-full bg-cover bg-no-repeat object-cover align-middle italic opacity-0 transition-opacity duration-200"
 				alt={alt}
 				{...props}
 			/>
