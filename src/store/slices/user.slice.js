@@ -1,6 +1,6 @@
 import { AUTH_LOGIN, AUTH_LOGOUT } from "../../constants";
 import createAsyncSlice from "../helper/createAsyncSlice";
-import { refreshToken } from "./token";
+import { refreshToken } from "./token.slice";
 
 const slice = createAsyncSlice({
 	name: "user",
@@ -57,7 +57,7 @@ const isTokenExpired = (accessToken) => {
 
 export const autoLogin = () => async (dispatch, getState) => {
 	const { token } = getState();
-	const userData = null || JSON.parse(window.localStorage.getItem("userData"));
+	const userData = JSON.parse(window.localStorage.getItem("userData")) || null;
 
 	if (!token && !isTokenExpired(token))
 		dispatch(slice.actions.fetchSuccess(userData));

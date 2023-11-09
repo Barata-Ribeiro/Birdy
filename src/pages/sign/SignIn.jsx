@@ -6,7 +6,7 @@ import Head from "../../components/helpers/Head";
 import FormButton from "../../components/shared/FormButton";
 import Input from "../../components/shared/Input";
 import useForm from "../../hooks/useForm";
-import { userLogin } from "../../store/features/user";
+import { userLogin } from "../../store/slices/user.slice";
 
 const SignIn = () => {
 	const email = useForm();

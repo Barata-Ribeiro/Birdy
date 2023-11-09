@@ -10,7 +10,7 @@ import Input from "../../components/shared/Input";
 import { USER_CREATE } from "../../constants";
 import useFetch from "../../hooks/useFetch";
 import useForm from "../../hooks/useForm";
-import { userLogin } from "../../store/features/user";
+import { userLogin } from "../../store/slices/user.slice";
 
 const SignUp = () => {
 	const username = useForm("username");
@@ -143,7 +143,7 @@ const SignUp = () => {
 				</div>
 				<div className="flex items-center justify-end gap-2">
 					<input
-						className="border-green-spring-300 bg-green-spring-100 text-bright-turquoise-600 focus:ring-bright-turquoise-500 dark:border-green-spring-600 dark:bg-green-spring-700 dark:ring-offset-green-spring-800 dark:focus:ring-bright-turquoise-600 h-4 w-4 rounded focus:ring-2"
+						className="h-4 w-4 rounded border-green-spring-300 bg-green-spring-100 text-bright-turquoise-600 focus:ring-2 focus:ring-bright-turquoise-500 dark:border-green-spring-600 dark:bg-green-spring-700 dark:ring-offset-green-spring-800 dark:focus:ring-bright-turquoise-600"
 						type="checkbox"
 						name="terms-of-use"
 						id="terms-of-use"
@@ -152,12 +152,12 @@ const SignUp = () => {
 					/>{" "}
 					<label
 						htmlFor="terms-of-use"
-						className="text-green-spring-50 dark:text-green-spring-50 lg:text-green-spring-950 text-left"
+						className="text-left text-green-spring-50 dark:text-green-spring-50 lg:text-green-spring-950"
 					>
 						I've read and accepted the{" "}
 						<Link
 							to={"/terms-of-use"}
-							className="text-green-spring-50 hover:text-bright-turquoise-500 dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600 font-semibold transition-colors duration-300 hover:underline"
+							className="font-semibold text-green-spring-50 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600"
 						>
 							Terms of Use
 						</Link>
@@ -176,7 +176,7 @@ const SignUp = () => {
 				<div className="mt-2 text-center">
 					<Link
 						to="../in"
-						className="text-green-spring-50 hover:text-bright-turquoise-500 dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600 transition-colors duration-300 hover:underline"
+						className="text-green-spring-50 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600"
 					>
 						Already a member? Login!
 					</Link>

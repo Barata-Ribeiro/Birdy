@@ -1,9 +1,9 @@
-import { PHOTO_POST } from "../api-connection";
-import createAsyncSlice from "./helper/createAsyncSlice";
+import { PHOTO_POST } from "../../constants";
+import createAsyncSlice from "../helper/createAsyncSlice";
 
 const slice = createAsyncSlice({
 	name: "photoPost",
-	fetchConfig: ({ formData, token }) => PHOTO_POST({ formData, token }),
+	fetchConfig: ({ token, formData }) => PHOTO_POST(token, formData),
 });
 
 export const photoPost = slice.asyncAction;
