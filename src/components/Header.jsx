@@ -15,7 +15,7 @@ const links = {
 
 const Navbar = () => {
 	const [open, setOpen] = useState(false);
-	const headerButtonsRef = useRef < HTMLDivElement > null;
+	const headerButtonsRef = useRef(null);
 	const [showHeaderButtons, setShowHeaderButtons] = useState(false);
 
 	const handleToggle = () => {
@@ -36,7 +36,7 @@ const Navbar = () => {
 	}, [open]);
 
 	return (
-		<header className="bg-green-spring-50 dark:bg-green-spring-950 sticky top-0 z-50 flex w-full items-center shadow-sm">
+		<header className="sticky top-0 z-50 flex w-full items-center bg-green-spring-50 shadow-sm dark:bg-green-spring-950">
 			<div className="container">
 				<div className="relative flex items-center justify-between">
 					{/* LOGO */}
@@ -66,8 +66,8 @@ const Navbar = () => {
 
 							<nav
 								id="navbarCollapse"
-								className={`bg-green-spring-50 absolute right-4 top-full z-50 w-full max-w-[250px] 
-                            rounded-lg px-6 py-5 shadow transition-all duration-300 ease-out 
+								className={`absolute right-4 top-full z-50 w-full max-w-[250px] rounded-lg 
+                            bg-green-spring-50 px-6 py-5 shadow transition-all duration-300 ease-out 
                             lg:static lg:block lg:w-full 
                             lg:max-w-full lg:bg-transparent lg:shadow-none 
                             ${
@@ -94,8 +94,8 @@ const Navbar = () => {
 													to="/sign/in"
 													className={({ isActive }) =>
 														isActive
-															? "bg-mantis-200 flex rounded-sm px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex"
-															: "hover:text-bright-turquoise-500 flex py-2 text-base font-normal text-gray-900 lg:ml-12 lg:inline-flex"
+															? "flex rounded-sm bg-mantis-200 px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex"
+															: "flex py-2 text-base font-normal text-gray-900 hover:text-bright-turquoise-500 lg:ml-12 lg:inline-flex"
 													}
 													onClick={handleLinkClick}
 												>
@@ -107,8 +107,8 @@ const Navbar = () => {
 													to="/sign/up"
 													className={({ isActive }) =>
 														isActive
-															? "bg-mantis-400 hover:text-bright-turquoise-500 flex rounded-sm px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex"
-															: "bg-mantis-600 flex rounded-sm px-2 py-2 text-base font-normal text-gray-900 lg:ml-12 lg:inline-flex"
+															? "flex rounded-sm bg-mantis-400 px-2 py-2 text-base font-medium text-gray-900 hover:text-bright-turquoise-500 lg:ml-12 lg:inline-flex"
+															: "flex rounded-sm bg-mantis-600 px-2 py-2 text-base font-normal text-gray-900 lg:ml-12 lg:inline-flex"
 													}
 													onClick={handleLinkClick}
 												>
@@ -129,7 +129,7 @@ const Navbar = () => {
 						>
 							<Link
 								to="/sign/in"
-								className=" hover:text-bright-turquoise-500 px-7 py-3 text-base"
+								className=" px-7 py-3 text-base hover:text-bright-turquoise-500"
 							>
 								Sign in
 							</Link>

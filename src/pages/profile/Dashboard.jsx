@@ -55,27 +55,27 @@ const Dashboard = () => {
 				<div className="-mt-20 flex flex-col items-center">
 					<img
 						src={data.avatarUrl}
-						className="border-green-spring-50 h-40 w-40 rounded-full border-4 object-cover"
+						className="h-40 w-40 rounded-full border-4 border-green-spring-50 object-cover"
 					/>
 					<div className="mt-2 flex items-center space-x-2">
 						<p className="text-2xl">{data.username}</p>
 						<FaUser />
 					</div>
 					<p className="text-green-spring-700">{data.email}</p>
-					<p className="text-green-spring-700 mb-3 mt-1 max-w-md text-center">
+					<p className="mb-3 mt-1 max-w-md text-center text-green-spring-700">
 						Sed ut perspiciatis unde omnis iste natus error sit voluptatem
 						accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
 						quae ab illo inventore
 					</p>
 					<ul className="flex flex-col items-center gap-3 sm:flex-row sm:gap-2">
 						<li>
-							<p className="text-green-spring-500 text-sm">239847 Photos</p>
+							<p className="text-sm text-green-spring-500">239847 Photos</p>
 						</li>
 						<li className="hidden sm:block">|</li>
 						<li>
 							<button
 								onClick={handleEditModal}
-								className="text-green-spring-500 text-sm"
+								className="text-sm text-green-spring-500"
 							>
 								Edit Profile
 							</button>

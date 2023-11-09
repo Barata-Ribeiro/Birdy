@@ -79,7 +79,7 @@ const ProfileAdmin = () => {
 					>
 						<img
 							src="https://source.unsplash.com/random/?selfie"
-							className="border-green-spring-50 h-40 w-40 rounded-full border-4 object-cover"
+							className="h-40 w-40 rounded-full border-4 border-green-spring-50 object-cover"
 							alt="avatar"
 						/>
 						<ul>
