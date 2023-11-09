@@ -1,6 +1,6 @@
 import { AUTH_REFRESH_TOKEN } from "../../constants";
 import createAsyncSlice from "../helper/createAsyncSlice";
-import { userLogout } from "./user";
+import { userLogout } from "./user.slice";
 
 const slice = createAsyncSlice({
 	name: "token",

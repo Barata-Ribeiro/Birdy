@@ -1,5 +1,5 @@
-import { PHOTOS_GET } from "../api-connection";
-import createAsyncSlice from "./helper/createAsyncSlice";
+import { PHOTOS_GET_ALL } from "../../constants";
+import createAsyncSlice from "../helper/createAsyncSlice";
 
 const slice = createAsyncSlice({
 	name: "feed",
@@ -25,19 +25,19 @@ const slice = createAsyncSlice({
 			state.loading = false;
 		},
 	},
-	fetchConfig: ({ page, total, user }) => PHOTOS_GET({ page, total, user }),
+	fetchConfig: ({ page, limit, userId }) => PHOTOS_GET_ALL(page, limit, userId),
 });
 
 export const fetchFeed = slice.asyncAction;
 export const { addPhotos, addPage, resetState: resetFeedState } = slice.actions;
 
 export const loadNewPhotos =
-	({ total = 6, user }) =>
+	({ limit = 6, userId }) =>
 	async (dispatch, getState) => {
 		const { feed } = getState();
 		dispatch(addPage());
 		const { payload } = await dispatch(
-			fetchFeed({ page: feed.pages, total, user })
+			fetchFeed({ page: feed.pages, limit, userId })
 		);
 		dispatch(addPhotos(payload));
 	};

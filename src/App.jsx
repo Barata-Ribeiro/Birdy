@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 
+import { useDispatch } from "react-redux";
 import Cookies from "./components/helpers/Cookies";
 import ProtectedRoute from "./components/helpers/ProtectedRoute";
 import About from "./pages/About";
@@ -16,7 +17,7 @@ import TermsOfUse from "./pages/TermsOfUse";
 import User from "./pages/User";
 import Dashboard from "./pages/profile/Dashboard";
 import Sign from "./pages/sign/Sign";
-import { autoLogin } from "./store/features/user";
+import { autoLogin } from "./store/slices/user.slice";
 
 const HeaderMemory = memo(() => <Header />);
 const FooterMemory = memo(() => <Footer />);
