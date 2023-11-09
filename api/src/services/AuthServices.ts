@@ -7,10 +7,10 @@ import { validate } from "uuid";
 import { JwtPayload } from "../@types/types";
 import { UserLoginResponseDTO } from "../dto/UserLoginResponseDTO";
 import {
-	BadRequestError,
-	InternalServerError,
-	NotFoundError,
-	UnauthorizedError,
+  BadRequestError,
+  InternalServerError,
+  NotFoundError,
+  UnauthorizedError,
 } from "../helpers/api-errors";
 import { userRepository } from "../repositories/userRepository";
 
@@ -228,7 +228,7 @@ export class AuthServices {
 
 		const isPasswordStrong = (password: string): boolean => {
 			const regex =
-				/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 			return regex.test(password);
 		};
 

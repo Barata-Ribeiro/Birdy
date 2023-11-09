@@ -16,7 +16,6 @@ const { resetState: resetUserState, fetchError } = slice.actions;
 export const userLogin = (credentials) => async (dispatch) => {
 	try {
 		const actionResult = await dispatch(fetchUser(credentials));
-		// eslint-disable-next-line no-unused-vars
 		const { accessToken, refreshToken, ...userData } = actionResult.payload;
 		if (accessToken) {
 			window.localStorage.setItem("accessToken", accessToken);
@@ -24,7 +23,7 @@ export const userLogin = (credentials) => async (dispatch) => {
 			dispatch(slice.actions.fetchSuccess(userData));
 		} else console.error("Authentication tokens are missing in the payload");
 	} catch (error) {
-		dispatch(fetchError(error.message));
+		dispatch(fetchError((error as Error).message));
 	}
 };
 
@@ -58,7 +57,7 @@ const isTokenExpired = (accessToken) => {
 
 export const autoLogin = () => async (dispatch, getState) => {
 	const { token } = getState();
-	const userData = JSON.parse(window.localStorage.getItem("userData") || null);
+	const userData = null || JSON.parse(window.localStorage.getItem("userData"));
 
 	if (!token && !isTokenExpired(token))
 		dispatch(slice.actions.fetchSuccess(userData));

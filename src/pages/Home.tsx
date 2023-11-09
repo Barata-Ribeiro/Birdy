@@ -1,5 +1,5 @@
+import Feed from "../components/feed/Feed";
 import Head from "../components/helpers/Head";
-import Feed from "../store/features/feed";
 
 const Home = () => {
 	return (

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
+import { useAppDispatch, useAppSelector } from "../../store/configureStore";
 import { loadNewPhotos, resetFeedState } from "../../store/features/feed";
-import { useAppDispatch, useAppSelector } from "../../store/redux-hooks";
 import Error from "../helpers/Error";
 import FeedPhotos from "./FeedPhotos";
 

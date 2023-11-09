@@ -9,10 +9,10 @@ import { User } from "../entities/User";
 import { EditProfileResponseDTO } from "../dto/EditProfileResponseDTO";
 import { UserResponseDTO } from "../dto/UserResponseDTO";
 import {
-	BadRequestError,
-	ConflictError,
-	InternalServerError,
-	NotFoundError,
+  BadRequestError,
+  ConflictError,
+  InternalServerError,
+  NotFoundError,
 } from "../helpers/api-errors";
 import { userRepository } from "../repositories/userRepository";
 import { PhotoServices } from "./PhotoServices";
@@ -33,7 +33,7 @@ class UserService {
 			throw new ConflictError("User already exists.");
 
 		const isEmailValid = (email: string): boolean => {
-			const regex = /^[A-Za-z0-9_!#$%&'*+/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/gm;
+			const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 			return regex.test(email);
 		};
 
@@ -42,7 +42,7 @@ class UserService {
 
 		const isPasswordStrong = (password: string): boolean => {
 			const regex =
-				/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 			return regex.test(password);
 		};
 

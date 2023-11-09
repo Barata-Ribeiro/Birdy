@@ -4,10 +4,10 @@
 		"useDefineForClassFields": true,
 		"lib": ["ESNext", "DOM", "DOM.Iterable"],
 		"module": "ESNext",
-		"skipLibCheck": true,
+		"skipLibCheck": false,
 
 		/* Bundler mode */
-		"moduleResolution": "bundler",
+		"moduleResolution": "Node10",
 		"allowImportingTsExtensions": true,
 		"resolveJsonModule": true,
 		"isolatedModules": true,
@@ -21,8 +21,6 @@
 		"noFallthroughCasesInSwitch": true,
 
 		/* Others */
-		"allowJs": true,
-		"checkJs": false,
 		"noImplicitAny": false
 	},
 	"include": [

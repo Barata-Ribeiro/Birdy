@@ -25,8 +25,7 @@ const slice = createAsyncSlice({
 			state.loading = false;
 		},
 	},
-	fetchConfig: ({ page, limit, userId }) =>
-		PHOTOS_GET_ALL({ page, limit, userId }),
+	fetchConfig: ({ page, limit, userId }) => PHOTOS_GET_ALL(page, limit, userId),
 });
 
 export const fetchFeed = slice.asyncAction;
