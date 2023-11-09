@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaFolder, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -21,7 +21,7 @@ const SignUp = () => {
 	const { loading, error, request } = useFetch();
 	const dispatch = useDispatch();
 
-	const [errorConfirmPassword, setErrorConfirmPassword] = userState("");
+	const [errorConfirmPassword, setErrorConfirmPassword] = useState("");
 
 	useEffect(() => {
 		if (password.value !== undefined) {
