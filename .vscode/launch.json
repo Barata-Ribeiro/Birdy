@@ -1,0 +1,10 @@
+{
+  "configurations": [
+    {
+      "type": "msedge",
+      "name": "https://localhost:5173/sign/in",
+      "request": "launch",
+      "url": "https://localhost:5173/sign/in"
+    }
+  ]
+}
