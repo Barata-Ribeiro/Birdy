@@ -2,6 +2,7 @@ import { FaFolder, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
+import Error from "../../components/helpers/Error";
 import Head from "../../components/helpers/Head";
 import FormButton from "../../components/shared/FormButton";
 import Input from "../../components/shared/Input";
@@ -13,7 +14,7 @@ const SignIn = () => {
 	const password = useForm();
 
 	const dispatch = useDispatch();
-	const token = useSelector((state) => state.token);
+	const { loading, error } = useSelector((state) => state.user);
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -64,23 +65,27 @@ const SignIn = () => {
 						required
 					/>
 				</div>
+				<Error error={error} />
 				<div className="text-right">
 					<Link
 						to="../password-lost"
-						className="text-green-spring-50 hover:text-bright-turquoise-500 dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600 transition-colors duration-300 hover:underline"
+						className="text-green-spring-50 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600"
 					>
 						Forgot your password?
 					</Link>
 				</div>
 				<div className="px-4 pb-2 pt-4">
-					<FormButton customClasses="p-4 text-lg rounded-2xl group-invalid:pointer-events-none group-invalid:opacity-30">
+					<FormButton
+						customClasses="p-4 text-lg rounded-2xl group-invalid:pointer-events-none group-invalid:opacity-30"
+						isLoading={loading}
+					>
 						login
 					</FormButton>
 				</div>
 				<div className="mt-2 text-center">
 					<Link
 						to="../up"
-						className="text-green-spring-50 hover:text-bright-turquoise-500 dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600 transition-colors duration-300 hover:underline"
+						className="text-green-spring-50 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600"
 					>
 						Don't have an account? Sign Up!
 					</Link>

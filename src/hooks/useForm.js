@@ -24,8 +24,8 @@ const types = {
 };
 
 const useForm = (type) => {
-	const [value, setValue] = useState < string > "";
-	const [error, setError] = (useState < string) | (null > null);
+	const [value, setValue] = useState("");
+	const [error, setError] = useState(null);
 
 	const validate = (value) => {
 		if (value.length <= 0) {

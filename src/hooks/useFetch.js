@@ -1,16 +1,15 @@
+import { useCallback, useEffect, useRef, useState } from "react";
+
 /**
- * React hook for making HTTP requests.
+ * A custom hook for making HTTP requests.
  *
- * @returns {{
- *  data: any,
- *  error: Error,
- *  loading: boolean,
- *  request: (url: string, options?: RequestInit) => Promise<{ response: Response, json: any }>
- * }}
+ * @param {string} url - The URL to make the request to
+ * @param {object} options - The options for the request, including any headers, body, etc.
+ * @returns {object} An object containing the response and parsed JSON, or an error if one occurred
  */
-const useFetch = () => {
-	const [data, setData] = React.useState(null);
-	const [error, setError] = React.useState(null);
+const useFetch = (url, options) => {
+	const [data, setData] = useState(null);
+	const [error, setError] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const abortControllerRef = useRef(null);
 
@@ -33,7 +32,7 @@ const useFetch = () => {
 					throw new Error(tempJson.message || "Network response was not ok...");
 				else
 					throw new Error(
-						"Network response was not ok and error message is unknown"
+						"Network response was not ok and the error message is unknown."
 					);
 			}
 
