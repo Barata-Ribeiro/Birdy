@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { useDispatch, useSelector } from "react-redux";
 import Head from "../../components/helpers/Head";
 import Loading from "../../components/helpers/Loading";
 import FormButton from "../../components/shared/FormButton";
@@ -10,6 +11,9 @@ const ProfileUpload = () => {
 		preview: undefined,
 		raw: undefined,
 	});
+
+	const dispatch = useDispatch();
+	const { loading, data, error } = useSelector((state) => state.photoPost);
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -35,7 +39,7 @@ const ProfileUpload = () => {
 			/>
 
 			<h1 className="text-center text-2xl">Post Your Picture!</h1>
-			<div className="mx-0 grid grid-cols-1 items-center gap-4 pt-4 md:grid-cols-2">
+			<div className="mx-0 grid grid-cols-1 items-center gap-4 pt-4 lg:grid-cols-2">
 				<form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
 					<Input
 						label={"Photo Title"}
@@ -72,9 +76,9 @@ const ProfileUpload = () => {
 				</form>
 				{imageUpload.preview && (
 					<img
-						alt="Photo for Upload"
+						alt="Preview from the image you are trying to upload..."
 						src={`${imageUpload.preview}`}
-						className="!max-w-md !justify-self-center !rounded-lg"
+						className="aspect-square h-auto max-w-md justify-self-center rounded-lg object-cover object-center align-middle italic"
 					/>
 				)}
 			</div>

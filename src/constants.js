@@ -55,7 +55,6 @@ export const AUTH_LOGOUT = () => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			credentials: "include",
 		},
 	};
 };
@@ -466,7 +465,6 @@ export const PHOTOS_GET_ALL = (page = 1, limit = 5, userId) => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			credentials: "include",
 		},
 	};
 };

@@ -5,7 +5,7 @@ import { refreshToken } from "./token.slice";
 const slice = createAsyncSlice({
 	name: "user",
 	initialState: {
-		data: window.localStorage.getItem("userData") || null,
+		data: JSON.parse(window.localStorage.getItem("userData")) || null,
 	},
 	fetchConfig: (credentials) => AUTH_LOGIN(credentials),
 });

@@ -3,29 +3,27 @@ import { BiSolidPhotoAlbum } from "react-icons/bi";
 import { FaChartPie, FaSignOutAlt, FaUpload } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
 import { MdAdminPanelSettings } from "react-icons/md";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import DeleteProfileModal from "../../components/DeleteProfileModal";
 import EditProfileModal from "../../components/EditProfileModal";
+import Feed from "../../components/feed/Feed";
 import MainButton from "../../components/shared/MainButton";
 import useFetch from "../../hooks/useFetch";
 import NotFound from "../NotFound";
 import ProfileAdmin from "./ProfileAdmin";
-import ProfilePhotos from "./ProfilePhotos";
 import ProfileStats from "./ProfileStats";
 import ProfileUpload from "./ProfileUpload";
+
+import { userLogout } from "../../store/slices/user.slice";
 
 const Dashboard = () => {
 	const [editModal, setEditModal] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
 
 	const dispatch = useDispatch();
-	const {
-		data,
-		loading: reduxLoading,
-		error: reduxError,
-	} = useSelector((state) => state.user);
+	const { data, loading, error } = useSelector((state) => state.user);
 
 	const { loading: fetchLoading, error: fetchError, request } = useFetch();
 
@@ -39,6 +37,7 @@ const Dashboard = () => {
 		setDeleteModal(!deleteModal);
 	};
 
+	if (!data) return <Navigate to="/sign/in" />;
 	return (
 		<>
 			<EditProfileModal
@@ -122,7 +121,7 @@ const Dashboard = () => {
 							<span className="max-sm:hidden">New Post</span>
 						</MainButton>
 						<MainButton
-							onClick={() => alert("You have been logged out")}
+							onClick={() => dispatch(userLogout())}
 							to={"/sign/in"}
 							customClasses={"flex gap-2 items-center px-4 py-2 text-sm"}
 						>
@@ -133,7 +132,7 @@ const Dashboard = () => {
 				</div>
 			</div>
 			<Routes>
-				<Route path="/" element={<ProfilePhotos />} />
+				<Route path="/" element={<Feed user={data.id} />} />
 				<Route path="/admin" element={<ProfileAdmin />} />
 				<Route path="/stats" element={<ProfileStats />} />
 				<Route path="/upload" element={<ProfileUpload />} />

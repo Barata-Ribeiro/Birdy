@@ -47,13 +47,7 @@ const Feed = ({ user }) => {
 			{list.length > 0 && <FeedPhotos />}
 
 			{!infinite && !user && (
-				<p
-					style={{
-						textAlign: "center",
-						padding: "2rem 0 4rem 0",
-						color: "#888",
-					}}
-				>
+				<p className="pb-0 pl-8 pr-16 pt-0 text-center text-green-spring-600">
 					There are no new posts.
 				</p>
 			)}
