@@ -27,16 +27,21 @@ const startServer = async (): Promise<void> => {
 
 		app.set("trust proxy", 1);
 
-		app.use((_req: Request, res: Response, next: NextFunction) => {
-			res.setHeader("Access-Control-Allow-Origin", "*");
+		app.use((req: Request, res: Response, next: NextFunction) => {
 			res.setHeader("Access-Control-Allow-Credentials", "true");
-			res.setHeader("Allow-Control-Allow-Methods", "GET,PATCH,DELETE,POST,PUT");
+			res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
+			res.setHeader(
+				"Allow-Control-Allow-Methods",
+				"GET, POST, PUT, PATCH, DELETE, OPTIONS"
+			);
 			res.setHeader(
 				"Allow-Control-Allow-Headers",
-				"X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
+				"X-CSRF-Token, X-Requested-With, X-HTTP-Method-Override, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
 			);
 
 			res.setHeader("X-Frame-Options", "DENY");
+
+			if ("OPTIONS" == req.method) res.send(200);
 
 			next();
 		});
@@ -45,7 +50,7 @@ const startServer = async (): Promise<void> => {
 			"*",
 			(cors as (options: cors.CorsOptions) => express.RequestHandler)({
 				origin: process.env.CORS_ORIGIN?.split(","),
-				methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+				methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 				allowedHeaders: [
 					"Accept",
 					"Accept-Version",
@@ -58,10 +63,11 @@ const startServer = async (): Promise<void> => {
 					"Origin",
 					"Range",
 					"User-Agent",
-					" X-Api-Version",
+					"X-Api-Version",
 					"X-CSRF-Token",
-					"X-Requested-With",
+					"X-HTTP-Method-Override",
 					"x-openrtb-version",
+					"X-Requested-With",
 				],
 				exposedHeaders: ["Content-Length", "Content-Range"],
 				credentials: true,
@@ -74,7 +80,7 @@ const startServer = async (): Promise<void> => {
 			"*",
 			(cors as (options: cors.CorsOptions) => express.RequestHandler)({
 				origin: process.env.CORS_ORIGIN?.split(","),
-				methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+				methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 				allowedHeaders: [
 					"Accept",
 					"Accept-Version",
@@ -87,10 +93,11 @@ const startServer = async (): Promise<void> => {
 					"Origin",
 					"Range",
 					"User-Agent",
-					" X-Api-Version",
+					"X-Api-Version",
 					"X-CSRF-Token",
-					"X-Requested-With",
+					"X-HTTP-Method-Override",
 					"x-openrtb-version",
+					"X-Requested-With",
 				],
 				exposedHeaders: ["Content-Length", "Content-Range"],
 				credentials: true,
