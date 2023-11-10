@@ -33,6 +33,7 @@ function App() {
 		<BrowserRouter>
 			<HeaderMemory />
 			<Cookies />
+
 			<main className="container">
 				<Routes>
 					<Route path="/" element={<Home />} />

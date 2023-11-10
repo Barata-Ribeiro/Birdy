@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import Head from "../../components/helpers/Head";
+import Loading from "../../components/helpers/Loading";
 import FormButton from "../../components/shared/FormButton";
 import Input from "../../components/shared/Input";
 
@@ -25,6 +26,7 @@ const ProfileUpload = () => {
 		}
 	};
 
+	if (loading) return <Loading />;
 	return (
 		<section className="p-4 sm:px-0">
 			<Head

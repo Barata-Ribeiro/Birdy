@@ -14,7 +14,7 @@ const SignIn = () => {
 	const password = useForm();
 
 	const dispatch = useDispatch();
-	const { loading, error } = useSelector((state) => state.user);
+	const { loading, data, error } = useSelector((state) => state.user);
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -22,6 +22,7 @@ const SignIn = () => {
 			dispatch(userLogin({ email: email.value, password: password.value }));
 	};
 
+	if (data) return <Navigate to="/dashboard" />;
 	return (
 		<>
 			<Head

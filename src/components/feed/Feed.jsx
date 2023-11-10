@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadNewPhotos, resetFeedState } from "../../store/slices/feed.slice";
 import Error from "../helpers/Error";
+import Loading from "../helpers/Loading";
 import FeedPhotos from "./FeedPhotos";
 
 const Feed = ({ user }) => {
@@ -12,7 +13,7 @@ const Feed = ({ user }) => {
 	useEffect(() => {
 		dispatch(resetFeedState());
 		dispatch(loadNewPhotos({ user, limit: 6 }));
-	}, [dispatch, data]);
+	}, [dispatch]);
 
 	useEffect(() => {
 		const infiniteScroll = () => {
@@ -35,9 +36,9 @@ const Feed = ({ user }) => {
 			window.removeEventListener("wheel", infiniteScroll);
 			window.removeEventListener("scroll", infiniteScroll);
 		};
-	}, [infinite, dispatch, data]);
+	}, [infinite, dispatch]);
 
-	if (loading) return <p>Loading...</p>;
+	if (loading) return <Loading />;
 	if (error) return <Error error={error} />;
 	return (
 		<>
@@ -53,7 +54,7 @@ const Feed = ({ user }) => {
 						color: "#888",
 					}}
 				>
-					Não existem mais postagens.
+					There are no new posts.
 				</p>
 			)}
 		</>
