@@ -1,10 +1,19 @@
 import { User } from "../entities/User";
 
+enum UserRole {
+	Member = "member",
+	Admin = "admin",
+}
+
 export class UserLoginResponseDTO {
 	id: string;
 	username: string;
 	email: string;
 	avatarUrl: string;
+	coverImageUrl: string;
+	biography: string;
+	totalPhotos: number;
+	role: UserRole;
 	createdAt: Date;
 	updatedAt: Date;
 	accessToken?: string;
@@ -16,6 +25,10 @@ export class UserLoginResponseDTO {
 		dto.username = user.username;
 		dto.email = user.email;
 		dto.avatarUrl = user.avatarUrl;
+		dto.coverImageUrl = user.coverImageUrl;
+		dto.biography = user.biography;
+		dto.totalPhotos = user.photos?.length || 0;
+		dto.role = UserRole[user.role as keyof typeof UserRole];
 		dto.createdAt = user.createdAt;
 		dto.updatedAt = user.updatedAt;
 		dto.accessToken = accessToken;
@@ -33,6 +46,10 @@ export class UserLoginResponseDTO {
 		dto.username = user.username;
 		dto.email = user.email;
 		dto.avatarUrl = user.avatarUrl;
+		dto.coverImageUrl = user.coverImageUrl;
+		dto.biography = user.biography;
+		dto.totalPhotos = user.photos?.length || 0;
+		dto.role = UserRole[user.role as keyof typeof UserRole];
 		dto.createdAt = user.createdAt;
 		dto.updatedAt = user.updatedAt;
 		dto.accessToken = accessToken;

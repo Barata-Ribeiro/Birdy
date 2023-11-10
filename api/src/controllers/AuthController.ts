@@ -27,8 +27,8 @@ export class AuthController {
 		const refreshToken = req.cookies?.jwt?.refreshToken;
 		if (!refreshToken) throw new UnauthorizedError("Missing refresh token.");
 
-		const tokens = await AuthServices.refreshToken(refreshToken);
-		return res.status(200).json(tokens);
+		const userInfo = await AuthServices.refreshToken(refreshToken);
+		return res.status(200).json(userInfo);
 	}
 
 	async logout(req: Request, res: Response): Promise<void> {

@@ -7,10 +7,10 @@ import { validate } from "uuid";
 import { JwtPayload } from "../@types/types";
 import { UserLoginResponseDTO } from "../dto/UserLoginResponseDTO";
 import {
-  BadRequestError,
-  InternalServerError,
-  NotFoundError,
-  UnauthorizedError,
+	BadRequestError,
+	InternalServerError,
+	NotFoundError,
+	UnauthorizedError,
 } from "../helpers/api-errors";
 import { userRepository } from "../repositories/userRepository";
 
@@ -87,12 +87,10 @@ export class AuthServices {
 			{ expiresIn: "15m" }
 		);
 
-		const userLoginDTO = UserLoginResponseDTO.fromEntityWithoutRefreshToken(
-			user,
-			accessToken
-		);
+		const refreshedUserInfo =
+			UserLoginResponseDTO.fromEntityWithoutRefreshToken(user, accessToken);
 
-		return userLoginDTO;
+		return refreshedUserInfo;
 	}
 
 	static async logout(refreshTokenFromCookie: string): Promise<void> {
@@ -227,8 +225,7 @@ export class AuthServices {
 			throw new UnauthorizedError("Invalid or expired token.");
 
 		const isPasswordStrong = (password: string): boolean => {
-			const regex =
-      /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+			const regex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 			return regex.test(password);
 		};
 
