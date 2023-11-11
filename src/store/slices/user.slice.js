@@ -16,6 +16,7 @@ const { resetState: resetUserState, fetchError } = slice.actions;
 export const userLogin = (credentials) => async (dispatch) => {
 	try {
 		const actionResult = await dispatch(fetchUser(credentials));
+		// eslint-disable-next-line no-unused-vars
 		const { accessToken, refreshToken, ...userData } = actionResult.payload;
 		if (accessToken) {
 			window.localStorage.setItem("accessToken", accessToken);

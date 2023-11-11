@@ -13,7 +13,7 @@ const Feed = ({ user }) => {
 	useEffect(() => {
 		dispatch(resetFeedState());
 		dispatch(loadNewPhotos({ user, limit: 6 }));
-	}, [dispatch]);
+	}, [dispatch, user]);
 
 	useEffect(() => {
 		const infiniteScroll = () => {
@@ -36,7 +36,7 @@ const Feed = ({ user }) => {
 			window.removeEventListener("wheel", infiniteScroll);
 			window.removeEventListener("scroll", infiniteScroll);
 		};
-	}, [infinite, dispatch]);
+	}, [infinite, dispatch, user]);
 
 	if (loading) return <Loading />;
 	if (error) return <Error error={error} />;
@@ -47,7 +47,7 @@ const Feed = ({ user }) => {
 			{list.length > 0 && <FeedPhotos />}
 
 			{!infinite && !user && (
-				<p className="pb-0 pl-8 pr-16 pt-0 text-center text-green-spring-600">
+				<p className="py-0 pl-8 pr-16 text-center text-green-spring-600">
 					There are no new posts.
 				</p>
 			)}

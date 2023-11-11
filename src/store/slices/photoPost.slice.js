@@ -6,6 +6,6 @@ const slice = createAsyncSlice({
 	fetchConfig: ({ token, formData }) => PHOTO_POST(token, formData),
 });
 
-export const photoPost = slice.asyncAction;
+export const photoPosting = slice.asyncAction;
 
 export default slice.reducer;
