@@ -1,6 +1,6 @@
 import cookieParser from "cookie-parser";
 import "dotenv/config";
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import "express-async-errors";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
@@ -27,84 +27,34 @@ const startServer = async (): Promise<void> => {
 
 		app.set("trust proxy", 1);
 
-		app.use((req: Request, res: Response, next: NextFunction) => {
-			res.setHeader("Access-Control-Allow-Credentials", "true");
-			res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
-			res.setHeader(
-				"Allow-Control-Allow-Methods",
-				"GET, POST, PUT, PATCH, DELETE, OPTIONS"
-			);
-			res.setHeader(
-				"Allow-Control-Allow-Headers",
-				"X-CSRF-Token, X-Requested-With, X-HTTP-Method-Override, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
-			);
+		const corsOptions: cors.CorsOptions = {
+			origin: true,
+			methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+			allowedHeaders: [
+				"Accept",
+				"Accept-Version",
+				"Authorization",
+				"Cache-Control",
+				"Content-Length",
+				"Content-Type",
+				"Date",
+				"DNT",
+				"Origin",
+				"Range",
+				"User-Agent",
+				"X-Api-Version",
+				"X-CSRF-Token",
+				"X-HTTP-Method-Override",
+				"x-openrtb-version",
+				"X-Requested-With",
+			],
+			credentials: true,
+			preflightContinue: true,
+			maxAge: 600,
+		};
 
-			res.setHeader("X-Frame-Options", "DENY");
-
-			if ("OPTIONS" == req.method) res.send(200);
-
-			next();
-		});
-
-		app.use(
-			"*",
-			(cors as (options: cors.CorsOptions) => express.RequestHandler)({
-				origin: process.env.CORS_ORIGIN?.split(","),
-				methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-				allowedHeaders: [
-					"Accept",
-					"Accept-Version",
-					"Authorization",
-					"Cache-Control",
-					"Content-Length",
-					"Content-Type",
-					"Date",
-					"DNT",
-					"Origin",
-					"Range",
-					"User-Agent",
-					"X-Api-Version",
-					"X-CSRF-Token",
-					"X-HTTP-Method-Override",
-					"x-openrtb-version",
-					"X-Requested-With",
-				],
-				exposedHeaders: ["Content-Length", "Content-Range"],
-				credentials: true,
-				preflightContinue: false,
-				optionsSuccessStatus: 201,
-			})
-		);
-
-		app.options(
-			"*",
-			(cors as (options: cors.CorsOptions) => express.RequestHandler)({
-				origin: process.env.CORS_ORIGIN?.split(","),
-				methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-				allowedHeaders: [
-					"Accept",
-					"Accept-Version",
-					"Authorization",
-					"Cache-Control",
-					"Content-Length",
-					"Content-Type",
-					"Date",
-					"DNT",
-					"Origin",
-					"Range",
-					"User-Agent",
-					"X-Api-Version",
-					"X-CSRF-Token",
-					"X-HTTP-Method-Override",
-					"x-openrtb-version",
-					"X-Requested-With",
-				],
-				exposedHeaders: ["Content-Length", "Content-Range"],
-				credentials: true,
-				preflightContinue: false,
-				optionsSuccessStatus: 201,
-			})
-		);
+		app.options("*", cors(corsOptions));
+		app.use(cors(corsOptions));
 
 		app.use(
 			helmet({
