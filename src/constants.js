@@ -16,10 +16,11 @@ export const AUTH_LOGIN = (body) => {
 		options: {
 			method: "POST",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
-			credentials: "include",
 			body: JSON.stringify(body),
+			credentials: "include",
 		},
 	};
 };
@@ -35,6 +36,7 @@ export const AUTH_REFRESH_TOKEN = () => {
 		options: {
 			method: "POST",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
 			credentials: "include",
@@ -53,8 +55,10 @@ export const AUTH_LOGOUT = () => {
 		options: {
 			method: "POST",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
+			credentials: "include",
 		},
 	};
 };
@@ -72,6 +76,7 @@ export const AUTH_FORGOT_PASSWORD = (body) => {
 		options: {
 			method: "POST",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(body),
@@ -95,6 +100,7 @@ export const AUTH_RESET_PASSWORD = (userId, token, body) => {
 		options: {
 			method: "POST",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(body),
@@ -118,6 +124,7 @@ export const USER_CREATE = (body) => {
 		options: {
 			method: "POST",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(body),
@@ -136,6 +143,7 @@ export const USER_GET_ALL = () => {
 		options: {
 			method: "GET",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
 		},
@@ -154,6 +162,7 @@ export const USER_GET_BY_ID = (userId) => {
 		options: {
 			method: "GET",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
 		},
@@ -177,6 +186,7 @@ export const USER_EDIT_PROFILE = (body, token) => {
 		options: {
 			method: "PATCH",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
@@ -197,6 +207,7 @@ export const USER_DELETE_OWN_ACCOUNT = (token) => {
 		options: {
 			method: "DELETE",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
@@ -217,6 +228,7 @@ export const GET_OWN_PROFILE_STATS = (token) => {
 		options: {
 			method: "GET",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
@@ -240,6 +252,7 @@ export const ADMIN_GET_USER_BY_USERNAME = (body, token) => {
 		options: {
 			method: "GET",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
@@ -263,6 +276,7 @@ export const ADMIN_DELETE_COMMENT_BY_ID = (photoId, commentId, token) => {
 		options: {
 			method: "DELETE",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
@@ -284,6 +298,7 @@ export const ADMIN_DELETE_PHOTO_BY_ID = (photoId, token) => {
 		options: {
 			method: "DELETE",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
@@ -305,6 +320,7 @@ export const ADMIN_DELETE_USER_BY_ID = (userId, token) => {
 		options: {
 			method: "DELETE",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
@@ -328,6 +344,7 @@ export const COMMENT_CREATE = (photoId, token, body) => {
 		options: {
 			method: "POST",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
@@ -351,6 +368,7 @@ export const COMMENT_GET_ALL = (photoId) => {
 		options: {
 			method: "GET",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
 		},
@@ -371,6 +389,7 @@ export const COMMENT_GET_BY_ID = (photoId, commentId) => {
 		options: {
 			method: "GET",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
 		},
@@ -390,6 +409,7 @@ export const COMMENT_DELETE_BY_ID = (photoId, commentId, token) => {
 		options: {
 			method: "DELETE",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
@@ -414,6 +434,7 @@ export const TOGGLE_LIKE = (photoId, token) => {
 		options: {
 			method: "POST",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
@@ -463,8 +484,10 @@ export const PHOTOS_GET_ALL = (page = 1, limit = 5, userId) => {
 		options: {
 			method: "GET",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
+			credentials: "include",
 		},
 	};
 };
@@ -481,6 +504,7 @@ export const PHOTOS_GET_BY_ID = (photoId) => {
 		options: {
 			method: "GET",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
 		},
@@ -498,6 +522,7 @@ export const PHOTO_DELETE = (photoId, token) => {
 		options: {
 			method: "DELETE",
 			headers: {
+				Accept: "application/json",
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
