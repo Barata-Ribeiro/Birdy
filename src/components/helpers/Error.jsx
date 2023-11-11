@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const Error = ({ error }) => {
 	if (!error) return null;
 	return (
@@ -10,6 +12,10 @@ const Error = ({ error }) => {
 			{error}
 		</p>
 	);
+};
+
+Error.propTypes = {
+	error: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([null])]),
 };
 
 export default Error;

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadNewPhotos, resetFeedState } from "../../store/slices/feed.slice";
@@ -53,6 +54,10 @@ const Feed = ({ user }) => {
 			)}
 		</>
 	);
+};
+
+Feed.propTypes = {
+	user: PropTypes.string,
 };
 
 export default Feed;

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import Head from "../components/helpers/Head";
 import Image from "../components/helpers/Image";
 import MainButton from "../components/shared/MainButton";
@@ -36,6 +37,10 @@ const NotFound = ({ hideImage = false }) => {
 			</div>
 		</section>
 	);
+};
+
+NotFound.propTypes = {
+	hideImage: PropTypes.bool,
 };
 
 export default NotFound;

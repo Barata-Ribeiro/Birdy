@@ -10,7 +10,7 @@ const FeedPhotos = () => {
 				<li key={photo.id} className="break-inside">
 					<a href="" className="relative">
 						<div
-							className={`text-mantis-50 absolute inset-0 h-full w-full items-end justify-around gap-4 rounded-md bg-black/60 pb-4 ${
+							className={`absolute inset-0 h-full w-full items-end justify-around gap-4 rounded-md bg-black/60 pb-4 text-mantis-50 ${
 								photo.id ? "flex" : "hidden"
 							}`}
 						>

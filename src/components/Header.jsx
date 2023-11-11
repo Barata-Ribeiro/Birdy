@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 

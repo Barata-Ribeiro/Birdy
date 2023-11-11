@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { CgClose } from "react-icons/cg";
 
 import FormButton from "./shared/FormButton";
@@ -9,14 +10,14 @@ const EditProfileModal = ({ isOpen, onClose, onSubmit }) => {
 	return (
 		<div className="fixed inset-0 z-[100] flex items-center justify-center">
 			<div className="absolute inset-0 bg-black opacity-50"></div>
-			<div className="bg-green-spring-50 dark:bg-mantis-950 z-50 w-11/12 rounded-lg p-8 md:w-1/2">
+			<div className="z-50 w-11/12 rounded-lg bg-green-spring-50 p-8 dark:bg-mantis-950 md:w-1/2">
 				<button
 					onClick={onClose}
-					className="text-green-spring-500 hover:text-green-spring-700 float-right"
+					className="float-right text-green-spring-500 hover:text-green-spring-700"
 				>
 					<CgClose size={24} />
 				</button>
-				<h2 className="font-heading mb-4 text-2xl">Edit Profile</h2>
+				<h2 className="mb-4 font-heading text-2xl">Edit Profile</h2>
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
@@ -24,7 +25,7 @@ const EditProfileModal = ({ isOpen, onClose, onSubmit }) => {
 					}}
 				>
 					<div className="mb-4">
-						<p className="text-green-spring-700 dark:text-green-spring-500 mb-1 block">
+						<p className="mb-1 block text-green-spring-700 dark:text-green-spring-500">
 							Change Username
 						</p>
 						<Input
@@ -37,7 +38,7 @@ const EditProfileModal = ({ isOpen, onClose, onSubmit }) => {
 						/>
 					</div>
 					<div className="mb-4">
-						<p className="text-green-spring-700 dark:text-green-spring-500 mb-1 block">
+						<p className="mb-1 block text-green-spring-700 dark:text-green-spring-500">
 							Change Password
 						</p>
 						<Input
@@ -66,7 +67,7 @@ const EditProfileModal = ({ isOpen, onClose, onSubmit }) => {
 						/>
 					</div>
 					<div className="mb-4">
-						<p className="text-green-spring-700 dark:text-green-spring-500 mb-1 block">
+						<p className="mb-1 block text-green-spring-700 dark:text-green-spring-500">
 							Change Avatar
 						</p>
 						<Input
@@ -79,7 +80,7 @@ const EditProfileModal = ({ isOpen, onClose, onSubmit }) => {
 						/>
 					</div>
 					<div className="mb-4">
-						<p className="text-green-spring-700 dark:text-green-spring-500 mb-1 block">
+						<p className="mb-1 block text-green-spring-700 dark:text-green-spring-500">
 							Change Cover Image
 						</p>
 						<Input
@@ -92,7 +93,7 @@ const EditProfileModal = ({ isOpen, onClose, onSubmit }) => {
 						/>
 					</div>
 					<div className="mb-4">
-						<p className="text-green-spring-700 dark:text-green-spring-500 mb-1 block">
+						<p className="mb-1 block text-green-spring-700 dark:text-green-spring-500">
 							Change Biography
 						</p>
 						<Input
@@ -124,6 +125,12 @@ const EditProfileModal = ({ isOpen, onClose, onSubmit }) => {
 			</div>
 		</div>
 	);
+};
+
+EditProfileModal.propTypes = {
+	isOpen: PropTypes.bool.isRequired,
+	onClose: PropTypes.func.isRequired,
+	onSubmit: PropTypes.func.isRequired,
 };
 
 export default EditProfileModal;

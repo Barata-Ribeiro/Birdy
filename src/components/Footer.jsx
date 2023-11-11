@@ -22,10 +22,10 @@ const Footer = () => {
 						/>
 					</Link>
 
-					<p className="text-green-spring-500 dark:text-green-spring-400 mx-auto mt-4 max-w-md">
+					<p className="mx-auto mt-4 max-w-md text-green-spring-500 dark:text-green-spring-400">
 						Birdy is an open-source project made by{" "}
 						<Link
-							className="text-green-spring-600 hover:text-bright-turquoise-500 dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 transition-colors duration-300"
+							className="text-green-spring-600 transition-colors duration-300 hover:text-bright-turquoise-500 dark:text-green-spring-400 dark:hover:text-bright-turquoise-200"
 							to={"https://barataribeiro.com/"}
 							rel="noopener noreferrer"
 						>
@@ -38,7 +38,7 @@ const Footer = () => {
 						<Link
 							to="https://github.com/Barata-Ribeiro/Birdy"
 							rel="noopener noreferrer"
-							className="text-green-spring-600 hover:bg-green-spring-100 focus:ring-green-spring-300/40 dark:border-green-spring-400 dark:text-green-spring-300 dark:hover:bg-green-spring-800 order-1 mt-3 flex w-full items-center justify-center rounded-md border p-2 text-sm capitalize tracking-wide transition-colors duration-300 focus:outline-none focus:ring sm:mt-0 sm:w-auto"
+							className="order-1 mt-3 flex w-full items-center justify-center rounded-md border p-2 text-sm capitalize tracking-wide text-green-spring-600 transition-colors duration-300 hover:bg-green-spring-100 focus:outline-none focus:ring focus:ring-green-spring-300/40 dark:border-green-spring-400 dark:text-green-spring-300 dark:hover:bg-green-spring-800 sm:mt-0 sm:w-auto"
 						>
 							<FaGithub size="18" />
 
@@ -50,10 +50,10 @@ const Footer = () => {
 					</div>
 				</div>
 
-				<hr className="border-green-spring-200 dark:border-green-spring-700 my-10" />
+				<hr className="my-10 border-green-spring-200 dark:border-green-spring-700" />
 
 				<div className="flex flex-col items-center sm:flex-row sm:justify-between">
-					<p className="text-green-spring-500 text-sm">
+					<p className="text-sm text-green-spring-500">
 						© Copyright <span>{new Date().getFullYear()}</span>. All Rights
 						Reserved.
 					</p>
@@ -63,7 +63,7 @@ const Footer = () => {
 							<Link
 								key={key}
 								to={value}
-								className="text-green-spring-600 hover:text-bright-turquoise-500 dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 mx-2 text-sm transition-colors duration-300"
+								className="mx-2 text-sm text-green-spring-600 transition-colors duration-300 hover:text-bright-turquoise-500 dark:text-green-spring-400 dark:hover:text-bright-turquoise-200"
 							>
 								{key}
 							</Link>

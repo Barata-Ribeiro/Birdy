@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 
 const Image = ({ alt, ...props }) => {
@@ -12,7 +13,7 @@ const Image = ({ alt, ...props }) => {
 	return (
 		<div className="grid">
 			{skeleton && (
-				<div className="from-green-spring-300 via-green-spring-50 to-green-spring-300 absolute h-full w-full animate-pulse bg-gradient-to-r"></div>
+				<div className="absolute h-full w-full animate-pulse bg-gradient-to-r from-green-spring-300 via-green-spring-50 to-green-spring-300"></div>
 			)}
 			<img
 				onLoad={handleLoad}
@@ -22,6 +23,11 @@ const Image = ({ alt, ...props }) => {
 			/>
 		</div>
 	);
+};
+
+Image.propTypes = {
+	alt: PropTypes.string.isRequired,
+	props: PropTypes.object,
 };
 
 export default Image;

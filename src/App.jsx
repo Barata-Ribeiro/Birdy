@@ -20,7 +20,10 @@ import Sign from "./pages/sign/Sign";
 import { autoLogin } from "./store/slices/user.slice";
 
 const HeaderMemory = memo(() => <Header />);
+HeaderMemory.displayName = "HeaderMemory";
+
 const FooterMemory = memo(() => <Footer />);
+FooterMemory.displayName = "FooterMemory";
 
 function App() {
 	const dispatch = useDispatch();
