@@ -18,7 +18,7 @@ The Birdy API is a robust and scalable backend service designed to support Birdy
 - [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
 - And other awesome libraries and tools listed in [package.json](./api/package.json)
 
-### Features 🌟
+### Main Features 🌟
 
 - **User Authentication:** Secure registration and login using bcrypt and JSON Web Tokens.
 - **User Profile Creation:** Users can create and customize their profiles.
@@ -27,8 +27,9 @@ The Birdy API is a robust and scalable backend service designed to support Birdy
 - **Exploration:** Users can explore and interact with posts from other users.
 - **Dedicated Page for User Posts:** Users can view all their posts on a dedicated page.
 - **Rate Limiting:** Protects the API from abuse with express-rate-limit.
-- **Security:** Implements security best practices using helmet.
+- **Security:** Implements security best practices using cors and helmet.
 - **Error Handling:** Efficient error handling using express-async-errors.
+- **Caching:** Implements IORedis for certain query requests, avoiding unnecessary requesting when users refresh the page.
 
 ### API Setup 🚀
 
@@ -56,47 +57,63 @@ The Birdy API is a robust and scalable backend service designed to support Birdy
    - Fill in the required environment variables.
 
    ```bash
-   # Database Configuration - User DOCKER Container
-   DB_HOST=YOUR_DATABASE_HOST
-   DB_PORT=YOUR_DATABASE_PORT
-   DB_USERNAME=YOUR_DATABASE_USERNAME
-   DB_PASSWORD=YOUR_DATABASE_PASSWORD
-   DB_DATABASE=YOUR_DATABASE_NAME
+   # Database Configuration
+    DB_HOST=YOUR_DATABASE_HOST
+    DB_PORT=YOUR_DATABASE_PORT
+    DB_USERNAME=YOUR_DATABASE_USERNAME
+    DB_PASSWORD=YOUR_DATABASE_PASSWORD
+    DB_DATABASE=YOUR_DATABASE_NAME
 
-   # CORS Configuration
-   CORS_ORIGIN=YOUR_ALLOWED_ORIGIN
+    # IORedis Configuration
+    REDIS_HOST=YOUR_REDIS_HOST
+    REDIS_HOST_PORT=YOUR_REDIS_HOST_PORT
+    REDIS_PASSWORD=YOUR_REDIS_HOST_PASSWORD
 
-   # Front-end Configuration
-   FRONTEND_ORIGIN=YOUR_ALLOWED_FRONTEND_ORIGIN
+    # CORS Configuration
+    CORS_ORIGIN=YOUR_ALLOWED_ORIGIN
 
-   # Cloudinary Configuration
-   CLOUDINARY_CLOUD_NAME=YOUR_CLOUDINARY_CLOUD_NAME
-   CLOUDINARY_API_KEY=YOUR_CLOUDINARY_API_KEY
-   CLOUDINARY_API_SECRET=YOUR_CLOUDINARY_API_SECRET
+    # Cloudinary Configuration
+    CLOUDINARY_CLOUD_NAME=YOUR_CLOUDINARY_CLOUD_NAME
+    CLOUDINARY_API_KEY=YOUR_CLOUDINARY_API_KEY
+    CLOUDINARY_API_SECRET=YOUR_CLOUDINARY_API_SECRET
 
-   # Nodemailer Configuration
-   ORIGIN_HOST=YOUR_ALLOWED_ORIGIN_HOST
-   ORIGIN_PORT=YOUR_ALLOWED_ORIGIN_PORT
-   ORIGIN_AUTH_USER=YOUR_ALLOWED_ORIGIN_AUTH_USER
-   ORIGIN_AUTH_PASSWORD=YOUR_ALLOWED_ORIGIN_AUTH_PASSWORD
-   ORIGIN_MAIL_FROM=YOUR_ALLOWED_ORIGIN_MAIL_FROM
+    # Nodemailer Configuration
+    ORIGIN_HOST=YOUR_ALLOWED_ORIGIN_HOST
+    ORIGIN_PORT=YOUR_ALLOWED_ORIGIN_PORT
+    ORIGIN_AUTH_USER=YOUR_ALLOWED_ORIGIN_AUTH_USER
+    ORIGIN_AUTH_PASSWORD=YOUR_ALLOWED_ORIGIN_AUTH_PASSWORD
+    ORIGIN_MAIL_FROM=YOUR_ALLOWED_ORIGIN_MAIL_FROM
 
-   # JWT Configuration
-   JWT_SECRET=YOUR_JWT_SECRET
+    # JWT Configuration
+    JWT_SECRET=YOUR_JWT_SECRET
 
-   # Refresh Token Configuration
-   REFRESH_TOKEN_SECRET=YOUR_REFRESH_TOKEN_SECRET
+    # Refresh Token Configuration
+    REFRESH_TOKEN_SECRET=YOUR_REFRESH_TOKEN_SECRET
 
-   # Seed Configuration
-   ADMIN_USERNAME=YOUR_ADMIN_USERNAME
-   ADMIN_EMAIL=YOUR_ADMIN_EMAIL
-   ADMIN_PASSWORD=YOUR_ADMIN_PASSWORD
+    # Seed Configuration
+    ADMIN_USERNAME=YOUR_ADMIN_USERNAME
+    ADMIN_EMAIL=YOUR_ADMIN_EMAIL
+    ADMIN_PASSWORD=YOUR_ADMIN_PASSWORD
    ```
 
 5. Run the development server for the API:
 
    ```bash
    npm start
+   ```
+
+6. (Optional) Cors configuration:
+
+   If you want to set your own cors origin, make use the CORS_ORIGIN environment variable to set the origin. It can be easily change in the index.ts file for the API.
+
+   ```javascript
+    // change:
+    const corsOptions: cors.CorsOptions = {
+      origin: true,
+
+    // to:
+    const corsOptions: cors.CorsOptions = {
+      origin: process.env.CORS_ORIGIN,
    ```
 
 ### API Folder Structure 📂
@@ -131,15 +148,18 @@ api
 
 ## The Frontend 🖥️
 
-The Frontend of Birdy is designed to provide users with an intuitive and responsive interface to interact with the platform. It is built using React, allowing for a dynamic and efficient user experience.
+The front end of Birdy is designed to provide users with an intuitive and responsive interface to interact with the platform. It is built using React, allowing for a dynamic and efficient user experience. The project is based on the 'Dogs' social network, which is also an Instagram-like app for photo sharing, with the difference being that 'Birdy' is for bird enthusiasts while 'Dogs' is for dog enthusiasts.
 
 ### Frontend Built With 🛠️
 
+- [Vite.js](https://vitejs.dev/)
 - [React](https://reactjs.org/)
 - [React Hooks](https://reactjs.org/docs/hooks-intro.html)
 - [React Router](https://reactrouter.com/en/main)
-- [Vite.js](https://vitejs.dev/)
+- [Redux](https://redux.js.org/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
+- [Victory Charts](https://formidable.com/open-source/victory/)
 
 ### Frontend Setup 🚀
 
@@ -167,10 +187,16 @@ The Frontend of Birdy is designed to provide users with an intuitive and respons
 public
 src
 ├── assets
-├── App.tsx
+├── components
+├── hooks
+├── pages
+├── store
+├── App.jsx
+├── constants.js
 ├── index.css
-├── main.tsx
-├── vite-env.d.ts
+├── main.jsx
+.editorconfig
+.env
 .eslintignore
 .eslintrc.cjs
 .gitignore
@@ -179,12 +205,11 @@ src
 .prettierrc.json
 index.html
 LICENSE
+package-lock.json
 package.json
 README.md
 tailwind.config.js
-tsconfig.json
-tsconfig.node.json
-vite.config.ts
+vite.config.js
 ```
 
 ## Contributing 🤝
