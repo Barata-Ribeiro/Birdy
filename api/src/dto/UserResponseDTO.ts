@@ -13,6 +13,7 @@ export class UserResponseDTO {
 	photos: PhotoResponseDTO[];
 	comments: CommentResponseDTO[];
 	likes: UserLikesResponseDTO[];
+	role: string;
 	createdAt: Date;
 	updatedAt: Date;
 
@@ -24,6 +25,7 @@ export class UserResponseDTO {
 		dto.avatarUrl = user.avatarUrl;
 		dto.coverImageUrl = user.coverImageUrl;
 		dto.biography = user.biography;
+		dto.role = user.role;
 		dto.photos = user.photos
 			? user.photos.map((photo) => PhotoResponseDTO.fromEntity(photo))
 			: [];

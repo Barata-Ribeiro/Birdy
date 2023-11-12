@@ -1,10 +1,5 @@
 import { User } from "../entities/User";
 
-enum UserRole {
-	Member = "member",
-	Admin = "admin",
-}
-
 export class ProfileResponseDTO {
 	id: string;
 	username: string;
@@ -12,7 +7,7 @@ export class ProfileResponseDTO {
 	avatarUrl: string;
 	coverImageUrl: string;
 	biography: string;
-	role: UserRole;
+	role: string;
 	totalPhotos: number;
 	photos: {
 		id: string;
@@ -33,7 +28,7 @@ export class ProfileResponseDTO {
 		dto.avatarUrl = user.avatarUrl;
 		dto.coverImageUrl = user.coverImageUrl;
 		dto.biography = user.biography;
-		dto.role = UserRole[user.role as keyof typeof UserRole];
+		dto.role = user.role;
 		dto.totalPhotos = user.photos?.length || 0;
 		dto.photos = user.photos
 			? user.photos.map((photo) => ({
