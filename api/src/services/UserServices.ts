@@ -6,13 +6,14 @@ import { CreateUserRequestBody, EditUserRequestBody } from "../@types/types";
 import dataSource from "../database/ormconfig";
 import { User } from "../entities/User";
 
+import { ALL_USERS_CACHE_KEY } from "../constants";
 import { EditProfileResponseDTO } from "../dto/EditProfileResponseDTO";
 import { UserResponseDTO } from "../dto/UserResponseDTO";
 import {
-  BadRequestError,
-  ConflictError,
-  InternalServerError,
-  NotFoundError,
+	BadRequestError,
+	ConflictError,
+	InternalServerError,
+	NotFoundError,
 } from "../helpers/api-errors";
 import { userRepository } from "../repositories/userRepository";
 import { PhotoServices } from "./PhotoServices";
@@ -33,7 +34,8 @@ class UserService {
 			throw new ConflictError("User already exists.");
 
 		const isEmailValid = (email: string): boolean => {
-			const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+			const regex =
+				/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 			return regex.test(email);
 		};
 
@@ -41,8 +43,7 @@ class UserService {
 			throw new BadRequestError("Invalid email format.");
 
 		const isPasswordStrong = (password: string): boolean => {
-			const regex =
-      /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+			const regex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 			return regex.test(password);
 		};
 
@@ -66,6 +67,7 @@ class UserService {
 
 		try {
 			await userRepository.save(newUser);
+			await dataSource.queryResultCache?.remove([ALL_USERS_CACHE_KEY]);
 		} catch (error) {
 			console.error(error);
 
@@ -108,6 +110,10 @@ class UserService {
 				"likes.photo",
 				"likes.user",
 			],
+			cache: {
+				id: ALL_USERS_CACHE_KEY,
+				milliseconds: 25000,
+			},
 		});
 
 		return users.map((user) => UserResponseDTO.fromEntity(user));
@@ -169,6 +175,7 @@ class UserService {
 		if (biography) actualUser.biography = biography;
 
 		await userRepository.save(actualUser);
+		await dataSource.queryResultCache?.remove([ALL_USERS_CACHE_KEY]);
 
 		return EditProfileResponseDTO.fromEntity(actualUser);
 	}
@@ -189,6 +196,7 @@ class UserService {
 				);
 
 				await transactionalEntityManager.remove(actualUser);
+				await dataSource.queryResultCache?.remove([ALL_USERS_CACHE_KEY]);
 			} catch (error) {
 				console.error("Transaction failed:", error);
 				throw new InternalServerError(

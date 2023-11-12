@@ -9,6 +9,8 @@ import {
 	PhotoRequestBody,
 	UserWithoutPassword,
 } from "../@types/types";
+import { ALL_PHOTOS_CACHE_KEY, userPhotosCacheKey } from "../constants";
+import dataSource from "../database/DataSource";
 import { PhotoQueryResponseDTO } from "../dto/PhotoQueryResponseDTO";
 import { PhotoResponseDTO } from "../dto/PhotoResponseDTO";
 import { Photo } from "../entities/Photo";
@@ -31,7 +33,13 @@ export class PhotoServices {
 		this.validateFile(file);
 
 		const secure_url = await this.uploadPhotoToCloudinary(file);
-		return await this.savePhotoToDB(actualUser, secure_url, body);
+		const newPhoto = await this.savePhotoToDB(actualUser, secure_url, body);
+
+		await dataSource.queryResultCache?.remove([ALL_PHOTOS_CACHE_KEY]);
+		const userCacheKey = userPhotosCacheKey(user.id);
+		await dataSource.queryResultCache?.remove([userCacheKey]);
+
+		return newPhoto;
 	}
 
 	private static async verifyUser(userId: string): Promise<User> {
@@ -109,6 +117,7 @@ export class PhotoServices {
 		if (page < 1 || limit < 1)
 			throw new BadRequestError("Page and limit must be positive integers.");
 
+		const cacheKey = userId ? userPhotosCacheKey(userId) : ALL_PHOTOS_CACHE_KEY;
 		const [photos, totalPhotos] = await photoRepository
 			.createQueryBuilder("photo")
 			.leftJoinAndSelect("photo.author", "author")
@@ -117,6 +126,7 @@ export class PhotoServices {
 			.where(userId ? "photo.authorID = :userId" : "1=1", { userId })
 			.take(limit)
 			.skip((page - 1) * limit)
+			.cache(cacheKey, 60000)
 			.getManyAndCount();
 
 		if ((page - 1) * limit >= totalPhotos && page !== 1) return [];
