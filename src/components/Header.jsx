@@ -2,8 +2,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
+import { CgProfile } from "react-icons/cg";
+
 import "./Header.css";
 
+import { useSelector } from "react-redux";
 import BurgerMenu from "../assets/BurgerMenu.svg?react";
 import ListItem from "./helpers/ListItem";
 import MainButton from "./shared/MainButton";
@@ -18,6 +21,8 @@ const Navbar = () => {
 	const [open, setOpen] = useState(false);
 	const headerButtonsRef = useRef(null);
 	const [showHeaderButtons, setShowHeaderButtons] = useState(false);
+
+	const { data } = useSelector((state) => state.user);
 
 	const handleToggle = () => {
 		setOpen((prevOpen) => !prevOpen);
@@ -90,32 +95,52 @@ const Navbar = () => {
 									))}
 									{open && showHeaderButtons && (
 										<>
-											<li>
-												<NavLink
-													to="/sign/in"
-													className={({ isActive }) =>
-														isActive
-															? "flex rounded-sm bg-mantis-200 px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex"
-															: "flex py-2 text-base font-normal text-gray-900 hover:text-bright-turquoise-500 lg:ml-12 lg:inline-flex"
-													}
-													onClick={handleLinkClick}
-												>
-													Sign In
-												</NavLink>
-											</li>
-											<li>
-												<NavLink
-													to="/sign/up"
-													className={({ isActive }) =>
-														isActive
-															? "flex rounded-sm bg-mantis-400 px-2 py-2 text-base font-medium text-gray-900 hover:text-bright-turquoise-500 lg:ml-12 lg:inline-flex"
-															: "flex rounded-sm bg-mantis-600 px-2 py-2 text-base font-normal text-gray-900 lg:ml-12 lg:inline-flex"
-													}
-													onClick={handleLinkClick}
-												>
-													Sign Up
-												</NavLink>
-											</li>
+											{!data ? (
+												<>
+													<li>
+														<NavLink
+															to="/sign/in"
+															className={({ isActive }) =>
+																isActive
+																	? "flex rounded-sm bg-mantis-200 px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex"
+																	: "flex py-2 text-base font-normal text-gray-900 hover:text-bright-turquoise-500 lg:ml-12 lg:inline-flex"
+															}
+															onClick={handleLinkClick}
+														>
+															Sign In
+														</NavLink>
+													</li>
+													<li>
+														<NavLink
+															to="/sign/up"
+															className={({ isActive }) =>
+																isActive
+																	? "flex rounded-sm bg-mantis-400 px-2 py-2 text-base font-medium text-gray-900 hover:text-bright-turquoise-500 lg:ml-12 lg:inline-flex"
+																	: "flex rounded-sm bg-mantis-600 px-2 py-2 text-base font-normal text-gray-900 lg:ml-12 lg:inline-flex"
+															}
+															onClick={handleLinkClick}
+														>
+															Sign Up
+														</NavLink>
+													</li>
+												</>
+											) : (
+												<>
+													<li>
+														<NavLink
+															to="/dashboard"
+															className={({ isActive }) =>
+																isActive
+																	? "flex rounded-sm bg-mantis-200 px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex"
+																	: "flex py-2 text-base font-normal text-gray-900 hover:text-bright-turquoise-500 lg:ml-12 lg:inline-flex"
+															}
+															onClick={handleLinkClick}
+														>
+															<CgProfile size={18} /> {data.username}
+														</NavLink>
+													</li>
+												</>
+											)}
 										</>
 									)}
 								</ul>
@@ -128,19 +153,28 @@ const Navbar = () => {
 							id="headerButtons"
 							className="hidden justify-end gap-2 pr-16 sm:flex lg:pr-0"
 						>
-							<Link
-								to="/sign/in"
-								className=" px-7 py-3 text-base hover:text-bright-turquoise-500"
-							>
-								Sign in
-							</Link>
-
-							<MainButton
-								to={"/sign/up"}
-								customClasses={"px-7 py-3 font-medium"}
-							>
-								Sign Up
-							</MainButton>
+							{!data ? (
+								<>
+									<Link
+										to="/sign/in"
+										className=" px-7 py-3 text-base hover:text-bright-turquoise-500"
+									>
+										Sign in
+									</Link>
+									<MainButton
+										to={"/sign/up"}
+										customClasses={"px-7 py-3 font-medium"}
+									>
+										Sign Up
+									</MainButton>{" "}
+								</>
+							) : (
+								<>
+									<Link to="/dashboard" className="flex items-center gap-2">
+										<CgProfile size={18} /> {data.username}
+									</Link>
+								</>
+							)}
 						</div>
 					</div>
 				</div>
