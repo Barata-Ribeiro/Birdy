@@ -14,9 +14,9 @@ export class AuthController {
 			{ refreshToken: tokens.refreshToken },
 			{
 				httpOnly: true,
-				sameSite: "lax",
 				secure: true,
 				maxAge: 604800000,
+				expires: new Date(Date.now() - 604800000),
 			}
 		);
 

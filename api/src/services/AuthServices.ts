@@ -19,7 +19,10 @@ export class AuthServices {
 		email: string,
 		password: string
 	): Promise<UserLoginResponseDTO> {
-		const existingUserByEmail = await userRepository.findOneBy({ email });
+		const existingUserByEmail = await userRepository.findOne({
+			where: { email },
+			relations: ["photos"],
+		});
 
 		if (!existingUserByEmail)
 			throw new BadRequestError("Password or email is incorrect.");
@@ -75,7 +78,10 @@ export class AuthServices {
 			throw new UnauthorizedError("Invalid refresh token.");
 		}
 
-		const user = await userRepository.findOneBy({ id: payload.id });
+		const user = await userRepository.findOne({
+			where: { id: payload.id },
+			relations: ["photos"],
+		});
 		if (!user) throw new NotFoundError("User not found.");
 
 		if (user.refreshToken !== refreshTokenFromCookie)

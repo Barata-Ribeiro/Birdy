@@ -1,10 +1,11 @@
-import cookieParser from "cookie-parser";
 import "dotenv/config";
 import express from "express";
 import "express-async-errors";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 
+import compression from "compression";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import dataSource from "./database/DataSource";
 import errorMiddleware from "./middlewares/error";
@@ -19,11 +20,20 @@ import userRoutes from "./routes/userRoutes";
 if (dataSource.options.type !== "postgres")
 	throw new Error("Invalid DB_TYPE: Only 'postgres' is supported.");
 
+process.env.NODE_ENV = process.env.NODE_ENV || "production";
+
 const startServer = async (): Promise<void> => {
 	try {
 		await dataSource.initialize();
 
 		const app = express();
+		app.use(cookieParser());
+		app.use(
+			compression({
+				level: 6,
+				threshold: 100 * 1000,
+			})
+		);
 
 		app.set("trust proxy", 1);
 
@@ -75,8 +85,7 @@ const startServer = async (): Promise<void> => {
 		app.use(limiter);
 
 		app.use(express.json());
-
-		app.use(cookieParser());
+		app.use(express.urlencoded({ extended: true }));
 
 		// ROUTES //
 		app.use("/api/v1/auth", limiter, authRoutes);
@@ -92,6 +101,9 @@ const startServer = async (): Promise<void> => {
 		const PORT = process.env.PORT || 3000;
 		app.listen(PORT, () => {
 			console.log(`Server is running on port ${PORT}, enjoy!`);
+			if (process.env.NODE_ENV === "production")
+				console.log("Server is running in production mode.");
+			else console.log(`Server in running in ${process.env.NODE_ENV} mode.`);
 		});
 	} catch (error) {
 		console.error("Error while starting the server:", error);
