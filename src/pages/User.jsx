@@ -28,7 +28,7 @@ const User = () => {
 				<div className="-mt-20 flex flex-col items-center">
 					<img
 						src="https://source.unsplash.com/random/?selfie"
-						className="border-green-spring-50 h-40 w-40 rounded-full border-4 object-cover"
+						className="h-40 w-40 rounded-full border-4 border-green-spring-50 object-cover"
 					/>
 					<div className="mt-2 flex items-center space-x-2">
 						<p className="text-2xl">User Name</p>
@@ -37,7 +37,7 @@ const User = () => {
 					<p className="text-green-spring-700">
 						Photos: {Math.floor(Math.random() * 100000)}
 					</p>
-					<p className="text-green-spring-700 mb-3 mt-1 max-w-md text-center">
+					<p className="mb-3 mt-1 max-w-md text-center text-green-spring-700">
 						Sed ut perspiciatis unde omnis iste natus error sit voluptatem
 						accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
 						quae ab illo inventore
@@ -55,7 +55,7 @@ const User = () => {
 								onMouseLeave={() => setHoveredNumber(null)}
 							>
 								<div
-									className={`text-mantis-50 absolute inset-0 !h-full !w-full items-end justify-around gap-4 rounded-md bg-black/60 pb-4 ${
+									className={`absolute inset-0 !h-full !w-full items-end justify-around gap-4 rounded-md bg-black/60 pb-4 text-mantis-50 ${
 										hoveredNumber === number ? "flex" : "hidden"
 									}`}
 								>

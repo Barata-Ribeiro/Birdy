@@ -10,11 +10,14 @@ const slice = createAsyncSlice({
 	},
 	reducers: {
 		addPhotos(state, action) {
-			state.list.push(...action.payload);
-			if (action.payload.length === 0) state.infinite = false;
+			const newPhotos = action.payload.filter(
+				(photo) => !state.list.some((p) => p.id === photo.id)
+			);
+			state.list.push(...newPhotos);
+			if (newPhotos.length === 0) state.infinite = false;
 		},
 		addPage(state) {
-			state.pages++;
+			if (state.list.length > 5) state.pages += 1;
 		},
 		resetState(state) {
 			state.infinite = true;
@@ -32,7 +35,7 @@ export const fetchFeed = slice.asyncAction;
 export const { addPhotos, addPage, resetState: resetFeedState } = slice.actions;
 
 export const loadNewPhotos =
-	({ limit = 6, userId }) =>
+	({ limit = 5, userId }) =>
 	async (dispatch, getState) => {
 		const { feed } = getState();
 		dispatch(addPage());

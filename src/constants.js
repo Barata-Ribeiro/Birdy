@@ -483,10 +483,6 @@ export const PHOTOS_GET_ALL = (page = 1, limit = 5, userId) => {
 		url: `${__API_URL__}/photos/?${queryParams}`,
 		options: {
 			method: "GET",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
 			credentials: "include",
 		},
 	};

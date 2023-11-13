@@ -13,7 +13,7 @@ const Feed = ({ user }) => {
 
 	useEffect(() => {
 		dispatch(resetFeedState());
-		dispatch(loadNewPhotos({ user, limit: 6 }));
+		dispatch(loadNewPhotos({ user, limit: 5 }));
 	}, [dispatch, user]);
 
 	useEffect(() => {
@@ -48,7 +48,7 @@ const Feed = ({ user }) => {
 			{list.length > 0 && <FeedPhotos />}
 
 			{!infinite && !user && (
-				<p className="py-0 pl-8 pr-16 text-center text-green-spring-600">
+				<p className="pb-0 pl-8 pr-16 pt-4 text-center font-semibold text-green-spring-300">
 					There are no new posts.
 				</p>
 			)}
