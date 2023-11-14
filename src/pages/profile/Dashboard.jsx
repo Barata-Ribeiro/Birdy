@@ -3,7 +3,7 @@ import { BiSolidPhotoAlbum } from "react-icons/bi";
 import { FaChartPie, FaSignOutAlt, FaUpload } from "react-icons/fa";
 import { FaUser, FaUserTie } from "react-icons/fa6";
 import { MdAdminPanelSettings } from "react-icons/md";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useParams } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import DeleteProfileModal from "../../components/DeleteProfileModal";
@@ -20,6 +20,7 @@ import { userLogout } from "../../store/slices/user.slice";
 import ProfilePhotos from "./ProfilePhotos";
 
 const Dashboard = () => {
+	const { username } = useParams();
 	const [editModal, setEditModal] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
 
@@ -29,16 +30,16 @@ const Dashboard = () => {
 	const { loading: fetchLoading, error: fetchError, request } = useFetch();
 
 	const handleEditModal = (e) => {
-		e?.preventDefault();
+		e.preventDefault();
 		setEditModal(!editModal);
 	};
 
 	const handleDeleteModal = (e) => {
-		e?.preventDefault();
+		e.preventDefault();
 		setDeleteModal(!deleteModal);
 	};
 
-	if (!data) return <Navigate to="/sign/in" />;
+	if (!data || username !== data.username) return <Navigate to="/sign/in" />;
 	if (loading || fetchLoading) return <Loading />;
 	return (
 		<>
@@ -104,28 +105,28 @@ const Dashboard = () => {
 				<div className="mt-2 flex flex-1 flex-col items-center justify-end px-8 lg:items-end">
 					<div className="mt-2 flex shrink-0 flex-wrap items-center justify-center gap-2 whitespace-nowrap">
 						<MainButton
-							to={"/dashboard"}
+							to={`/dashboard/${data.username}`}
 							customClasses={"flex gap-2 items-center px-4 py-2 text-sm"}
 						>
 							<BiSolidPhotoAlbum size={18} />
 							<span className="max-sm:hidden">Photos</span>
 						</MainButton>
 						<MainButton
-							to={"../dashboard/admin"}
+							to={`../dashboard/${data.username}/admin-panel`}
 							customClasses={"flex gap-2 items-center px-4 py-2 text-sm"}
 						>
 							<MdAdminPanelSettings size={18} />{" "}
 							<span className="max-sm:hidden">Admin</span>
 						</MainButton>
 						<MainButton
-							to={"../dashboard/stats"}
+							to={`../dashboard/${data.username}/stats`}
 							customClasses={"flex gap-2 items-center px-4 py-2 text-sm"}
 						>
 							<FaChartPie size={18} />
 							<span className="max-sm:hidden">Stats</span>
 						</MainButton>
 						<MainButton
-							to={"../dashboard/upload"}
+							to={`../dashboard/${data.username}/upload`}
 							customClasses={"flex gap-2 items-center px-4 py-2 text-sm"}
 						>
 							<FaUpload size={18} />
@@ -144,7 +145,7 @@ const Dashboard = () => {
 			</div>
 			<Routes>
 				<Route path="/" element={<ProfilePhotos />} />
-				<Route path="/admin" element={<ProfileAdmin />} />
+				<Route path="/admin-panel" element={<ProfileAdmin />} />
 				<Route path="/stats" element={<ProfileStats />} />
 				<Route path="/upload" element={<ProfileUpload />} />
 				<Route path="*" element={<NotFound hideImage={true} />} />

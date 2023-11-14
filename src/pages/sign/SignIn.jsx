@@ -22,7 +22,7 @@ const SignIn = () => {
 			dispatch(userLogin({ email: email.value, password: password.value }));
 	};
 
-	if (data) return <Navigate to="/dashboard" />;
+	if (data) return <Navigate to={`/dashboard/${data.username}`} />;
 	return (
 		<>
 			<Head
@@ -88,7 +88,7 @@ const SignIn = () => {
 						to="../up"
 						className="text-green-spring-50 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600"
 					>
-						Don't have an account? Sign Up!
+						Don&apos;t have an account? Sign Up!
 					</Link>
 				</div>
 

@@ -128,7 +128,7 @@ const Navbar = () => {
 												<>
 													<li>
 														<NavLink
-															to="/dashboard"
+															to={`/dashboard/${data.username}`}
 															className={({ isActive }) =>
 																isActive
 																	? "flex rounded-sm bg-mantis-200 px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex"
@@ -170,7 +170,10 @@ const Navbar = () => {
 								</>
 							) : (
 								<>
-									<Link to="/dashboard" className="flex items-center gap-2">
+									<Link
+										to={`/dashboard/${data.username}`}
+										className="flex items-center gap-2"
+									>
 										<CgProfile size={18} /> {data.username}
 									</Link>
 								</>

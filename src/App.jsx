@@ -44,15 +44,15 @@ function App() {
 					<Route path="/contact" element={<Contact />} />
 					<Route path="sign/*" element={<Sign />} />
 					<Route
-						path="dashboard/*"
+						path="dashboard/:username/*"
 						element={
 							<ProtectedRoute>
 								<Dashboard />
 							</ProtectedRoute>
 						}
 					/>
-					<Route path="photo/:id" element={<Photo />} />
-					<Route path="user/:id" element={<User />} />
+					<Route path="photo/:photoId" element={<Photo />} />
+					<Route path="user/:username" element={<User />} />
 					<Route path="/privacy-policy" element={<PrivacyPolicy />} />
 					<Route path="/terms-of-use" element={<TermsOfUse />} />
 					<Route path="*" element={<NotFound />} />
