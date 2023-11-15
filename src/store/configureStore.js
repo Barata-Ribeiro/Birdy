@@ -3,6 +3,7 @@ import logger from "redux-logger";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import feed from "./slices/feed.slice";
+import photo from "./slices/photo.slice";
 import photoPost from "./slices/photoPost.slice";
 import token from "./slices/token.slice";
 import user from "./slices/user.slice";
@@ -13,7 +14,7 @@ const persistConfig = {
 	blacklist: ["feed"],
 };
 
-const rootReducer = combineReducers({ photoPost, token, user, feed });
+const rootReducer = combineReducers({ photo, photoPost, token, user, feed });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
