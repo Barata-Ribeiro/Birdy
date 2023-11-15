@@ -21,12 +21,12 @@ const Photo = () => {
 	if (error) return <Error error={error} />;
 	if (data)
 		return (
-			<section>
+			<section className="my-4">
 				<Head
 					title={`${data.title}`}
 					description={`This is the page of the photo ${data.title}.`}
 				/>
-				<PhotoContent />
+				<PhotoContent photo={data} />
 			</section>
 		);
 };
