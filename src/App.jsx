@@ -52,7 +52,7 @@ function App() {
 						}
 					/>
 					<Route path="photo/:photoId" element={<Photo />} />
-					<Route path="user/:username" element={<User />} />
+					<Route path="user/:userId/:username" element={<User />} />
 					<Route path="/privacy-policy" element={<PrivacyPolicy />} />
 					<Route path="/terms-of-use" element={<TermsOfUse />} />
 					<Route path="*" element={<NotFound />} />

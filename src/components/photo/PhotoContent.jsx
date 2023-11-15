@@ -42,7 +42,7 @@ const PhotoContent = ({ photo }) => {
 					<Link
 						aria-label="Photo Author"
 						className="text-xs text-green-spring-400"
-						to={`/user/${photo.authorName}`}
+						to={`/user/${photo.authorID}/${photo.authorName}`}
 					>
 						@{photo.authorName}
 					</Link>
