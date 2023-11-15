@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaEye, FaHeart, FaRegComments } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import Image from "../helpers/Image";
 
 const FeedPhotos = () => {
@@ -10,8 +11,8 @@ const FeedPhotos = () => {
 		<ul className="masonry sm:masonry-sm md:masonry-md px-4 sm:px-0 [&>li:not(:first-child)]:mt-4">
 			{list.map((photo) => (
 				<li key={photo.id} className="break-inside">
-					<a
-						href=""
+					<Link
+						to={`/photo/${photo.id}`}
 						className="relative"
 						onPointerEnter={() => setImageHovered(true)}
 						onPointerLeave={() => setImageHovered(false)}
@@ -37,11 +38,11 @@ const FeedPhotos = () => {
 							</span>
 						</div>
 						<Image
-							alt={`Photo Title: ${photo.title}, from ${photo.authorName}`}
+							alt={`Photo: ${photo.title}, from ${photo.authorName}`}
 							className="rounded-md object-cover"
 							src={photo.imageUrl}
 						/>
-					</a>
+					</Link>
 				</li>
 			))}
 		</ul>
