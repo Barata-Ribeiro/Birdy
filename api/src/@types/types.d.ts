@@ -63,6 +63,9 @@ export interface Cookies {
 	jwt?: {
 		refreshToken: string;
 	};
+	viewedPhotos?: {
+		photoIds: string[];
+	};
 }
 
 export type AuthTokens = {

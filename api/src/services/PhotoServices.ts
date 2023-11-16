@@ -134,7 +134,10 @@ export class PhotoServices {
 		return photos.map((photo) => PhotoQueryResponseDTO.fromEntity(photo));
 	}
 
-	static async getPhotoById(photoId: string): Promise<PhotoResponseDTO> {
+	static async getPhotoById(
+		photoId: string,
+		hasViewed: boolean
+	): Promise<PhotoResponseDTO> {
 		if (!validate(photoId)) throw new BadRequestError("Invalid photo ID.");
 
 		const photo = await photoRepository.findOne({
@@ -144,8 +147,10 @@ export class PhotoServices {
 
 		if (!photo) throw new NotFoundError("Photo not found.");
 
-		photo.meta.total_hits = (photo.meta.total_hits || 0) + 1;
-		await photoRepository.save(photo);
+		if (!hasViewed) {
+			photo.meta.total_hits = (photo.meta.total_hits || 0) + 1;
+			await photoRepository.save(photo);
+		}
 
 		return PhotoResponseDTO.fromEntity(photo);
 	}
