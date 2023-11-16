@@ -1,12 +1,44 @@
 import PropTypes from "prop-types";
 import { CgClose } from "react-icons/cg";
 
+import { useEffect, useState } from "react";
+import useForm from "../hooks/useForm";
 import FormButton from "./shared/FormButton";
 import Input from "./shared/Input";
 
-const EditProfileModal = ({ isOpen, onClose, onSubmit }) => {
-	if (!isOpen) return null;
+const EditProfileModal = ({ isOpen, onClose }) => {
+	const username = useForm("username");
+	const oldPassword = useForm();
+	const newPassword = useForm("password");
+	const confirmNewPassword = useForm();
+	const coverImageUrl = useForm();
+	const avatarUrl = useForm();
+	const biography = useForm();
 
+	const [errorConfirmNewPassword, setErrorConfirmNewPassword] = useState("");
+
+	useEffect(() => {
+		if (oldPassword.value !== undefined) {
+			if (oldPassword.value !== confirmNewPassword.value)
+				setErrorConfirmNewPassword("Passwords do not match!");
+			else setErrorConfirmNewPassword(undefined);
+		}
+	}, [oldPassword, confirmNewPassword]);
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		const formData = {
+			username: username.value,
+			password: oldPassword.value,
+			newPassword: newPassword.value,
+			avatarUrl: avatarUrl.value,
+			coverImageUrl: coverImageUrl.value,
+			biography: biography.value,
+		};
+	};
+
+	if (!isOpen) return null;
 	return (
 		<div className="fixed inset-0 z-[100] flex items-center justify-center">
 			<div className="absolute inset-0 bg-black opacity-50"></div>
@@ -18,12 +50,7 @@ const EditProfileModal = ({ isOpen, onClose, onSubmit }) => {
 					<CgClose size={24} />
 				</button>
 				<h2 className="mb-4 font-heading text-2xl">Edit Profile</h2>
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-						onSubmit();
-					}}
-				>
+				<form onSubmit={handleSubmit}>
 					<div className="mb-4">
 						<p className="mb-1 block text-green-spring-700 dark:text-green-spring-500">
 							Change Username
@@ -34,6 +61,14 @@ const EditProfileModal = ({ isOpen, onClose, onSubmit }) => {
 							name={"username"}
 							inputClasses={
 								"text-green-spring-700 dark:text-green-spring-500 w-full rounded border p-2"
+							}
+							value={username.value}
+							onChange={username.onChange}
+							onBlur={username.onBlur}
+							error={username.error}
+							aria-invalid={username.error ? "true" : "false"}
+							aria-describedby={
+								username.error ? `error-${username.value}` : undefined
 							}
 						/>
 					</div>
@@ -48,6 +83,11 @@ const EditProfileModal = ({ isOpen, onClose, onSubmit }) => {
 							inputClasses={
 								"mb-2 text-green-spring-700 dark:text-green-spring-500 w-full rounded border p-2"
 							}
+							error={oldPassword.error}
+							aria-invalid={oldPassword.error ? "true" : "false"}
+							aria-describedby={
+								oldPassword.error ? `error-${oldPassword.value}` : undefined
+							}
 						/>
 						<Input
 							label={"New Password"}
@@ -56,6 +96,14 @@ const EditProfileModal = ({ isOpen, onClose, onSubmit }) => {
 							inputClasses={
 								"mb-2 text-green-spring-700 dark:text-green-spring-500 w-full rounded border p-2"
 							}
+							value={newPassword.value}
+							onChange={newPassword.onChange}
+							onBlur={newPassword.onBlur}
+							error={newPassword.error}
+							aria-invalid={newPassword.error ? "true" : "false"}
+							aria-describedby={
+								newPassword.error ? `error-${newPassword.value}` : undefined
+							}
 						/>
 						<Input
 							label={"Confirm New Password"}
@@ -63,6 +111,22 @@ const EditProfileModal = ({ isOpen, onClose, onSubmit }) => {
 							name={"confirmPasswordNew"}
 							inputClasses={
 								"text-green-spring-700 dark:text-green-spring-500 w-full rounded border p-2"
+							}
+							value={confirmNewPassword.value}
+							onChange={confirmNewPassword.onChange}
+							onBlur={confirmNewPassword.onBlur}
+							error={errorConfirmNewPassword || confirmNewPassword.error}
+							aria-invalid={
+								errorConfirmNewPassword || confirmNewPassword.error
+									? "true"
+									: "false"
+							}
+							aria-describedby={
+								errorConfirmNewPassword || confirmNewPassword.error
+									? `error-${
+											errorConfirmNewPassword || confirmNewPassword.error
+									  }`
+									: undefined
 							}
 						/>
 					</div>
@@ -130,7 +194,6 @@ const EditProfileModal = ({ isOpen, onClose, onSubmit }) => {
 EditProfileModal.propTypes = {
 	isOpen: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
-	onSubmit: PropTypes.func.isRequired,
 };
 
 export default EditProfileModal;

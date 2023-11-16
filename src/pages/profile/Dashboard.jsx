@@ -3,11 +3,11 @@ import { BiSolidPhotoAlbum } from "react-icons/bi";
 import { FaChartPie, FaSignOutAlt, FaUpload } from "react-icons/fa";
 import { FaUser, FaUserTie } from "react-icons/fa6";
 import { MdAdminPanelSettings } from "react-icons/md";
-import { Navigate, Route, Routes, useParams } from "react-router-dom";
+import { Link, Navigate, Route, Routes, useParams } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import DeleteProfileModal from "../../components/DeleteProfileModal";
-import EditProfileModal from "../../components/EditProfileModal";
+// import EditProfileModal from "../../components/EditProfileModal";
 import MainButton from "../../components/shared/MainButton";
 import useFetch from "../../hooks/useFetch";
 import NotFound from "../NotFound";
@@ -43,14 +43,7 @@ const Dashboard = () => {
 	if (loading || fetchLoading) return <Loading />;
 	return (
 		<>
-			<EditProfileModal
-				isOpen={editModal}
-				onClose={handleEditModal}
-				onSubmit={() => {
-					console.log("Data updated");
-					handleEditModal();
-				}}
-			/>
+			{/* <EditProfileModal isOpen={editModal} onClose={handleEditModal} /> */}
 			<DeleteProfileModal isOpen={deleteModal} onClose={handleDeleteModal} />
 			<div className="bg-mantis-100 pb-8">
 				<div
@@ -65,7 +58,12 @@ const Dashboard = () => {
 						className="aspect-square h-40 w-40 rounded-full border-4 border-green-spring-50 object-cover object-center align-middle italic"
 					/>
 					<div className="mt-2 flex items-center space-x-2">
-						<p className="text-2xl">{data.username}</p>
+						<Link
+							to={`/user/${data.id}/${data.username}`}
+							className="font-body text-2xl"
+						>
+							{data.username}
+						</Link>
 						{data.role === "admin" ? (
 							<FaUserTie size={18} />
 						) : (
@@ -79,14 +77,17 @@ const Dashboard = () => {
 					<ul className="flex flex-col items-center gap-3 sm:flex-row sm:gap-2">
 						<li>
 							<p className="text-sm text-green-spring-500">
-								{data.totalPhotos} Photos
+								{data.totalPhotos} Photo(s)
 							</p>
 						</li>
 						<li className="hidden sm:block">|</li>
 						<li>
 							<button
-								onClick={handleEditModal}
-								className="text-sm text-green-spring-500"
+								// onClick={handleEditModal}
+								className="text-sm text-green-spring-500 disabled:cursor-not-allowed disabled:line-through"
+								title="Edit Profile temporarily disabled"
+								aria-label="Edit Profile temporarily disabled"
+								disabled
 							>
 								Edit Profile
 							</button>
