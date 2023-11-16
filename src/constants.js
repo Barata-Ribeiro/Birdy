@@ -250,7 +250,7 @@ export const ADMIN_GET_USER_BY_USERNAME = (body, token) => {
 	return {
 		url: `${__API_URL__}/admin/`,
 		options: {
-			method: "GET",
+			method: "POST",
 			headers: {
 				Accept: "application/json",
 				"Content-Type": "application/json",

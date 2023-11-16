@@ -10,7 +10,7 @@ const router = express.Router();
 
 const adminController = new AdminController();
 
-router.get("/", authMiddleware, authAdminMiddleware, (req, res, next) => {
+router.post("/", authMiddleware, authAdminMiddleware, (req, res, next) => {
 	adminController.getUserByUsername(req, res).catch(next);
 });
 
