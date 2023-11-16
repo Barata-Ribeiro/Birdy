@@ -1,23 +1,25 @@
 import { useEffect } from "react";
 import { FaUser, FaUserTie } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Error from "../components/helpers/Error";
 import Image from "../components/helpers/Image";
 import Loading from "../components/helpers/Loading";
-import { USER_GET_BY_ID } from "../constants";
-import useFetch from "../hooks/useFetch";
+import { fetchProfile } from "../store/slices/profile.slice";
 
 const User = () => {
 	const { userId } = useParams();
-	const { data, error, loading, request } = useFetch();
+	const { data, error, loading, request } = useSelector(
+		(state) => state.profile
+	);
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (userId) {
-			const fetchOptions = USER_GET_BY_ID(userId);
-			request(fetchOptions.url, fetchOptions.options);
+			dispatch(fetchProfile(userId));
 		} else navigate("/");
-	}, [userId, request, navigate]);
+	}, [userId, request, navigate, dispatch]);
 
 	if (loading) return <Loading />;
 	if (error) return <Error error={error} />;
@@ -37,7 +39,7 @@ const User = () => {
 						></span>
 					</div>
 					<div
-						className="pointer-events-none absolute inset-x-0 bottom-0 top-auto h-[70px] w-full overflow-hidden"
+						className="pointer-events-none absolute inset-x-0 bottom-0 top-auto h-[4.375rem] w-full overflow-hidden"
 						style={{ transform: "translateZ(0)" }}
 					>
 						<svg
@@ -63,24 +65,25 @@ const User = () => {
 							{/* PROFILE INFO */}
 							<div className="px-6">
 								<div className="flex flex-wrap justify-center">
-									<div className="flex w-full justify-center px-4 lg:order-2 lg:w-3/12">
+									<div className="flex w-full justify-center px-4  lg:order-2 lg:w-3/12">
 										<div className="relative">
 											<img
 												alt="..."
 												src={`${data.avatarUrl}`}
-												className="absolute -m-16 -ml-20 aspect-square h-36 w-36 max-w-[150px] rounded-full border-2 border-green-spring-50 object-cover object-center align-middle italic shadow-xl lg:-ml-16"
+												className="absolute -m-16 aspect-square h-36 w-36 max-w-[150px] rounded-full border-2 border-green-spring-50 object-cover object-center align-middle italic shadow-xl lg:-ml-16"
 											/>
 										</div>
 									</div>
+
 									{/* SEPARATOR */}
-									<div className="w-full px-4 lg:order-3 lg:w-4/12 lg:self-center lg:text-right">
-										<div className="mt-32 px-3 py-6 sm:mt-0">
+									<div className="w-full px-4 max-sm:hidden lg:order-3 lg:w-4/12 lg:self-center lg:text-right">
+										<div className="mt-32 px-3 py-6 sm:mt-0 ">
 											<span className="mb-1 sm:mr-2"></span>
 										</div>
 									</div>
 
 									{/* INFO */}
-									<div className="w-full px-4 lg:order-1 lg:w-4/12">
+									<div className="w-full px-4 max-sm:mt-24 lg:order-1 lg:w-4/12">
 										<div className="flex justify-center py-4 pt-8 lg:pt-4">
 											<div className="mr-4 p-3 text-center">
 												<span className="block text-xl font-bold uppercase tracking-wide text-green-spring-600">
