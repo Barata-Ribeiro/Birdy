@@ -1,14 +1,28 @@
 import { useEffect, useState } from "react";
 
+import { useSelector } from "react-redux";
 import Head from "../../components/helpers/Head";
 import FormButton from "../../components/shared/FormButton";
 import Input from "../../components/shared/Input";
+import {
+	ADMIN_DELETE_USER_BY_ID,
+	ADMIN_GET_USER_BY_USERNAME,
+} from "../../constants";
+import useFetch from "../../hooks/useFetch";
+
+import Error from "../../components/helpers/Error";
+import Loading from "../../components/helpers/Loading";
 
 const ProfileAdmin = () => {
-	const [userInfo, setUserInfo] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [progress, setProgress] = useState(0);
 	const [deleteCompleted, setDeleteCompleted] = useState(false);
+
+	const [username, setUsername] = useState("");
+	const [userId, setUserId] = useState(null);
+
+	const { data, loading, error, request } = useFetch();
+	const { data: tokenData } = useSelector((state) => state.token);
 
 	useEffect(() => {
 		let start;
@@ -42,6 +56,24 @@ const ProfileAdmin = () => {
 		else setProgress(0);
 	};
 
+	const handleFetchUserInfo = async (e) => {
+		e.preventDefault();
+		const userInfo = { username };
+		const requestConfig = ADMIN_GET_USER_BY_USERNAME(userInfo, tokenData.token);
+		await request(requestConfig.url, requestConfig.options);
+	};
+
+	const handleDeleteUserById = async (e) => {
+		e.preventDefault();
+		const typedUserId = { userId };
+		const requestConfig = ADMIN_DELETE_USER_BY_ID(typedUserId, tokenData.token);
+		if (deleteCompleted) {
+			await request(requestConfig.url, requestConfig.options);
+			window.location.reload();
+		}
+	};
+
+	if (loading) return <Loading />;
 	return (
 		<section className="p-4 sm:px-0">
 			<Head
@@ -51,18 +83,12 @@ const ProfileAdmin = () => {
 			<h1 className="text-center text-2xl">Manage Site</h1>
 			<article className="mx-0 pt-4">
 				<div id="get-user" className="flex flex-col gap-6">
-					<form
-						className="flex flex-col gap-4"
-						onSubmit={(e) => {
-							e.preventDefault();
-							setUserInfo(!userInfo);
-							console.log("get user");
-						}}
-					>
+					<form className="flex flex-col gap-4" onSubmit={handleFetchUserInfo}>
 						<Input
 							label={"Username"}
 							type={"text"}
 							name={"photoTitle"}
+							onChange={(e) => setUsername(e.target.value)}
 							inputClasses={
 								"block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
 							}
@@ -71,48 +97,62 @@ const ProfileAdmin = () => {
 							Get User
 						</FormButton>
 					</form>
-					<div
-						id="user-info"
-						className={`${
-							userInfo ? "grid" : "hidden"
-						}  grid-cols-[auto_1fr] items-center gap-4`}
-					>
-						<img
-							src="https://source.unsplash.com/random/?selfie"
-							className="h-40 w-40 rounded-full border-4 border-green-spring-50 object-cover"
-							alt="avatar"
-						/>
-						<ul>
-							<li>Id:</li>
-							<li>Username:</li>
-							<li>Email:</li>
-							<li>Biography:</li>
-							<li>Total Photos:</li>
-							<li>Role:</li>
-						</ul>
-					</div>
+					{data && (
+						<div
+							id="user-info"
+							className="grid grid-cols-[auto_1fr] items-center gap-4"
+						>
+							<img
+								src={data.avatarUrl}
+								className="h-40 w-40 rounded-full border-4 border-green-spring-50 object-cover italic"
+								alt={`This is the avatar of ${data.username}`}
+							/>
+							<ul>
+								<li className="font-semibold">
+									Id: <span className="font-normal">{data.id}</span>
+								</li>
+								<li className="font-semibold">
+									Username: <span className="font-normal">{data.username}</span>
+								</li>
+								<li className="font-semibold">
+									Email: <span className="font-normal">{data.email}</span>
+								</li>
+								<li className="font-semibold">
+									Biography:{" "}
+									<span className="font-normal">
+										{data.biography ? data.biography : "No Bio"}
+									</span>
+								</li>
+								<li className="font-semibold">
+									Total Photos:{" "}
+									<span className="font-normal">{data.photos.length}</span>
+								</li>
+								<li className="font-semibold">
+									Role: <span className="font-normal">{data.role}</span>
+								</li>
+							</ul>
+						</div>
+					)}
 				</div>
 				<form
 					className="mt-6 flex flex-col gap-4"
-					onSubmit={(e) => {
-						e.preventDefault();
-						if (deleteCompleted) console.log("delete profile");
-					}}
+					onSubmit={handleDeleteUserById}
 				>
 					<Input
 						label={"User Id"}
 						type={"text"}
 						name={"userId"}
+						onChange={(e) => setUserId(e.target.value)}
 						inputClasses={
 							"block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
 						}
 					/>
 					<FormButton
-						// Eventos do mouse
+						// Mouse Events
 						onMouseDown={handleInteractionStart}
 						onMouseUp={handleInteractionEnd}
 						onMouseLeave={handleInteractionEnd}
-						// Eventos de toque
+						// Touch Events
 						onTouchStart={handleInteractionStart}
 						onTouchEnd={handleInteractionEnd}
 						onTouchCancel={handleInteractionEnd}
@@ -125,6 +165,7 @@ const ProfileAdmin = () => {
 					</FormButton>
 				</form>
 			</article>
+			<Error className="pt-5" error={error} />
 		</section>
 	);
 };
