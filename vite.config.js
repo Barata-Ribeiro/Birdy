@@ -12,5 +12,12 @@ export default defineConfig({
 		outDir: "dist",
 	},
 	server: { https: true },
-	plugins: [react(), svgr(), mkcert(), splitVendorChunkPlugin()],
+	plugins: [
+		react(),
+		svgr({
+			include: "**/*.svg?react",
+		}),
+		mkcert(),
+		splitVendorChunkPlugin(),
+	],
 });

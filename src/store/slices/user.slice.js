@@ -57,12 +57,15 @@ const isTokenExpired = (accessToken) => {
 };
 
 export const autoLogin = () => async (dispatch, getState) => {
-	const { token } = getState();
-	const userData = JSON.parse(window.localStorage.getItem("userData")) || null;
+	const { token } = getState().token.data;
+	const userData =
+		getState().user.data || window.localStorage.getItem("userData");
 
-	if (!token && !isTokenExpired(token))
+	if (token && !isTokenExpired(token) && userData) {
 		dispatch(slice.actions.fetchSuccess(userData));
-	else if (token && isTokenExpired(token)) dispatch(refreshToken());
+	} else if (token && isTokenExpired(token)) {
+		dispatch(refreshToken());
+	}
 };
 
 export default slice.reducer;
