@@ -14,7 +14,8 @@ const slice = createAsyncSlice({
 });
 
 export const fetchToken = slice.asyncAction;
-export const { resetState: resetTokenState } = slice.actions;
+export const { resetState: resetTokenState, fetchSuccess: setTokenData } =
+	slice.actions;
 
 export const refreshToken = () => async (dispatch) => {
 	try {

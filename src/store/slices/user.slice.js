@@ -1,6 +1,6 @@
 import { AUTH_LOGIN, AUTH_LOGOUT } from "../../constants";
 import createAsyncSlice from "../helper/createAsyncSlice";
-import { refreshToken } from "./token.slice";
+import { refreshToken, setTokenData } from "./token.slice";
 
 const slice = createAsyncSlice({
 	name: "user",
@@ -16,11 +16,11 @@ const { resetState: resetUserState, fetchError } = slice.actions;
 export const userLogin = (credentials) => async (dispatch) => {
 	try {
 		const actionResult = await dispatch(fetchUser(credentials));
-		const { accessToken, ...userData } = actionResult.payload;
-		if (accessToken) {
+		const { accessToken, refreshToken, ...userData } = actionResult.payload;
+		if (accessToken && refreshToken) {
 			window.localStorage.setItem("accessToken", accessToken);
-			window.localStorage.setItem("userData", JSON.stringify(userData));
 			dispatch(slice.actions.fetchSuccess(userData));
+			dispatch(setTokenData(accessToken));
 		} else console.error("Authentication tokens are missing in the payload");
 	} catch (error) {
 		dispatch(fetchError(error.message));
@@ -34,7 +34,6 @@ export const userLogout = () => async (dispatch) => {
 		const response = await fetch(url, options);
 		if (response.ok) {
 			window.localStorage.removeItem("accessToken");
-			window.localStorage.removeItem("userData");
 		} else console.error("Logout failed", response.status);
 	} catch (error) {
 		console.error("Error during logout", error);
