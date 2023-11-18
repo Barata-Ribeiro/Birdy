@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
-	const { data } = useSelector((state) => state.token);
+	const { data: token } = useSelector((state) => state.token);
 
-	return data ? children : data === null ? <Navigate to="/sign/up" /> : null;
+	return token ? children : token === null ? <Navigate to="/sign/up" /> : null;
 };
 
 ProtectedRoute.propTypes = {

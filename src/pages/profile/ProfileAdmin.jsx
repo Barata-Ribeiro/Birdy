@@ -11,7 +11,6 @@ import {
 import useFetch from "../../hooks/useFetch";
 
 import Error from "../../components/helpers/Error";
-import Loading from "../../components/helpers/Loading";
 
 const ProfileAdmin = () => {
 	const [isDeleting, setIsDeleting] = useState(false);
@@ -22,7 +21,7 @@ const ProfileAdmin = () => {
 	const [userId, setUserId] = useState(null);
 
 	const { data, loading, error, request } = useFetch();
-	const { data: tokenData } = useSelector((state) => state.token);
+	const { data: token } = useSelector((state) => state.token);
 
 	useEffect(() => {
 		let start;
@@ -59,21 +58,34 @@ const ProfileAdmin = () => {
 	const handleFetchUserInfo = async (e) => {
 		e.preventDefault();
 		const userInfo = { username };
-		const requestConfig = ADMIN_GET_USER_BY_USERNAME(userInfo, tokenData.token);
+		const requestConfig = ADMIN_GET_USER_BY_USERNAME(userInfo, token);
 		await request(requestConfig.url, requestConfig.options);
 	};
 
 	const handleDeleteUserById = async (e) => {
 		e.preventDefault();
 		const typedUserId = { userId };
-		const requestConfig = ADMIN_DELETE_USER_BY_ID(typedUserId, tokenData.token);
+		const requestConfig = ADMIN_DELETE_USER_BY_ID(typedUserId, token);
 		if (deleteCompleted) {
 			await request(requestConfig.url, requestConfig.options);
 			window.location.reload();
 		}
 	};
 
-	if (loading) return <Loading />;
+	const UserInfoSkeleton = () => (
+		<div
+			id="user-info-skeleton"
+			className="grid animate-pulse grid-cols-[auto_1fr] items-center gap-4"
+		>
+			<div className="h-40 w-40 rounded-full bg-gray-300" />
+			<ul className="space-y-2">
+				{Array.from({ length: 5 }).map((_, index) => (
+					<li key={index} className="h-6 rounded bg-gray-300" />
+				))}
+			</ul>
+		</div>
+	);
+
 	return (
 		<section className="p-4 sm:px-0">
 			<Head
@@ -97,41 +109,46 @@ const ProfileAdmin = () => {
 							Get User
 						</FormButton>
 					</form>
-					{data && (
-						<div
-							id="user-info"
-							className="grid grid-cols-[auto_1fr] items-center gap-4"
-						>
-							<img
-								src={data.avatarUrl}
-								className="h-40 w-40 rounded-full border-4 border-green-spring-50 object-cover italic"
-								alt={`This is the avatar of ${data.username}`}
-							/>
-							<ul>
-								<li className="font-semibold">
-									Id: <span className="font-normal">{data.id}</span>
-								</li>
-								<li className="font-semibold">
-									Username: <span className="font-normal">{data.username}</span>
-								</li>
-								<li className="font-semibold">
-									Email: <span className="font-normal">{data.email}</span>
-								</li>
-								<li className="font-semibold">
-									Biography:{" "}
-									<span className="font-normal">
-										{data.biography ? data.biography : "No Bio"}
-									</span>
-								</li>
-								<li className="font-semibold">
-									Total Photos:{" "}
-									<span className="font-normal">{data.photos.length}</span>
-								</li>
-								<li className="font-semibold">
-									Role: <span className="font-normal">{data.role}</span>
-								</li>
-							</ul>
-						</div>
+					{loading ? (
+						<UserInfoSkeleton />
+					) : (
+						data && (
+							<div
+								id="user-info"
+								className="grid grid-cols-[auto_1fr] items-center gap-4"
+							>
+								<img
+									src={data.avatarUrl}
+									className="h-40 w-40 rounded-full border-4 border-green-spring-50 object-cover italic"
+									alt={`This is the avatar of ${data.username}`}
+								/>
+								<ul>
+									<li className="font-semibold">
+										Id: <span className="font-normal">{data.id}</span>
+									</li>
+									<li className="font-semibold">
+										Username:{" "}
+										<span className="font-normal">{data.username}</span>
+									</li>
+									<li className="font-semibold">
+										Email: <span className="font-normal">{data.email}</span>
+									</li>
+									<li className="font-semibold">
+										Biography:{" "}
+										<span className="font-normal">
+											{data.biography ? data.biography : "No Bio"}
+										</span>
+									</li>
+									<li className="font-semibold">
+										Total Photos:{" "}
+										<span className="font-normal">{data.photos.length}</span>
+									</li>
+									<li className="font-semibold">
+										Role: <span className="font-normal">{data.role}</span>
+									</li>
+								</ul>
+							</div>
+						)
 					)}
 				</div>
 				<form

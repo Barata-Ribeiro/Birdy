@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  VictoryBar,
-  VictoryChart,
-  VictoryGroup,
-  VictoryLabel,
-  VictoryPie,
+	VictoryBar,
+	VictoryChart,
+	VictoryGroup,
+	VictoryLabel,
+	VictoryPie,
 } from "victory";
 import Error from "../../components/helpers/Error";
 import Head from "../../components/helpers/Head";
@@ -13,7 +13,7 @@ import Loading from "../../components/helpers/Loading";
 import { fetchProfileStats } from "../../store/slices/stats.slice";
 
 const ProfileStats = () => {
-	const { token } = useSelector((state) => state.token.data);
+	const { data: token } = useSelector((state) => state.token);
 	const { data, loading, error } = useSelector((state) => state.profileStats);
 
 	const dispatch = useDispatch();
