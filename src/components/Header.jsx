@@ -1,183 +1,155 @@
-/* eslint-disable import/no-unresolved */
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { FaSignOutAlt } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
-
-import { CgProfile } from "react-icons/cg";
-
-import "./Header.css";
-
-import { useSelector } from "react-redux";
-import BurgerMenu from "../assets/BurgerMenu.svg?react";
-import ListItem from "./helpers/ListItem";
+import { userLogout } from "../store/slices/user.slice";
 import MainButton from "./shared/MainButton";
 
 const links = {
+	home: "/",
 	about: "/about",
 	contact: "/contact",
 	repository: "https://github.com/Barata-Ribeiro/Birdy",
 };
 
-const Navbar = () => {
+const NewHeader = () => {
 	const [open, setOpen] = useState(false);
-	const headerButtonsRef = useRef(null);
-	const [showHeaderButtons, setShowHeaderButtons] = useState(false);
-
 	const { data } = useSelector((state) => state.user);
-
-	const handleToggle = () => {
-		setOpen((prevOpen) => !prevOpen);
-	};
-
-	const handleLinkClick = () => setOpen(false);
-
-	useEffect(() => {
-		if (
-			headerButtonsRef.current &&
-			headerButtonsRef.current.offsetParent === null
-		) {
-			setShowHeaderButtons(true);
-		} else {
-			setShowHeaderButtons(false);
-		}
-	}, [open]);
-
+	const dispatch = useDispatch();
 	return (
-		<header className="sticky top-0 z-50 flex w-full items-center bg-green-spring-50 shadow-sm dark:bg-green-spring-950">
-			<div className="container">
-				<div className="relative flex items-center justify-between">
-					{/* LOGO */}
-					<div className="w-60 max-w-full px-4">
-						<a href="/" className="block w-full py-5">
+		<header
+			className="sticky top-0 z-50 border-b bg-green-spring-50 shadow-sm dark:bg-green-spring-950"
+			role="banner"
+		>
+			<div className="px-6 lg:container md:px-12 lg:mx-auto lg:px-0 lg:py-4">
+				<div className="flex items-center justify-between">
+					<div
+						// eslint-disable-next-line tailwindcss/classnames-order
+						className="xs:w-40 relative z-50 w-32 max-w-full sm:w-52"
+						role="img"
+						aria-label="Birdy Logo"
+					>
+						<Link to="/" className="block w-full">
 							<img
 								src="https://upload.wikimedia.org/wikipedia/commons/9/93/No-logo.svg"
-								alt="logo"
+								alt="Birdy logo"
 								className="w-full"
 							/>
-						</a>
+						</Link>
 					</div>
 
-					{/* NAVLINKS */}
-					<div className="flex w-full items-center justify-between px-4">
-						<div>
-							<button
-								onClick={handleToggle}
-								id="navbarToggler"
-								className={`${open} absolute right-4 top-1/2 block -translate-y-1/2 rounded-lg px-3 py-[6px] ring-0 focus:ring-2 lg:hidden`}
-								aria-controls="primary-navigation"
-								aria-expanded={open ? "true" : "false"}
-								aria-label="Toggle navigation menu"
-							>
-								<BurgerMenu width="35" />
-							</button>
-
-							<nav
-								id="navbarCollapse"
-								className={`absolute right-4 top-full z-50 w-full max-w-[250px] rounded-lg 
-                            bg-green-spring-50 px-6 py-5 shadow transition-all duration-300 ease-out 
-                            lg:static lg:block lg:w-full 
-                            lg:max-w-full lg:bg-transparent lg:shadow-none 
-                            ${
-															open
-																? "visible translate-y-0 opacity-100"
-																: "invisible -translate-y-10 opacity-0"
-														}`}
-								aria-label="Primary navigation"
-							>
-								<ul className="flex flex-col gap-2 lg:flex-row lg:gap-0">
-									{Object.entries(links).map(([key, value]) => (
-										<ListItem
-											key={key}
-											ToLink={value}
-											onClick={handleLinkClick}
-										>
-											{key}
-										</ListItem>
-									))}
-									{open && showHeaderButtons && (
-										<>
-											{!data ? (
-												<>
-													<li>
-														<NavLink
-															to="/sign/in"
-															className={({ isActive }) =>
-																isActive
-																	? "flex rounded-sm bg-mantis-200 px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex"
-																	: "flex py-2 text-base font-normal text-gray-900 hover:text-bright-turquoise-500 lg:ml-12 lg:inline-flex"
-															}
-															onClick={handleLinkClick}
-														>
-															Sign In
-														</NavLink>
-													</li>
-													<li>
-														<NavLink
-															to="/sign/up"
-															className={({ isActive }) =>
-																isActive
-																	? "flex rounded-sm bg-mantis-400 px-2 py-2 text-base font-medium text-gray-900 hover:text-bright-turquoise-500 lg:ml-12 lg:inline-flex"
-																	: "flex rounded-sm bg-mantis-600 px-2 py-2 text-base font-normal text-gray-900 lg:ml-12 lg:inline-flex"
-															}
-															onClick={handleLinkClick}
-														>
-															Sign Up
-														</NavLink>
-													</li>
-												</>
-											) : (
-												<>
-													<li>
-														<NavLink
-															to={`/dashboard/${data.username}`}
-															className={({ isActive }) =>
-																isActive
-																	? "flex rounded-sm bg-mantis-200 px-2 py-2 text-base font-medium text-gray-900 lg:ml-12 lg:inline-flex"
-																	: "flex py-2 text-base font-normal text-gray-900 hover:text-bright-turquoise-500 lg:ml-12 lg:inline-flex"
-															}
-															onClick={handleLinkClick}
-														>
-															<CgProfile size={18} /> {data.username}
-														</NavLink>
-													</li>
-												</>
-											)}
-										</>
-									)}
-								</ul>
-							</nav>
-						</div>
-
-						{/* SIGN IN/UP BUTTONS */}
-						<div
-							ref={headerButtonsRef}
-							id="headerButtons"
-							className="hidden justify-end gap-2 pr-16 sm:flex lg:pr-0"
+					<div className="flex items-center justify-end border-l lg:border-l-0">
+						<input
+							type="checkbox"
+							name="hamburger"
+							checked={!open}
+							aria-checked={!open}
+							id="hamburger"
+							className="peer hidden"
+							onChange={() => setOpen(!open)}
+							aria-controls="primary-navigation"
+							aria-expanded={open ? "true" : "false"}
+							aria-label="Toggle navigation menu"
+							hidden
+						/>
+						<label
+							htmlFor="hamburger"
+							className="peer-checked:hamburger relative z-20 -mr-6 block cursor-pointer p-6 lg:hidden"
+							role="button"
+							aria-label="Toggle navigation"
 						>
-							{!data ? (
-								<>
-									<Link
-										to="/sign/in"
-										className=" px-7 py-3 text-base hover:text-bright-turquoise-500"
-									>
-										Sign in
-									</Link>
-									<MainButton
-										to={"/sign/up"}
-										customClasses={"px-7 py-3 font-medium"}
-									>
-										Sign Up
-									</MainButton>{" "}
-								</>
-							) : (
-								<>
-									<Link
-										to={`/dashboard/${data.username}`}
-										className="flex items-center gap-2"
-									>
-										<CgProfile size={18} /> {data.username}
-									</Link>
-								</>
-							)}
+							<div
+								aria-hidden="true"
+								className="m-auto h-0.5 w-6 rounded bg-mantis-900 transition duration-300"
+							></div>
+							<div
+								aria-hidden="true"
+								className="m-auto mt-2 h-0.5 w-6 rounded bg-mantis-900 transition duration-300"
+							></div>
+						</label>
+
+						<div className="fixed inset-0 w-[calc(100%-6rem)] translate-x-[-100%] border-r bg-white text-mantis-50 shadow-xl transition duration-300 peer-checked:translate-x-0 lg:static lg:w-auto lg:translate-x-0 lg:border-r-0 lg:bg-transparent lg:shadow-none">
+							<nav
+								className="flex h-full flex-col justify-between lg:flex-row lg:items-center"
+								id="primary-navigation"
+								role="navigation"
+							>
+								<ul className="space-y-8 px-6 pt-32 text-green-spring-700 md:px-12 lg:flex lg:space-x-12 lg:space-y-0 lg:pt-0">
+									{Object.entries(links).map(([key, value]) => (
+										<li key={key} className="w-fit">
+											<NavLink
+												className={({ isActive }) =>
+													isActive
+														? `rounded-md bg-mantis-200 px-4 py-1 text-base font-medium text-green-spring-900`
+														: `text-base font-normal text-green-spring-900 hover:text-bright-turquoise-500`
+												}
+												to={value}
+												target={key === "repository" ? "_blank" : "_self"}
+												rel={key === "repository" ? "noopener noreferrer" : ""}
+												role="link"
+												onClick={() => setOpen(!open)}
+											>
+												<span className="relative">{key}</span>
+											</NavLink>
+										</li>
+									))}
+								</ul>
+
+								<div className="border-t px-6 py-8 md:px-12 md:py-16 lg:border-l lg:border-t-0 lg:py-0 lg:pl-6 lg:pr-0">
+									{!data ? (
+										<>
+											<Link
+												to="/sign/in"
+												className="px-7 py-3 text-base hover:text-bright-turquoise-500"
+												role="link"
+												onClick={() => setOpen(!open)}
+											>
+												Sign in
+											</Link>
+											<MainButton
+												to={"/sign/up"}
+												customClasses={"px-7 py-3 font-medium"}
+												role="button"
+												onClick={() => setOpen(!open)}
+											>
+												Sign Up
+											</MainButton>
+										</>
+									) : (
+										// eslint-disable-next-line tailwindcss/classnames-order
+										<div className="max-xs:flex-col xs:gap-2 flex flex-row items-center justify-between gap-4">
+											<Link
+												to={`/dashboard/${data.username}`}
+												className="inline-flex items-center gap-2 text-base font-normal text-green-spring-900 hover:text-bright-turquoise-500"
+												onClick={() => setOpen(!open)}
+												role="dashboard"
+												aria-label="User Dashboard"
+											>
+												<img
+													src={data.avatarUrl}
+													className="dark:ring-green-sping-500 h-10 w-10 rounded-full p-1 ring-2 ring-green-spring-300"
+													alt=""
+												/>{" "}
+												{data.username}
+											</Link>
+											<Link
+												to="/sign/in"
+												reloadDocument
+												// eslint-disable-next-line tailwindcss/classnames-order
+												className="max-xs:border-t-2 max-xs:pt-4 border-green-spring-100 text-2xl text-green-spring-200 hover:text-green-spring-300 lg:border-l-2 lg:pl-2 lg:text-xl"
+												onClick={() => {
+													setOpen(!open);
+													dispatch(userLogout());
+												}}
+												role="log out"
+												aria-label="Log out button"
+											>
+												<FaSignOutAlt />
+											</Link>
+										</div>
+									)}
+								</div>
+							</nav>
 						</div>
 					</div>
 				</div>
@@ -186,4 +158,4 @@ const Navbar = () => {
 	);
 };
 
-export default Navbar;
+export default NewHeader;

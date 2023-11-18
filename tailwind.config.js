@@ -7,6 +7,9 @@ export default {
 			container: {
 				center: true,
 			},
+			screens: {
+				xs: "320px",
+			},
 			colors: {
 				mantis: {
 					50: "hsl(94, 41%, 97%)",
