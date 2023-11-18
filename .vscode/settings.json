@@ -2,5 +2,7 @@
   "tailwindCSS.emmetCompletions": true,
   "files.associations": {
     ".css": "tailwindcss"
-  }
+  },
+  "files.autoSave": "onWindowChange",
+  "files.autoSaveDelay": 1000,
 }
