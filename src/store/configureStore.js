@@ -13,7 +13,7 @@ import user from "./slices/user.slice";
 const persistConfig = {
 	key: "root",
 	storage,
-	blacklist: ["feed", "photo", "profile", "profileStats", "token"],
+	whitelist: ["user"],
 };
 
 const rootReducer = combineReducers({
