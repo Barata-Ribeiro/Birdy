@@ -77,10 +77,13 @@ const ProfileAdmin = () => {
 			id="user-info-skeleton"
 			className="grid animate-pulse grid-cols-[auto_1fr] items-center gap-4"
 		>
-			<div className="h-40 w-40 rounded-full bg-gray-300" />
+			<div className="h-40 w-40 rounded-full bg-green-spring-300" />
 			<ul className="space-y-2">
 				{Array.from({ length: 5 }).map((_, index) => (
-					<li key={index} className="h-6 rounded bg-gray-300" />
+					<li
+						key={index}
+						className="h-6 max-w-xs rounded bg-green-spring-300"
+					/>
 				))}
 			</ul>
 		</div>
