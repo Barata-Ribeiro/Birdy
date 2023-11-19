@@ -29,7 +29,11 @@ function App() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(autoLogin());
+		const intervalId = setInterval(() => {
+			dispatch(autoLogin());
+		}, [840000]);
+
+		return () => clearInterval(intervalId);
 	}, [dispatch]);
 
 	return (

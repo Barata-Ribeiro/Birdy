@@ -11,6 +11,7 @@ import Error from "../../components/helpers/Error";
 import Head from "../../components/helpers/Head";
 import Loading from "../../components/helpers/Loading";
 import { fetchProfileStats } from "../../store/slices/stats.slice";
+import { checkTokenExpiration } from "../../store/slices/token.slice";
 
 const ProfileStats = () => {
 	const { data: token } = useSelector((state) => state.token);
@@ -24,7 +25,8 @@ const ProfileStats = () => {
 	const [pieChartData, setPieChartData] = useState([]);
 
 	useEffect(() => {
-		if (!data) {
+		dispatch(checkTokenExpiration());
+		if (!data && token) {
 			dispatch(fetchProfileStats(token));
 			return;
 		}

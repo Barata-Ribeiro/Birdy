@@ -8,6 +8,7 @@ import FormButton from "../../components/shared/FormButton";
 import Input from "../../components/shared/Input";
 import useForm from "../../hooks/useForm";
 import { photoPosting } from "../../store/slices/photoPost.slice";
+import { checkTokenExpiration } from "../../store/slices/token.slice";
 
 const ProfileUpload = () => {
 	const photoTitle = useForm();
@@ -29,6 +30,8 @@ const ProfileUpload = () => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
+		dispatch(checkTokenExpiration());
+
 		const formData = new FormData();
 		formData.append("imageFile", imageUpload.raw);
 		formData.append("title", photoTitle.value);

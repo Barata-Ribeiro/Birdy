@@ -1,11 +1,20 @@
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { userLogout } from "../../store/slices/user.slice";
 
 const ProtectedRoute = ({ children }) => {
 	const { data: token } = useSelector((state) => state.token);
+	const { data: userData } = useSelector((state) => state.user);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
-	return token ? children : token === null ? <Navigate to="/sign/up" /> : null;
+	const userLogOut = () => {
+		if (userData) dispatch(userLogout());
+		navigate("/sign/in");
+	};
+
+	return token ? children : token === null ? userLogOut() : null;
 };
 
 ProtectedRoute.propTypes = {
