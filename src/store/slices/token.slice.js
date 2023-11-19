@@ -2,14 +2,8 @@ import { AUTH_REFRESH_TOKEN } from "../../constants";
 import createAsyncSlice from "../helper/createAsyncSlice";
 import { userLogout } from "./user.slice";
 
-const getInitialTokenState = () =>
-	window.localStorage.getItem("accessToken") || null;
-
 const slice = createAsyncSlice({
 	name: "token",
-	initialState: {
-		data: getInitialTokenState(),
-	},
 	fetchConfig: () => AUTH_REFRESH_TOKEN(),
 });
 
@@ -17,13 +11,16 @@ export const fetchToken = slice.asyncAction;
 export const { resetState: resetTokenState, fetchSuccess: setTokenData } =
 	slice.actions;
 
+export const checkTokenExpiration = () => ({ type: "token/checkExpiration" });
+export const tokenPurge = () => ({ type: "token/purgeData" });
+slice.actions.checkTokenExpiration = checkTokenExpiration;
+
 export const refreshToken = () => async (dispatch) => {
 	try {
 		const actionResult = await dispatch(fetchToken());
-		if (actionResult?.payload?.accessToken) {
-			const newAccessToken = actionResult.payload.accessToken;
-			window.localStorage.setItem("accessToken", newAccessToken);
-			dispatch(slice.actions.fetchSuccess(newAccessToken));
+		const newAccessToken = actionResult?.payload?.accessToken;
+		if (newAccessToken) {
+			dispatch(setTokenData(newAccessToken));
 		} else {
 			console.error("New access token is missing in the payload");
 			dispatch(userLogout());
