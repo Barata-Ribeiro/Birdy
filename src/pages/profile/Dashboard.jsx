@@ -112,13 +112,15 @@ const Dashboard = () => {
 							<BiSolidPhotoAlbum size={18} />
 							<span className="max-sm:hidden">Photos</span>
 						</MainButton>
-						<MainButton
-							to={`../dashboard/${data.username}/admin-panel`}
-							customClasses={"flex gap-2 items-center px-4 py-2 text-sm"}
-						>
-							<MdAdminPanelSettings size={18} />{" "}
-							<span className="max-sm:hidden">Admin</span>
-						</MainButton>
+						{data.role === "admin" && (
+							<MainButton
+								to={`../dashboard/${data.username}/admin-panel`}
+								customClasses={"flex gap-2 items-center px-4 py-2 text-sm"}
+							>
+								<MdAdminPanelSettings size={18} />{" "}
+								<span className="max-sm:hidden">Admin</span>
+							</MainButton>
+						)}
 						<MainButton
 							to={`../dashboard/${data.username}/stats`}
 							customClasses={"flex gap-2 items-center px-4 py-2 text-sm"}

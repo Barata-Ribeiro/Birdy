@@ -154,7 +154,7 @@ const SignUp = () => {
 						htmlFor="terms-of-use"
 						className="text-left text-green-spring-50 dark:text-green-spring-50 lg:text-green-spring-950"
 					>
-						I've read and accepted the{" "}
+						I&apos;ve read and accepted the{" "}
 						<Link
 							to={"/terms-of-use"}
 							className="font-semibold text-green-spring-50 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600"
