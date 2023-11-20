@@ -88,10 +88,12 @@ class UserService {
 			relations: [
 				"photos",
 				"photos.comments",
+				"photos.comments.photo",
+				"photos.likes.photo",
 				"comments",
+				"comments.photo",
 				"likes",
 				"likes.photo",
-				"likes.user",
 			],
 		});
 
@@ -105,10 +107,12 @@ class UserService {
 			relations: [
 				"photos",
 				"photos.comments",
+				"photos.comments.photo",
+				"photos.likes.photo",
 				"comments",
+				"comments.photo",
 				"likes",
 				"likes.photo",
-				"likes.user",
 			],
 			cache: {
 				id: ALL_USERS_CACHE_KEY,

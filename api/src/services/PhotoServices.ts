@@ -142,7 +142,13 @@ export class PhotoServices {
 
 		const photo = await photoRepository.findOne({
 			where: { id: photoId },
-			relations: ["author", "likes", "comments"],
+			relations: [
+				"author",
+				"comments",
+				"comments.photo",
+				"likes",
+				"likes.photo",
+			],
 		});
 
 		if (!photo) throw new NotFoundError("Photo not found.");

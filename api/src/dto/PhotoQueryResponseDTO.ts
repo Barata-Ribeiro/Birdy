@@ -5,6 +5,7 @@ export class PhotoQueryResponseDTO {
 	id: string;
 	authorID: string;
 	authorName: string;
+	title: string;
 	imageUrl: string;
 	meta: PhotoMeta;
 	createdAt: Date;
@@ -15,6 +16,7 @@ export class PhotoQueryResponseDTO {
 		dto.id = photo.id;
 		dto.authorID = photo.authorID;
 		dto.authorName = photo.authorName;
+		dto.title = photo.title;
 		dto.imageUrl = photo.imageUrl;
 		dto.meta = photo.meta;
 		dto.createdAt = photo.createdAt;
