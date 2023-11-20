@@ -35,8 +35,9 @@ export const fetchFeed = slice.asyncAction;
 export const { addPhotos, addPage, resetState: resetFeedState } = slice.actions;
 
 export const loadNewPhotos =
-	({ limit = 5, userId }) =>
+	({ limit, userId }) =>
 	async (dispatch, getState) => {
+		console.log({ limit, userId });
 		const { feed } = getState();
 		dispatch(addPage());
 		const { payload } = await dispatch(
