@@ -12,8 +12,8 @@ export const { resetState: resetTokenState, fetchSuccess: setTokenData } =
 	slice.actions;
 
 export const checkTokenExpiration = () => ({ type: "token/checkExpiration" });
-export const tokenPurge = () => ({ type: "token/purgeData" });
 slice.actions.checkTokenExpiration = checkTokenExpiration;
+export const tokenPurge = () => ({ type: "token/purgeData" });
 
 export const refreshToken = () => async (dispatch) => {
 	try {

@@ -1,5 +1,5 @@
 import { persistor } from "../configureStore";
-import { refreshToken } from "../slices/token.slice";
+import { refreshToken, resetTokenState } from "../slices/token.slice";
 import { isTokenExpired } from "../slices/user.slice";
 
 const tokenMiddleware =
@@ -7,8 +7,11 @@ const tokenMiddleware =
 	(next) =>
 	(action) => {
 		if (action.type === "user/purgeData" || action.type === "token/purgeData") {
-			persistor.purge();
-			return;
+			persistor.pause();
+			dispatch(resetTokenState());
+			persistor.flush().then(() => {
+				return persistor.purge();
+			});
 		}
 
 		if (action.type === "token/checkExpiration") {

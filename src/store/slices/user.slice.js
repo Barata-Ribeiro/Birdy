@@ -62,7 +62,7 @@ export const autoLogin = () => async (dispatch, getState) => {
 		dispatch(slice.actions.fetchSuccess(userData));
 	else if (accessToken && isTokenExpired(accessToken)) dispatch(refreshToken());
 	else if (!accessToken && userData) dispatch(refreshToken());
-	else dispatch(userLogout());
+	else return;
 };
 
 export default slice.reducer;
