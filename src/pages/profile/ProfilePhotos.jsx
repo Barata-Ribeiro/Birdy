@@ -12,6 +12,8 @@ const ProfilePhotos = () => {
 				description="In this page you'll find all the photos you have uploaded."
 			/>
 
+			<h1 className="text-center text-2xl">Your Photos</h1>
+
 			<Feed user={data.id} />
 		</section>
 	);

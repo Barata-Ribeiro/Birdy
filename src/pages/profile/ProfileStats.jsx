@@ -74,8 +74,8 @@ const ProfileStats = () => {
 		return (
 			<section className="p-4 sm:px-0">
 				<Head title="Stats" description="View your profile stats here." />
-				<div className="my-10 text-center">
-					<h1 className="text-2xl font-semibold">Your Stats</h1>
+				<div className="text-center">
+					<h1 className="text-center text-2xl">Your Stats</h1>
 					<p className="mt-4 text-lg text-gray-600">
 						No photos to generate stats. Start sharing your moments to see
 						statistics!
