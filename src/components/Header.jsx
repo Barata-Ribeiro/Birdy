@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import { checkTokenExpiration } from "../store/slices/token.slice";
 import { userLogout } from "../store/slices/user.slice";
 import MainButton from "./shared/MainButton";
 
@@ -16,6 +17,19 @@ const NewHeader = () => {
 	const [open, setOpen] = useState(false);
 	const { data } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
+
+	const handleDashboardClick = () => {
+		setOpen(!open);
+		dispatch(checkTokenExpiration());
+	};
+
+	useEffect(() => {
+		const mediaQuery = window.matchMedia("(max-width: 1024px)");
+		if (mediaQuery.matches) {
+			setOpen(false);
+		}
+	}, []);
+
 	return (
 		<header
 			className="sticky top-0 z-50 border-b bg-green-spring-50 shadow-sm dark:bg-green-spring-950"
@@ -25,7 +39,7 @@ const NewHeader = () => {
 				<div className="flex items-center justify-between">
 					<div
 						// eslint-disable-next-line tailwindcss/classnames-order
-						className="xs:w-40 relative z-50 w-32 max-w-full sm:w-52"
+						className="relative z-50 w-32 max-w-full xs:w-40 sm:w-52"
 						role="img"
 						aria-label="Birdy Logo"
 					>
@@ -117,11 +131,11 @@ const NewHeader = () => {
 										</>
 									) : (
 										// eslint-disable-next-line tailwindcss/classnames-order
-										<div className="max-xs:flex-col xs:gap-2 flex flex-row items-center justify-between gap-4">
+										<div className="flex flex-row items-center justify-between gap-4 max-xs:flex-col xs:gap-2">
 											<Link
 												to={`/dashboard/${data.username}`}
 												className="inline-flex items-center gap-2 text-base font-normal text-green-spring-900 hover:text-bright-turquoise-500"
-												onClick={() => setOpen(!open)}
+												onClick={handleDashboardClick}
 												role="dashboard"
 												aria-label="User Dashboard"
 											>
@@ -136,7 +150,7 @@ const NewHeader = () => {
 												to="/sign/in"
 												reloadDocument
 												// eslint-disable-next-line tailwindcss/classnames-order
-												className="max-xs:border-t-2 max-xs:pt-4 border-green-spring-100 text-2xl text-green-spring-200 hover:text-green-spring-300 lg:border-l-2 lg:pl-2 lg:text-xl"
+												className="border-green-spring-100 text-2xl text-green-spring-200 hover:text-green-spring-300 max-xs:border-t-2 max-xs:pt-4 lg:border-l-2 lg:pl-2 lg:text-xl"
 												onClick={() => {
 													setOpen(!open);
 													dispatch(userLogout());

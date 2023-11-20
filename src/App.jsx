@@ -29,6 +29,7 @@ function App() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		dispatch(autoLogin());
 		const intervalId = setInterval(() => {
 			dispatch(autoLogin());
 		}, [840000]);
