@@ -330,15 +330,16 @@ export const ADMIN_DELETE_USER_BY_ID = (userId, token) => {
 };
 
 // COMMENT CONSTANTS
+
 /**
  * Creates a new comment for a photo.
  *
  * @param {number} photoId - The ID of the photo to create the comment for.
- * @param {string} token - The access token for the user making the request.
- * @param {object} body - The body of the comment to create.
- * @returns {object} The response from the API.
+ * @param {string} token - The access token of the user creating the comment.
+ * @param {string} comment - The text of the comment to be created.
+ * @returns {Object} - The request configuration object with the URL and options to create the comment.
  */
-export const COMMENT_CREATE = (photoId, token, body) => {
+export const COMMENT_CREATE = (photoId, token, comment) => {
 	return {
 		url: `${__API_URL__}/photos/${photoId}/comments`,
 		options: {
@@ -349,7 +350,7 @@ export const COMMENT_CREATE = (photoId, token, body) => {
 				Authorization: `Bearer ${token}`,
 			},
 			credentials: "include",
-			body: JSON.stringify(body),
+			body: JSON.stringify({ comment }),
 		},
 	};
 };
