@@ -3,6 +3,7 @@ import logger from "redux-logger";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import tokenMiddleware from "./helper/tokenMiddleware";
+import commentPost from "./slices/commentPost.slice";
 import feed from "./slices/feed.slice";
 import photo from "./slices/photo.slice";
 import photoPost from "./slices/photoPost.slice";
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
 	profileStats,
 	photo,
 	photoPost,
+	commentPost,
 	token,
 	user,
 	feed,
