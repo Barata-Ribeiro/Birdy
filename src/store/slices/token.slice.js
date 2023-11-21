@@ -1,6 +1,6 @@
 import { AUTH_REFRESH_TOKEN } from "../../constants";
 import createAsyncSlice from "../helper/createAsyncSlice";
-import { userLogout } from "./user.slice";
+import { isTokenExpired, userLogout } from "./user.slice";
 
 const slice = createAsyncSlice({
 	name: "token",
@@ -15,7 +15,10 @@ export const checkTokenExpiration = () => ({ type: "token/checkExpiration" });
 slice.actions.checkTokenExpiration = checkTokenExpiration;
 export const tokenPurge = () => ({ type: "token/purgeData" });
 
-export const refreshToken = () => async (dispatch) => {
+export const refreshToken = () => async (dispatch, getState) => {
+	const currentToken = getState().token.data;
+	if (!currentToken || !isTokenExpired(currentToken)) return;
+
 	try {
 		const actionResult = await dispatch(fetchToken());
 		const newAccessToken = actionResult?.payload?.accessToken;

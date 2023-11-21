@@ -1,22 +1,26 @@
 import { persistor } from "../configureStore";
-import { refreshToken, resetTokenState } from "../slices/token.slice";
-import { isTokenExpired } from "../slices/user.slice";
+import {
+	refreshToken,
+	resetTokenState,
+	tokenPurge,
+} from "../slices/token.slice";
+import { userPurge } from "../slices/user.slice";
 
 const tokenMiddleware =
-	({ dispatch, getState }) =>
+	({ dispatch }) =>
 	(next) =>
 	(action) => {
-		if (action.type === "user/purgeData" || action.type === "token/purgeData") {
+		if (action.type === userPurge().type || action.type === tokenPurge().type) {
 			persistor.pause();
 			dispatch(resetTokenState());
-			persistor.flush().then(() => {
-				return persistor.purge();
-			});
+			persistor.flush().then(() => persistor.purge());
 		}
 
-		if (action.type === "token/checkExpiration") {
-			const accessToken = getState().token.data;
-			if (accessToken && isTokenExpired(accessToken)) dispatch(refreshToken());
+		if (
+			action.type.endsWith("/fetchSuccess") ||
+			action.type === refreshToken().type
+		) {
+			dispatch({ type: "token/checkExpiration" });
 		}
 
 		return next(action);

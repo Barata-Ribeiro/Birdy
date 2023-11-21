@@ -43,12 +43,22 @@ export const userLogin = (credentials) => async (dispatch) => {
 export const userLogout = () => async (dispatch) => {
 	dispatch(resetUserState());
 	const { url, options } = AUTH_LOGOUT();
+
 	try {
 		const response = await fetch(url, options);
 		if (!response.ok) throw new Error(response.statusText);
 
-		dispatch(userPurge());
 		dispatch(tokenPurge());
+		dispatch(userPurge());
+
+		if ("caches" in window) {
+			await caches.keys().then((cacheNames) => {
+				cacheNames.forEach((cacheName) => {
+					caches.delete(cacheName);
+				});
+			});
+		}
+		window.location.reload(true);
 	} catch (error) {
 		console.error("Error during logout", error);
 	}
@@ -62,7 +72,6 @@ export const autoLogin = () => async (dispatch, getState) => {
 		dispatch(slice.actions.fetchSuccess(userData));
 	else if (accessToken && isTokenExpired(accessToken)) dispatch(refreshToken());
 	else if (!accessToken && userData) dispatch(refreshToken());
-	else return;
 };
 
 export default slice.reducer;

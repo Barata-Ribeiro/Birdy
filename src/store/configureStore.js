@@ -1,7 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import logger from "redux-logger";
+import localforage from "localforage";
 import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 import tokenMiddleware from "./helper/tokenMiddleware";
 import commentPost from "./slices/commentPost.slice";
 import feed from "./slices/feed.slice";
@@ -14,7 +13,7 @@ import user from "./slices/user.slice";
 
 const persistConfig = {
 	key: "root",
-	storage,
+	storage: localforage,
 	whitelist: ["user", "token"],
 };
 
@@ -35,7 +34,7 @@ const store = configureStore({
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({
 			serializableCheck: false,
-		}).concat(logger, tokenMiddleware),
+		}).concat(tokenMiddleware),
 });
 
 const persistor = persistStore(store);
