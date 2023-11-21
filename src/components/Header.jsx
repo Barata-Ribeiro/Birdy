@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import useMedia from "../hooks/useMedia";
 import { checkTokenExpiration } from "../store/slices/token.slice";
 import { userLogout } from "../store/slices/user.slice";
 import MainButton from "./shared/MainButton";
@@ -13,22 +14,20 @@ const links = {
 	repository: "https://github.com/Barata-Ribeiro/Birdy",
 };
 
-const NewHeader = () => {
-	const [open, setOpen] = useState(false);
-	const { data } = useSelector((state) => state.user);
+const Header = () => {
 	const dispatch = useDispatch();
+	const { data } = useSelector((state) => state.user);
+	const isMobile = useMedia("(max-width: 64rem)");
+	const [open, setOpen] = useState(!isMobile);
+
+	useEffect(() => {
+		setOpen(!isMobile);
+	}, [isMobile]);
 
 	const handleDashboardClick = () => {
 		setOpen(!open);
 		dispatch(checkTokenExpiration());
 	};
-
-	useEffect(() => {
-		const mediaQuery = window.matchMedia("(max-width: 1024px)");
-		if (mediaQuery.matches) {
-			setOpen(false);
-		}
-	}, []);
 
 	return (
 		<header
@@ -56,8 +55,8 @@ const NewHeader = () => {
 						<input
 							type="checkbox"
 							name="hamburger"
-							checked={!open}
-							aria-checked={!open}
+							checked={open}
+							aria-checked={open}
 							id="hamburger"
 							className="peer hidden"
 							onChange={() => setOpen(!open)}
@@ -172,4 +171,4 @@ const NewHeader = () => {
 	);
 };
 
-export default NewHeader;
+export default Header;
