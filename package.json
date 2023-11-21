@@ -22,6 +22,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
     "dotenv": "^16.3.1",
+    "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
@@ -42,7 +43,7 @@
     "@types/react-redux": "^7.1.30",
     "@vitejs/plugin-react": "^4.2.0",
     "autoprefixer": "^10.4.16",
-    "eslint": "^8.53.0",
+    "eslint": "^8.54.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-prettier": "^5.0.1",
@@ -55,12 +56,7 @@
     "prettier-plugin-tailwindcss": "^0.5.7",
     "tailwindcss": "^3.3.5",
     "vite": "^5.0.0",
-    "vite-plugin-mkcert": "^1.16.0",
-    "vite-plugin-svgr": "^4.1.0"
-  },
-  "overrides": {
-    "vite-plugin-svgr": {
-      "vite": "^5.0.0"
-    }
+    "vite-plugin-mkcert": "^1.17.1",
+    "vite-plugin-svgr": "^4.2.0"
   }
 }
