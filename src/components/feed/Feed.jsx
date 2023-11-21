@@ -15,7 +15,7 @@ const Feed = ({ user }) => {
 
 	useEffect(() => {
 		dispatch(resetFeedState());
-		dispatch(loadNewPhotos({ limit: 5, userId: user }));
+		dispatch(loadNewPhotos({ limit: 6, userId: user }));
 	}, [dispatch, user]);
 
 	useEffect(() => {
@@ -24,7 +24,7 @@ const Feed = ({ user }) => {
 				const scroll = window.scrollY;
 				const height = document.body.offsetHeight - window.innerHeight;
 				if (scroll > height * 0.75 && !wait.current) {
-					dispatch(loadNewPhotos({ limit: 5, userId: user }));
+					dispatch(loadNewPhotos({ limit: 6, userId: user }));
 					wait.current = true;
 					setTimeout(() => {
 						wait.current = false;
