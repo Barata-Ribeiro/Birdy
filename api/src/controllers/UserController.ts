@@ -45,6 +45,12 @@ export class UserController {
 
 		const { id } = user;
 
+		res.clearCookie("jwt", {
+			httpOnly: true,
+			sameSite: "none",
+			secure: true,
+		});
+
 		await UserService.deleteOwnAccount(id);
 		return res.status(200).send({ message: "Account deleted successfully." });
 	}
