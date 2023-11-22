@@ -3,12 +3,22 @@ import { useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 
+import { useDispatch, useSelector } from "react-redux";
+import { USER_DELETE_OWN_ACCOUNT } from "../constants";
+import useFetch from "../hooks/useFetch";
+import { tokenPurge } from "../store/slices/token.slice";
+import { userPurge } from "../store/slices/user.slice";
+import Error from "./helpers/Error";
 import FormButton from "./shared/FormButton";
 
-const DeleteProfileModal = ({ isOpen, onClose }) => {
+const DeleteProfileModal = ({ isOpen, onClose, onOutsideClick }) => {
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [progress, setProgress] = useState(0);
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
+	const { error, request } = useFetch();
+	const { data: token } = useSelector((state) => state.token);
 
 	useEffect(() => {
 		let start;
@@ -18,13 +28,25 @@ const DeleteProfileModal = ({ isOpen, onClose }) => {
 			if (start === null) start = timestamp;
 			const progress = Math.round(Math.min((timestamp - start) / 50, 100));
 
+			const deleteAccount = async (token) => {
+				const { url, options } = USER_DELETE_OWN_ACCOUNT(token);
+				const { response } = await request(url, options);
+
+				if (response?.ok) {
+					setIsDeleting(false);
+					setProgress(0);
+					dispatch(tokenPurge());
+					dispatch(userPurge());
+				}
+
+				navigate("/sign/up");
+				window.location.reload(true);
+			};
+
 			setProgress(progress);
 
 			if (progress < 100) animationFrameId = requestAnimationFrame(step);
-			else {
-				console.log("Deleted!");
-				navigate("/sign/up");
-			}
+			else deleteAccount(token);
 		};
 
 		if (isDeleting) {
@@ -36,7 +58,7 @@ const DeleteProfileModal = ({ isOpen, onClose }) => {
 			if (animationFrameId) cancelAnimationFrame(animationFrameId);
 			setProgress(0);
 		};
-	}, [isDeleting, navigate]);
+	}, [isDeleting, navigate, request, token, dispatch]);
 
 	const handleInteractionStart = () => setIsDeleting(true);
 	const handleInteractionEnd = () => {
@@ -48,7 +70,10 @@ const DeleteProfileModal = ({ isOpen, onClose }) => {
 
 	return (
 		<div className="fixed inset-0 z-[100] flex items-center justify-center">
-			<div className="absolute inset-0 bg-black opacity-50"></div>
+			<div
+				className="absolute inset-0 bg-black opacity-50"
+				onClick={onOutsideClick}
+			></div>
 			<div className="z-50 w-11/12 rounded-lg bg-green-spring-50 p-8 dark:bg-mantis-950 md:w-1/2">
 				<button
 					onClick={onClose}
@@ -91,6 +116,7 @@ const DeleteProfileModal = ({ isOpen, onClose }) => {
 						{isDeleting ? `${progress}%` : "Delete"}
 					</FormButton>
 				</div>
+				<Error error={error} />
 			</div>
 		</div>
 	);
@@ -99,6 +125,7 @@ const DeleteProfileModal = ({ isOpen, onClose }) => {
 DeleteProfileModal.propTypes = {
 	isOpen: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
+	onOutsideClick: PropTypes.func.isRequired,
 };
 
 export default DeleteProfileModal;

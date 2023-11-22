@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { BiSolidPhotoAlbum } from "react-icons/bi";
 import { FaChartPie, FaSignOutAlt, FaUpload } from "react-icons/fa";
 import { FaUser, FaUserTie } from "react-icons/fa6";
@@ -9,42 +9,42 @@ import { useDispatch, useSelector } from "react-redux";
 import DeleteProfileModal from "../../components/DeleteProfileModal";
 // import EditProfileModal from "../../components/EditProfileModal";
 import MainButton from "../../components/shared/MainButton";
-import useFetch from "../../hooks/useFetch";
 import NotFound from "../NotFound";
 import ProfileAdmin from "./ProfileAdmin";
 import ProfileStats from "./ProfileStats";
 import ProfileUpload from "./ProfileUpload";
 
 import Loading from "../../components/helpers/Loading";
+import { closeDeleteModal, openDeleteModal } from "../../store/slices/ui.slice";
 import { userLogout } from "../../store/slices/user.slice";
 import ProfilePhotos from "./ProfilePhotos";
 
 const Dashboard = () => {
 	const { username } = useParams();
-	const [editModal, setEditModal] = useState(false);
-	const [deleteModal, setDeleteModal] = useState(false);
-
-	const dispatch = useDispatch();
+	const { deleteModal } = useSelector((state) => state.ui);
 	const { data, loading } = useSelector((state) => state.user);
+	const dispatch = useDispatch();
 
-	const { loading: fetchLoading, error: fetchError, request } = useFetch();
+	useEffect(() => {
+		dispatch(closeDeleteModal());
+	}, [dispatch]);
 
-	const handleEditModal = (e) => {
-		e.preventDefault();
-		setEditModal(!editModal);
-	};
-
-	const handleDeleteModal = (e) => {
-		e.preventDefault();
-		setDeleteModal(!deleteModal);
+	const handleDeleteModalOpen = () => dispatch(openDeleteModal());
+	const handleDeleteModalClose = () => dispatch(closeDeleteModal());
+	const handleOutsideClick = ({ target, currentTarget }) => {
+		if (target === currentTarget) handleDeleteModalClose();
 	};
 
 	if (!data || username !== data.username) return <Navigate to="/sign/in" />;
-	if (loading || fetchLoading) return <Loading />;
+	if (loading) return <Loading />;
 	return (
 		<>
 			{/* <EditProfileModal isOpen={editModal} onClose={handleEditModal} /> */}
-			<DeleteProfileModal isOpen={deleteModal} onClose={handleDeleteModal} />
+			<DeleteProfileModal
+				isOpen={deleteModal}
+				onClose={handleDeleteModalClose}
+				onOutsideClick={handleOutsideClick}
+			/>
 			<div className="bg-mantis-100 pb-8 dark:bg-mantis-800">
 				<div
 					style={{ backgroundImage: `url('${data.coverImageUrl}')` }}
@@ -97,7 +97,7 @@ const Dashboard = () => {
 						<li className="hidden sm:block">|</li>
 						<li>
 							<button
-								onClick={handleDeleteModal}
+								onClick={handleDeleteModalOpen}
 								className="text-sm text-red-400 dark:text-red-600"
 							>
 								Delete Account

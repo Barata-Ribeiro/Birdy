@@ -9,6 +9,7 @@ import photoPost from "./slices/photoPost.slice";
 import profile from "./slices/profile.slice";
 import profileStats from "./slices/stats.slice";
 import token from "./slices/token.slice";
+import ui from "./slices/ui.slice";
 import user from "./slices/user.slice";
 
 const persistConfig = {
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
 	token,
 	user,
 	feed,
+	ui,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
