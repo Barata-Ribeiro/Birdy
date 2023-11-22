@@ -31,7 +31,7 @@ const Header = () => {
 
 	return (
 		<header
-			className="sticky top-0 z-50 border-b bg-green-spring-50 shadow-sm dark:bg-green-spring-950"
+			className="sticky top-0 z-50 border-b bg-green-spring-50 shadow-sm dark:border-green-spring-400 dark:bg-green-spring-950"
 			role="banner"
 		>
 			<div className="px-6 lg:container md:px-12 lg:mx-auto lg:px-0 lg:py-4">
@@ -72,15 +72,15 @@ const Header = () => {
 						>
 							<div
 								aria-hidden="true"
-								className="m-auto h-0.5 w-6 rounded bg-mantis-900 transition duration-300"
+								className="m-auto h-0.5 w-6 rounded bg-mantis-900 transition duration-300 dark:bg-mantis-100"
 							></div>
 							<div
 								aria-hidden="true"
-								className="m-auto mt-2 h-0.5 w-6 rounded bg-mantis-900 transition duration-300"
+								className="m-auto mt-2 h-0.5 w-6 rounded bg-mantis-900 transition duration-300 dark:bg-mantis-100"
 							></div>
 						</label>
 
-						<div className="fixed inset-0 w-[calc(100%-6rem)] translate-x-[-100%] border-r bg-white text-mantis-50 shadow-xl transition duration-300 peer-checked:translate-x-0 dark:bg-mantis-800 lg:static lg:w-auto lg:translate-x-0 lg:border-r-0 lg:bg-transparent lg:shadow-none">
+						<div className="fixed inset-0 w-[calc(100%-6rem)] translate-x-[-100%] border-r bg-white text-mantis-50 shadow-xl transition duration-300 peer-checked:translate-x-0 dark:border-green-spring-400 dark:bg-mantis-800 lg:static lg:w-auto lg:translate-x-0 lg:border-r-0 lg:bg-transparent lg:shadow-none lg:dark:bg-transparent">
 							<nav
 								className="flex h-full flex-col justify-between lg:flex-row lg:items-center"
 								id="primary-navigation"
@@ -107,7 +107,7 @@ const Header = () => {
 									))}
 								</ul>
 
-								<div className="border-t px-6 py-8 md:px-12 md:py-16 lg:border-l lg:border-t-0 lg:py-0 lg:pl-6 lg:pr-0">
+								<div className="border-t px-6 py-8 dark:border-green-spring-400 md:px-12 md:py-16 lg:border-l lg:border-t-0 lg:py-0 lg:pl-6 lg:pr-0">
 									{!data ? (
 										<>
 											<Link
@@ -146,7 +146,7 @@ const Header = () => {
 											<Link
 												to="/sign/in"
 												reloadDocument
-												className="border-green-spring-100 text-2xl text-green-spring-200 hover:text-green-spring-300 max-xs:border-t-2 max-xs:pt-4 lg:border-l-2 lg:pl-2 lg:text-xl"
+												className="border-green-spring-100 text-2xl text-green-spring-200 hover:text-green-spring-300 dark:border-green-spring-400 max-xs:border-t-2 max-xs:pt-4 lg:border-l-2 lg:pl-2 lg:text-xl"
 												onClick={() => {
 													setOpen(!open);
 													dispatch(userLogout());

@@ -75,8 +75,10 @@ const ProfileStats = () => {
 			<section className="p-4 sm:px-0">
 				<Head title="Stats" description="View your profile stats here." />
 				<div className="text-center">
-					<h1 className="text-center text-2xl">Your Stats</h1>
-					<p className="mt-4 text-lg text-gray-600">
+					<h1 className="text-center text-2xl dark:text-mantis-50">
+						Your Stats
+					</h1>
+					<p className="mt-4 text-lg text-gray-600 dark:text-mantis-300">
 						No photos to generate stats. Start sharing your moments to see
 						statistics!
 					</p>
@@ -92,9 +94,9 @@ const ProfileStats = () => {
 				description="In this page, you have access to your profile stats such as your total hits, likes, and comments."
 			/>
 
-			<h1 className="text-center text-2xl">Your Stats</h1>
+			<h1 className="text-center text-2xl dark:text-mantis-50">Your Stats</h1>
 			<article className="my-4 grid grid-cols-1 gap-6 lg:grid-cols-2">
-				<div className="col-span-full flex justify-around rounded-lg p-4 font-heading font-medium shadow-lg">
+				<div className="col-span-full flex justify-around rounded-lg p-4 font-heading font-medium shadow-lg dark:bg-green-spring-200 dark:text-green-spring-950">
 					<p>
 						Total Hits:{" "}
 						<span className="font-body font-normal">
@@ -114,7 +116,7 @@ const ProfileStats = () => {
 						</span>
 					</p>
 				</div>
-				<div className="col-auto rounded-lg p-4 font-heading font-medium shadow-lg">
+				<div className="col-auto rounded-lg p-4 font-heading font-medium shadow-lg dark:bg-green-spring-200">
 					<VictoryPie
 						data={pieChartData}
 						colorScale={"qualitative"}
@@ -127,18 +129,17 @@ const ProfileStats = () => {
 						style={{
 							data: {
 								fillOpacity: 0.9,
-								stroke: "#fff",
+								stroke: "hsl(100, 6%, 10%)",
 								strokeWidth: 2,
 							},
 							labels: {
 								fontSize: 14,
-								fill: "#333",
 							},
 						}}
 					/>
 				</div>
 
-				<div className="col-auto rounded-lg p-4 font-heading font-medium shadow-lg">
+				<div className="col-auto rounded-lg p-4 font-heading font-medium shadow-lg dark:bg-green-spring-200">
 					<VictoryChart domainPadding={30}>
 						<VictoryGroup
 							offset={15}
@@ -150,39 +151,66 @@ const ProfileStats = () => {
 						>
 							<VictoryBar
 								data={hitsData}
+								barWidth={12}
 								labelComponent={
 									<VictoryLabel
-										style={{ fontSize: "12px" }}
+										style={{
+											fontSize: 12,
+										}}
 										angle={90}
 										dx="-5"
 										verticalAnchor="start"
 										textAnchor="end"
 									/>
 								}
+								style={{
+									data: {
+										fillOpacity: 0.9,
+										strokeWidth: 1,
+									},
+								}}
 							/>
 							<VictoryBar
 								data={commentsData}
+								barWidth={12}
 								labelComponent={
 									<VictoryLabel
-										style={{ fontSize: "12px" }}
+										style={{
+											fontSize: 12,
+										}}
 										angle={90}
 										dx="-5"
 										verticalAnchor="start"
 										textAnchor="end"
 									/>
 								}
+								style={{
+									data: {
+										fillOpacity: 0.9,
+										strokeWidth: 1,
+									},
+								}}
 							/>
 							<VictoryBar
 								data={likesData}
+								barWidth={12}
 								labelComponent={
 									<VictoryLabel
-										style={{ fontSize: "12px" }}
+										style={{
+											fontSize: 12,
+										}}
 										angle={90}
 										dx="-5"
 										verticalAnchor="start"
 										textAnchor="end"
 									/>
 								}
+								style={{
+									data: {
+										fillOpacity: 0.9,
+										strokeWidth: 1,
+									},
+								}}
 							/>
 						</VictoryGroup>
 					</VictoryChart>
