@@ -7,6 +7,8 @@ import Header from "./components/Header";
 import { useDispatch } from "react-redux";
 import Cookies from "./components/helpers/Cookies";
 import ProtectedRoute from "./components/helpers/ProtectedRoute";
+import FloatingButton from "./components/shared/FloatingButton";
+import ThemeSwitcher from "./components/shared/ThemeSwitcher";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
@@ -64,6 +66,8 @@ function App() {
 				</Routes>
 			</main>
 			<FooterMemory />
+			<FloatingButton />
+			<ThemeSwitcher />
 		</BrowserRouter>
 	);
 }
