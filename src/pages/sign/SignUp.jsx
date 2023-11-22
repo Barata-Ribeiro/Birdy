@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaFolder, FaGithub, FaLinkedinIn } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
 import Error from "../../components/helpers/Error";
@@ -17,6 +17,7 @@ const SignUp = () => {
 	const email = useForm("email");
 	const password = useForm("password");
 	const confirmPassword = useForm();
+	const navigate = useNavigate();
 
 	const { loading, error, request } = useFetch();
 	const dispatch = useDispatch();
@@ -52,8 +53,12 @@ const SignUp = () => {
 					password: password.value,
 				});
 				const { response } = await request(url, options);
+
 				if (response?.ok)
 					dispatch(userLogin({ email: email.value, password: password.value }));
+
+				navigate(`/dashboard/${username}`);
+				window.location.reload(true);
 			} catch (error) {
 				console.error(error);
 			}
