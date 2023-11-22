@@ -105,7 +105,7 @@ const ProfileAdmin = () => {
 							name={"photoTitle"}
 							onChange={(e) => setUsername(e.target.value)}
 							inputClasses={
-								"block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+								"block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 							}
 						/>
 						<FormButton customClasses="py-1 px-4 rounded-lg sm:!w-fit">
@@ -164,7 +164,7 @@ const ProfileAdmin = () => {
 						name={"userId"}
 						onChange={(e) => setUserId(e.target.value)}
 						inputClasses={
-							"block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+							"block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 						}
 					/>
 					<FormButton

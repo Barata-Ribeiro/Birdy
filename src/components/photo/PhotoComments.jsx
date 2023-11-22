@@ -75,7 +75,7 @@ const PhotoComments = (props) => {
 					rows="4"
 					maxLength="350"
 					minLength="50"
-					className="bg-green-spring-50-50 h-20 w-full resize-x rounded-md border-2 border-green-spring-100 px-4 py-2 text-mantis-950 placeholder:text-green-spring-300 focus:border-bright-turquoise-500 focus:outline-none dark:bg-mantis-800 md:resize-y"
+					className="bg-green-spring-50-50 h-20 w-full resize-x rounded-md border-2 border-green-spring-100 px-4 py-2 text-mantis-950 placeholder:text-green-spring-400 focus:border-bright-turquoise-500 focus:outline-none dark:bg-mantis-800 dark:placeholder:text-green-spring-300 md:resize-y"
 					value={comment}
 					onChange={({ target }) => setComment(target.value)}
 					aria-required="true"

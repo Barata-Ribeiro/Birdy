@@ -39,7 +39,7 @@ const SignIn = () => {
 						label="Email"
 						type="email"
 						name="email"
-						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 						value={email.value}
 						onChange={email.onChange}
 						onBlur={email.onBlur}
@@ -54,7 +54,7 @@ const SignIn = () => {
 						label="Password"
 						type="password"
 						name="password"
-						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 						value={password.value}
 						onChange={password.onChange}
 						onBlur={password.onBlur}

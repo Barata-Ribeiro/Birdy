@@ -7,7 +7,7 @@ const Input = ({ label, type, name, inputClasses, error, ...props }) => {
 				{label}
 			</label>
 			<input
-				className={`${inputClasses} peer block w-full rounded-lg border-green-spring-50 text-mantis-950 focus:border-bright-turquoise-500 ${
+				className={`${inputClasses} peer block w-full rounded-lg border-green-spring-50 text-mantis-950 focus:border-bright-turquoise-500 dark:text-mantis-50 ${
 					error ? "border-2 border-red-500" : ""
 				}`}
 				type={type}

@@ -22,7 +22,7 @@ const ResetPassword = () => {
 				setErrorConfirmPassword("Passwords do not match!");
 			else setErrorConfirmPassword(undefined);
 		}
-	}, [password, confirmPassword]);
+	}, [password, confirmPassword, setErrorConfirmPassword]);
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -49,7 +49,7 @@ const ResetPassword = () => {
 						label="Password"
 						type="password"
 						name="password"
-						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 						value={password.value}
 						onChange={password.onChange}
 						onBlur={password.onBlur}
@@ -66,7 +66,7 @@ const ResetPassword = () => {
 						label={"Confirm Password"}
 						type={"password"}
 						name={"confirmPassword"}
-						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 						value={confirmPassword.value}
 						onChange={confirmPassword.onChange}
 						onBlur={confirmPassword.onBlur}
@@ -85,9 +85,9 @@ const ResetPassword = () => {
 				<div className="text-right">
 					<Link
 						to="../in"
-						className="text-green-spring-50 hover:text-bright-turquoise-500 dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600 transition-colors duration-300 hover:underline"
+						className="text-green-spring-50 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600"
 					>
-						Don't wanna reset? Go to login!
+						Don&apos;t wanna reset? Go to login!
 					</Link>
 				</div>
 				<div className="px-4 pb-2 pt-4">

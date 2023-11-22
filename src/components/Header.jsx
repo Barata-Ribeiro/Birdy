@@ -37,7 +37,6 @@ const Header = () => {
 			<div className="px-6 lg:container md:px-12 lg:mx-auto lg:px-0 lg:py-4">
 				<div className="flex items-center justify-between">
 					<div
-						// eslint-disable-next-line tailwindcss/classnames-order
 						className="relative z-50 w-32 max-w-full xs:w-40 sm:w-52"
 						role="img"
 						aria-label="Birdy Logo"
@@ -81,7 +80,7 @@ const Header = () => {
 							></div>
 						</label>
 
-						<div className="fixed inset-0 w-[calc(100%-6rem)] translate-x-[-100%] border-r bg-white text-mantis-50 shadow-xl transition duration-300 peer-checked:translate-x-0 lg:static lg:w-auto lg:translate-x-0 lg:border-r-0 lg:bg-transparent lg:shadow-none">
+						<div className="fixed inset-0 w-[calc(100%-6rem)] translate-x-[-100%] border-r bg-white text-mantis-50 shadow-xl transition duration-300 peer-checked:translate-x-0 dark:bg-mantis-800 lg:static lg:w-auto lg:translate-x-0 lg:border-r-0 lg:bg-transparent lg:shadow-none">
 							<nav
 								className="flex h-full flex-col justify-between lg:flex-row lg:items-center"
 								id="primary-navigation"
@@ -129,7 +128,6 @@ const Header = () => {
 											</MainButton>
 										</>
 									) : (
-										// eslint-disable-next-line tailwindcss/classnames-order
 										<div className="flex flex-row items-center justify-between gap-4 max-xs:flex-col xs:gap-2">
 											<Link
 												to={`/dashboard/${data.username}`}
@@ -140,15 +138,14 @@ const Header = () => {
 											>
 												<img
 													src={data.avatarUrl}
-													className="dark:ring-green-sping-500 h-10 w-10 rounded-full p-1 ring-2 ring-green-spring-300"
+													className="dark:ring-green-sping-500 h-10 w-10 rounded-full p-1 ring-2 ring-green-spring-300 dark:ring-green-spring-500"
 													alt=""
-												/>{" "}
+												/>
 												{data.username}
 											</Link>
 											<Link
 												to="/sign/in"
 												reloadDocument
-												// eslint-disable-next-line tailwindcss/classnames-order
 												className="border-green-spring-100 text-2xl text-green-spring-200 hover:text-green-spring-300 max-xs:border-t-2 max-xs:pt-4 lg:border-l-2 lg:pl-2 lg:text-xl"
 												onClick={() => {
 													setOpen(!open);

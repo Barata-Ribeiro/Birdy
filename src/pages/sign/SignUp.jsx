@@ -76,7 +76,7 @@ const SignUp = () => {
 						label="Username"
 						type="text"
 						name="username"
-						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 						value={username.value}
 						onChange={username.onChange}
 						onBlur={username.onBlur}
@@ -93,7 +93,7 @@ const SignUp = () => {
 						label="Email"
 						type="email"
 						name="email"
-						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 						value={email.value}
 						onChange={email.onChange}
 						onBlur={email.onBlur}
@@ -108,7 +108,7 @@ const SignUp = () => {
 						label="Password"
 						type="password"
 						name="password"
-						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 						value={password.value}
 						onChange={password.onChange}
 						onBlur={password.onBlur}
@@ -125,7 +125,7 @@ const SignUp = () => {
 						label={"Confirm Password"}
 						type={"password"}
 						name={"confirmPassword"}
-						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 						value={confirmPassword.value}
 						onChange={confirmPassword.onChange}
 						onBlur={confirmPassword.onBlur}

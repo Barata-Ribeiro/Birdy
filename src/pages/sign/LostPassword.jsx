@@ -29,7 +29,7 @@ const LostPassword = () => {
 						label="Email"
 						type="email"
 						name="email"
-						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
+						inputClasses="bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 						value={email.value}
 						onChange={email.onChange}
 						onBlur={email.onBlur}
@@ -42,7 +42,7 @@ const LostPassword = () => {
 				<div className="text-right">
 					<Link
 						to="../in"
-						className="text-green-spring-50 hover:text-bright-turquoise-500 dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600 transition-colors duration-300 hover:underline"
+						className="text-green-spring-50 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600"
 					>
 						Misclicked? Go back to login!
 					</Link>
@@ -55,9 +55,9 @@ const LostPassword = () => {
 				<div className="mt-2 text-center">
 					<Link
 						to="../up"
-						className="text-green-spring-50 hover:text-bright-turquoise-500 dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600 transition-colors duration-300 hover:underline"
+						className="text-green-spring-50 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600"
 					>
-						Don't have an account? Sign Up!
+						Don&apos;t have an account? Sign Up!
 					</Link>
 				</div>
 

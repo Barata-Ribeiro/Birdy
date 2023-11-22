@@ -61,53 +61,59 @@ const ProfileUpload = () => {
 			<h1 className="text-center text-2xl">Post Your Picture!</h1>
 			<div className="mx-0 grid grid-cols-1 items-center gap-4 pt-4 lg:grid-cols-2">
 				<form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
-					<Input
-						label="Photo Title"
-						type="text"
-						name="photoTitle"
-						inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
-						value={photoTitle.value}
-						onChange={photoTitle.onChange}
-						onBlur={photoTitle.onBlur}
-						error={photoTitle.error}
-						aria-invalid={photoTitle.error ? "true" : "false"}
-						aria-describedby={
-							photoTitle.error ? `error-${photoTitle.value}` : undefined
-						}
-						required
-					/>
-					<Input
-						label="Bird Habitat"
-						type="text"
-						name="birdHabitat"
-						inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
-						value={photoBirdHabitat.value}
-						onChange={photoBirdHabitat.onChange}
-						onBlur={photoBirdHabitat.onBlur}
-						error={photoBirdHabitat.error}
-						aria-invalid={photoBirdHabitat.error ? "true" : "false"}
-						aria-describedby={
-							photoBirdHabitat.error
-								? `error-${photoBirdHabitat.value}`
-								: undefined
-						}
-						required
-					/>
-					<Input
-						label="Bird Size"
-						type="text"
-						name="birdSize"
-						inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400"
-						value={photoBirdSize.value}
-						onChange={photoBirdSize.onChange}
-						onBlur={photoBirdSize.onBlur}
-						error={photoBirdSize.error}
-						aria-invalid={photoBirdSize.error ? "true" : "false"}
-						aria-describedby={
-							photoBirdSize.error ? `error-${photoBirdSize.value}` : undefined
-						}
-						required
-					/>
+					<div>
+						<Input
+							label="Photo Title"
+							type="text"
+							name="photoTitle"
+							inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
+							value={photoTitle.value}
+							onChange={photoTitle.onChange}
+							onBlur={photoTitle.onBlur}
+							error={photoTitle.error}
+							aria-invalid={photoTitle.error ? "true" : "false"}
+							aria-describedby={
+								photoTitle.error ? `error-${photoTitle.value}` : undefined
+							}
+							required
+						/>
+					</div>
+					<div>
+						<Input
+							label="Bird Habitat"
+							type="text"
+							name="birdHabitat"
+							inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
+							value={photoBirdHabitat.value}
+							onChange={photoBirdHabitat.onChange}
+							onBlur={photoBirdHabitat.onBlur}
+							error={photoBirdHabitat.error}
+							aria-invalid={photoBirdHabitat.error ? "true" : "false"}
+							aria-describedby={
+								photoBirdHabitat.error
+									? `error-${photoBirdHabitat.value}`
+									: undefined
+							}
+							required
+						/>
+					</div>
+					<div>
+						<Input
+							label="Bird Size"
+							type="text"
+							name="birdSize"
+							inputClasses="block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
+							value={photoBirdSize.value}
+							onChange={photoBirdSize.onChange}
+							onBlur={photoBirdSize.onBlur}
+							error={photoBirdSize.error}
+							aria-invalid={photoBirdSize.error ? "true" : "false"}
+							aria-describedby={
+								photoBirdSize.error ? `error-${photoBirdSize.value}` : undefined
+							}
+							required
+						/>
+					</div>
 					<input
 						type="file"
 						name="imageUpload"

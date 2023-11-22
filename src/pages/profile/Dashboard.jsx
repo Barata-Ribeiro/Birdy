@@ -45,22 +45,22 @@ const Dashboard = () => {
 		<>
 			{/* <EditProfileModal isOpen={editModal} onClose={handleEditModal} /> */}
 			<DeleteProfileModal isOpen={deleteModal} onClose={handleDeleteModal} />
-			<div className="bg-mantis-100 pb-8">
+			<div className="bg-mantis-100 pb-8 dark:bg-mantis-800">
 				<div
 					style={{ backgroundImage: `url('${data.coverImageUrl}')` }}
-					className={`h-[250px] w-full bg-cover bg-center `}
+					className="h-[250px] w-full bg-cover bg-center"
 				></div>
 				<div className="-mt-20 flex flex-col items-center">
 					<img
 						src={data.avatarUrl}
 						alt={`${data.username}, this is your avatar.`}
 						title={`${data.username}, this is your avatar.`}
-						className="aspect-square h-40 w-40 rounded-full border-4 border-green-spring-50 object-cover object-center align-middle italic"
+						className="aspect-square h-40 w-40 rounded-full border-4 border-green-spring-50 object-cover object-center align-middle italic dark:border-mantis-800"
 					/>
 					<div className="mt-2 flex items-center space-x-2">
 						<Link
 							to={`/user/${data.id}/${data.username}`}
-							className="font-body text-2xl"
+							className="font-body text-2xl dark:text-mantis-50"
 						>
 							{data.username}
 						</Link>
@@ -70,13 +70,15 @@ const Dashboard = () => {
 							<FaUser size={18} />
 						)}
 					</div>
-					<p className="text-green-spring-700">{data.email}</p>
-					<p className="mb-3 mt-1 max-w-md text-center text-green-spring-700">
+					<p className="text-green-spring-700 dark:text-mantis-300">
+						{data.email}
+					</p>
+					<p className="mb-3 mt-1 max-w-md text-center text-green-spring-700 dark:text-mantis-300">
 						{data.biography}
 					</p>
 					<ul className="flex flex-col items-center gap-3 sm:flex-row sm:gap-2">
 						<li>
-							<p className="text-sm text-green-spring-500">
+							<p className="text-sm text-green-spring-500 dark:text-mantis-200">
 								{data.totalPhotos} Photo(s)
 							</p>
 						</li>
@@ -84,7 +86,7 @@ const Dashboard = () => {
 						<li>
 							<button
 								// onClick={handleEditModal}
-								className="text-sm text-green-spring-500 disabled:cursor-not-allowed disabled:line-through"
+								className="text-sm text-green-spring-500 disabled:cursor-not-allowed disabled:line-through dark:text-mantis-200"
 								title="Edit Profile temporarily disabled"
 								aria-label="Edit Profile temporarily disabled"
 								disabled
@@ -96,7 +98,7 @@ const Dashboard = () => {
 						<li>
 							<button
 								onClick={handleDeleteModal}
-								className="text-sm text-red-400"
+								className="text-sm text-red-400 dark:text-red-600"
 							>
 								Delete Account
 							</button>
@@ -117,7 +119,7 @@ const Dashboard = () => {
 								to={`../dashboard/${data.username}/admin-panel`}
 								customClasses={"flex gap-2 items-center px-4 py-2 text-sm"}
 							>
-								<MdAdminPanelSettings size={18} />{" "}
+								<MdAdminPanelSettings size={18} />
 								<span className="max-sm:hidden">Admin</span>
 							</MainButton>
 						)}
