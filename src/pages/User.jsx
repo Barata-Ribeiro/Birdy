@@ -130,9 +130,10 @@ const User = () => {
 								</div>
 							</div>
 							<hr className="w-2/3 self-center" />
+
 							{/* PHOTOS */}
 							{data.photos.length > 0 ? (
-								<ul className="flex flex-wrap pb-4">
+								<ul className="flex flex-wrap items-center justify-center pb-4">
 									{data.photos.map((photo) => (
 										<li key={photo.id}>
 											<Link to={`/photo/${photo.id}`}>

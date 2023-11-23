@@ -75,7 +75,7 @@ const ProfileAdmin = () => {
 	const UserInfoSkeleton = () => (
 		<div
 			id="user-info-skeleton"
-			className="grid animate-pulse grid-cols-[auto_1fr] items-center gap-4"
+			className="grid animate-skeleton grid-cols-1 items-center gap-4 md:grid-cols-[auto_1fr]"
 		>
 			<div className="h-40 w-40 rounded-full bg-green-spring-300" />
 			<ul className="space-y-2">
@@ -98,7 +98,10 @@ const ProfileAdmin = () => {
 			<h1 className="text-center text-2xl">Manage Site</h1>
 			<article className="mx-0 pt-4">
 				<div id="get-user" className="flex flex-col gap-6">
-					<form className="flex flex-col gap-4" onSubmit={handleFetchUserInfo}>
+					<form
+						className="group flex flex-col gap-4"
+						onSubmit={handleFetchUserInfo}
+					>
 						<Input
 							label={"Username"}
 							type={"text"}
@@ -107,8 +110,10 @@ const ProfileAdmin = () => {
 							inputClasses={
 								"block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 							}
+							required
+							aria-required
 						/>
-						<FormButton customClasses="py-1 px-4 rounded-lg sm:!w-fit">
+						<FormButton customClasses="py-1 px-4 rounded-lg sm:!w-fit group-invalid:pointer-events-none group-invalid:opacity-30">
 							Get User
 						</FormButton>
 					</form>
@@ -118,7 +123,7 @@ const ProfileAdmin = () => {
 						data && (
 							<div
 								id="user-info"
-								className="grid grid-cols-[auto_1fr] items-center gap-4"
+								className="grid grid-cols-1 items-center gap-4 md:grid-cols-[auto_1fr]"
 							>
 								<img
 									src={data.avatarUrl}
@@ -155,7 +160,7 @@ const ProfileAdmin = () => {
 					)}
 				</div>
 				<form
-					className="mt-6 flex flex-col gap-4"
+					className="group mt-6 flex flex-col gap-4"
 					onSubmit={handleDeleteUserById}
 				>
 					<Input
@@ -166,6 +171,8 @@ const ProfileAdmin = () => {
 						inputClasses={
 							"block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 						}
+						required
+						arial-required
 					/>
 					<FormButton
 						// Mouse Events
@@ -177,7 +184,7 @@ const ProfileAdmin = () => {
 						onTouchEnd={handleInteractionEnd}
 						onTouchCancel={handleInteractionEnd}
 						role="Delete Account"
-						customClasses={`rounded py-1 px-4 rounded-lg sm:!w-fit !bg-red-600 hover:!bg-red-400 ${
+						customClasses={`rounded py-1 px-4 rounded-lg sm:!w-fit !bg-red-600 hover:!bg-red-400 group-invalid:pointer-events-none group-invalid:opacity-30 ${
 							isDeleting ? "w-full" : ""
 						}`}
 					>

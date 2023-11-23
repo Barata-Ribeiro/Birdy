@@ -44,7 +44,7 @@ function App() {
 			<HeaderMemory />
 			<Cookies />
 
-			<main className="container">
+			<main className="md:container">
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/about" element={<About />} />
