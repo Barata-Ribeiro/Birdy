@@ -2,46 +2,77 @@ import PropTypes from "prop-types";
 import { CgClose } from "react-icons/cg";
 
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { USER_EDIT_PROFILE } from "../constants";
+import useFetch from "../hooks/useFetch";
 import useForm from "../hooks/useForm";
+import { userLogout } from "../store/slices/user.slice";
+import Error from "./helpers/Error";
 import FormButton from "./shared/FormButton";
 import Input from "./shared/Input";
 
-const EditProfileModal = ({ isOpen, onClose }) => {
+const EditProfileModal = ({ isOpen, onClose, onOutsideClick }) => {
+	const { request, loading, error } = useFetch();
 	const username = useForm("username");
-	const oldPassword = useForm();
+	const oldPassword = useForm("password");
 	const newPassword = useForm("password");
-	const confirmNewPassword = useForm();
-	const coverImageUrl = useForm();
+	const confirmNewPassword = useForm("password");
 	const avatarUrl = useForm();
+	const coverImageUrl = useForm();
 	const biography = useForm();
-
 	const [errorConfirmNewPassword, setErrorConfirmNewPassword] = useState("");
+	const dispatch = useDispatch();
+
+	const { data: token } = useSelector((state) => state.token);
 
 	useEffect(() => {
-		if (oldPassword.value !== undefined) {
-			if (oldPassword.value !== confirmNewPassword.value)
-				setErrorConfirmNewPassword("Passwords do not match!");
-			else setErrorConfirmNewPassword(undefined);
-		}
-	}, [oldPassword, confirmNewPassword]);
+		if (
+			newPassword.value &&
+			confirmNewPassword.value &&
+			newPassword.value !== confirmNewPassword.value
+		)
+			setErrorConfirmNewPassword("Passwords do not match!");
+		else setErrorConfirmNewPassword("");
+	}, [newPassword.value, confirmNewPassword.value]);
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
+		if (errorConfirmNewPassword) {
+			return;
+		}
 
 		const formData = {
-			username: username.value,
-			password: oldPassword.value,
-			newPassword: newPassword.value,
-			avatarUrl: avatarUrl.value,
-			coverImageUrl: coverImageUrl.value,
-			biography: biography.value,
+			...(username.value && { username: username.value }),
+			...(oldPassword.value &&
+				newPassword.value && {
+					password: oldPassword.value,
+					newPassword: newPassword.value,
+				}),
+			...(avatarUrl.value && { avatarUrl: avatarUrl.value }),
+			...(coverImageUrl.value && { coverImageUrl: coverImageUrl.value }),
+			...(biography.value && { biography: biography.value }),
 		};
+
+		try {
+			const { url, options } = USER_EDIT_PROFILE(formData, token);
+			const { response } = await request(url, options);
+
+			if (response.ok) {
+				onClose();
+				dispatch(userLogout());
+			}
+		} catch (error) {
+			console.error("Error in request:", error);
+		}
 	};
 
 	if (!isOpen) return null;
 	return (
 		<div className="fixed inset-0 z-[100] flex items-center justify-center">
-			<div className="absolute inset-0 bg-black opacity-50"></div>
+			<div
+				className="absolute inset-0 bg-black opacity-50"
+				onClick={onOutsideClick}
+			></div>
 			<div className="z-50 w-11/12 rounded-lg bg-green-spring-50 p-8 dark:bg-mantis-950 md:w-1/2">
 				<button
 					onClick={onClose}
@@ -50,12 +81,18 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 					<CgClose size={24} />
 				</button>
 				<h2 className="mb-4 font-heading text-2xl">Edit Profile</h2>
-				<form onSubmit={handleSubmit}>
+				<form
+					onSubmit={handleSubmit}
+					autoComplete="off"
+					aria-autocomplete="off"
+				>
 					<div className="mb-4">
 						<p className="mb-1 block text-green-spring-700 dark:text-green-spring-500">
 							Change Username
 						</p>
 						<Input
+							autoComplete="off"
+							aria-autocomplete="off"
 							label={"Username"}
 							type={"text"}
 							name={"username"}
@@ -77,6 +114,8 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 							Change Password
 						</p>
 						<Input
+							autoComplete="off"
+							aria-autocomplete="off"
 							label={"Current Password"}
 							type={"password"}
 							name={"passwordCurrent"}
@@ -90,6 +129,8 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 							}
 						/>
 						<Input
+							autoComplete="off"
+							aria-autocomplete="off"
 							label={"New Password"}
 							type={"password"}
 							name={"passwordNew"}
@@ -106,6 +147,8 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 							}
 						/>
 						<Input
+							autoComplete="off"
+							aria-autocomplete="off"
 							label={"Confirm New Password"}
 							type={"password"}
 							name={"confirmPasswordNew"}
@@ -135,12 +178,16 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 							Change Avatar
 						</p>
 						<Input
+							autoComplete="off"
+							aria-autocomplete="off"
 							label={"Url"}
 							type={"text"}
 							name={"avatarUrl"}
 							inputClasses={
 								"text-green-spring-700 dark:text-green-spring-500 w-full rounded border p-2"
 							}
+							value={avatarUrl.value}
+							onChange={avatarUrl.onChange}
 						/>
 					</div>
 					<div className="mb-4">
@@ -148,12 +195,16 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 							Change Cover Image
 						</p>
 						<Input
+							autoComplete="off"
+							aria-autocomplete="off"
 							label={"Url"}
 							type={"text"}
 							name={"coverImageUrl"}
 							inputClasses={
 								"text-green-spring-700 dark:text-green-spring-500 w-full rounded border p-2"
 							}
+							value={coverImageUrl.value}
+							onChange={coverImageUrl.onChange}
 						/>
 					</div>
 					<div className="mb-4">
@@ -161,12 +212,16 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 							Change Biography
 						</p>
 						<Input
+							autoComplete="off"
+							aria-autocomplete="off"
 							label={"Your Biography"}
 							type={"text"}
 							name={"biography"}
 							inputClasses={
 								"text-green-spring-700 dark:text-green-spring-500 w-full rounded border p-2"
 							}
+							value={biography.value}
+							onChange={biography.onChange}
 						/>
 					</div>
 					<div className="flex justify-center gap-2 sm:justify-end">
@@ -180,11 +235,13 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 						<FormButton
 							type="submit"
 							role="Edit Account"
+							isLoading={loading}
 							customClasses="rounded sm:!w-fit bg-bright-turquoise-600 px-4 py-2 hover:bg-bright-turquoise-700"
 						>
 							Update
 						</FormButton>
 					</div>
+					<Error error={error} />
 				</form>
 			</div>
 		</div>
@@ -194,6 +251,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 EditProfileModal.propTypes = {
 	isOpen: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
+	onOutsideClick: PropTypes.func.isRequired,
 };
 
 export default EditProfileModal;

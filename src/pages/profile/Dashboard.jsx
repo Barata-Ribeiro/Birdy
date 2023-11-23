@@ -14,23 +14,33 @@ import ProfileAdmin from "./ProfileAdmin";
 import ProfileStats from "./ProfileStats";
 import ProfileUpload from "./ProfileUpload";
 
+import EditProfileModal from "../../components/EditProfileModal";
 import Loading from "../../components/helpers/Loading";
-import { closeDeleteModal, openDeleteModal } from "../../store/slices/ui.slice";
+import {
+	closeDeleteModal,
+	closeEditModal,
+	openDeleteModal,
+	openEditModal,
+} from "../../store/slices/ui.slice";
 import { userLogout } from "../../store/slices/user.slice";
 import ProfilePhotos from "./ProfilePhotos";
 
 const Dashboard = () => {
 	const { username } = useParams();
-	const { deleteModal } = useSelector((state) => state.ui);
+	const { deleteModal, editModal } = useSelector((state) => state.ui);
 	const { data, loading } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		dispatch(closeDeleteModal());
+		dispatch(closeEditModal());
 	}, [dispatch]);
 
+	const handleEditModalOpen = () => dispatch(openEditModal());
+	const handleEditModalClose = () => dispatch(closeEditModal());
 	const handleDeleteModalOpen = () => dispatch(openDeleteModal());
 	const handleDeleteModalClose = () => dispatch(closeDeleteModal());
+
 	const handleOutsideClick = ({ target, currentTarget }) => {
 		if (target === currentTarget) handleDeleteModalClose();
 	};
@@ -39,7 +49,11 @@ const Dashboard = () => {
 	if (loading) return <Loading />;
 	return (
 		<>
-			{/* <EditProfileModal isOpen={editModal} onClose={handleEditModal} /> */}
+			<EditProfileModal
+				isOpen={editModal}
+				onClose={handleEditModalClose}
+				onOutsideClick={handleOutsideClick}
+			/>
 			<DeleteProfileModal
 				isOpen={deleteModal}
 				onClose={handleDeleteModalClose}
@@ -85,11 +99,8 @@ const Dashboard = () => {
 						<li className="hidden sm:block">|</li>
 						<li>
 							<button
-								// onClick={handleEditModal}
-								className="text-sm text-green-spring-500 disabled:cursor-not-allowed disabled:line-through dark:text-mantis-200"
-								title="Edit Profile temporarily disabled"
-								aria-label="Edit Profile temporarily disabled"
-								disabled
+								onClick={handleEditModalOpen}
+								className="text-sm text-green-spring-500 dark:text-mantis-200"
 							>
 								Edit Profile
 							</button>

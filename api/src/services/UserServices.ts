@@ -9,12 +9,16 @@ import { User } from "../entities/User";
 import { ALL_USERS_CACHE_KEY } from "../constants";
 import { EditProfileResponseDTO } from "../dto/EditProfileResponseDTO";
 import { UserResponseDTO } from "../dto/UserResponseDTO";
+import { Comment } from "../entities/Comment";
+import { Photo } from "../entities/Photo";
 import {
 	BadRequestError,
 	ConflictError,
 	InternalServerError,
 	NotFoundError,
 } from "../helpers/api-errors";
+import { commentRepository } from "../repositories/commentRepository";
+import { photoRepository } from "../repositories/photoRepository";
 import { userRepository } from "../repositories/userRepository";
 import { PhotoServices } from "./PhotoServices";
 
@@ -123,6 +127,25 @@ class UserService {
 		return users.map((user) => UserResponseDTO.fromEntity(user));
 	}
 
+	private static async updateRelatedAuthorNames(
+		userId: string,
+		newUsername: string
+	): Promise<void> {
+		await photoRepository
+			.createQueryBuilder()
+			.update(Photo)
+			.set({ authorName: newUsername })
+			.where("authorID = :userId", { userId })
+			.execute();
+
+		await commentRepository
+			.createQueryBuilder()
+			.update(Comment)
+			.set({ authorName: newUsername })
+			.where("authorID = :userId", { userId })
+			.execute();
+	}
+
 	static async editUserProfile(
 		id: string,
 		userData: EditUserRequestBody
@@ -150,6 +173,8 @@ class UserService {
 				throw new ConflictError("Username already taken.");
 
 			actualUser.username = username;
+
+			await UserService.updateRelatedAuthorNames(id, username);
 		}
 
 		if (password && newPassword) {
