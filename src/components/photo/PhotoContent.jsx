@@ -1,10 +1,19 @@
 import PropTypes from "prop-types";
-import { FaEye, FaHeart, FaRegComments } from "react-icons/fa";
+import { useState } from "react";
+import { FaEye, FaRegComments } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Image from "../helpers/Image";
+import LikeButton from "../shared/LikeButton";
 import PhotoComments from "./PhotoComments";
 
 const PhotoContent = ({ photo }) => {
+	const [totalLikes, setTotalLikes] = useState(photo.meta.total_likes);
+	const { data: token } = useSelector((state) => state.token);
+	const userId = useSelector((state) => state.user.data.id);
+	const isPhotoLiked = photo.likes.some((like) => like.userId === userId);
+	const isOwner = photo.authorID === userId;
+
 	return (
 		<div className="grid grid-cols-1 gap-4 max-md:px-1 md:grid-cols-2 lg:justify-between">
 			<Image
@@ -34,9 +43,16 @@ const PhotoContent = ({ photo }) => {
 						<FaEye />
 						{photo.meta.total_hits}
 					</span>
-					<span className="flex items-center gap-2">
-						<FaHeart />
-						{photo.meta.total_likes}
+					<span className="flex items-center gap-1">
+						<LikeButton
+							photoId={photo.id}
+							token={token}
+							totalLikes={totalLikes}
+							setTotalLikes={setTotalLikes}
+							isLiked={isPhotoLiked}
+							isOwner={isOwner}
+						/>
+						{totalLikes}
 					</span>
 					<span className="flex items-center gap-2">
 						<FaRegComments />
