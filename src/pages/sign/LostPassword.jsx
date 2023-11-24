@@ -1,17 +1,27 @@
 import { FaFolder, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
+import Error from "../../components/helpers/Error";
 import Head from "../../components/helpers/Head";
 import FormButton from "../../components/shared/FormButton";
 import Input from "../../components/shared/Input";
+import { AUTH_FORGOT_PASSWORD } from "../../constants";
+import useFetch from "../../hooks/useFetch";
 import useForm from "../../hooks/useForm";
 
 const LostPassword = () => {
 	const email = useForm();
+	const { loading, error, request } = useFetch();
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		console.log("SUBMIT");
+		try {
+			const { url, options } = AUTH_FORGOT_PASSWORD({ email: email.value });
+			const { response, json } = await request(url, options);
+			if (response.ok) alert(json.message);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 	return (
 		<>
@@ -37,6 +47,7 @@ const LostPassword = () => {
 						aria-invalid={email.error ? "true" : "false"}
 						aria-describedby={email.error ? `error-${email.value}` : undefined}
 						required
+						aria-required="true"
 					/>
 				</div>
 				<div className="text-right">
@@ -48,7 +59,10 @@ const LostPassword = () => {
 					</Link>
 				</div>
 				<div className="px-4 pb-2 pt-4">
-					<FormButton customClasses="p-4 text-lg rounded-2xl group-invalid:pointer-events-none group-invalid:opacity-30">
+					<FormButton
+						customClasses="p-4 text-lg rounded-2xl group-invalid:pointer-events-none group-invalid:opacity-30"
+						isLoading={loading}
+					>
 						send reset link
 					</FormButton>
 				</div>
@@ -60,7 +74,7 @@ const LostPassword = () => {
 						Don&apos;t have an account? Sign Up!
 					</Link>
 				</div>
-
+				<Error error={error} />
 				<div className="inset-x-0 mt-16 flex justify-center space-x-4 p-4 text-center lg:hidden">
 					<a
 						href="https://github.com/Barata-Ribeiro/Birdy"

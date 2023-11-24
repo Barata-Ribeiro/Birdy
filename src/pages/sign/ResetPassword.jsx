@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import { FaFolder, FaGithub, FaLinkedinIn } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
+import Error from "../../components/helpers/Error";
 import Head from "../../components/helpers/Head";
 import FormButton from "../../components/shared/FormButton";
 import Input from "../../components/shared/Input";
+import { AUTH_RESET_PASSWORD } from "../../constants";
+import useFetch from "../../hooks/useFetch";
 import useForm from "../../hooks/useForm";
 
 const ResetPassword = () => {
 	const { userId, token } = useParams();
-
+	const { loading, error, request } = useFetch();
 	const password = useForm("password");
 	const confirmPassword = useForm();
-
-	const [errorConfirmPassword, setErrorConfirmPassword] =
-		(useState < string) | (undefined > undefined);
+	const [errorConfirmPassword, setErrorConfirmPassword] = useState("");
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (password.value !== undefined) {
@@ -22,7 +24,7 @@ const ResetPassword = () => {
 				setErrorConfirmPassword("Passwords do not match!");
 			else setErrorConfirmPassword(undefined);
 		}
-	}, [password, confirmPassword, setErrorConfirmPassword]);
+	}, [password, confirmPassword]);
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -30,7 +32,20 @@ const ResetPassword = () => {
 		const isPasswordValid = password.validate();
 		const isConfirmPasswordValid = password.value === confirmPassword.value;
 
-		if (isPasswordValid && isConfirmPasswordValid) console.log("SUBMIT");
+		if (isPasswordValid && isConfirmPasswordValid) {
+			try {
+				const { url, options } = AUTH_RESET_PASSWORD(userId, token, {
+					password: password.value,
+				});
+				const { response, json } = await request(url, options);
+				if (response.ok) {
+					alert(json.message);
+					navigate("/sign/in");
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		}
 	};
 
 	return (
@@ -91,11 +106,14 @@ const ResetPassword = () => {
 					</Link>
 				</div>
 				<div className="px-4 pb-2 pt-4">
-					<FormButton customClasses="p-4 text-lg rounded-2xl group-invalid:pointer-events-none group-invalid:opacity-30">
+					<FormButton
+						customClasses="p-4 text-lg rounded-2xl group-invalid:pointer-events-none group-invalid:opacity-30"
+						isLoading={loading}
+					>
 						reset password
 					</FormButton>
 				</div>
-
+				<Error error={error} />
 				<div className="inset-x-0 mt-16 flex justify-center space-x-4 p-4 text-center lg:hidden">
 					<a
 						href="https://github.com/Barata-Ribeiro/Birdy"
