@@ -53,7 +53,7 @@ const Contact = () => {
 						aria-invalid={name.error ? "true" : "false"}
 						aria-describedby={name.error ? `error-${name.value}` : undefined}
 						{...name}
-						aria-required
+						aria-required="true"
 						required
 					/>
 				</div>
@@ -67,7 +67,7 @@ const Contact = () => {
 						aria-invalid={email.error ? "true" : "false"}
 						aria-describedby={email.error ? `error-${email.value}` : undefined}
 						{...email}
-						aria-required
+						aria-required="true"
 						required
 					/>
 				</div>
@@ -80,7 +80,7 @@ const Contact = () => {
 						name="message"
 						placeholder="Your Message"
 						rows="5"
-						aria-required
+						aria-required="true"
 						required
 						{...message}
 					></textarea>

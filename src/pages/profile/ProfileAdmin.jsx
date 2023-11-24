@@ -111,7 +111,7 @@ const ProfileAdmin = () => {
 								"block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 							}
 							required
-							aria-required
+							aria-required="true"
 						/>
 						<FormButton customClasses="py-1 px-4 rounded-lg sm:!w-fit group-invalid:pointer-events-none group-invalid:opacity-30">
 							Get User
