@@ -1,5 +1,7 @@
 import { validate } from "uuid";
 import { UserWithoutPassword } from "../@types/types";
+import { ALL_FOLLOWINS_CACHE_KEY, userFollowingCacheKey } from "../constants";
+import { FollowQueryResponseDTO } from "../dto/FollowQueryResponseDTO";
 import { User } from "../entities/User";
 import { UserFollow } from "../entities/UserFollow";
 import { BadRequestError, NotFoundError } from "../helpers/api-errors";
@@ -27,7 +29,11 @@ export class FollowingServices {
 		const userToFollow = await this.verifyUser(userIdToFollow);
 
 		const checkIfAlreadyFollowing = await followsRepository.findOne({
-			where: { follower: requestUser, following: userToFollow },
+			where: {
+				follower: { id: requestUser.id },
+				following: { id: userToFollow.id },
+			},
+			relations: ["follower", "following"],
 		});
 		if (checkIfAlreadyFollowing)
 			throw new BadRequestError("Already following this user.");
@@ -47,7 +53,11 @@ export class FollowingServices {
 		const userToFollow = await this.verifyUser(userIdToFollow);
 
 		const checkIfFollowing = await followsRepository.findOne({
-			where: { follower: requestUser, following: userToFollow },
+			where: {
+				follower: { id: requestUser.id },
+				following: { id: userToFollow.id },
+			},
+			relations: ["follower", "following"],
 		});
 		if (!checkIfFollowing)
 			throw new NotFoundError("Following relationship not found.");
@@ -55,24 +65,31 @@ export class FollowingServices {
 		await followsRepository.remove(checkIfFollowing);
 	}
 
-	static async getAllUsersFollowing(
+	static async getAllUserFollowings(
 		userId: string,
 		limit: number,
-		offset: number
-	): Promise<{ users: User[]; total: number; totalPages: number }> {
-		const requestUser = await this.verifyUser(userId);
+		page: number
+	): Promise<FollowQueryResponseDTO[]> {
+		if (page < 1 || limit < 1)
+			throw new BadRequestError("Page and limit must be positive integers.");
 
-		const [users, total] = await followsRepository.findAndCount({
-			where: { follower: requestUser },
-			relations: ["following"],
-			take: limit,
-			skip: offset,
-		});
+		const cacheKey = userId
+			? userFollowingCacheKey(userId)
+			: ALL_FOLLOWINS_CACHE_KEY;
+		const [followings, total] = await followsRepository
+			.createQueryBuilder("userFollow")
+			.leftJoinAndSelect("userFollow.following", "following")
+			.leftJoin("userFollow.follower", "follower")
+			.where(userId ? "follower.id = :userId" : "1=1", { userId })
+			.take(limit)
+			.skip((page - 1) * limit)
+			.cache(cacheKey, 60000)
+			.getManyAndCount();
 
-		return {
-			users: users.map((follow) => follow.following),
-			total,
-			totalPages: Math.ceil(total / limit),
-		};
+		if ((page - 1) * limit >= total && page !== 1) return [];
+
+		return followings.map((follow) =>
+			FollowQueryResponseDTO.fromEntity(follow)
+		);
 	}
 }

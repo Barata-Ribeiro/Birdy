@@ -3,10 +3,12 @@ import {
 	Entity,
 	ManyToOne,
 	PrimaryGeneratedColumn,
+	Unique,
 } from "typeorm";
 import { User } from "./User";
 
 @Entity("user_follows")
+@Unique(["follower", "following"])
 export class UserFollow {
 	@PrimaryGeneratedColumn("uuid")
 	id: string;

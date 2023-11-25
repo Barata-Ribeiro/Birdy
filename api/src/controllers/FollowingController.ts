@@ -27,18 +27,17 @@ export class FollowingController {
 		return res.status(201).send({ message: "User unfollowed successfully." });
 	}
 
-	async getAllUsersFollowing(req: Request, res: Response): Promise<Response> {
+	async getAllUserFollowings(req: Request, res: Response): Promise<Response> {
 		const { userId } = req.params as { userId: string };
 		if (!userId) throw new BadRequestError("No user ID provided.");
 
 		const page = parseInt(req.query.page as string) || 1;
 		const total = parseInt(req.query.limit as string) || 10;
-		const offset = (page - 1) * total;
 
-		const followers = await FollowingServices.getAllUsersFollowing(
+		const followers = await FollowingServices.getAllUserFollowings(
 			userId,
 			total,
-			offset
+			page
 		);
 
 		return res.status(200).json(followers);

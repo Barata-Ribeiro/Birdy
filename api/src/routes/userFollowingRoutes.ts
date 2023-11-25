@@ -8,7 +8,7 @@ const router = express.Router();
 const followingControler = new FollowingController();
 
 router.get("/:userId/followings", (req, res, next) => {
-	followingControler.getAllUsersFollowing(req, res).catch(next);
+	followingControler.getAllUserFollowings(req, res).catch(next);
 });
 
 router.post("/:userId/follow", authMiddleware, (req, res, next) => {
