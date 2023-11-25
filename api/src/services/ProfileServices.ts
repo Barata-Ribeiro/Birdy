@@ -8,7 +8,14 @@ export class ProfileServices {
 	static async getProfile(userId: string): Promise<ProfileResponseDTO> {
 		const actualUser = await userRepository.findOne({
 			where: { id: userId },
-			relations: ["photos", "photos.meta", "comments", "likes"],
+			relations: [
+				"photos",
+				"photos.meta",
+				"comments",
+				"likes",
+				"followings",
+				"followers",
+			],
 		});
 		if (!actualUser) throw new NotFoundError("User not found.");
 
