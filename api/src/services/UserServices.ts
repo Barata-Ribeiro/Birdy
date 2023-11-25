@@ -98,6 +98,8 @@ class UserService {
 				"comments.photo",
 				"likes",
 				"likes.photo",
+				"followings",
+				"followers",
 			],
 		});
 
@@ -117,6 +119,8 @@ class UserService {
 				"comments.photo",
 				"likes",
 				"likes.photo",
+				"followings",
+				"followers",
 			],
 			cache: {
 				id: ALL_USERS_CACHE_KEY,

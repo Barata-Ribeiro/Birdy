@@ -14,6 +14,7 @@ import authRoutes from "./routes/authRoutes";
 import commentRoutes from "./routes/commentRoutes";
 import photoRoutes from "./routes/photoRoutes";
 import profileRoutes from "./routes/profileRoutes";
+import userFollowingRoutes from "./routes/userFollowingRoutes";
 import userLikesRoutes from "./routes/userLikesRoutes";
 import userRoutes from "./routes/userRoutes";
 
@@ -90,6 +91,7 @@ const startServer = async (): Promise<void> => {
 		// ROUTES //
 		app.use("/api/v1/auth", limiter, authRoutes);
 		app.use("/api/v1/users", limiter, userRoutes);
+		app.use("/api/v1/users", limiter, userFollowingRoutes);
 		app.use("/api/v1/admin", limiter, adminRoutes);
 		app.use("/api/v1/profile", limiter, profileRoutes);
 		app.use("/api/v1/photos", limiter, photoRoutes);

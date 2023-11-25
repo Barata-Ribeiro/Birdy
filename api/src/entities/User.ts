@@ -1,14 +1,15 @@
 import {
-	Entity,
-	PrimaryGeneratedColumn,
 	Column,
 	CreateDateColumn,
-	UpdateDateColumn,
-	OneToMany,
+	Entity,
 	Index,
+	OneToMany,
+	PrimaryGeneratedColumn,
+	UpdateDateColumn,
 } from "typeorm";
 import { Comment } from "./Comment";
 import { Photo } from "./Photo";
+import { UserFollow } from "./UserFollow";
 import { UserLikes } from "./UserLikes";
 
 @Entity("users")
@@ -53,6 +54,18 @@ export class User {
 		onDelete: "CASCADE",
 	})
 	likes?: UserLikes[];
+
+	@OneToMany(() => UserFollow, (userFollow) => userFollow.follower, {
+		cascade: true,
+		onDelete: "CASCADE",
+	})
+	followings: UserFollow[];
+
+	@OneToMany(() => UserFollow, (userFollow) => userFollow.following, {
+		cascade: true,
+		onDelete: "CASCADE",
+	})
+	followers: UserFollow[];
 
 	@Column({ type: "text", nullable: true })
 	refreshToken?: string;

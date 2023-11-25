@@ -8,6 +8,8 @@ export class UserLoginResponseDTO {
 	coverImageUrl: string;
 	biography: string;
 	totalPhotos: number;
+	totalFollowers: number;
+	totalFollowing: number;
 	role: string;
 	createdAt: Date;
 	updatedAt: Date;
@@ -23,6 +25,8 @@ export class UserLoginResponseDTO {
 		dto.coverImageUrl = user.coverImageUrl;
 		dto.biography = user.biography;
 		dto.totalPhotos = user.photos?.length || 0;
+		dto.totalFollowers = user.followers?.length || 0;
+		dto.totalFollowing = user.followings?.length || 0;
 		dto.role = user.role;
 		dto.createdAt = user.createdAt;
 		dto.updatedAt = user.updatedAt;

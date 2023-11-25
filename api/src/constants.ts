@@ -10,3 +10,7 @@ export const userPhotosCacheKey = (userId: string): string =>
 	`photos_user_${userId}`;
 
 export const ALL_USERS_CACHE_KEY = "all_users";
+
+export const ALL_FOLLOWINS_CACHE_KEY = "all_followers";
+export const userFollowingCacheKey = (userId: string): string =>
+	`followers_user_${userId}`;

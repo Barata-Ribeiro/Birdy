@@ -9,6 +9,8 @@ export class ProfileResponseDTO {
 	biography: string;
 	role: string;
 	totalPhotos: number;
+	totalFollowers: number;
+	totalFollowing: number;
 	photos: {
 		id: string;
 		title: string;
@@ -30,6 +32,8 @@ export class ProfileResponseDTO {
 		dto.biography = user.biography;
 		dto.role = user.role;
 		dto.totalPhotos = user.photos?.length || 0;
+		dto.totalFollowers = user.followers?.length || 0;
+		dto.totalFollowing = user.followings?.length || 0;
 		dto.photos = user.photos
 			? user.photos.map((photo) => ({
 					id: photo.id,
@@ -40,7 +44,7 @@ export class ProfileResponseDTO {
 						total_comments: photo.meta.total_comments ?? 0,
 						total_hits: photo.meta.total_hits ?? 0,
 					},
-				}))
+			  }))
 			: [];
 		return dto;
 	}

@@ -13,6 +13,8 @@ export class UserResponseDTO {
 	photos: PhotoResponseDTO[];
 	comments: CommentResponseDTO[];
 	likes: UserLikesResponseDTO[];
+	totalFollowers: number;
+	totalFollowing: number;
 	role: string;
 	createdAt: Date;
 	updatedAt: Date;
@@ -35,6 +37,8 @@ export class UserResponseDTO {
 		dto.likes = user.likes
 			? user.likes.map((like) => UserLikesResponseDTO.fromEntity(like))
 			: [];
+		dto.totalFollowers = user.followers?.length || 0;
+		dto.totalFollowing = user.followings?.length || 0;
 		dto.createdAt = user.createdAt;
 		dto.updatedAt = user.updatedAt;
 		return dto;
