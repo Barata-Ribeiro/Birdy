@@ -21,6 +21,14 @@ const User = () => {
 		} else navigate("/");
 	}, [userId, request, navigate, dispatch]);
 
+	const totalLikesReceived = data
+		? data.photos.reduce((sum, photo) => sum + photo.meta.total_likes, 0)
+		: 0;
+
+	const totalCommentsReceived = data
+		? data.photos.reduce((sum, photo) => sum + photo.meta.total_comments, 0)
+		: 0;
+
 	if (loading) return <Loading />;
 	if (error) return <Error error={error} />;
 	if (data) {
@@ -95,7 +103,7 @@ const User = () => {
 											</div>
 											<div className="mr-4 p-3 text-center">
 												<span className="block text-xl font-bold uppercase tracking-wide text-green-spring-600">
-													{data.likes.length}
+													{totalLikesReceived}
 												</span>
 												<span className="text-sm text-green-spring-400">
 													Likes
@@ -103,7 +111,7 @@ const User = () => {
 											</div>
 											<div className="p-3 text-center lg:mr-4">
 												<span className="block text-xl font-bold uppercase tracking-wide text-green-spring-600">
-													{data.comments.length}
+													{totalCommentsReceived}
 												</span>
 												<span className="text-sm text-green-spring-400">
 													Comments
