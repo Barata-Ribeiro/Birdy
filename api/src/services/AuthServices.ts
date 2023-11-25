@@ -21,7 +21,7 @@ export class AuthServices {
 	): Promise<UserLoginResponseDTO> {
 		const existingUserByEmail = await userRepository.findOne({
 			where: { email },
-			relations: ["photos"],
+			relations: ["photos", "followings", "followers"],
 		});
 
 		if (!existingUserByEmail)
