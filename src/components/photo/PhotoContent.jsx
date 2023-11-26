@@ -10,26 +10,28 @@ import PhotoComments from "./PhotoComments";
 const PhotoContent = ({ photo }) => {
 	const [totalLikes, setTotalLikes] = useState(photo.meta.total_likes);
 	const { data: token } = useSelector((state) => state.token);
-	const userId = useSelector((state) => state.user.data.id);
-	const isPhotoLiked = photo.likes.some((like) => like.userId === userId);
-	const isOwner = photo.authorID === userId;
+	const user = useSelector((state) => state.user.data);
+	const userId = user ? user.id : null;
+	const isPhotoLiked =
+		userId && photo.likes.some((like) => like.userId === userId);
+	const isOwner = userId && photo.authorID === userId;
 
 	return (
 		<div className="grid grid-cols-1 gap-4 max-md:px-1 md:grid-cols-2 lg:justify-between">
 			<Image
 				src={photo.imageUrl}
-				alt={`Photo: ${photo.title}, from ${photo.authorName}`}
+				alt={`Photo by ${photo.authorName}: ${photo.title}`}
 				className="object-cover italic md:rounded-xl"
-				title={`Photo: ${photo.title}, from ${photo.authorName}`}
+				title={`Photo by ${photo.authorName}: ${photo.title}`}
 			/>
 			<div className="flex flex-col gap-3 md:gap-5">
 				{/* TITLE */}
 				<div className="mb-2 flex flex-col items-start justify-start gap-0 leading-none">
-					<h1 aria-label="Photo Title" className="text-4xl font-semibold">
+					<h1 tabIndex="0" className="text-4xl font-semibold">
 						{photo.title}
 					</h1>
 					<Link
-						aria-label="Photo Author"
+						tabIndex="0"
 						className="text-xs text-green-spring-400"
 						to={`/user/${photo.authorID}/${photo.authorName}`}
 					>
@@ -39,11 +41,17 @@ const PhotoContent = ({ photo }) => {
 
 				{/* META NUMBERS */}
 				<div className="order-first flex justify-between md:order-none md:justify-start md:gap-4">
-					<span className="flex items-center gap-2">
-						<FaEye />
+					<span
+						aria-label="Number of views"
+						className="flex items-center gap-2"
+					>
+						<FaEye aria-hidden="true" />
 						{photo.meta.total_hits}
 					</span>
-					<span className="flex items-center gap-1">
+					<span
+						aria-label="Number of likes and like button"
+						className="flex items-center gap-1"
+					>
 						<LikeButton
 							photoId={photo.id}
 							token={token}
@@ -54,8 +62,11 @@ const PhotoContent = ({ photo }) => {
 						/>
 						{totalLikes}
 					</span>
-					<span className="flex items-center gap-2">
-						<FaRegComments />
+					<span
+						aria-label="Number of comments"
+						className="flex items-center gap-2"
+					>
+						<FaRegComments aria-hidden="true" />
 						{photo.meta.total_comments}
 					</span>
 				</div>

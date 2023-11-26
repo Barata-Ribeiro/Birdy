@@ -1,8 +1,13 @@
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { postPhotoComment } from "../../store/slices/commentPost.slice";
+import {
+	adminDeleteComment,
+	postPhotoComment,
+	userDeleteComment,
+} from "../../store/slices/commentPost.slice";
 import Error from "../helpers/Error";
+import DeleteButton from "../shared/DeleteButton";
 import FormButton from "../shared/FormButton";
 
 const PhotoComments = (props) => {
@@ -12,6 +17,7 @@ const PhotoComments = (props) => {
 
 	const commentPost = useSelector((state) => state.commentPost);
 	const { data: token } = useSelector((state) => state.token);
+	const user = useSelector((state) => state.user.data);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -19,77 +25,106 @@ const PhotoComments = (props) => {
 	}, [comments]);
 
 	const formatDate = (isoString) => {
-		const date = new Date(isoString);
-		const year = date.getFullYear();
-		const month = (date.getMonth() + 1).toString().padStart(2, "0");
-		const day = date.getDate().toString().padStart(2, "0");
-
-		return `${month}/${day}/${year}`;
+		const options = { year: "numeric", month: "short", day: "numeric" };
+		return new Date(isoString).toLocaleDateString("en-US", options);
 	};
 
 	const handleCommentSubmit = async (event) => {
 		event.preventDefault();
-		const action = await dispatch(
-			postPhotoComment({
-				photoId: props.id,
-				token,
-				comment,
-			})
-		);
-		setComment("");
-		if (action.payload && action.payload.photoId === props.id) {
-			setComments((prevComments) => [...prevComments, action.payload]);
+		if (user && token) {
+			const action = await dispatch(
+				postPhotoComment({
+					photoId: props.id,
+					token,
+					comment,
+				})
+			);
+			setComment("");
+			if (action.payload && action.payload.photoId === props.id) {
+				setComments((prevComments) => [...prevComments, action.payload]);
+			}
+		}
+	};
+
+	const handleCommentDelete = async (commentId) => {
+		if (user) {
+			if (user.role === "admin")
+				await dispatch(adminDeleteComment(props.id, commentId, token));
+			else await dispatch(userDeleteComment(props.id, commentId, token));
+
+			setComments(comments.filter((comment) => comment.id !== commentId));
 		}
 	};
 
 	return (
-		<div className="max-md:self-center">
-			<h2 className="mb-4 text-xl font-medium">Comments</h2>
-			<ul className="mb-3 flex flex-col gap-3" ref={commentsSection}>
-				{comments.length > 0 ? (
-					comments.map((comment) => (
-						<li key={comment.id}>
-							<p className="max-w-[50ch] font-medium">
-								{comment.authorName}:{" "}
-								<span className="font-normal">{comment.content}</span>
-							</p>
-							<p className="select-none text-xs text-green-spring-300">
+		<div className="mt-4">
+			<h2 className="mb-2 font-heading text-xl font-medium">Comments</h2>
+			<ul
+				ref={commentsSection}
+				className="max-h-96 space-y-2 overflow-y-auto"
+				aria-live="polite"
+			>
+				{comments.map((comment) => (
+					<li
+						key={comment.id}
+						className="grid grid-flow-row gap-2 border-b border-green-spring-100 p-2 last:border-b-0"
+					>
+						<div className="flex items-center justify-between">
+							<span className="font-body text-sm font-medium">
+								{comment.authorName}
+							</span>
+							<time
+								dateTime={comment.createdAt}
+								className="text-xs text-green-spring-300"
+							>
 								{formatDate(comment.createdAt)}
-							</p>
-						</li>
-					))
-				) : (
-					<li className="mb-4 text-center font-semibold text-green-spring-300">
-						This photo has no comments yet.
+							</time>
+						</div>
+						<p className="font-normal">{comment.content}</p>
+						{user &&
+							(comment.authorID === user.id || user.role === "admin") && (
+								<span>
+									<DeleteButton
+										onDelete={() => handleCommentDelete(comment.id)}
+										accessibilityText="Comment"
+									/>
+								</span>
+							)}
 					</li>
-				)}
+				))}
 			</ul>
-			<form onSubmit={handleCommentSubmit}>
-				<label className="sr-only capitalize" htmlFor="comment">
-					Write your comment:
-				</label>
+			{comments.length === 0 && (
+				<p className="text-center text-sm text-green-spring-300">
+					This photo has no comments yet.
+				</p>
+			)}
+			<form
+				onSubmit={handleCommentSubmit}
+				className="mt-4"
+				aria-label="Post a comment"
+			>
 				<textarea
 					id="comment"
 					name="comment"
 					placeholder="Add a comment..."
-					rows="4"
+					rows="3"
 					maxLength="350"
 					minLength="50"
-					className="bg-green-spring-50-50 h-20 w-full resize-x rounded-md border-2 border-green-spring-100 px-4 py-2 text-mantis-950 placeholder:text-green-spring-400 focus:border-bright-turquoise-500 focus:outline-none dark:bg-mantis-800 dark:placeholder:text-green-spring-300 md:resize-y"
+					className="w-full rounded-md border border-green-spring-100 p-2 text-mantis-950 placeholder:text-green-spring-400 focus:border-bright-turquoise-500 focus:outline-none"
 					value={comment}
 					onChange={({ target }) => setComment(target.value)}
 					aria-required="true"
+					aria-label="Comment text"
 					required
 				/>
-				<p className="mb-5 text-right text-xs">
-					{350 - comment.length} characters remaining
-				</p>
-				<FormButton
-					customClasses="px-4 py-2 rounded-md group-invalid:pointer-events-none group-invalid:opacity-30"
-					isLoading={commentPost.loading}
-				>
-					Comment
-				</FormButton>
+				<div className="mt-2 flex items-center justify-between">
+					<p className="text-xs" aria-live="assertive">
+						{350 - comment.length} characters remaining
+					</p>
+					<FormButton customClasses="rounded-md bg-mantis-600 text-white hover:bg-mantis-700 disabled:opacity-50 py-2">
+						Comment
+					</FormButton>
+				</div>
 			</form>
 			<Error error={commentPost.error} />
 		</div>
