@@ -45,7 +45,7 @@ const LikeButton = ({
 				!usedKeyboard && "focus:outline-none"
 			} disabled:cursor-not-allowed`}
 			onClick={toggleLike}
-			disabled={loading || isOwner}
+			disabled={loading || isOwner || !token}
 		>
 			<span
 				className={`like-icon like-icon-state`}
@@ -60,11 +60,11 @@ const LikeButton = ({
 
 LikeButton.propTypes = {
 	photoId: PropTypes.string.isRequired,
-	token: PropTypes.string.isRequired,
+	token: PropTypes.string,
 	totalLikes: PropTypes.number.isRequired,
 	setTotalLikes: PropTypes.func.isRequired,
-	isLiked: PropTypes.bool.isRequired,
-	isOwner: PropTypes.bool.isRequired,
+	isLiked: PropTypes.bool,
+	isOwner: PropTypes.bool,
 };
 
 export default LikeButton;
