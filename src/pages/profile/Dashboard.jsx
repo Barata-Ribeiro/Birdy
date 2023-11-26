@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { BiSolidPhotoAlbum } from "react-icons/bi";
 import { FaChartPie, FaSignOutAlt, FaUpload } from "react-icons/fa";
 import { FaUser, FaUserTie } from "react-icons/fa6";
@@ -7,14 +7,15 @@ import { Link, Navigate, Route, Routes, useParams } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import DeleteProfileModal from "../../components/DeleteProfileModal";
-// import EditProfileModal from "../../components/EditProfileModal";
-import MainButton from "../../components/shared/MainButton";
-import NotFound from "../NotFound";
-import ProfileAdmin from "./ProfileAdmin";
-import ProfileStats from "./ProfileStats";
-import ProfileUpload from "./ProfileUpload";
-
 import EditProfileModal from "../../components/EditProfileModal";
+import MainButton from "../../components/shared/MainButton";
+
+// lazy loading pages
+const NotFound = lazy(() => import("../NotFound"));
+const ProfileAdmin = lazy(() => import("./ProfileAdmin"));
+const ProfileStats = lazy(() => import("./ProfileStats"));
+const ProfileUpload = lazy(() => import("./ProfileUpload"));
+
 import Loading from "../../components/helpers/Loading";
 import {
 	closeDeleteModal,
@@ -159,13 +160,15 @@ const Dashboard = () => {
 					</div>
 				</div>
 			</div>
-			<Routes>
-				<Route path="/" element={<ProfilePhotos />} />
-				<Route path="/admin-panel" element={<ProfileAdmin />} />
-				<Route path="/stats" element={<ProfileStats />} />
-				<Route path="/upload" element={<ProfileUpload />} />
-				<Route path="*" element={<NotFound hideImage={true} />} />
-			</Routes>
+			<Suspense>
+				<Routes>
+					<Route path="/" element={<ProfilePhotos />} />
+					<Route path="/admin-panel" element={<ProfileAdmin />} />
+					<Route path="/stats" element={<ProfileStats />} />
+					<Route path="/upload" element={<ProfileUpload />} />
+					<Route path="*" element={<NotFound hideImage={true} />} />
+				</Routes>
+			</Suspense>
 		</>
 	);
 };

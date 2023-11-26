@@ -1,18 +1,20 @@
+import { lazy, Suspense } from "react";
 import { FaFolder, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { Route, Routes } from "react-router-dom";
 
-import NotFound from "../NotFound";
-import LostPassword from "./LostPassword";
-import ResetPassword from "./ResetPassword";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
+// Lazy loading pages
+const NotFound = lazy(() => import("../NotFound"));
+const LostPassword = lazy(() => import("./LostPassword"));
+const ResetPassword = lazy(() => import("./ResetPassword"));
+const SignIn = lazy(() => import("./SignIn"));
+const SignUp = lazy(() => import("./SignUp"));
 
 const Login = () => {
 	return (
-		<section className="text-mantis-50 flex min-h-screen items-stretch">
+		<section className="flex min-h-screen items-stretch text-mantis-50">
 			{/* IMAGE */}
 			<div
-				className="bg-green-spring-500 relative hidden w-1/2 items-center bg-cover bg-no-repeat lg:flex"
+				className="relative hidden w-1/2 items-center bg-green-spring-500 bg-cover bg-no-repeat lg:flex"
 				style={{
 					backgroundImage: "url(https://source.unsplash.com/random/?bird)",
 					backgroundSize: "cover",
@@ -20,9 +22,9 @@ const Login = () => {
 					backgroundPosition: "center center",
 				}}
 			>
-				<div className="bg-bright-turquoise-950 absolute inset-0 z-0 opacity-60"></div>
+				<div className="absolute inset-0 z-0 bg-bright-turquoise-950 opacity-60"></div>
 				<div className="z-10 w-full px-24">
-					<h1 className="text-bright-turquoise-500 text-left text-5xl font-bold tracking-wide">
+					<h1 className="text-left text-5xl font-bold tracking-wide text-bright-turquoise-500">
 						Keep it special
 					</h1>
 					<p className="my-4 text-3xl">
@@ -61,7 +63,7 @@ const Login = () => {
 			</div>
 
 			{/* FORMS */}
-			<div className="dark:bg-green-spring-950 relative z-0 flex w-full items-center justify-center text-center lg:w-1/2">
+			<div className="relative z-0 flex w-full items-center justify-center text-center dark:bg-green-spring-950 lg:w-1/2">
 				<div
 					className="absolute inset-0 z-10 items-center bg-gray-500 bg-cover bg-no-repeat lg:hidden"
 					style={{
@@ -74,16 +76,18 @@ const Login = () => {
 					<div className="absolute inset-0 z-0 bg-black opacity-60"></div>
 				</div>
 				<div className="z-20 w-full py-6">
-					<Routes>
-						<Route path="/up" element={<SignUp />} />
-						<Route path="/in" element={<SignIn />} />
-						<Route path="/password-lost" element={<LostPassword />} />
-						<Route
-							path="/password-reset/:userId/:token"
-							element={<ResetPassword />}
-						/>
-						<Route path="*" element={<NotFound hideImage={true} />} />
-					</Routes>
+					<Suspense>
+						<Routes>
+							<Route path="/up" element={<SignUp />} />
+							<Route path="/in" element={<SignIn />} />
+							<Route path="/password-lost" element={<LostPassword />} />
+							<Route
+								path="/password-reset/:userId/:token"
+								element={<ResetPassword />}
+							/>
+							<Route path="*" element={<NotFound hideImage={true} />} />
+						</Routes>
+					</Suspense>
 				</div>
 			</div>
 		</section>

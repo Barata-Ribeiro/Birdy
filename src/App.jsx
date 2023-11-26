@@ -1,24 +1,25 @@
-import { memo, useEffect } from "react";
+import { Suspense, lazy, memo, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+// Lazy loading pages
+const Home = lazy(() => import("./pages/Home"));
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Sign = lazy(() => import("./pages/sign/Sign"));
+const Dashboard = lazy(() => import("./pages/profile/Dashboard"));
+const Photo = lazy(() => import("./pages/Photo"));
+const User = lazy(() => import("./pages/User"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfUse = lazy(() => import("./pages/TermsOfUse"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-
-import { useDispatch } from "react-redux";
 import Cookies from "./components/helpers/Cookies";
 import ProtectedRoute from "./components/helpers/ProtectedRoute";
 import FloatingButton from "./components/shared/FloatingButton";
 import ThemeSwitcher from "./components/shared/ThemeSwitcher";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Home from "./pages/Home";
-import NotFound from "./pages/NotFound";
-import Photo from "./pages/Photo";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsOfUse from "./pages/TermsOfUse";
-import User from "./pages/User";
-import Dashboard from "./pages/profile/Dashboard";
-import Sign from "./pages/sign/Sign";
 import { autoLogin } from "./store/slices/user.slice";
 
 const HeaderMemory = memo(() => <Header />);
@@ -26,6 +27,9 @@ HeaderMemory.displayName = "HeaderMemory";
 
 const FooterMemory = memo(() => <Footer />);
 FooterMemory.displayName = "FooterMemory";
+
+const DashboardMemory = memo(() => <Dashboard />);
+DashboardMemory.displayName = "DashboardMemory";
 
 function App() {
 	const dispatch = useDispatch();
@@ -45,25 +49,27 @@ function App() {
 			<Cookies />
 
 			<main className="md:container">
-				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/about" element={<About />} />
-					<Route path="/contact" element={<Contact />} />
-					<Route path="sign/*" element={<Sign />} />
-					<Route
-						path="dashboard/:username/*"
-						element={
-							<ProtectedRoute>
-								<Dashboard />
-							</ProtectedRoute>
-						}
-					/>
-					<Route path="photo/:photoId" element={<Photo />} />
-					<Route path="user/:userId/:username" element={<User />} />
-					<Route path="/privacy-policy" element={<PrivacyPolicy />} />
-					<Route path="/terms-of-use" element={<TermsOfUse />} />
-					<Route path="*" element={<NotFound />} />
-				</Routes>
+				<Suspense>
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/about" element={<About />} />
+						<Route path="/contact" element={<Contact />} />
+						<Route path="sign/*" element={<Sign />} />
+						<Route
+							path="dashboard/:username/*"
+							element={
+								<ProtectedRoute>
+									<DashboardMemory />
+								</ProtectedRoute>
+							}
+						/>
+						<Route path="photo/:photoId" element={<Photo />} />
+						<Route path="user/:userId/:username" element={<User />} />
+						<Route path="/privacy-policy" element={<PrivacyPolicy />} />
+						<Route path="/terms-of-use" element={<TermsOfUse />} />
+						<Route path="*" element={<NotFound />} />
+					</Routes>
+				</Suspense>
 			</main>
 			<FooterMemory />
 			<FloatingButton />
