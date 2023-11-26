@@ -59,7 +59,6 @@ class AdminService {
 		photo.meta.total_comments = (photo.meta.total_comments ?? 0) - 1;
 		if (photo.meta.total_comments < 0)
 			throw new BadRequestError("Comments count cannot be negative.");
-		photo.meta.total_comments -= 1;
 
 		await photoRepository.save(photo);
 		await commentRepository.remove(comment);
