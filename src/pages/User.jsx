@@ -3,6 +3,7 @@ import { FaUser, FaUserTie } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Error from "../components/helpers/Error";
+import Head from "../components/helpers/Head";
 import Image from "../components/helpers/Image";
 import Loading from "../components/helpers/Loading";
 import { fetchProfile } from "../store/slices/profile.slice";
@@ -33,17 +34,23 @@ const User = () => {
 	if (error) return <Error error={error} />;
 	if (data) {
 		return (
-			<section>
+			<section aria-labelledby="user-profile-title">
+				<Head
+					title={`${data.username}`}
+					description={`This is the profile page of ${data.username}.`}
+				/>
 				<div className="relative h-[500px]">
 					<div
 						style={{
 							backgroundImage: `url('${data.coverImageUrl}')`,
 						}}
 						className="absolute top-0 h-full w-full bg-cover bg-center"
+						aria-hidden="true"
 					>
 						<span
 							id="blackOverlay"
 							className="absolute h-full w-full bg-green-spring-950/50"
+							aria-hidden="true"
 						></span>
 					</div>
 					<div
@@ -76,7 +83,8 @@ const User = () => {
 									<div className="flex w-full justify-center px-4  lg:order-2 lg:w-3/12">
 										<div className="relative">
 											<img
-												alt="..."
+												alt={`Avatar of ${data.username}`}
+												title={`Avatar of ${data.username}`}
 												src={`${data.avatarUrl}`}
 												className="absolute -m-16 aspect-square h-36 w-36 max-w-[150px] rounded-full border-2 border-green-spring-50 object-cover object-center align-middle italic shadow-xl lg:-ml-16"
 											/>
@@ -121,7 +129,10 @@ const User = () => {
 									</div>
 								</div>
 								<div className="mt-12 flex flex-col items-center justify-center gap-2">
-									<h3 className="flex items-center gap-1 text-4xl font-semibold leading-normal text-green-spring-700">
+									<h3
+										id="user-profile-title"
+										className="flex items-center gap-1 text-4xl font-semibold leading-normal text-green-spring-700"
+									>
 										{data.username}{" "}
 										{data.role === "admin" ? (
 											<FaUserTie size={20} />
@@ -147,7 +158,7 @@ const User = () => {
 											<Link to={`/photo/${photo.id}`}>
 												<Image
 													src={photo.imageUrl}
-													alt={`${photo.title} from ${photo.authorName}`}
+													alt={`${photo.title} by ${photo.authorName}`}
 													className="h-60 w-60 object-cover object-center align-middle grayscale hover:grayscale-0"
 												/>
 											</Link>

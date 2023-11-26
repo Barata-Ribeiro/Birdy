@@ -102,14 +102,9 @@ const DeleteProfileModal = ({ isOpen, onClose, onOutsideClick }) => {
 						Cancel
 					</FormButton>
 					<FormButton
-						// Mouse events
-						onMouseDown={handleInteractionStart}
-						onMouseUp={handleInteractionEnd}
-						onMouseLeave={handleInteractionEnd}
-						// Touch Events
-						onTouchStart={handleInteractionStart}
-						onTouchEnd={handleInteractionEnd}
-						onTouchCancel={handleInteractionEnd}
+						onPointerDown={handleInteractionStart}
+						onPointerUp={handleInteractionEnd}
+						onPointerLeave={handleInteractionEnd}
 						role="Delete Account"
 						customClasses="rounded px-4 py-2 sm:!w-fit !bg-red-600 hover:!bg-red-400"
 					>

@@ -175,14 +175,9 @@ const ProfileAdmin = () => {
 						arial-required
 					/>
 					<FormButton
-						// Mouse Events
-						onMouseDown={handleInteractionStart}
-						onMouseUp={handleInteractionEnd}
-						onMouseLeave={handleInteractionEnd}
-						// Touch Events
-						onTouchStart={handleInteractionStart}
-						onTouchEnd={handleInteractionEnd}
-						onTouchCancel={handleInteractionEnd}
+						onPointerDown={handleInteractionStart}
+						onPointerUp={handleInteractionEnd}
+						onPointerLeave={handleInteractionEnd}
 						role="Delete Account"
 						customClasses={`rounded py-1 px-4 rounded-lg sm:!w-fit !bg-red-600 hover:!bg-red-400 group-invalid:pointer-events-none group-invalid:opacity-30 ${
 							isDeleting ? "w-full" : ""

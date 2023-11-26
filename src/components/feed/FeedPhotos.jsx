@@ -16,8 +16,6 @@ const FeedPhotos = () => {
 						className="relative"
 						onPointerEnter={() => setHoveredImageId(photo.id)}
 						onPointerLeave={() => setHoveredImageId(null)}
-						onMouseEnter={() => setHoveredImageId(photo.id)}
-						onMouseLeave={() => setHoveredImageId(null)}
 					>
 						<div
 							className={`absolute inset-0 h-full w-full items-end justify-around gap-4 rounded-md bg-black/60 pb-4 text-mantis-50 ${
