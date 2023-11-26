@@ -57,14 +57,17 @@ export class PhotoController {
 
 		if (!hasViewed) {
 			arrayViewedPhotos.push(photoId);
-			req.cookies.viewedPhotos = { photoIds: arrayViewedPhotos };
-			res.cookie("viewedPhotos", req.cookies.viewedPhotos, {
-				httpOnly: true,
-				secure: true,
-				sameSite: "none",
-				maxAge: 86400000,
-				expires: new Date(Date.now() + 86400000),
-			});
+			res.cookie(
+				"viewedPhotos",
+				{ photoIds: arrayViewedPhotos },
+				{
+					httpOnly: true,
+					secure: true,
+					sameSite: "none",
+					maxAge: 86400000,
+					expires: new Date(Date.now() + 86400000),
+				}
+			);
 		}
 
 		return res.status(200).json(photo);
