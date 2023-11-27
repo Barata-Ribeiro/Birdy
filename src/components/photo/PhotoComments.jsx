@@ -57,7 +57,7 @@ const PhotoComments = (props) => {
 	};
 
 	return (
-		<div className="mt-4">
+		<>
 			<h2 className="mb-2 font-heading text-xl font-medium">Comments</h2>
 			<ul
 				ref={commentsSection}
@@ -67,15 +67,15 @@ const PhotoComments = (props) => {
 				{comments.map((comment) => (
 					<li
 						key={comment.id}
-						className="grid grid-flow-row gap-2 border-b border-green-spring-100 p-2 last:border-b-0"
+						className="grid grid-flow-row gap-2 border-b border-green-spring-100 p-2 last:border-b-0 dark:border-green-spring-500"
 					>
 						<div className="flex items-center justify-between">
-							<span className="font-body text-sm font-medium">
+							<span className="font-body text-sm font-medium dark:text-green-spring-300">
 								{comment.authorName}
 							</span>
 							<time
 								dateTime={comment.createdAt}
-								className="text-xs text-green-spring-300"
+								className="text-xs text-green-spring-300 dark:text-green-spring-500"
 							>
 								{formatDate(comment.createdAt)}
 							</time>
@@ -127,7 +127,7 @@ const PhotoComments = (props) => {
 				</div>
 			</form>
 			<Error error={commentPost.error} />
-		</div>
+		</>
 	);
 };
 

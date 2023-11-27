@@ -50,7 +50,7 @@ const Header = () => {
 						</Link>
 					</div>
 
-					<div className="flex items-center justify-end border-l lg:border-l-0">
+					<div className="flex items-center justify-end border-l dark:border-green-spring-400 lg:border-l-0">
 						<input
 							type="checkbox"
 							name="hamburger"
@@ -80,7 +80,7 @@ const Header = () => {
 							></div>
 						</label>
 
-						<div className="fixed inset-0 w-[calc(100%-6rem)] translate-x-[-100%] border-r bg-white text-mantis-50 shadow-xl transition duration-300 peer-checked:translate-x-0 dark:border-green-spring-400 dark:bg-mantis-800 lg:static lg:w-auto lg:translate-x-0 lg:border-r-0 lg:bg-transparent lg:shadow-none lg:dark:bg-transparent">
+						<div className="fixed inset-0 w-[calc(100%-6rem)] translate-x-[-100%] border-r bg-white text-mantis-50 shadow-xl transition duration-300 peer-checked:translate-x-0 dark:border-green-spring-400 dark:bg-green-spring-700 lg:static lg:w-auto lg:translate-x-0 lg:border-r-0 lg:bg-transparent lg:shadow-none lg:dark:bg-transparent">
 							<nav
 								className="flex h-full flex-col justify-between lg:flex-row lg:items-center"
 								id="primary-navigation"
@@ -92,7 +92,7 @@ const Header = () => {
 											<NavLink
 												className={({ isActive }) =>
 													isActive
-														? `rounded-md bg-mantis-200 px-4 py-1 text-base font-medium text-green-spring-900`
+														? `rounded-md bg-mantis-200 px-4 py-1 text-base font-medium text-green-spring-900 dark:text-green-spring-950`
 														: `text-base font-normal text-green-spring-900 hover:text-bright-turquoise-500`
 												}
 												to={value}

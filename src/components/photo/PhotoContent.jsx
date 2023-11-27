@@ -26,14 +26,15 @@ const PhotoContent = ({ photo }) => {
 			/>
 			<div className="flex flex-col gap-3 md:gap-5">
 				{/* TITLE */}
-				<div className="mb-2 flex flex-col items-start justify-start gap-0 leading-none">
+				<div className="mb-2 flex flex-col items-start justify-start gap-1 leading-none">
 					<h1 tabIndex="0" className="text-4xl font-semibold">
 						{photo.title}
 					</h1>
 					<Link
 						tabIndex="0"
-						className="text-xs text-green-spring-400"
+						className="text-xs text-green-spring-400 dark:text-green-spring-300"
 						to={`/user/${photo.authorID}/${photo.authorName}`}
+						aria-label={`Author: ${photo.authorName}`}
 					>
 						@{photo.authorName}
 					</Link>
@@ -72,14 +73,18 @@ const PhotoContent = ({ photo }) => {
 				</div>
 
 				{/* META BIRD INFO */}
-				<div className="border-y-2 border-green-spring-100">
-					<p className="pt-2 font-medium">
-						Bird Size:{" "}
-						<span className="font-normal">{photo.meta.birdSize}</span>
+				<div className="grid grid-flow-row gap-4 border-y-2 border-green-spring-100 py-3 dark:border-green-spring-500 md:py-5">
+					<p className="flex flex-col items-center gap-1 md:items-start">
+						<span className="font-semibold dark:text-green-spring-300">
+							Bird Size
+						</span>
+						<span className="font-normal">{photo.meta.birdSize} cm</span>
 					</p>
-					<p className="pb-2 pt-1 font-medium">
-						Habitat:{" "}
-						<span className="font-normal leading-normal">
+					<p className="flex flex-col items-center gap-1 md:items-start">
+						<span className="font-semibold dark:text-green-spring-300">
+							Habitat
+						</span>
+						<span className="font-normal leading-relaxed">
 							{photo.meta.birdHabitat}
 						</span>
 					</p>
