@@ -504,6 +504,7 @@ export const PHOTOS_GET_BY_ID = (photoId) => {
 				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
+			credentials: "include",
 		},
 	};
 };

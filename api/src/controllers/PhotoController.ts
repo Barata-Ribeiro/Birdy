@@ -49,25 +49,23 @@ export class PhotoController {
 
 	async getPhotoById(req: Request, res: Response): Promise<Response> {
 		const { photoId } = req.params as { photoId: string };
-		const arrayViewedPhotos = req.cookies.viewedPhotos?.photoIds || [];
+		const viewedPhotos = req.cookies.viewedPhotos || {};
+		console.log(viewedPhotos);
 
-		const hasViewed = arrayViewedPhotos.includes(photoId);
+		const hasViewed = viewedPhotos[photoId];
+		console.log(hasViewed);
 
 		const photo = await PhotoServices.getPhotoById(photoId, hasViewed);
 
 		if (!hasViewed) {
-			arrayViewedPhotos.push(photoId);
-			res.cookie(
-				"viewedPhotos",
-				{ photoIds: arrayViewedPhotos },
-				{
-					httpOnly: true,
-					secure: true,
-					sameSite: "none",
-					maxAge: 86400000,
-					expires: new Date(Date.now() + 86400000),
-				}
-			);
+			viewedPhotos[photoId] = true;
+			res.cookie("viewedPhotos", viewedPhotos, {
+				httpOnly: true,
+				secure: true,
+				sameSite: "none",
+				maxAge: 86400000,
+				expires: new Date(Date.now() + 86400000),
+			});
 		}
 
 		return res.status(200).json(photo);

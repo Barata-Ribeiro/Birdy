@@ -64,7 +64,7 @@ export interface Cookies {
 		refreshToken: string;
 	};
 	viewedPhotos?: {
-		photoIds: string[];
+		[photoId: string]: boolean;
 	};
 }
 
