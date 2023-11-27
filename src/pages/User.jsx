@@ -6,6 +6,7 @@ import Error from "../components/helpers/Error";
 import Head from "../components/helpers/Head";
 import Image from "../components/helpers/Image";
 import Loading from "../components/helpers/Loading";
+import MainButton from "../components/shared/MainButton";
 import { fetchProfile } from "../store/slices/profile.slice";
 
 const User = () => {
@@ -30,6 +31,10 @@ const User = () => {
 		? data.photos.reduce((sum, photo) => sum + photo.meta.total_comments, 0)
 		: 0;
 
+	const handleFollowing = (event) => {
+		event.preventDefault();
+	};
+
 	if (loading) return <Loading />;
 	if (error) return <Error error={error} />;
 	if (data) {
@@ -39,7 +44,7 @@ const User = () => {
 					title={`${data.username}`}
 					description={`This is the profile page of ${data.username}.`}
 				/>
-				<div className="relative h-[500px]">
+				<div className="relative block h-[500px]">
 					<div
 						style={{
 							backgroundImage: `url('${data.coverImageUrl}')`,
@@ -75,7 +80,7 @@ const User = () => {
 				</div>
 
 				<div className="relative py-16">
-					<div className="container mx-auto px-4">
+					<div className="container mx-auto md:px-4">
 						<div className="relative -mt-64 mb-6 flex w-full min-w-0 flex-col gap-4 break-words rounded-lg bg-green-spring-50 shadow-xl">
 							{/* PROFILE INFO */}
 							<div className="px-6">
@@ -86,21 +91,31 @@ const User = () => {
 												alt={`Avatar of ${data.username}`}
 												title={`Avatar of ${data.username}`}
 												src={`${data.avatarUrl}`}
-												className="absolute -m-16 aspect-square h-36 w-36 max-w-[150px] rounded-full border-2 border-green-spring-50 object-cover object-center align-middle italic shadow-xl lg:-ml-16"
+												className="absolute left-1/2 top-1/2 aspect-square h-36 w-36 max-w-[150px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-green-spring-50 object-cover object-center align-middle italic shadow-xl lg:-mt-12"
 											/>
 										</div>
 									</div>
 
-									{/* SEPARATOR */}
-									<div className="w-full px-4 max-sm:hidden lg:order-3 lg:w-4/12 lg:self-center lg:text-right">
-										<div className="mt-32 px-3 py-6 sm:mt-0 ">
-											<span className="mb-1 sm:mr-2"></span>
+									{/* FOLLOWERS INFO */}
+									<div className="w-full lg:order-3 lg:w-4/12 lg:self-center lg:text-right">
+										<div className="mt-16 flex items-center justify-between px-3 py-6 sm:mt-0">
+											<MainButton
+												customClasses="px-4 py-2"
+												onClick={handleFollowing}
+												disabled={!data}
+												aria-disabled={!data}
+											>
+												Follow
+											</MainButton>
+											<span className="dark:text-green-spring-600">
+												{data.totalFollowers} follower(s)
+											</span>
 										</div>
 									</div>
 
 									{/* INFO */}
-									<div className="w-full px-4 max-sm:mt-24 lg:order-1 lg:w-4/12">
-										<div className="flex justify-center py-4 pt-8 lg:pt-4">
+									<div className="w-full px-4 lg:order-1 lg:w-4/12">
+										<div className="flex justify-center py-4 lg:pt-4">
 											<div className="mr-4 p-3 text-center">
 												<span className="block text-xl font-bold uppercase tracking-wide text-green-spring-600">
 													{data.photos.length}
@@ -128,10 +143,12 @@ const User = () => {
 										</div>
 									</div>
 								</div>
-								<div className="mt-12 flex flex-col items-center justify-center gap-2">
+
+								{/* INFO 2 */}
+								<div className="mt-6 flex flex-col items-center justify-center gap-2 lg:mt-12">
 									<h3
 										id="user-profile-title"
-										className="flex items-center gap-1 text-4xl font-semibold leading-normal text-green-spring-700"
+										className="flex items-center gap-1 text-4xl font-semibold leading-normal text-green-spring-700 dark:text-green-spring-700"
 									>
 										{data.username}{" "}
 										{data.role === "admin" ? (
