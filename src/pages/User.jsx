@@ -1,19 +1,33 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaUser, FaUserTie } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
+
 import Error from "../components/helpers/Error";
 import Head from "../components/helpers/Head";
 import Image from "../components/helpers/Image";
 import Loading from "../components/helpers/Loading";
-import MainButton from "../components/shared/MainButton";
-import { fetchProfile } from "../store/slices/profile.slice";
+import FormButton from "../components/shared/FormButton";
+import { USER_FOLLOW, USER_UNFOLLOW } from "../constants";
+import useFetch from "../hooks/useFetch";
+import {
+	fetchProfile,
+	updateTotalFollowers,
+} from "../store/slices/profile.slice";
+import { updateUserdata } from "../store/slices/user.slice";
 
 const User = () => {
 	const { userId } = useParams();
-	const { data, error, loading, request } = useSelector(
-		(state) => state.profile
-	);
+	const {
+		data,
+		error: profileError,
+		loading: profileLoading,
+	} = useSelector((state) => state.profile);
+	const { data: loggedUser } = useSelector((state) => state.user);
+	const { data: token } = useSelector((state) => state.token);
+	const { error: fetchError, loading, request } = useFetch();
+	const [tooltipMessage, setTooltipMessage] = useState("");
+	const [showTooltip, setShowTooltip] = useState(false);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -21,7 +35,7 @@ const User = () => {
 		if (userId) {
 			dispatch(fetchProfile(userId));
 		} else navigate("/");
-	}, [userId, request, navigate, dispatch]);
+	}, [userId, navigate, dispatch]);
 
 	const totalLikesReceived = data
 		? data.photos.reduce((sum, photo) => sum + photo.meta.total_likes, 0)
@@ -31,12 +45,51 @@ const User = () => {
 		? data.photos.reduce((sum, photo) => sum + photo.meta.total_comments, 0)
 		: 0;
 
-	const handleFollowing = (event) => {
+	const disableFollow = !data || !loggedUser || data.id === loggedUser.id;
+
+	const handleFollowing = async (event) => {
 		event.preventDefault();
+		if (!loggedUser || !loggedUser.followings || !loggedUser.followers) return;
+		const { url: followUrl, options: followOptions } = USER_FOLLOW(
+			userId,
+			token
+		);
+		const { url: unfollowUrl, options: unfollowOptions } = USER_UNFOLLOW(
+			userId,
+			token
+		);
+
+		try {
+			let response, json;
+			if (
+				!loggedUser.followings.some((following) => following.userID === userId)
+			) {
+				({ response, json } = await request(followUrl, followOptions));
+				if (response.ok) {
+					dispatch(updateTotalFollowers({ userId, change: 1 }));
+					dispatch(updateUserdata());
+				}
+			} else {
+				({ response, json } = await request(unfollowUrl, unfollowOptions));
+				if (response.ok) {
+					dispatch(updateTotalFollowers({ userId, change: -1 }));
+					dispatch(updateUserdata());
+				}
+			}
+
+			setTooltipMessage(json.message);
+			setShowTooltip(true);
+			setTimeout(() => setShowTooltip(false), 3000);
+		} catch (error) {
+			console.error(error);
+			setTooltipMessage(fetchError);
+			setShowTooltip(true);
+			setTimeout(() => setShowTooltip(false), 3000);
+		}
 	};
 
-	if (loading) return <Loading />;
-	if (error) return <Error error={error} />;
+	if (profileLoading) return <Loading />;
+	if (profileError) return <Error error={profileError} />;
 	if (data) {
 		return (
 			<section aria-labelledby="user-profile-title">
@@ -99,14 +152,25 @@ const User = () => {
 									{/* FOLLOWERS INFO */}
 									<div className="w-full lg:order-3 lg:w-4/12 lg:self-center lg:text-right">
 										<div className="mt-16 flex items-center justify-between px-3 py-6 sm:mt-0">
-											<MainButton
-												customClasses="px-4 py-2"
+											{showTooltip && (
+												<div className="absolute left-1/2 top-0 z-10 mt-2 -translate-x-1/2 rounded-md bg-green-spring-600 p-2 text-sm text-white shadow-md dark:bg-bright-turquoise-600">
+													{tooltipMessage}
+												</div>
+											)}
+											<FormButton
+												customClasses="px-4 py-2 !w-auto rounded-lg"
 												onClick={handleFollowing}
-												disabled={!data}
-												aria-disabled={!data}
+												disablingConditions={disableFollow}
+												isLoading={loading}
 											>
-												Follow
-											</MainButton>
+												{loggedUser &&
+												loggedUser.followings &&
+												loggedUser.followings.some(
+													(following) => following.userID === userId
+												)
+													? "Unfollow"
+													: "Follow"}
+											</FormButton>
 											<span className="dark:text-green-spring-600">
 												{data.totalFollowers} follower(s)
 											</span>

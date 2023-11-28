@@ -1,4 +1,8 @@
-import { AUTH_LOGIN, AUTH_LOGOUT } from "../../constants";
+import {
+	AUTH_LOGIN,
+	AUTH_LOGOUT,
+	USER_GET_UPDATED_USERDATA,
+} from "../../constants";
 import createAsyncSlice from "../helper/createAsyncSlice";
 import { refreshToken, setTokenData, tokenPurge } from "./token.slice";
 
@@ -72,6 +76,22 @@ export const autoLogin = () => async (dispatch, getState) => {
 		dispatch(slice.actions.fetchSuccess(userData));
 	else if (accessToken && isTokenExpired(accessToken)) dispatch(refreshToken());
 	else if (!accessToken && userData) dispatch(refreshToken());
+};
+
+export const updateUserdata = () => async (dispatch, getState) => {
+	const token = getState().token.data;
+
+	const { url, options } = USER_GET_UPDATED_USERDATA(token);
+
+	try {
+		const response = await fetch(url, options);
+		if (response.ok) {
+			const data = await response.json();
+			dispatch(slice.actions.fetchSuccess(data));
+		} else throw new Error(response.statusText);
+	} catch (error) {
+		dispatch(fetchError(error.message));
+	}
 };
 
 export default slice.reducer;

@@ -197,6 +197,26 @@ export const USER_EDIT_PROFILE = (body, token) => {
 };
 
 /**
+ * Retrieves the user's own data updated for when need store data update.
+ *
+ * @param {string} token - The user's access token.
+ */
+export const USER_GET_UPDATED_USERDATA = (token) => {
+	return {
+		url: `${__API_URL__}/users/update-userdata`,
+		options: {
+			method: "PUT",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			credentials: "include",
+		},
+	};
+};
+
+/**
  * Deletes the user's account.
  *
  * @param {string} token - The user's access token.
@@ -525,6 +545,73 @@ export const PHOTO_DELETE = (photoId, token) => {
 				Authorization: `Bearer ${token}`,
 			},
 			credentials: "include",
+		},
+	};
+};
+
+// FOLLOWING SYSTEM CONSTANTS
+/**
+ * Creates an object that represents a request to follow a user.
+ *
+ * @param {number} userId - The ID of the user to follow.
+ * @param {string} token - The authentication token for the user.
+ *
+ * @returns {Object} The request object.
+ */
+export const USER_FOLLOW = (userId, token) => {
+	return {
+		url: `${__API_URL__}/users/${userId}/follow`,
+		options: {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			credentials: "include",
+		},
+	};
+};
+
+/**
+ * Creates an object that represents a request to unfollow a user.
+ *
+ * @param {number} userId - The ID of the user to unfollow.
+ * @param {string} token - The authentication token for the user.
+ *
+ * @returns {Object} The request object.
+ */
+export const USER_UNFOLLOW = (userId, token) => {
+	return {
+		url: `${__API_URL__}/users/${userId}/unfollow`,
+		options: {
+			method: "DELETE",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			credentials: "include",
+		},
+	};
+};
+
+/**
+ * Returns a request object for making a GET request to retrieve all followings of a specific user.
+ *
+ * @param {number} userId - The ID of the user for which to retrieve followings.
+ *
+ * @returns {Object} - The request object with the necessary properties to make the request.
+ */
+export const USER_GET_ALL_FOLLOWINGS = (userId) => {
+	return {
+		url: `${__API_URL__}/users/${userId}/followings`,
+		options: {
+			method: "GET",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
 		},
 	};
 };
