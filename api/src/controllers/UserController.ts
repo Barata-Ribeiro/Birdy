@@ -36,6 +36,14 @@ export class UserController {
 		return res.status(200).json(user);
 	}
 
+	async updatedUserdata(req: Request, res: Response): Promise<Response> {
+		const userData = req.user as User;
+		const userId = userData.id;
+
+		const user = await UserService.updatedUserdata(userId);
+		return res.status(200).json(user);
+	}
+
 	async deleteOwnAccount(
 		req: Request,
 		res: Response

@@ -25,6 +25,10 @@ router.patch("/", authMiddleware, (req, res, next) => {
 	userController.editUserProfile(req, res).catch(next);
 });
 
+router.put("/update-userdata", authMiddleware, (req, res, next) => {
+	userController.updatedUserdata(req, res).catch(next);
+});
+
 router.delete("/delete-account", authMiddleware, (req, res, next) => {
 	userController.deleteOwnAccount(req, res).catch(next);
 });

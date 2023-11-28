@@ -8,6 +8,7 @@ import { User } from "../entities/User";
 
 import { ALL_USERS_CACHE_KEY } from "../constants";
 import { EditProfileResponseDTO } from "../dto/EditProfileResponseDTO";
+import { UserLoginResponseDTO } from "../dto/UserLoginResponseDTO";
 import { UserResponseDTO } from "../dto/UserResponseDTO";
 import { Comment } from "../entities/Comment";
 import { Photo } from "../entities/Photo";
@@ -211,6 +212,25 @@ class UserService {
 		await dataSource.queryResultCache?.remove([ALL_USERS_CACHE_KEY]);
 
 		return EditProfileResponseDTO.fromEntity(actualUser);
+	}
+
+	static async updatedUserdata(userId: string): Promise<UserLoginResponseDTO> {
+		if (!validate(userId)) throw new BadRequestError("Invalid user ID.");
+
+		const actualUser = await userRepository.findOne({
+			where: { id: userId },
+			relations: [
+				"photos",
+				"comments",
+				"likes",
+				"followings",
+				"followings.following",
+				"followers.follower",
+			],
+		});
+		if (!actualUser) throw new NotFoundError("User not found.");
+
+		return UserLoginResponseDTO.fromEntityUserdataUpdate(actualUser);
 	}
 
 	static async deleteOwnAccount(userId: string): Promise<void> {
