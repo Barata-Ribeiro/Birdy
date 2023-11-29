@@ -1,8 +1,14 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { FaEye, FaRegComments } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+
+import DeleteButton from "../../components/shared/DeleteButton";
+import {
+	adminDeletePhoto,
+	userDeletePhoto,
+} from "../../store/slices/photo.slice";
 import Image from "../helpers/Image";
 import LikeButton from "../shared/LikeButton";
 import PhotoComments from "./PhotoComments";
@@ -15,9 +21,23 @@ const PhotoContent = ({ photo }) => {
 	const isPhotoLiked =
 		userId && photo.likes.some((like) => like.userId === userId);
 	const isOwner = userId && photo.authorID === userId;
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const handlePhotoDelete = async (photoId) => {
+		if (user) {
+			if (user.role === "admin")
+				await dispatch(adminDeletePhoto(photoId, token));
+			else await dispatch(userDeletePhoto(photoId, token));
+
+			navigate(`/dashboard/${user.username}`);
+
+			window.location.reload(true);
+		}
+	};
 
 	return (
-		<div className="grid grid-cols-1 gap-4 max-md:px-1 md:grid-cols-2 lg:justify-between">
+		<div className="grid grid-cols-1 justify-center gap-4 max-md:items-center max-md:px-1 md:grid-cols-2 lg:justify-between">
 			<Image
 				src={photo.imageUrl}
 				alt={`Photo by ${photo.authorName}: ${photo.title}`}
@@ -26,18 +46,27 @@ const PhotoContent = ({ photo }) => {
 			/>
 			<div className="flex flex-col gap-3 md:gap-5">
 				{/* TITLE */}
-				<div className="mb-2 flex flex-col items-start justify-start gap-1 leading-none">
-					<h1 tabIndex="0" className="text-4xl font-semibold">
-						{photo.title}
-					</h1>
-					<Link
-						tabIndex="0"
-						className="text-xs text-green-spring-400 dark:text-green-spring-300"
-						to={`/user/${photo.authorID}/${photo.authorName}`}
-						aria-label={`Author: ${photo.authorName}`}
-					>
-						@{photo.authorName}
-					</Link>
+				<div className="flex items-end justify-between">
+					<div className="mb-2 flex flex-col items-start justify-start gap-1 leading-none">
+						<h1 tabIndex="0" className="text-4xl font-semibold">
+							{photo.title}
+						</h1>
+						<Link
+							tabIndex="0"
+							className="text-xs text-green-spring-400 dark:text-green-spring-300"
+							to={`/user/${photo.authorID}/${photo.authorName}`}
+							aria-label={`Author: ${photo.authorName}`}
+						>
+							@{photo.authorName}
+						</Link>
+					</div>
+					{user && (photo.authorID === user.id || user.role === "admin") && (
+						<DeleteButton
+							onDelete={() => handlePhotoDelete(photo.id)}
+							accessibilityText="Photo"
+							direction="right"
+						/>
+					)}
 				</div>
 
 				{/* META NUMBERS */}

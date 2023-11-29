@@ -68,7 +68,7 @@ const ProfileAdmin = () => {
 		const requestConfig = ADMIN_DELETE_USER_BY_ID(typedUserId, token);
 		if (deleteCompleted) {
 			await request(requestConfig.url, requestConfig.options);
-			window.location.reload();
+			window.location.reload(true);
 		}
 	};
 
@@ -111,7 +111,7 @@ const ProfileAdmin = () => {
 								"block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 							}
 							required
-							aria-required="true"
+							arial-required="true"
 						/>
 						<FormButton customClasses="py-1 px-4 rounded-lg sm:!w-fit group-invalid:pointer-events-none group-invalid:opacity-30">
 							Get User
@@ -172,7 +172,7 @@ const ProfileAdmin = () => {
 							"block w-full rounded-lg bg-mantis-200 dark:bg-mantis-800 p-4 text-lg placeholder:text-green-spring-400 dark:placeholder:text-green-spring-300"
 						}
 						required
-						arial-required
+						arial-required="true"
 					/>
 					<FormButton
 						onPointerDown={handleInteractionStart}
