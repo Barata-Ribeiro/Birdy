@@ -52,7 +52,7 @@ const PrivacyPolicy = () => {
 					<a href="#GDPR-protection">GDPR Data Protection Rights</a>
 				</li>
 				<li>
-					<a href="#children-information">Children's Information</a>
+					<a href="#children-information">Children&apos;s Information</a>
 				</li>
 				<li>
 					<a href="#changes-to-policy">Changes to This Privacy Policy</a>
@@ -64,10 +64,10 @@ const PrivacyPolicy = () => {
 
 			<article id="privacy-start" className="flex flex-col gap-4">
 				<p>
-					At Birdy, accessible from [PLACEHOLDER] one of our main priorities is
-					the privacy of our visitors. This Privacy Policy document contains
-					types of information that is collected and recorded by Birdy and how
-					we use it.
+					At Birdy, accessible from https://birdy-social.vercel.app/ one of our
+					main priorities is the privacy of our visitors. This Privacy Policy
+					document contains types of information that is collected and recorded
+					by Birdy and how we use it.
 				</p>
 
 				<p>
@@ -150,11 +150,12 @@ const PrivacyPolicy = () => {
 				<h2 className="-mb-2 text-2xl">Cookies and Web Beacons</h2>
 
 				<p>
-					Like any other website, Birdy uses "cookies". These cookies are used
-					to store information that might include visitors' preferences and the
-					pages on the website that the visitor accessed or visited. But mainly
-					to store the user's access information that is required for a seamless
-					and instant navigation after one has logged in.
+					Like any other website, Birdy uses &ldquot;cookies&rdquot;. These
+					cookies are used to store information that might include
+					visitors&apos; preferences and the pages on the website that the
+					visitor accessed or visited. But mainly to store the user&apos;s
+					access information that is required for a seamless and instant
+					navigation after one has logged in.
 				</p>
 			</article>
 
@@ -171,8 +172,8 @@ const PrivacyPolicy = () => {
 				<p>
 					Third-party ad servers or ad networks use technologies like cookies,
 					JavaScript, or Web Beacons used in their respective advertisements and
-					links that appear on Birdy, sent directly to users' browsers. They
-					automatically receive your IP address when this occurs. These
+					links that appear on Birdy, sent directly to users&apos; browsers.
+					They automatically receive your IP address when this occurs. These
 					technologies are used to measure the effectiveness of their
 					advertising campaigns and/or personalize the advertising content you
 					see on websites you visit.
@@ -192,20 +193,20 @@ const PrivacyPolicy = () => {
 				<h2 className="-mb-2 text-2xl">Third Party Privacy Policies</h2>
 
 				<p>
-					Birdy's Privacy Policy does not apply to other advertisers or websites
-					that are here linked. Thus, we are advising you to consult the
-					respective Privacy Policies of these third-party ad servers and/or of
-					the third-party links, for more detailed information. It may include
-					their practices and instructions about how to opt-out of certain
-					options.
+					Birdy&apos;s Privacy Policy does not apply to other advertisers or
+					websites that are here linked. Thus, we are advising you to consult
+					the respective Privacy Policies of these third-party ad servers and/or
+					of the third-party links, for more detailed information. It may
+					include their practices and instructions about how to opt-out of
+					certain options.
 				</p>
 
 				<p>
 					You can choose to disable cookies through your browser options. To
 					know more detailed information about cookie management with specific
-					web browsers, it can be found at the browsers' respective websites.
-					But be aware that because essential information is stored in those
-					cookies, it may change how you navigate the website.
+					web browsers, it can be found at the browsers&apos; respective
+					websites. But be aware that because essential information is stored in
+					those cookies, it may change how you navigate the website.
 				</p>
 			</article>
 
@@ -219,7 +220,7 @@ const PrivacyPolicy = () => {
 					right to:
 				</p>
 				<p>
-					Request that a business that collects a consumer's personal data
+					Request that a business that collects a consumer&apos;s personal data
 					disclose the categories and specific pieces of personal data that a
 					business has collected about consumers.
 				</p>
@@ -228,8 +229,8 @@ const PrivacyPolicy = () => {
 					that a business has collected.
 				</p>
 				<p>
-					Request that a business that sells a consumer's personal data, not
-					sell the consumer's personal data.
+					Request that a business that sells a consumer&apos;s personal data,
+					not sell the consumer&apos;s personal data.
 				</p>
 				<p>
 					If you make a request, we have one month to respond to you. If you
@@ -283,7 +284,7 @@ const PrivacyPolicy = () => {
 			</article>
 
 			<article id="children-information" className="flex flex-col gap-4">
-				<h2 className="-mb-2 text-2xl">Children's Information</h2>
+				<h2 className="-mb-2 text-2xl">Children&apos;s Information</h2>
 
 				<p>
 					Another part of our priority is adding protection for children while
@@ -301,7 +302,7 @@ const PrivacyPolicy = () => {
 
 				<strong>
 					THIS WEBSITE DOES NOT PROVIDE ITS SERVICES TO INDIVIDUALS UNDER THE
-					AGE OF 18! IF WE SUSPECT YOU'RE A MINOR, WE WILL TERMINATE YOUR
+					AGE OF 18! IF WE SUSPECT YOU&apos;RE A MINOR, WE WILL TERMINATE YOUR
 					ACCOUNT IMMIDEATLY! (By terminate, we mean complete deletion).
 				</strong>
 			</article>
@@ -311,11 +312,11 @@ const PrivacyPolicy = () => {
 
 				<p>
 					We may update our Privacy Policy from time to time. Thus, we advise
-					you to review this page periodically for any changes. We won't notify
-					you of any changes in the Privacy Policy either through e-mail or on
-					this page. These changes are effective immediately, after they are
-					posted on this page. You will know when a change is made because of
-					the use of the tag (new), which is optional from our end, and the
+					you to review this page periodically for any changes. We won&apos;t
+					notify you of any changes in the Privacy Policy either through e-mail
+					or on this page. These changes are effective immediately, after they
+					are posted on this page. You will know when a change is made because
+					of the use of the tag (new), which is optional from our end, and the
 					change in the date at the beginning of this article.
 				</p>
 
@@ -333,8 +334,8 @@ const PrivacyPolicy = () => {
 
 				<p>
 					If you have any questions or suggestions about our Privacy Policy, do
-					not hesitate to contact us. You can do that through our 'Contact' page
-					in the navigation menu.
+					not hesitate to contact us. You can do that through our
+					&lsquo;Contact&rsquo; page in the navigation menu.
 				</p>
 			</article>
 

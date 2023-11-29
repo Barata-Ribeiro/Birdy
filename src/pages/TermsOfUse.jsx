@@ -53,11 +53,11 @@ const TermsOfUse = () => {
 
 			<article id="terms-start" className="flex flex-col gap-4">
 				<p>
-					The Birdy social network website located at [PLACEHOLDER] is a
-					software developer by Barata Ribeiro under the MIT license. Certain
-					features of the Site may be subject to additional guidelines, terms,
-					or rules, which will be posted on the Site in connection with such
-					features.
+					The Birdy social network website located at
+					https://birdy-social.vercel.app/ is a software developer by Barata
+					Ribeiro under the MIT license. Certain features of the Site may be
+					subject to additional guidelines, terms, or rules, which will be
+					posted on the Site in connection with such features.
 				</p>
 
 				<p>

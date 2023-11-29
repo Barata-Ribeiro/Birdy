@@ -1,5 +1,4 @@
 {
-	"extends": "ts-node/node16/tsconfig.json",
 	"ts-node": {
 		"files": true
 	},
@@ -14,7 +13,7 @@
 			"es2018",
 			"esnext"
 		],
-		"target": "ES2017",
+		"target": "ESNext",
 		"module": "CommonJS",
 		"sourceMap": true,
 		"outDir": "./dist",

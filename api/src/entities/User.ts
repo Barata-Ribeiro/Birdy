@@ -59,13 +59,13 @@ export class User {
 		cascade: true,
 		onDelete: "CASCADE",
 	})
-	followings: UserFollow[];
+	followings?: UserFollow[];
 
 	@OneToMany(() => UserFollow, (userFollow) => userFollow.following, {
 		cascade: true,
 		onDelete: "CASCADE",
 	})
-	followers: UserFollow[];
+	followers?: UserFollow[];
 
 	@Column({ type: "text", nullable: true })
 	refreshToken?: string;
