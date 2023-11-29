@@ -2,7 +2,12 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 
-const DeleteButton = ({ onDelete, isLoading, accessibilityText }) => {
+const DeleteButton = ({
+	onDelete,
+	isLoading,
+	accessibilityText,
+	direction,
+}) => {
 	const [showConfirm, setShowConfirm] = useState(false);
 
 	const handleDeleteClick = () => setShowConfirm(true);
@@ -27,7 +32,9 @@ const DeleteButton = ({ onDelete, isLoading, accessibilityText }) => {
 			</button>
 
 			{showConfirm && (
-				<div className="absolute bottom-2 left-2 z-20 mt-2 rounded border border-green-spring-200 bg-white p-2 shadow dark:border-green-spring-600 dark:bg-green-spring-700">
+				<div
+					className={`absolute bottom-2 ${direction}-2 z-20 mt-2 rounded border border-green-spring-200 bg-white p-2 shadow dark:border-green-spring-600 dark:bg-green-spring-700`}
+				>
 					<p className="text-sm text-green-spring-700 dark:text-green-spring-300">
 						Confirm deletion?
 					</p>
@@ -57,6 +64,7 @@ DeleteButton.propTypes = {
 	onDelete: PropTypes.func.isRequired,
 	isLoading: PropTypes.bool,
 	accessibilityText: PropTypes.string.isRequired,
+	direction: PropTypes.string.isRequired,
 };
 
 DeleteButton.defaultProps = {

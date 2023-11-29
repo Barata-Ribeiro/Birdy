@@ -87,6 +87,7 @@ const PhotoComments = (props) => {
 									<DeleteButton
 										onDelete={() => handleCommentDelete(comment.id)}
 										accessibilityText="Comment"
+										direction="left"
 									/>
 								</span>
 							)}
