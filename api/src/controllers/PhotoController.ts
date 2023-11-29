@@ -50,10 +50,8 @@ export class PhotoController {
 	async getPhotoById(req: Request, res: Response): Promise<Response> {
 		const { photoId } = req.params as { photoId: string };
 		const viewedPhotos = req.cookies.viewedPhotos || {};
-		console.log(viewedPhotos);
 
 		const hasViewed = viewedPhotos[photoId];
-		console.log(hasViewed);
 
 		const photo = await PhotoServices.getPhotoById(photoId, hasViewed);
 
