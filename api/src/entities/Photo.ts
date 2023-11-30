@@ -1,57 +1,62 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  ManyToOne,
-  JoinColumn,
-  OneToMany,
-  UpdateDateColumn,
+	Column,
+	CreateDateColumn,
+	Entity,
+	Index,
+	JoinColumn,
+	ManyToOne,
+	OneToMany,
+	PrimaryGeneratedColumn,
+	UpdateDateColumn,
 } from "typeorm";
-import { User } from "./User";
 import { Comment } from "./Comment";
 import { PhotoMeta } from "./PhotoMeta";
+import { User } from "./User";
 import { UserLikes } from "./UserLikes";
 
 @Entity("photos")
 export class Photo {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+	@PrimaryGeneratedColumn("uuid")
+	id: string;
 
-  @Column()
-  authorID: string;
+	@Index()
+	@Column()
+	authorID: string;
 
-  @ManyToOne(() => User, (user) => user.photos)
-  @JoinColumn({ name: "authorID", referencedColumnName: "id" })
-  author: User;
+	@ManyToOne(() => User, (user) => user.photos)
+	@JoinColumn({ name: "authorID", referencedColumnName: "id" })
+	author: User;
 
-  @Column({ type: "varchar", length: 20 })
-  authorName: string;
+	@Column({ type: "varchar", length: 20 })
+	authorName: string;
 
-  @Column({ type: "text" })
-  title: string;
+	@Index()
+	@Column({ type: "text" })
+	title: string;
 
-  @Column({ type: "varchar", length: 2048 })
-  imageUrl: string;
+	@Column({ type: "varchar", length: 2048 })
+	imageUrl: string;
 
-  @Column(() => PhotoMeta)
-  meta: PhotoMeta;
+	@Column(() => PhotoMeta)
+	meta: PhotoMeta;
 
-  @OneToMany(() => UserLikes, (userLikes) => userLikes.photo, {
-    cascade: true,
-    onDelete: "CASCADE",
-  })
-  likes?: UserLikes[];
+	@OneToMany(() => UserLikes, (userLikes) => userLikes.photo, {
+		cascade: true,
+		onDelete: "CASCADE",
+	})
+	likes?: UserLikes[];
 
-  @OneToMany(() => Comment, (comment) => comment.photo, {
-    cascade: true,
-    onDelete: "CASCADE",
-  })
-  comments?: Comment[];
+	@OneToMany(() => Comment, (comment) => comment.photo, {
+		cascade: true,
+		onDelete: "CASCADE",
+	})
+	comments?: Comment[];
 
-  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-  createdAt: Date;
+	@Index()
+	@CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+	createdAt: Date;
 
-  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-  updatedAt: Date;
+	@Index()
+	@UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+	updatedAt: Date;
 }

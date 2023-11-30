@@ -1,6 +1,7 @@
 import {
 	CreateDateColumn,
 	Entity,
+	Index,
 	ManyToOne,
 	PrimaryGeneratedColumn,
 	Unique,
@@ -13,9 +14,11 @@ export class UserFollow {
 	@PrimaryGeneratedColumn("uuid")
 	id: string;
 
+	@Index()
 	@ManyToOne(() => User, (user) => user.followings)
 	follower: User;
 
+	@Index()
 	@ManyToOne(() => User, (user) => user.followers)
 	following: User;
 
