@@ -5,7 +5,7 @@ import { FollowQueryResponseDTO } from "../dto/FollowQueryResponseDTO";
 import { User } from "../entities/User";
 import { UserFollow } from "../entities/UserFollow";
 import { BadRequestError, NotFoundError } from "../helpers/api-errors";
-import { followsRepository } from "../repositories/followsRepositoy";
+import { followsRepository } from "../repositories/followsRepository";
 import { userRepository } from "../repositories/userRepository";
 
 export class FollowingServices {
