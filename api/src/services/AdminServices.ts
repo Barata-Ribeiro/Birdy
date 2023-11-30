@@ -26,6 +26,10 @@ class AdminService {
 				"comments.photo",
 				"likes",
 				"likes.photo",
+				"followers",
+				"followers.follower",
+				"followings",
+				"followings.following",
 			],
 		});
 

@@ -152,6 +152,16 @@ const ProfileAdmin = () => {
 										<span className="font-normal">{data.photos.length}</span>
 									</li>
 									<li className="font-semibold">
+										Total Followers:{" "}
+										<span className="font-normal">{data.followers.length}</span>
+									</li>
+									<li className="font-semibold">
+										Total Followings:{" "}
+										<span className="font-normal">
+											{data.followings.length}
+										</span>
+									</li>
+									<li className="font-semibold">
 										Role: <span className="font-normal">{data.role}</span>
 									</li>
 								</ul>

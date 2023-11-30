@@ -13,6 +13,20 @@ export class UserResponseDTO {
 	photos: PhotoResponseDTO[];
 	comments: CommentResponseDTO[];
 	likes: UserLikesResponseDTO[];
+	followers: {
+		id: string;
+		userID: string;
+		userName: string;
+		userAvatar: string;
+		startedFollowingAt: Date;
+	}[];
+	followings: {
+		id: string;
+		userID: string;
+		userName: string;
+		userAvatar: string;
+		startedFollowingAt: Date;
+	}[];
 	totalFollowers: number;
 	totalFollowing: number;
 	role: string;
@@ -36,6 +50,24 @@ export class UserResponseDTO {
 			: [];
 		dto.likes = user.likes
 			? user.likes.map((like) => UserLikesResponseDTO.fromEntity(like))
+			: [];
+		dto.followers = user.followers
+			? user.followers.map((follower) => ({
+					id: follower.id,
+					userID: follower.follower?.id,
+					userName: follower.follower?.username,
+					userAvatar: follower.follower?.avatarUrl,
+					startedFollowingAt: follower.startedFollowing,
+			  }))
+			: [];
+		dto.followings = user.followings
+			? user.followings.map((following) => ({
+					id: following.id,
+					userID: following.following?.id,
+					userName: following.following?.username,
+					userAvatar: following.following?.avatarUrl,
+					startedFollowingAt: following.startedFollowing,
+			  }))
 			: [];
 		dto.totalFollowers = user.followers?.length || 0;
 		dto.totalFollowing = user.followings?.length || 0;
