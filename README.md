@@ -57,7 +57,7 @@ The Birdy API is a robust and scalable backend service designed to support Birdy
    - Fill in the required environment variables.
 
    ```bash
-   # Database Configuration
+    # Database Configuration
     DB_HOST=YOUR_DATABASE_HOST
     DB_PORT=YOUR_DATABASE_PORT
     DB_USERNAME=YOUR_DATABASE_USERNAME
@@ -69,13 +69,13 @@ The Birdy API is a robust and scalable backend service designed to support Birdy
     REDIS_HOST_PORT=YOUR_REDIS_HOST_PORT
     REDIS_PASSWORD=YOUR_REDIS_HOST_PASSWORD
 
-    # CORS Configuration
-    CORS_ORIGIN=YOUR_ALLOWED_ORIGIN
-
     # Cloudinary Configuration
     CLOUDINARY_CLOUD_NAME=YOUR_CLOUDINARY_CLOUD_NAME
     CLOUDINARY_API_KEY=YOUR_CLOUDINARY_API_KEY
     CLOUDINARY_API_SECRET=YOUR_CLOUDINARY_API_SECRET
+
+    # Mail Frontend Origin
+    FRONTEND_ORIGIN=YOUR_FRONTEND_MAIL_ORIGIN
 
     # Nodemailer Configuration
     ORIGIN_HOST=YOUR_ALLOWED_ORIGIN_HOST
@@ -113,18 +113,20 @@ The Birdy API is a robust and scalable backend service designed to support Birdy
 
     // to:
     const corsOptions: cors.CorsOptions = {
-      origin: process.env.CORS_ORIGIN,
+      origin: ["Origin 1", "Origin 2"], // Or use an environment variable
    ```
 
 ### API Folder Structure 📂
 
 ```sh
 api
+├── dist
 ├── node_modules
 ├── src
 │   ├── @types
 │   ├── controllers
 │   ├── database
+│   │   └── migrations
 │   ├── dto
 │   ├── entities
 │   ├── helpers
@@ -160,6 +162,7 @@ The front end of Birdy is designed to provide users with an intuitive and respon
 - [Redux Toolkit](https://redux-toolkit.js.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Victory Charts](https://formidable.com/open-source/victory/)
+- And other awesome libraries and tools listed in [package.json](./package.json)
 
 ### Frontend Setup 🚀
 
@@ -181,6 +184,8 @@ The front end of Birdy is designed to provide users with an intuitive and respon
    npm run dev
    ```
 
+4. Set the environment variable `VITE_API_URL` to the URL of the API server's URL. If running locally, it should be set to `http://localhost:3000/api/v1`.
+
 ### Frontend Folder Structure 📂
 
 ```sh
@@ -188,9 +193,17 @@ public
 src
 ├── assets
 ├── components
+│   ├── feed
+│   ├── helpers
+│   ├── photo
+│   └── shared
 ├── hooks
 ├── pages
+│   ├── profile
+│   └── sign
 ├── store
+│   ├── helper
+│   └── slices
 ├── App.jsx
 ├── constants.js
 ├── index.css
@@ -203,12 +216,15 @@ src
 .postcssrc.json
 .prettierignore
 .prettierrc.json
+.vercelignore # (optional)
 index.html
+.jsconfig.json # (in case you use this as a monorepo project)
 LICENSE
 package-lock.json
 package.json
 README.md
 tailwind.config.js
+vercel.json # (optional)
 vite.config.js
 ```
 
