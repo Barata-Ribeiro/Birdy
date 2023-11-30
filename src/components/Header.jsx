@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+
+import Image from "../components/helpers/Image";
 import useMedia from "../hooks/useMedia";
 import { checkTokenExpiration } from "../store/slices/token.slice";
 import { userLogout } from "../store/slices/user.slice";
@@ -34,7 +36,7 @@ const Header = () => {
 			className="sticky top-0 z-50 border-b bg-green-spring-50 shadow-sm dark:border-green-spring-400 dark:bg-green-spring-950"
 			role="banner"
 		>
-			<div className="px-6 lg:container md:px-12 lg:mx-auto lg:px-0 lg:py-4">
+			<div className="px-6 py-2 lg:container md:px-12 lg:mx-auto lg:px-0 lg:py-4">
 				<div className="flex items-center justify-between">
 					<div
 						className="relative z-50 w-32 max-w-full xs:w-40 sm:w-52"
@@ -42,11 +44,8 @@ const Header = () => {
 						aria-label="Birdy Logo"
 					>
 						<Link to="/" className="block w-full">
-							<img
-								src="https://upload.wikimedia.org/wikipedia/commons/9/93/No-logo.svg"
-								alt="Birdy logo"
-								className="w-full"
-							/>
+							<Image src="logo/logo.svg" className="dark:hidden" />
+							<Image src="logo/logo-dark.svg" className="hidden dark:block" />
 						</Link>
 					</div>
 

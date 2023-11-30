@@ -1,6 +1,7 @@
 import { FaGithub } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
+import Image from "../components/helpers/Image";
 import MainButton from "./shared/MainButton";
 
 const footerLinkes = {
@@ -15,10 +16,10 @@ const Footer = () => {
 			<div className="container mx-auto px-6 py-8">
 				<div className="flex flex-col items-center text-center">
 					<Link to="/">
-						<img
-							className="h-20 w-auto"
-							src="https://www.kadencewp.com/wp-content/uploads/2020/10/alogo-1.svg"
-							alt="Logo"
+						<Image src="logo/logo.svg" className="h-10 w-auto dark:hidden" />
+						<Image
+							src="logo/logo-dark.svg"
+							className="hidden h-10 w-auto dark:block"
 						/>
 					</Link>
 
