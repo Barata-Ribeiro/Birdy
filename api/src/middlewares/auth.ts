@@ -2,9 +2,13 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-import { UnauthorizedError } from "../helpers/api-errors";
-import { userRepository } from "../repositories/userRepository";
 import { JwtPayload } from "../@types/types";
+import {
+	BadRequestError,
+	NotFoundError,
+	UnauthorizedError,
+} from "../helpers/api-errors";
+import { userRepository } from "../repositories/userRepository";
 
 export const authMiddleware = async (
 	req: Request,
@@ -13,8 +17,11 @@ export const authMiddleware = async (
 ): Promise<void> => {
 	try {
 		const { authorization } = req.headers;
+		if (!authorization)
+			throw new BadRequestError("No authentication token provided.");
 
-		if (!authorization) throw new UnauthorizedError("User not authenticated.");
+		const secretKey = process.env.JWT_SECRET!;
+		if (!secretKey) throw new NotFoundError("Secret key not found");
 
 		const token = authorization.split(" ")[1];
 		let id: string;
@@ -27,16 +34,13 @@ export const authMiddleware = async (
 			id = decoded.id;
 		} catch (error) {
 			if (error instanceof jwt.JsonWebTokenError)
-				return next(
-					new UnauthorizedError("You have provided an invalid token.")
-				);
+				return next(new UnauthorizedError("Invalid or expired token."));
 
 			return next(error);
 		}
 
 		const user = await userRepository.findOneBy({ id });
-
-		if (!user) throw new UnauthorizedError("User not authenticated.");
+		if (!user) throw new NotFoundError("User not found.");
 
 		const { password: _, ...loggedUser } = user;
 		req.user = {
