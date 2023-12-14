@@ -11,7 +11,10 @@ const TermsOfUse = () => {
 			/>
 			<h1 className="text-center text-4xl font-medium">Website Terms of Use</h1>
 
-			<p>Version 1.0 - October, 21st of 2023.</p>
+			<div>
+				<s>Version 1.0 - October, 21st of 2023.</s>
+				<p>(UPDATED) Version 1.1 - December, 14th of 2023.</p>
+			</div>
 
 			<ul
 				id="screen-reader-navigation"
@@ -138,14 +141,14 @@ const TermsOfUse = () => {
 				<h2 className="-mb-2 text-2xl">User Content</h2>
 
 				<p>
-					<strong>User Content.</strong> "User Content" means any and all
-					information and content that a user submits to the Site. You are
-					exclusively responsible for your User Content, that is (a) Photos you
-					post; (b) Comments you post; (c) Likes your give. You bear all risks
-					associated with use of your User Content. You hereby certify that your
-					User Content does not violate our Acceptable Use Policy. You may not
-					represent or imply to others that your User Content is in any way
-					provided, sponsored or endorsed by the developer, Barata Ribeiro.
+					<strong>User Content.</strong> &ldquot;User Content&rdquot; means any
+					and all information and content that a user submits to the Site. You
+					are exclusively responsible for your User Content, that is (a) Photos
+					you post; (b) Comments you post; (c) Likes your give. You bear all
+					risks associated with use of your User Content. You hereby certify
+					that your User Content does not violate our Acceptable Use Policy. You
+					may not represent or imply to others that your User Content is in any
+					way provided, sponsored or endorsed by the developer, Barata Ribeiro.
 					Because you alone are responsible for your User Content, you may
 					expose yourself to liability. The developer is not obliged to backup
 					any User Content that you post; also, your User Content may be deleted
@@ -166,16 +169,16 @@ const TermsOfUse = () => {
 
 				<p>
 					<strong>Acceptable Use Policy.</strong> The following terms constitute
-					our "Acceptable Use Policy": You agree not to use the Site to collect,
-					upload, transmit, display, or distribute any User Content (i) that
-					violates any third-party right or any intellectual property or
-					proprietary right; (ii) that is unlawful, harassing, abusive,
-					tortious, threatening, harmful, invasive of another's privacy, vulgar,
-					defamatory, false, intentionally misleading, trade libelous,
-					pornographic, obscene, patently offensive, promotes racism, bigotry,
-					hatred, or physical harm of any kind against any group or individual;
-					(iii) that is harmful to minors in any way; or (iv) that is in
-					violation of any law, regulation, or obligations or restrictions
+					our &ldquot;Acceptable Use Policy&rdquot;: You agree not to use the
+					Site to collect, upload, transmit, display, or distribute any User
+					Content (i) that violates any third-party right or any intellectual
+					property or proprietary right; (ii) that is unlawful, harassing,
+					abusive, tortious, threatening, harmful, invasive of another&apos;s
+					privacy, vulgar, defamatory, false, intentionally misleading, trade
+					libelous, pornographic, obscene, patently offensive, promotes racism,
+					bigotry, hatred, or physical harm of any kind against any group or
+					individual; (iii) that is harmful to minors in any way; or (iv) that
+					is in violation of any law, regulation, or obligations or restrictions
 					imposed by any third party.
 				</p>
 
@@ -191,10 +194,10 @@ const TermsOfUse = () => {
 					servers or networks connected to the Site, or violate the regulations,
 					policies or procedures of such networks; (v) attempt to gain
 					unauthorized access to the Site, whether through password mining or
-					any other means; (vi) harass or interfere with any other user's use
-					and enjoyment of the Site; or (vi) use software or automated agents or
-					scripts to produce multiple accounts on the Site, or to generate
-					automated searches, requests, or queries to the Site.
+					any other means; (vi) harass or interfere with any other user&apos;s
+					use and enjoyment of the Site; or (vi) use software or automated
+					agents or scripts to produce multiple accounts on the Site, or to
+					generate automated searches, requests, or queries to the Site.
 				</p>
 
 				<p>
@@ -211,23 +214,24 @@ const TermsOfUse = () => {
 					If you provide the developer with any feedback or suggestions
 					regarding the Site, you must do it so per the MIT license, and it is
 					entitled to reference of your work. All feedback must be provided
-					through the Site's repository on GitHub, on the 'Issues' page. There
-					are no guarantees that your feedback will be implemented.
+					through the Site&apos;s repository on GitHub, on the
+					&apos;Issues&apos; page. There are no guarantees that your feedback
+					will be implemented.
 				</p>
 
 				<p>
 					You agree to indemnify and hold the developer and its officers,
-					employees, and agents harmless, including costs and attorneys' fees,
-					from any claim or demand made by any third-party due to or arising out
-					of (a) your use of the Site, (b) your violation of these Terms, (c)
-					your violation of applicable laws or regulations or (d) your User
-					Content. The developer, Barata Ribeiro, reserves the right to assume
-					the exclusive defense and control of any matter for which you are
-					required to indemnify us, and you agree to cooperate with our defense
-					of these claims. You agree not to settle any matter without the prior
-					written consent of the developer. Barata Ribeiro, and its associates,
-					will use reasonable efforts to notify you of any such claim, action or
-					proceeding upon becoming aware of it.
+					employees, and agents harmless, including costs and attorneys&apos;
+					fees, from any claim or demand made by any third-party due to or
+					arising out of (a) your use of the Site, (b) your violation of these
+					Terms, (c) your violation of applicable laws or regulations or (d)
+					your User Content. The developer, Barata Ribeiro, reserves the right
+					to assume the exclusive defense and control of any matter for which
+					you are required to indemnify us, and you agree to cooperate with our
+					defense of these claims. You agree not to settle any matter without
+					the prior written consent of the developer. Barata Ribeiro, and its
+					associates, will use reasonable efforts to notify you of any such
+					claim, action or proceeding upon becoming aware of it.
 				</p>
 			</article>
 
@@ -245,8 +249,8 @@ const TermsOfUse = () => {
 					respect to Third-Party Links & Ads. You use all Third-Party Links &
 					Ads at your own risk, and should apply a suitable level of caution and
 					discretion in doing so. When you click on any of the Third-Party Links
-					& Ads, the applicable third party's terms and policies apply,
-					including the third party's privacy and data gathering practices.
+					& Ads, the applicable third party&apos;s terms and policies apply,
+					including the third party&apos;s privacy and data gathering practices.
 				</p>
 
 				<p>
@@ -267,21 +271,17 @@ const TermsOfUse = () => {
 					claim, controversy, demand, right, obligation, liability, action and
 					cause of action of every kind and nature, that has arisen or arises
 					directly or indirectly out of, or that relates directly or indirectly
-					to, the Site. If you are a California resident, you hereby waive
-					California civil code section 1542 in connection with the foregoing,
-					which states: "a general release does not extend to claims which the
-					creditor does not know or suspect to exist in his or her favor at the
-					time of executing the release, which if known by him or her must have
-					materially affected his or her settlement with the debtor."
+					to, the Site.
 				</p>
 
 				<p>
 					<strong>Cookies and Web Beacons.</strong> Like any other website,
-					Birdy uses 'cookies'. These cookies are used to store certain pieces
-					of information that can include the visitors' preferences and the
-					pages on the website that the visitor accessed or visited. As well as
-					specific credentials related to your User Account if you choose to
-					create one. The information is used for academic purposes only.
+					Birdy uses &apos;cookies&apos;. These cookies are used to store
+					certain pieces of information that can include the visitors&apos;
+					preferences and the pages on the website that the visitor accessed or
+					visited. As well as specific credentials related to your User Account
+					if you choose to create one. The information is used for academic
+					purposes only.
 				</p>
 			</article>
 
@@ -289,18 +289,19 @@ const TermsOfUse = () => {
 				<h2 className="-mb-2 text-2xl">Disclaimers</h2>
 
 				<p>
-					The site is provided on an "as-is" and "as available" basis, and the
-					developer and its associates expressly disclaim any and all warranties
-					and conditions of any kind, whether express, implied, or statutory,
-					including all warranties or conditions of merchantability, fitness for
-					a particular purpose, title, quiet enjoyment, accuracy, or
-					non-infringement. We and its associates make not guarantee that the
-					site will meet your requirements, will be available on an
-					uninterrupted, timely, secure, or error-free basis, or will be
-					accurate, reliable, free of viruses or other harmful code, complete,
-					legal, or safe. If applicable law requires any warranties with respect
-					to the site, all such warranties are limited in duration to ninety
-					(90) days from the date of first use.
+					The site is provided on an &ldquot;as-is&rdquot; and &ldquot;as
+					available&rdquot; basis, and the developer and its associates
+					expressly disclaim any and all warranties and conditions of any kind,
+					whether express, implied, or statutory, including all warranties or
+					conditions of merchantability, fitness for a particular purpose,
+					title, quiet enjoyment, accuracy, or non-infringement. We and its
+					associates make not guarantee that the site will meet your
+					requirements, will be available on an uninterrupted, timely, secure,
+					or error-free basis, or will be accurate, reliable, free of viruses or
+					other harmful code, complete, legal, or safe. If applicable law
+					requires any warranties with respect to the site, all such warranties
+					are limited in duration to ninety (90) days from the date of first
+					use.
 				</p>
 
 				<p>
@@ -308,6 +309,64 @@ const TermsOfUse = () => {
 					so the above exclusion may not apply to you. Some jurisdictions do not
 					allow limitations on how long an implied warranty lasts, so the above
 					limitation may not apply to you.
+				</p>
+
+				<p>
+					<strong>Third Party Photos.</strong> As &apos;Birdy&apos; is an
+					open-source project, created solely for educational purposes, we made
+					use of photographs freely distributed by{" "}
+					<a
+						href="https://unsplash.com/"
+						target="_blank"
+						rel="noreferrer noopener"
+					>
+						Unsplash
+					</a>
+					. Each photo here posted by the accounts named &apos;admin&apos;,
+					&apos;Gordon Freeman&apos;, and &apos;Jason Bourne&apos;, are stricly
+					using these images for demonstration purposes. The original
+					photographers, who distributed these photos under &apos;Unsplash&apos;
+					license, are to be fully credited for their work:{" "}
+					<a
+						href="https://unsplash.com/@axholmephotography"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Chris Smith
+					</a>
+					,{" "}
+					<a
+						href="https://unsplash.com/@kevinmueller"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Kevin Mueller
+					</a>
+					,{" "}
+					<a
+						href="https://unsplash.com/@markolsen"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Mark Olsen
+					</a>
+					,{" "}
+					<a
+						href="https://unsplash.com/@pratere"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Eli Prater
+					</a>
+					, and{" "}
+					<a
+						href="https://unsplash.com/@madibade"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Madiba.de
+					</a>
+					.
 				</p>
 			</article>
 
@@ -404,8 +463,9 @@ const TermsOfUse = () => {
 					Please note that, pursuant to 17 U.S.C. § 512(f), any
 					misrepresentation of material fact in a written notification
 					automatically subjects the complaining party to liability for any
-					damages, costs and attorney's fees incurred by us in connection with
-					the written notification and allegation of copyright infringement.
+					damages, costs and attorney&apos;s fees incurred by us in connection
+					with the written notification and allegation of copyright
+					infringement.
 				</p>
 			</article>
 
@@ -452,7 +512,7 @@ const TermsOfUse = () => {
 					Before either party may seek arbitration, the party must first send to
 					the other party a written Notice of Dispute describing the nature and
 					basis of the claim or dispute, and the requested relief. A Notice to
-					the the developer should be sent through the Site's contact form.
+					the the developer should be sent through the Site&apos;s contact form.
 					After the Notice is received, you and the the developer may attempt to
 					resolve the claim or dispute informally. If you and the the developer
 					do not resolve the claim or dispute within thirty (30) days after the
@@ -600,15 +660,14 @@ const TermsOfUse = () => {
 					<strong>Claims Not Subject to Arbitration.</strong> Notwithstanding
 					the foregoing, claims of defamation, violation of the Computer Fraud
 					and Abuse Act, and infringement or misappropriation of the other
-					party's patent, copyright, trademark or trade secrets shall not be
-					subject to this Arbitration Agreement.
+					party&apos;s patent, copyright, trademark or trade secrets shall not
+					be subject to this Arbitration Agreement.
 				</p>
 
 				<p>
 					In any circumstances where the foregoing Arbitration Agreement permits
 					the parties to litigate in court, the parties hereby agree to submit
-					to the personal jurisdiction of the courts located within br County,
-					California, for such purposes.
+					to the personal jurisdiction of the courts.
 				</p>
 
 				<p>
@@ -638,16 +697,17 @@ const TermsOfUse = () => {
 					failure to exercise or enforce any right or provision of these Terms
 					shall not operate as a waiver of such right or provision. The section
 					titles in these Terms are for convenience only and have no legal or
-					contractual effect. The word "including" means "including without
-					limitation". If any provision of these Terms is held to be invalid or
-					unenforceable, the other provisions of these Terms will be unimpaired
-					and the invalid or unenforceable provision will be deemed modified so
-					that it is valid and enforceable to the maximum extent permitted by
-					law. Your relationship to Company is that of an independent
-					contractor, and neither party is an agent or partner of the other.
-					These Terms, and your rights and obligations herein, may not be
-					assigned, subcontracted, delegated, or otherwise transferred by you
-					without Company's prior written consent, and any attempted assignment,
+					contractual effect. The word &ldquot;including&rdquot; means
+					&ldquot;including without limitation&rdquot;. If any provision of
+					these Terms is held to be invalid or unenforceable, the other
+					provisions of these Terms will be unimpaired and the invalid or
+					unenforceable provision will be deemed modified so that it is valid
+					and enforceable to the maximum extent permitted by law. Your
+					relationship to Company is that of an independent contractor, and
+					neither party is an agent or partner of the other. These Terms, and
+					your rights and obligations herein, may not be assigned,
+					subcontracted, delegated, or otherwise transferred by you without
+					Company&apos;s prior written consent, and any attempted assignment,
 					subcontract, delegation, or transfer in violation of the foregoing
 					will be null and void. Company may freely assign these Terms. The
 					terms and conditions set forth in these Terms shall be binding upon
