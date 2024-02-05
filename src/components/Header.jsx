@@ -3,7 +3,6 @@ import { FaSignOutAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 
-import Image from "../components/helpers/Image";
 import useMedia from "../hooks/useMedia";
 import { checkTokenExpiration } from "../store/slices/token.slice";
 import { userLogout } from "../store/slices/user.slice";
@@ -44,8 +43,8 @@ const Header = () => {
 						aria-label="Birdy Logo"
 					>
 						<Link to="/" className="block w-full">
-							<Image src="logo/logo.svg" className="dark:hidden" />
-							<Image src="logo/logo-dark.svg" className="hidden dark:block" />
+							<img src="/logo/logo.svg" className="dark:hidden" />
+							<img src="/logo/logo-dark.svg" className="hidden dark:block" />
 						</Link>
 					</div>
 
@@ -137,7 +136,7 @@ const Header = () => {
 											>
 												<img
 													src={data.avatarUrl}
-													className="dark:ring-green-sping-500 h-10 w-10 rounded-full p-1 ring-2 ring-green-spring-300 dark:ring-green-spring-500"
+													className="dark:ring-green-sping-500 size-10 rounded-full p-1 ring-2 ring-green-spring-300 dark:ring-green-spring-500"
 													alt=""
 												/>
 												{data.username}

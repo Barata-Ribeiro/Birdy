@@ -1,7 +1,7 @@
 import { FaGithub } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import Image from "../components/helpers/Image";
 import MainButton from "./shared/MainButton";
 
 const footerLinkes = {
@@ -11,14 +11,21 @@ const footerLinkes = {
 };
 
 const Footer = () => {
+	const { data } = useSelector((state) => state.user);
+
 	return (
 		<footer className="bg-green-spring-50 dark:bg-green-spring-950">
 			<div className="container mx-auto px-6 py-8">
 				<div className="flex flex-col items-center text-center">
 					<Link to="/">
-						<Image src="logo/logo.svg" className="h-10 w-auto dark:hidden" />
-						<Image
-							src="logo/logo-dark.svg"
+						<img
+							src="/logo/logo.svg"
+							alt="Site Logo"
+							className="h-10 w-auto dark:hidden"
+						/>
+						<img
+							src="/logo/logo-dark.svg"
+							alt="Site Logo"
 							className="hidden h-10 w-auto dark:block"
 						/>
 					</Link>
@@ -45,9 +52,11 @@ const Footer = () => {
 
 							<span className="mx-1">Repository</span>
 						</Link>
-						<MainButton to={"/sign/up"} customClasses={"px-5 py-2"}>
-							Sign Up
-						</MainButton>
+						{!data && (
+							<MainButton to={"/sign/up"} customClasses={"px-5 py-2"}>
+								Sign Up
+							</MainButton>
+						)}
 					</div>
 				</div>
 

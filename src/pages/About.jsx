@@ -1,5 +1,4 @@
 import Head from "../components/helpers/Head";
-import Image from "../components/helpers/Image";
 
 const About = () => {
 	return (
@@ -19,7 +18,7 @@ const About = () => {
 						to the exploration and appreciation of various bird species from
 						around the globe.
 					</p>
-					<Image
+					<img
 						src="https://source.unsplash.com/random/?bird"
 						alt="Random bird photograph from Unsplash, https://unsplash.com/"
 						className="mx-auto mb-4 h-96 w-full rounded-lg object-cover"
