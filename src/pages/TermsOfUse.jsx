@@ -358,13 +358,29 @@ const TermsOfUse = () => {
 					>
 						Eli Prater
 					</a>
-					, and{" "}
+					,{" "}
 					<a
 						href="https://unsplash.com/@madibade"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
 						Madiba.de
+					</a>
+					,{" "}
+					<a
+						href="https://unsplash.com/@patriceb"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Patrice Bouchard
+					</a>
+					, and{" "}
+					<a
+						href="https://unsplash.com/@andreasdress"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Andreas Rasmussen
 					</a>
 					.
 				</p>
