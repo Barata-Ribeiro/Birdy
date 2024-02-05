@@ -15,7 +15,7 @@ export class AuthController {
 			{
 				httpOnly: true,
 				secure: true,
-        sameSite: "none",
+        sameSite: "lax",
 				maxAge: 604800000,
 				expires: new Date(Date.now() + 604800000),
 			}

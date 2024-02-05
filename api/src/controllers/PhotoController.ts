@@ -60,7 +60,7 @@ export class PhotoController {
 			res.cookie("viewedPhotos", viewedPhotos, {
 				httpOnly: true,
 				secure: true,
-				sameSite: "none",
+				sameSite: "lax",
 				maxAge: 86400000,
 				expires: new Date(Date.now() + 86400000),
 			});

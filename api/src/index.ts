@@ -49,7 +49,7 @@ const startServer = async (): Promise<void> => {
 
 		// CORS Configuration
 		const corsOptions: cors.CorsOptions = {
-			origin: true,
+			origin: "*",
 			methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 			allowedHeaders: [
 				"Accept",
