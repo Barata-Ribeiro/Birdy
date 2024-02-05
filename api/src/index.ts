@@ -49,7 +49,7 @@ const startServer = async (): Promise<void> => {
 
 		// CORS Configuration
 		const corsOptions: cors.CorsOptions = {
-			origin: "*",
+			origin: true,
 			methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 			allowedHeaders: [
 				"Accept",
@@ -70,7 +70,7 @@ const startServer = async (): Promise<void> => {
 				"X-Requested-With",
 			],
 			credentials: true,
-			preflightContinue: true,
+			preflightContinue: false,
 			maxAge: 600,
 		};
 		app.options("*", cors(corsOptions));

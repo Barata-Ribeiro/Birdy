@@ -150,8 +150,10 @@ export class AuthServices {
 		};
 
 		const token = jwt.sign(payload, secretKey, { expiresIn: "15m" });
+		const frontEndOrigin =
+			process.env.FRONTEND_ORIGIN || "https://localhost:5173/";
 
-		const recoverLink = `${process.env.FRONTEND_ORIGIN}/sign/password-reset/${existingUserByEmail.id}/${token}`;
+		const recoverLink = `${frontEndOrigin}/sign/password-reset/${existingUserByEmail.id}/${token}`;
 
 		const emailMessage = `Hello🖖, there, ${existingUserByEmail.username}!\n\n
 
