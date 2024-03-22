@@ -1,7 +1,7 @@
-import "reflect-metadata";
-import { DataSource, DataSourceOptions } from "typeorm";
-import { SeederOptions } from "typeorm-extension";
-import path = require("path");
+import "reflect-metadata"
+import { DataSource, DataSourceOptions } from "typeorm"
+import { SeederOptions } from "typeorm-extension"
+import path = require("path")
 
 const dataSourceOptions: DataSourceOptions & SeederOptions = {
     type: "postgres",
@@ -16,18 +16,18 @@ const dataSourceOptions: DataSourceOptions & SeederOptions = {
     extra: {
         max: 100,
         iddleTimeoutMillis: 5000,
-        connectionTimeoutMillis: 5000,
+        connectionTimeoutMillis: 5000
     },
     dropSchema: process.env.NODE_ENV === "test",
     entities: [
         path.join(__dirname, "..", "entity", "**", "*.{ts,js}"),
-        path.join(__dirname, "..", "entity", "*.{ts,js}"),
+        path.join(__dirname, "..", "entity", "*.{ts,js}")
     ],
     migrations: [
-        path.join(__dirname, "..", "database", "migrations", "*.{ts,js}"),
+        path.join(__dirname, "..", "database", "migrations", "*.{ts,js}")
     ],
     subscribers: [
-        path.join(__dirname, "..", "database", "subscribers", "*.{ts,js}"),
+        path.join(__dirname, "..", "database", "subscribers", "*.{ts,js}")
     ],
     cache: {
         type: "ioredis",
@@ -35,9 +35,9 @@ const dataSourceOptions: DataSourceOptions & SeederOptions = {
         options: {
             host: process.env.REDIS_HOST || "localhost",
             password: process.env.REDIS_PASSWORD || "<PASSWORD>",
-            port: process.env.REDIS_HOST_PORT || 6379,
-        },
-    },
-};
+            port: process.env.REDIS_HOST_PORT || 6379
+        }
+    }
+}
 
-export const AppDataSource = new DataSource(dataSourceOptions);
+export const AppDataSource = new DataSource(dataSourceOptions)
