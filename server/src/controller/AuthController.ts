@@ -1,5 +1,8 @@
 import type { Request, Response } from "express"
-import { AuthUserRegisterBody } from "../interface/AuthInterfaces"
+import {
+    AuthUserLoginBody,
+    AuthUserRegisterBody
+} from "../interface/AuthInterfaces"
 import { BadRequestError } from "../middleware/helpers/ApiErrors"
 import { AuthService } from "../service/AuthService"
 
@@ -26,7 +29,21 @@ export class AuthController {
         })
     }
 
-    async login(req: Request, res: Response) {}
+    async login(req: Request, res: Response) {
+        const requestingBody = req.body as AuthUserLoginBody
+        if (!requestingBody)
+            throw new BadRequestError(
+                "You must provide your credentials to login."
+            )
+
+        const response = await this.authService.login(requestingBody)
+
+        return res.status(200).json({
+            status: "success",
+            message: "You have successfully logged in.",
+            data: response
+        })
+    }
 
     async refreshToken(req: Request, res: Response) {}
 

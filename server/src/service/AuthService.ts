@@ -1,7 +1,17 @@
 import bcrypt from "bcrypt"
+import { sign } from "jsonwebtoken"
 import { AuthRegisterResponseDTO } from "../dto/AuthRegisterResponseDTO"
-import { AuthUserRegisterBody } from "../interface/AuthInterfaces"
-import { BadRequestError, ConflictError } from "../middleware/helpers/ApiErrors"
+import {
+    AuthLoginServiceResponse,
+    AuthUserLoginBody,
+    AuthUserRegisterBody
+} from "../interface/AuthInterfaces"
+import {
+    BadRequestError,
+    ConflictError,
+    NotFoundError,
+    UnauthorizedError
+} from "../middleware/helpers/ApiErrors"
 import { saveEntityToDatabase } from "../utils/operation-functions"
 import {
     isEmailValid,
@@ -50,5 +60,36 @@ export class AuthService {
         const savedNewUser = await saveEntityToDatabase(userRepository, newUser)
 
         return AuthRegisterResponseDTO.fromEntity(savedNewUser)
+    }
+
+    async login(body: AuthUserLoginBody): Promise<AuthLoginServiceResponse> {
+        const { username, password, remember_me } = body
+        if (!username || !password)
+            throw new BadRequestError(
+                "You must provide your username and password to login."
+            )
+
+        const user = await userRepository.findOneBy({ username })
+        if (!user) throw new NotFoundError("User not found.")
+
+        const passwordMatch = await bcrypt.compare(password, user.password)
+        if (!passwordMatch)
+            throw new UnauthorizedError("Your password is incorrect.")
+
+        const secretKey = process.env.JWT_SECRET_KEY
+        if (!secretKey)
+            throw new NotFoundError(
+                "The server is missing its JWT secret key. You should report this issue to the administrator."
+            )
+
+        const access_token = sign({ id: user.id }, secretKey, {
+            expiresIn: "15m"
+        })
+
+        const refresh_token = sign({ id: user.id }, secretKey, {
+            expiresIn: remember_me ? "30d" : "1d"
+        })
+
+        return { access_token, refresh_token }
     }
 }

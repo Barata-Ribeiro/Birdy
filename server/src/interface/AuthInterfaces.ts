@@ -4,3 +4,14 @@ export interface AuthUserRegisterBody {
     password: string
     email: string
 }
+
+export interface AuthUserLoginBody {
+    username: string
+    password: string
+    remember_me: boolean
+}
+
+export interface AuthLoginServiceResponse {
+    access_token: string
+    refresh_token: string
+}
