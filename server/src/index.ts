@@ -14,7 +14,12 @@ import path from "path"
 import favicon from "serve-favicon"
 
 // Other Imports
+import errorMiddleware from "./middleware/ErrorMiddleware"
 import { corsOptions, sessionOptions } from "./utils/server-options"
+
+// Route Imports
+import authRoutes from "./v1/router/AuthRoutes"
+import usersRoutes from "./v1/router/UserRoutes"
 
 // Database Import
 import { AppDataSource } from "./database/data-source"
@@ -32,16 +37,16 @@ const startServer = async () => {
         let app = express()
         const PORT = process.env.PORT || 3000
         let ENV = process.env.NODE_ENV || "development"
-
-        // Express App Middlewares
         app.set("port", PORT)
         app.set("trust proxy", 1)
+
+        // Express App Middlewares
         app.use(cors(corsOptions))
         app.use(favicon(path.join(__dirname, "..", "public", "favicon.ico")))
         app.use(logger("dev"))
         app.use(methodOverride())
-        app.use(session(sessionOptions))
         app.use(cookieParser())
+        app.use(session(sessionOptions))
         app.use(helmet({ crossOriginResourcePolicy: false }))
         app.use(helmet.noSniff())
         app.use(helmet.xssFilter())
@@ -53,9 +58,10 @@ const startServer = async () => {
         app.use(express.static(path.join(__dirname, "public")))
 
         // Routes
-        app.get("/", (req, res) => {
-            res.send("Hello World!")
-        })
+        app.use("/api/v1/auth", authRoutes)
+        app.use("/api/v1/users", usersRoutes)
+
+        app.use(errorMiddleware)
 
         if (app.get("env") === "development") app.use(errorHandler())
 
