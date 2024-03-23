@@ -66,7 +66,7 @@ export class AuthController {
                 "You must provide an email to reset password."
             )
 
-        const response = await this.authService.forgotPassword(email)
+        await this.authService.forgotPassword(email)
 
         return res.status(200).json({
             status: "success",
@@ -74,5 +74,25 @@ export class AuthController {
         })
     }
 
-    async resetPassword(req: Request, res: Response) {}
+    async resetPassword(req: Request, res: Response) {
+        const { userId, token } = req.params as {
+            userId: string
+            token: string
+        }
+        if (!userId || !token)
+            throw new BadRequestError(
+                "You must provide a user ID and token to reset password."
+            )
+
+        const { password } = req.body as { password: string }
+        if (!password)
+            throw new BadRequestError("You must provide a new password.")
+
+        await this.authService.resetPassword(userId, token, password)
+
+        return res.status(200).json({
+            status: "success",
+            message: "Your password has been reset successfully."
+        })
+    }
 }

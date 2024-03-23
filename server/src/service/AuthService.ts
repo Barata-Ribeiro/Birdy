@@ -21,6 +21,7 @@ import {
 import {
     isEmailValid,
     isPasswordStrong,
+    isUUIDValid,
     isUsernameValid
 } from "../utils/validity-functions"
 import { userRepository } from "./../repository/UserRepository"
@@ -207,6 +208,44 @@ export class AuthService {
                 "There was an error sending the email for password reset. Please, try again later."
             )
         }
+    }
+
+    async resetPassword(
+        userId: string,
+        token: string,
+        password: string
+    ): Promise<void> {
+        if (!isUUIDValid(userId)) throw new BadRequestError("Invalid user ID.")
+
+        const user = await userRepository
+            .createQueryBuilder("user")
+            .where("user.id = :userId", { userId })
+            .select(["user.id", "user.password"])
+            .getOne()
+        if (!user) throw new NotFoundError("User not found.")
+
+        const secretKey = process.env.JWT_SECRET_KEY
+        if (!secretKey)
+            throw new NotFoundError(
+                "The server is missing its JWT secret key. You should report this issue to the administrator."
+            )
+
+        const signKey = secretKey + user.password
+
+        const idFromToken = attemptToGetUserIdFromToken(token, signKey)
+        if (idFromToken !== userId)
+            throw new UnauthorizedError("Invalid or expired token.")
+
+        if (!isPasswordStrong(password))
+            throw new BadRequestError(
+                "Your password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number and one special character."
+            )
+
+        const hashedPassword = await bcrypt.hash(password, 10)
+
+        user.password = hashedPassword
+
+        await saveEntityToDatabase(userRepository, user)
     }
 
     private async sendMail(options: SendMailOptions): Promise<void> {
