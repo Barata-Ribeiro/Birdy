@@ -59,7 +59,20 @@ export class AuthController {
         })
     }
 
-    async forgotPassword(req: Request, res: Response) {}
+    async forgotPassword(req: Request, res: Response) {
+        const { email } = req.body
+        if (!email)
+            throw new BadRequestError(
+                "You must provide an email to reset password."
+            )
+
+        const response = await this.authService.forgotPassword(email)
+
+        return res.status(200).json({
+            status: "success",
+            message: "A reset password link has been sent to your email."
+        })
+    }
 
     async resetPassword(req: Request, res: Response) {}
 }
