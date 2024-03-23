@@ -12,7 +12,10 @@ import {
     NotFoundError,
     UnauthorizedError
 } from "../middleware/helpers/ApiErrors"
-import { saveEntityToDatabase } from "../utils/operation-functions"
+import {
+    attemptToGetUserIdFromToken,
+    saveEntityToDatabase
+} from "../utils/operation-functions"
 import {
     isEmailValid,
     isPasswordStrong,
@@ -91,5 +94,23 @@ export class AuthService {
         })
 
         return { access_token, refresh_token }
+    }
+
+    async refreshToken(refreshToken: string): Promise<string> {
+        const secretKey = process.env.JWT_SECRET_KEY
+        if (!secretKey)
+            throw new NotFoundError(
+                "The server is missing its JWT secret key. You should report this issue to the administrator."
+            )
+
+        let id: string
+        id = attemptToGetUserIdFromToken(refreshToken, secretKey)
+
+        const checkIfUserExists = await userRepository.existsBy({ id })
+        if (!checkIfUserExists) throw new NotFoundError("User not found.")
+
+        const newAccessToken = sign({ id }, secretKey, { expiresIn: "15m" })
+
+        return newAccessToken
     }
 }

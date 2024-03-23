@@ -45,7 +45,19 @@ export class AuthController {
         })
     }
 
-    async refreshToken(req: Request, res: Response) {}
+    async refreshToken(req: Request, res: Response) {
+        const refreshToken = req.headers["x-refresh-token"] as string
+        if (!refreshToken)
+            throw new BadRequestError("You must provide a refresh token.")
+
+        const response = await this.authService.refreshToken(refreshToken)
+
+        return res.status(200).json({
+            status: "success",
+            message: "Token refreshed successfully.",
+            data: { access_token: response }
+        })
+    }
 
     async forgotPassword(req: Request, res: Response) {}
 
