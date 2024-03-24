@@ -12,7 +12,17 @@ export class UserController {
     }
 
     public async getAllUsers(_req: Request, res: Response) {
-        const users = await userRepository.find()
+        const users = await userRepository.find({
+            select: [
+                "id",
+                "username",
+                "display_name",
+                "avatar_url",
+                "createdAt"
+            ],
+            order: { createdAt: "DESC" },
+            cache: true
+        })
         const response = users.map((user) =>
             SimpleUserResponseDTO.fromEntity(user)
         )
