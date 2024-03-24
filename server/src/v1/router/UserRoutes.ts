@@ -13,10 +13,16 @@ routes.get("/profile/:username", (req, res, next) =>
     userController.getUserProfile(req, res).catch(next)
 )
 
-routes.get("/me/:userId", authMiddleware, (req, res, next) => {})
+routes.get("/me/:userId", authMiddleware, (req, res, next) =>
+    userController.getPrivateProfile(req, res).catch(next)
+)
 
-routes.put("/:userId", authMiddleware, (req, res, next) => {})
+routes.put("/me/:userId", authMiddleware, (req, res, next) =>
+    userController.updatePrivateProfile(req, res).catch(next)
+)
 
-routes.delete("/:userId", authMiddleware, (req, res, next) => {})
+routes.delete("/me/:userId", authMiddleware, (req, res, next) =>
+    userController.deletePrivateProfile(req, res).catch(next)
+)
 
 export default routes

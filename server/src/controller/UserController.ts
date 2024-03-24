@@ -1,5 +1,6 @@
 import type { Request, Response } from "express"
 import { SimpleUserResponseDTO } from "../dto/SimpleUserResponseDTO"
+import { UserEditProfileBody } from "../interface/UserInterface"
 import { BadRequestError } from "../middleware/helpers/ApiErrors"
 import { userRepository } from "../repository/UserRepository"
 import { UserService } from "../service/UserService"
@@ -48,13 +49,7 @@ export class UserController {
     }
 
     public async getPrivateProfile(req: Request, res: Response) {
-        const { userId } = req.params
-        if (!userId) throw new BadRequestError("User ID is required.")
-
-        if (req.user.data?.id !== userId)
-            throw new BadRequestError(
-                "You are not authorized to view this profile."
-            )
+        const userId = this.validateUserIdAndOwnership(req)
 
         const response = await this.userService.getPrivateProfile(userId)
 
@@ -63,5 +58,49 @@ export class UserController {
             message: "Your profile fetched successfully.",
             data: response
         })
+    }
+
+    public async updatePrivateProfile(req: Request, res: Response) {
+        const userId = this.validateUserIdAndOwnership(req)
+
+        const requestingBody = req.body as UserEditProfileBody
+        if (!requestingBody)
+            throw new BadRequestError(
+                "You must provide data to update your profile."
+            )
+
+        const response = await this.userService.updatePrivateProfile(
+            userId,
+            req.body
+        )
+
+        return res.status(200).json({
+            status: "success",
+            message: "Your profile updated successfully.",
+            data: response
+        })
+    }
+
+    public async deletePrivateProfile(req: Request, res: Response) {
+        const userId = this.validateUserIdAndOwnership(req)
+
+        // TODO...
+
+        return res.status(204).json({
+            status: "success",
+            message: "Your profile has been deleted successfully."
+        })
+    }
+
+    private validateUserIdAndOwnership(req: Request) {
+        const { userId } = req.params
+        if (!userId) throw new BadRequestError("User ID is required.")
+
+        if (req.user.data?.id !== userId)
+            throw new BadRequestError(
+                "You are not authorized to delete this profile."
+            )
+
+        return userId
     }
 }
