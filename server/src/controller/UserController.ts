@@ -18,8 +18,11 @@ export class UserController {
                 "id",
                 "username",
                 "display_name",
+                "email",
+                "role",
                 "avatar_url",
-                "createdAt"
+                "createdAt",
+                "updatedAt"
             ],
             order: { createdAt: "DESC" },
             cache: true

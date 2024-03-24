@@ -7,6 +7,7 @@ export class SimpleUserResponseDTO {
     display_name: string
     email: string
     role: UserRole
+    avatar_url?: string
     createdAt: Date
     updatedAt: Date
 
@@ -18,6 +19,7 @@ export class SimpleUserResponseDTO {
         dto.display_name = user.display_name
         dto.email = user.email
         dto.role = user.role
+        dto.avatar_url = user.avatar_url || undefined
         dto.createdAt = user.createdAt
         dto.updatedAt = user.updatedAt
 
