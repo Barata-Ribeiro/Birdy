@@ -82,6 +82,20 @@ export default class FollowsController {
         })
     }
 
+    async unfollowUser(req: Request, res: Response) {
+        const userId = this.validateUserIdAndOwnership(req)
+        const { followId } = req.body as { followId: string }
+        if (!followId)
+            throw new BadRequestError("You must provide a user ID to unfollow.")
+
+        await this.followService.unfollowUser(userId, followId)
+
+        return res.status(200).json({
+            status: "success",
+            message: "You have unfollowed this user."
+        })
+    }
+
     private validateUserIdAndOwnership(req: Request) {
         const { userId } = req.params
         if (!userId) throw new BadRequestError("User ID is required.")

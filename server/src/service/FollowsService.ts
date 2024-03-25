@@ -1,4 +1,8 @@
-import { BadRequestError } from "../middleware/helpers/ApiErrors"
+import { AppDataSource } from "../database/data-source"
+import {
+    BadRequestError,
+    InternalServerError
+} from "../middleware/helpers/ApiErrors"
 import { followsRepository } from "../repository/FollowsRepository"
 import { saveEntityToDatabase } from "../utils/operation-functions"
 import { isUUIDValid } from "../utils/validity-functions"
@@ -109,5 +113,35 @@ export default class FollowsService {
         })
 
         await saveEntityToDatabase(followsRepository, newFollow)
+    }
+
+    async unfollowUser(userId: string, followId: string) {
+        if (userId === followId)
+            throw new BadRequestError("You cannot unfollow yourself.")
+        if (!isUUIDValid(followId))
+            throw new BadRequestError("Invalid user ID.")
+
+        await AppDataSource.manager.transaction(
+            async (transactionalEntityManager) => {
+                try {
+                    const followToDelete = await followsRepository.findOne({
+                        where: {
+                            follower: { id: userId },
+                            following: { id: followId }
+                        },
+                        relations: ["follower", "following"]
+                    })
+                    if (!followToDelete)
+                        throw new BadRequestError(
+                            "You are not following this user."
+                        )
+
+                    await transactionalEntityManager.remove(followToDelete)
+                } catch (error) {
+                    console.error("Transaction failed:", error)
+                    throw new InternalServerError("Failed to unfollow user.")
+                }
+            }
+        )
     }
 }
