@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt"
+import { AppDataSource } from "../database/data-source"
 import { EditUserResponseDTO } from "../dto/EditUserResponseDTO"
 import { PrivateProfileResponseDTO } from "../dto/PrivateProfileResponseDTO"
 import { PublicProfileResponseDTO } from "../dto/PublicProfileResponseDTO"
@@ -7,13 +8,17 @@ import { Photo } from "../entity/Photo"
 import { UserFollow } from "../entity/UserFollow"
 import { UserLike } from "../entity/UserLike"
 import { UserEditProfileBody } from "../interface/UserInterface"
-import { BadRequestError, NotFoundError } from "../middleware/helpers/ApiErrors"
+import {
+    BadRequestError,
+    InternalServerError,
+    NotFoundError
+} from "../middleware/helpers/ApiErrors"
 import { userRepository } from "../repository/UserRepository"
 import { saveEntityToDatabase } from "../utils/operation-functions"
 import { isPasswordStrong, isUsernameValid } from "../utils/validity-functions"
 
-export class UserService {
-    async getUserProfile(username: string) {
+export default class UserService {
+    async getUserProfile(username: string): Promise<PublicProfileResponseDTO> {
         const user = await userRepository
             .createQueryBuilder("user")
             .select([
@@ -65,7 +70,9 @@ export class UserService {
         return PublicProfileResponseDTO.fromRaw(user)
     }
 
-    async getPrivateProfile(userId: string) {
+    async getPrivateProfile(
+        userId: string
+    ): Promise<PrivateProfileResponseDTO> {
         const user = await userRepository
             .createQueryBuilder("user")
             .select([
@@ -144,7 +151,10 @@ export class UserService {
         return PrivateProfileResponseDTO.fromRaw(user)
     }
 
-    async updatePrivateProfile(userId: string, body: UserEditProfileBody) {
+    async updatePrivateProfile(
+        userId: string,
+        body: UserEditProfileBody
+    ): Promise<EditUserResponseDTO> {
         if (!body.password)
             throw new BadRequestError("You must provide your current password.")
 
@@ -229,5 +239,26 @@ export class UserService {
         const savedUser = await saveEntityToDatabase(userRepository, user)
 
         return EditUserResponseDTO.fromEntity(savedUser)
+    }
+
+    async deletePrivateProfile(userId: string): Promise<void> {
+        await AppDataSource.manager.transaction(
+            async (transactionalEntityManager) => {
+                try {
+                    const userToDelete = await userRepository.findOneBy({
+                        id: userId
+                    })
+                    if (!userToDelete)
+                        throw new NotFoundError("User not found.")
+
+                    await transactionalEntityManager.remove(userToDelete)
+                } catch (error) {
+                    console.error("Transaction failed:", error)
+                    throw new InternalServerError(
+                        "An error occurred during the deletion process."
+                    )
+                }
+            }
+        )
     }
 }

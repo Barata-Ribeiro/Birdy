@@ -3,9 +3,10 @@ import { SimpleUserResponseDTO } from "../dto/SimpleUserResponseDTO"
 import { UserEditProfileBody } from "../interface/UserInterface"
 import { BadRequestError } from "../middleware/helpers/ApiErrors"
 import { userRepository } from "../repository/UserRepository"
-import { UserService } from "../service/UserService"
+import UserService from "../service/UserService"
+import { isUUIDValid } from "../utils/validity-functions"
 
-export class UserController {
+export default class UserController {
     private userService: UserService
 
     constructor() {
@@ -87,7 +88,7 @@ export class UserController {
     public async deletePrivateProfile(req: Request, res: Response) {
         const userId = this.validateUserIdAndOwnership(req)
 
-        // TODO...
+        await this.userService.deletePrivateProfile(userId)
 
         return res.status(204).json({
             status: "success",
@@ -98,6 +99,8 @@ export class UserController {
     private validateUserIdAndOwnership(req: Request) {
         const { userId } = req.params
         if (!userId) throw new BadRequestError("User ID is required.")
+
+        if (!isUUIDValid(userId)) throw new BadRequestError("Invalid user ID.")
 
         if (req.user.data?.id !== userId)
             throw new BadRequestError(
