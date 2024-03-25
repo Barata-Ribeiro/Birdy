@@ -26,7 +26,7 @@ import {
 } from "../utils/validity-functions"
 import { userRepository } from "./../repository/UserRepository"
 
-export class AuthService {
+export default class AuthService {
     async register(
         body: AuthUserRegisterBody
     ): Promise<AuthRegisterResponseDTO> {

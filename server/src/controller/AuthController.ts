@@ -4,9 +4,9 @@ import {
     AuthUserRegisterBody
 } from "../interface/AuthInterfaces"
 import { BadRequestError } from "../middleware/helpers/ApiErrors"
-import { AuthService } from "../service/AuthService"
+import AuthService from "../service/AuthService"
 
-export class AuthController {
+export default class AuthController {
     private authService: AuthService
 
     constructor() {
