@@ -1,6 +1,7 @@
 import type { Request, Response } from "express"
 import { BadRequestError } from "../middleware/helpers/ApiErrors"
 import FollowsService from "../service/FollowsService"
+import { isUUIDValid } from "../utils/validity-functions"
 
 export default class FollowsController {
     private followService: FollowsService
@@ -65,5 +66,33 @@ export default class FollowsController {
             next: nextPage,
             prev: prevPage
         })
+    }
+
+    async followUser(req: Request, res: Response) {
+        const userId = this.validateUserIdAndOwnership(req)
+        const { followId } = req.body as { followId: string }
+        if (!followId)
+            throw new BadRequestError("You must provide a user ID to follow.")
+
+        await this.followService.followUser(userId, followId)
+
+        return res.status(201).json({
+            status: "success",
+            message: "You are now following this user."
+        })
+    }
+
+    private validateUserIdAndOwnership(req: Request) {
+        const { userId } = req.params
+        if (!userId) throw new BadRequestError("User ID is required.")
+
+        if (!isUUIDValid(userId)) throw new BadRequestError("Invalid user ID.")
+
+        if (req.user.data?.id !== userId)
+            throw new BadRequestError(
+                "You are not authorized to delete this profile."
+            )
+
+        return userId
     }
 }

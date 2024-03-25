@@ -1,5 +1,7 @@
 import { BadRequestError } from "../middleware/helpers/ApiErrors"
 import { followsRepository } from "../repository/FollowsRepository"
+import { saveEntityToDatabase } from "../utils/operation-functions"
+import { isUUIDValid } from "../utils/validity-functions"
 
 export default class FollowsService {
     async getAllUserFollows(
@@ -85,5 +87,27 @@ export default class FollowsService {
             currentPage: +page,
             hasNextPage
         }
+    }
+
+    async followUser(userId: string, followId: string) {
+        if (userId === followId)
+            throw new BadRequestError("You cannot follow yourself.")
+
+        if (!isUUIDValid(followId))
+            throw new BadRequestError("Invalid user ID.")
+
+        const checkIfAlreadyFollowing = await followsRepository.exists({
+            where: { follower: { id: userId }, following: { id: followId } },
+            relations: ["follower", "following"]
+        })
+        if (checkIfAlreadyFollowing)
+            throw new BadRequestError("You are already following this user.")
+
+        const newFollow = await followsRepository.create({
+            follower: { id: userId },
+            following: { id: followId }
+        })
+
+        await saveEntityToDatabase(followsRepository, newFollow)
     }
 }
