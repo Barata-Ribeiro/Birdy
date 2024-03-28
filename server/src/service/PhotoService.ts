@@ -1,8 +1,15 @@
 import { FeedResponseDTO } from "../dto/FeedResponseDTO"
+import { PhotoResponseDTO } from "../dto/PhotoResponseDTO"
+import { NotFoundError } from "../middleware/helpers/ApiErrors"
 import { photoRepository } from "../repository/PhotoRepository"
+import { saveEntityToDatabase } from "../utils/operation-functions"
 
 export class PhotoService {
-    async getFeedPhotos(perPage: string, page: string, userId: string) {
+    async getFeedPhotos(
+        perPage: string,
+        page: string,
+        userId: string
+    ): Promise<FeedResponseDTO[]> {
         let realPage: number
         let realTake: number
 
@@ -44,5 +51,24 @@ export class PhotoService {
         if (total === 0) return []
 
         return photos.map((photo) => FeedResponseDTO.fromEntity(photo))
+    }
+
+    async getPhoto(photoId: string): Promise<PhotoResponseDTO> {
+        const photo = await photoRepository.findOne({
+            where: { id: photoId },
+            relations: [
+                "author",
+                "comments",
+                "comments.photo",
+                "likes",
+                "likes.photo"
+            ]
+        })
+        if (!photo) throw new NotFoundError("Photo not found.")
+
+        photo.meta.total_likes = (photo.meta.total_likes || 0) + 1
+        await saveEntityToDatabase(photoRepository, photo)
+
+        return PhotoResponseDTO.fromEntity(photo)
     }
 }

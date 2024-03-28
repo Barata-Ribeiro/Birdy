@@ -1,6 +1,7 @@
 import type { Request, Response } from "express"
 import { BadRequestError } from "../middleware/helpers/ApiErrors"
 import { PhotoService } from "../service/PhotoService"
+import { isUUIDValid } from "../utils/validity-functions"
 
 export class PhotoController {
     private photoService: PhotoService
@@ -41,7 +42,21 @@ export class PhotoController {
         })
     }
 
-    async getPhoto(req: Request, res: Response) {}
+    async getPhoto(req: Request, res: Response) {
+        const { photoId } = req.params
+        if (!photoId)
+            throw new BadRequestError("The photo ID parameter is required.")
+        if (!isUUIDValid(photoId))
+            throw new BadRequestError("Invalid photo ID.")
+
+        const response = await this.photoService.getPhoto(photoId)
+
+        return res.status(200).json({
+            status: "success",
+            message: "Photo retrieved successfully.",
+            data: response
+        })
+    }
 
     async uploadNewPhoto(req: Request, res: Response) {}
 
