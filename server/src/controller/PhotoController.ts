@@ -80,5 +80,19 @@ export class PhotoController {
         })
     }
 
-    async deletePhoto(req: Request, res: Response) {}
+    async deletePhoto(req: Request, res: Response) {
+        const { user } = req
+        const { photoId } = req.params
+
+        if (!user.data) throw new UnauthorizedError("User not authenticated.")
+        if (!photoId)
+            throw new BadRequestError("The photo ID parameter is required.")
+
+        await this.photoService.deletePhoto(user.data, photoId)
+
+        return res.status(204).json({
+            status: "success",
+            message: "Photo deleted successfully."
+        })
+    }
 }

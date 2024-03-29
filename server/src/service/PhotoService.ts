@@ -1,13 +1,19 @@
 import { v2 as cloudinary } from "cloudinary"
 import streamifier from "streamifier"
+import { AppDataSource } from "../database/data-source"
 import { FeedResponseDTO } from "../dto/FeedResponseDTO"
 import { PhotoResponseDTO } from "../dto/PhotoResponseDTO"
 import { User } from "../entity/User"
 import { PhotoUploadBody } from "../interface/PhotoInterfaces"
-import { BadRequestError, NotFoundError } from "../middleware/helpers/ApiErrors"
+import {
+    BadRequestError,
+    InternalServerError,
+    NotFoundError
+} from "../middleware/helpers/ApiErrors"
 import { photoRepository } from "../repository/PhotoRepository"
 import { userRepository } from "../repository/UserRepository"
 import { saveEntityToDatabase } from "../utils/operation-functions"
+import { isUUIDValid } from "../utils/validity-functions"
 
 export class PhotoService {
     async getFeedPhotos(
@@ -124,6 +130,45 @@ export class PhotoService {
         await saveEntityToDatabase(photoRepository, newPhoto)
     }
 
+    async deletePhoto(user: Partial<User>, photoId: string) {
+        await AppDataSource.manager.transaction(
+            async (transactionalEntityManager) => {
+                try {
+                    const checkUser = await userRepository.existsBy({
+                        id: user.id,
+                        username: user.username
+                    })
+                    if (!checkUser) throw new NotFoundError("User not found.")
+
+                    if (!isUUIDValid(photoId))
+                        throw new BadRequestError("Invalid photo ID.")
+
+                    const photoToDelete = await photoRepository.findOne({
+                        where: { id: photoId, author: { id: user.id } },
+                        relations: ["author"]
+                    })
+                    if (!photoToDelete)
+                        throw new NotFoundError("Photo not found.")
+
+                    const publicId = this.extractPublicId(
+                        photoToDelete.image_url
+                    )
+                    if (!publicId)
+                        throw new InternalServerError("Invalid image.")
+
+                    await this.deletePhotoFromCloudinary(publicId)
+
+                    await transactionalEntityManager.remove(photoToDelete)
+                } catch (error) {
+                    console.error("Transaction failed:", error)
+                    throw new InternalServerError(
+                        "An error occurred during the deletion process."
+                    )
+                }
+            }
+        )
+    }
+
     private async uploadPhotoToCloudinary(
         file: Express.Multer.File
     ): Promise<string> {
@@ -158,5 +203,33 @@ export class PhotoService {
             )
             streamifier.createReadStream(file.buffer).pipe(stream)
         })
+    }
+
+    private async deletePhotoFromCloudinary(publicId: string) {
+        cloudinary.config({
+            cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+            api_key: process.env.CLOUDINARY_API_KEY,
+            api_secret: process.env.CLOUDINARY_API_SECRET
+        })
+
+        return new Promise((resolve, reject) => {
+            void cloudinary.uploader.destroy(
+                publicId,
+                (error: unknown, result?: { result?: string }) => {
+                    if (result) resolve(result)
+                    else reject(error)
+                }
+            )
+        })
+    }
+
+    private extractPublicId(imageUrl: string) {
+        const parts = imageUrl.split("/")
+        const fileName = parts.pop()
+        const folderName = parts.pop()
+
+        return folderName && fileName
+            ? `${folderName}/${fileName.split(".")[0]}`
+            : undefined
     }
 }
