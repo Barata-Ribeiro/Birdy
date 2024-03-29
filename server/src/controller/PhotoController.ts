@@ -1,5 +1,9 @@
 import type { Request, Response } from "express"
-import { BadRequestError } from "../middleware/helpers/ApiErrors"
+import type { PhotoUploadBody } from "../interface/PhotoInterfaces"
+import {
+    BadRequestError,
+    UnauthorizedError
+} from "../middleware/helpers/ApiErrors"
 import { PhotoService } from "../service/PhotoService"
 import { isUUIDValid } from "../utils/validity-functions"
 
@@ -58,7 +62,23 @@ export class PhotoController {
         })
     }
 
-    async uploadNewPhoto(req: Request, res: Response) {}
+    async uploadNewPhoto(req: Request, res: Response) {
+        const { user } = req
+        const { file } = req as { file: Express.Multer.File }
+        const requestingBody = req.body as PhotoUploadBody
+
+        if (!user.data) throw new UnauthorizedError("User not authenticated.")
+        if (!file) throw new BadRequestError("No file provided.")
+        if (!requestingBody)
+            throw new BadRequestError("You must provide the photo details.")
+
+        await this.photoService.uploadNewPhoto(user.data, file, requestingBody)
+
+        return res.status(201).json({
+            status: "success",
+            message: "Photo uploaded successfully."
+        })
+    }
 
     async deletePhoto(req: Request, res: Response) {}
 }
