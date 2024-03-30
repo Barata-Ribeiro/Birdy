@@ -69,8 +69,21 @@ export class CommentController {
     }
 
     async deleteComment(req: Request, res: Response) {
+        const { user } = req
         const { photoId } = req.params
+        const { commentId } = req.params
+
+        if (!user.data) throw new UnauthorizedError("User not authenticated.")
         if (!photoId)
             throw new BadRequestError("The photo ID parameter is required.")
+        if (!commentId)
+            throw new BadRequestError("The comment ID parameter is required.")
+
+        await this.commentService.deleteComment(user.data, photoId, commentId)
+
+        return res.status(204).json({
+            status: "success",
+            message: "Comment deleted successfully."
+        })
     }
 }
