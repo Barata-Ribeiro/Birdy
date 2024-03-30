@@ -1,5 +1,8 @@
 import type { Request, Response } from "express"
-import { BadRequestError } from "../middleware/helpers/ApiErrors"
+import {
+    BadRequestError,
+    UnauthorizedError
+} from "../middleware/helpers/ApiErrors"
 import { CommentService } from "../service/CommentService"
 
 export class CommentController {
@@ -24,9 +27,24 @@ export class CommentController {
     }
 
     async addComment(req: Request, res: Response) {
+        const { user } = req
         const { photoId } = req.params
+        const { content } = req.body
+
+        if (!user.data) throw new UnauthorizedError("User not authenticated.")
         if (!photoId)
             throw new BadRequestError("The photo ID parameter is required.")
+
+        await this.commentService.addComment(
+            user.data,
+            photoId,
+            content
+        )
+
+        return res.status(201).json({
+            status: "success",
+            message: "Comment added successfully."
+        })
     }
 
     async updateComment(req: Request, res: Response) {
