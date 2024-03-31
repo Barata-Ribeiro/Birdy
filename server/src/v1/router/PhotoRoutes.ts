@@ -27,6 +27,10 @@ router.post("/", authMiddleware, upload.single("imageFile"), (req, res, next) =>
     photoController.uploadNewPhoto(req, res).catch(next)
 )
 
+router.post("/:photoId/like", authMiddleware, (req, res, next) =>
+    photoController.toggleLike(req, res).catch(next)
+)
+
 router.post("/:photoId/comments", authMiddleware, (req, res, next) =>
     commentController.addComment(req, res).catch(next)
 )

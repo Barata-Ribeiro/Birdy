@@ -95,4 +95,20 @@ export class PhotoController {
             message: "Photo deleted successfully."
         })
     }
+
+    async toggleLike(req: Request, res: Response) {
+        const { user } = req
+        const { photoId } = req.params
+
+        if (!user.data) throw new UnauthorizedError("User not authenticated.")
+        if (!photoId)
+            throw new BadRequestError("The photo ID parameter is required.")
+
+        await this.photoService.toggleLike(user.data, photoId)
+
+        return res.status(200).json({
+            status: "success",
+            message: "Like toggled successfully."
+        })
+    }
 }

@@ -2,6 +2,7 @@ import { v2 as cloudinary } from "cloudinary"
 import streamifier from "streamifier"
 import { AppDataSource } from "../database/data-source"
 import { FeedResponseDTO } from "../dto/FeedResponseDTO"
+import { LikeResponseDTO } from "../dto/LikeResponseDTO"
 import { PhotoResponseDTO } from "../dto/PhotoResponseDTO"
 import { User } from "../entity/User"
 import { PhotoUploadBody } from "../interface/PhotoInterfaces"
@@ -10,6 +11,7 @@ import {
     InternalServerError,
     NotFoundError
 } from "../middleware/helpers/ApiErrors"
+import { likeRepository } from "../repository/LikeRepository"
 import { photoRepository } from "../repository/PhotoRepository"
 import { userRepository } from "../repository/UserRepository"
 import { saveEntityToDatabase } from "../utils/operation-functions"
@@ -167,6 +169,61 @@ export class PhotoService {
                 }
             }
         )
+    }
+
+    async toggleLike(user: Partial<User>, photoId: string) {
+        const checkUser = await userRepository.existsBy({
+            id: user.id,
+            username: user.username
+        })
+        if (!checkUser) throw new NotFoundError("User not found.")
+
+        if (!isUUIDValid(photoId))
+            throw new BadRequestError("Invalid photo ID.")
+
+        const photo = await photoRepository.findOne({
+            where: { id: photoId },
+            relations: ["likes", "author"]
+        })
+        if (!photo) throw new NotFoundError("Photo not found.")
+        if (photo.author.id === user.id)
+            throw new BadRequestError("You cannot like your own photo.")
+
+        const userLike = await likeRepository.findOne({
+            where: { user: { id: user.id }, photo: { id: photoId } }
+        })
+
+        if (userLike) {
+            await likeRepository.remove(userLike)
+            photo.meta.total_likes = (photo.meta.total_likes ?? 0) - 1
+            const editedPhoto = await saveEntityToDatabase(
+                photoRepository,
+                photo
+            )
+            return LikeResponseDTO.fromEntity(
+                userLike,
+                false,
+                editedPhoto.meta.total_likes
+            )
+        } else {
+            const newLike = likeRepository.create({
+                user: { id: user.id, username: user.username },
+                photo: { id: photoId }
+            })
+            await saveEntityToDatabase(likeRepository, newLike)
+
+            photo.meta.total_likes = (photo.meta.total_likes ?? 0) + 1
+            const editedPhoto = await saveEntityToDatabase(
+                photoRepository,
+                photo
+            )
+
+            return LikeResponseDTO.fromEntity(
+                newLike,
+                true,
+                editedPhoto.meta.total_likes
+            )
+        }
     }
 
     private async uploadPhotoToCloudinary(
