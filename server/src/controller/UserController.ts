@@ -75,7 +75,7 @@ export default class UserController {
 
         const response = await this.userService.updatePrivateProfile(
             userId,
-            req.body
+            requestingBody
         )
 
         return res.status(200).json({
