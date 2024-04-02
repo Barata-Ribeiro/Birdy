@@ -18,6 +18,7 @@ import errorMiddleware from "./middleware/ErrorMiddleware"
 import { corsOptions, sessionOptions } from "./utils/server-options"
 
 // Route Imports
+import adminRoutes from "./v1/router/AdminRoutes"
 import authRoutes from "./v1/router/AuthRoutes"
 import photoRoutes from "./v1/router/PhotoRoutes"
 import usersRoutes from "./v1/router/UserRoutes"
@@ -62,6 +63,7 @@ const startServer = async () => {
         app.use("/api/v1/auth", authRoutes)
         app.use("/api/v1/users", usersRoutes)
         app.use("/api/v1/photos", photoRoutes)
+        app.use("/api/v1/admin", adminRoutes)
 
         app.use(errorMiddleware)
 
