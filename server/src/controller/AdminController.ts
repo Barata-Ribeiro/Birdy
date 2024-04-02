@@ -1,5 +1,6 @@
 import type { Request, Response } from "express"
 import { UserRole } from "../entity/enums/Roles"
+import { UserEditProfileBody } from "../interface/UserInterface"
 import {
     BadRequestError,
     ForbiddenError
@@ -26,7 +27,24 @@ export class AdminController {
     }
 
     async updateUserInfo(req: Request, res: Response) {
-        // update user info
+        const username = this.verifyRequestingUser(req)
+        const requestingBody = req.body as Partial<UserEditProfileBody>
+        if (!requestingBody)
+            throw new BadRequestError(
+                "You must provide data to update this user."
+            )
+
+        const response = await this.adminService.updateUserInfo(
+            username,
+            requestingBody
+        )
+
+        return res.status(200).json({
+            status: "success",
+            message:
+                "User updated successfully. Inform the user of the changes and the new authentication credentials.",
+            data: response
+        })
     }
 
     async deleteUser(req: Request, res: Response) {
