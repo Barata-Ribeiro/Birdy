@@ -56,7 +56,18 @@ export class AdminController {
 
         return res.status(200).json({
             status: "success",
-            message: "User role updated successfully.",
+            message: "User role updated successfully."
+        })
+    }
+
+    async banUser(req: Request, res: Response) {
+        const username = this.verifyRequestingUser(req)
+
+        await this.adminService.banUser(username)
+
+        return res.status(200).json({
+            status: "success",
+            message: "User banned successfully."
         })
     }
 

@@ -134,4 +134,19 @@ export class AdminService {
 
         await saveEntityToDatabase(userRepository, user)
     }
+
+    async banUser(username: string) {
+        const user = await userRepository.findOne({
+            where: { username },
+            select: ["id", "role"]
+        })
+        if (!user) throw new NotFoundError("User not found.")
+
+        if (user.role === UserRole.BANNED)
+            throw new BadRequestError("User is already banned.")
+
+        user.role = UserRole.BANNED
+
+        await saveEntityToDatabase(userRepository, user)
+    }
 }
