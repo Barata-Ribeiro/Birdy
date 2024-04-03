@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt"
 import { EditUserResponseDTO } from "../dto/EditUserResponseDTO"
+import { UserRole } from "../entity/enums/Roles"
 import { UserEditProfileBody } from "../interface/UserInterface"
 import { BadRequestError, NotFoundError } from "../middleware/helpers/ApiErrors"
 import { userRepository } from "../repository/UserRepository"
@@ -105,5 +106,32 @@ export class AdminService {
         const savedUser = await saveEntityToDatabase(userRepository, user)
 
         return EditUserResponseDTO.fromEntity(savedUser)
+    }
+
+    async updateUserRole(username: string, role: string) {
+        const user = await userRepository.findOne({
+            where: { username },
+            select: ["id", "role"]
+        })
+        if (!user) throw new NotFoundError("User not found.")
+
+        role = role.toLowerCase().trim()
+
+        if (role !== "member" && role !== "admin")
+            throw new BadRequestError("Invalid role.")
+
+        if (user.role === UserRole.BANNED)
+            throw new BadRequestError("User is banned.")
+
+        if (user.role === UserRole.ADMIN && role === "admin")
+            throw new BadRequestError("User is already an admin.")
+
+        if (user.role === UserRole.MEMBER && role === "member")
+            throw new BadRequestError("User is already a member.")
+
+        if (role === "member") user.role = UserRole.MEMBER
+        else user.role = UserRole.ADMIN
+
+        await saveEntityToDatabase(userRepository, user)
     }
 }

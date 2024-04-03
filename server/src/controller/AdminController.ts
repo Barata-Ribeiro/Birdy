@@ -47,6 +47,19 @@ export class AdminController {
         })
     }
 
+    async updateUserRole(req: Request, res: Response) {
+        const username = this.verifyRequestingUser(req)
+        const { role } = req.body
+        if (!role) throw new BadRequestError("Role is required.")
+
+        await this.adminService.updateUserRole(username, role)
+
+        return res.status(200).json({
+            status: "success",
+            message: "User role updated successfully.",
+        })
+    }
+
     async deleteUser(req: Request, res: Response) {
         // delete user
     }
