@@ -72,7 +72,14 @@ export class AdminController {
     }
 
     async deleteUser(req: Request, res: Response) {
-        // delete user
+        const username = this.verifyRequestingUser(req)
+
+        await this.adminService.deleteUserAccount(username)
+
+        return res.status(200).json({
+            status: "success",
+            message: "User deleted successfully."
+        })
     }
 
     private verifyRequestingUser(req: Request) {

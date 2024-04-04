@@ -1,8 +1,13 @@
 import bcrypt from "bcrypt"
+import { AppDataSource } from "../database/data-source"
 import { EditUserResponseDTO } from "../dto/EditUserResponseDTO"
 import { UserRole } from "../entity/enums/Roles"
 import { UserEditProfileBody } from "../interface/UserInterface"
-import { BadRequestError, NotFoundError } from "../middleware/helpers/ApiErrors"
+import {
+    BadRequestError,
+    InternalServerError,
+    NotFoundError
+} from "../middleware/helpers/ApiErrors"
 import { userRepository } from "../repository/UserRepository"
 import { saveEntityToDatabase } from "../utils/operation-functions"
 import { isPasswordStrong, isUsernameValid } from "../utils/validity-functions"
@@ -148,5 +153,26 @@ export class AdminService {
         user.role = UserRole.BANNED
 
         await saveEntityToDatabase(userRepository, user)
+    }
+
+    async deleteUserAccount(username: string) {
+        await AppDataSource.manager.transaction(
+            async (transactionalEntityManager) => {
+                try {
+                    const userToDelete = await userRepository.findOneBy({
+                        username
+                    })
+                    if (!userToDelete)
+                        throw new NotFoundError("User not found.")
+
+                    await transactionalEntityManager.remove(userToDelete)
+                } catch (error) {
+                    console.error("Transaction failed:", error)
+                    throw new InternalServerError(
+                        "An error occurred during the deletion process."
+                    )
+                }
+            }
+        )
     }
 }
