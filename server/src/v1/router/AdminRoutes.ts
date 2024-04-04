@@ -26,9 +26,18 @@ routes.delete("/users/:username", authMiddleware, (req, res, next) =>
     adminController.deleteUser(req, res).catch(next)
 )
 
-// Photo Related Routes
+// Photo related routes
 routes.delete("/photos/:photoId", authMiddleware, (req, res, next) =>
     adminController.deletePhoto(req, res).catch(next)
+)
+
+// Ccomment related routes
+routes.put("/comments/:commentId", authMiddleware, (req, res, next) =>
+    adminController.updateComment(req, res).catch(next)
+)
+
+routes.delete("/comments/:commentId", authMiddleware, (req, res, next) =>
+    adminController.deleteComment(req, res).catch(next)
 )
 
 export default routes

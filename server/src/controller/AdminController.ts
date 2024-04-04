@@ -108,6 +108,15 @@ export class AdminController {
         })
     }
 
+    // Comment related methods
+    async updateComment(req: Request, res: Response) {
+        // TODO: Implement this method
+    }
+
+    async deleteComment(req: Request, res: Response) {
+        // TODO: Implement this method
+    }
+
     private verifyRequestingUser(req: Request) {
         const { username } = req.params
         if (!username) throw new BadRequestError("Username is required.")
