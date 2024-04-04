@@ -14,6 +14,7 @@ export class AdminController {
         this.adminService = new AdminService()
     }
 
+    // User related methods
     async getUserInfo(req: Request, res: Response) {
         const username = this.verifyRequestingUser(req)
 
@@ -79,6 +80,31 @@ export class AdminController {
         return res.status(200).json({
             status: "success",
             message: "User deleted successfully."
+        })
+    }
+
+    // Photo related methods
+    async deletePhoto(req: Request, res: Response) {
+        const { photoId } = req.params
+        if (!photoId) throw new BadRequestError("Photo ID is required.")
+
+        const requestingUser = req.user
+        if (!requestingUser.data || !requestingUser.data.id)
+            throw new BadRequestError("You must be authenticated.")
+
+        if (
+            !requestingUser.is_admin ||
+            requestingUser.data.role !== UserRole.ADMIN
+        )
+            throw new ForbiddenError(
+                "You are not an administrator of this service."
+            )
+
+        await this.adminService.deletePhoto(photoId, requestingUser.data.id)
+
+        return res.status(200).json({
+            status: "success",
+            message: "Photo deleted successfully."
         })
     }
 

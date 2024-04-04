@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt"
+import { v2 as cloudinary } from "cloudinary"
 import { AppDataSource } from "../database/data-source"
 import { EditUserResponseDTO } from "../dto/EditUserResponseDTO"
 import { UserRole } from "../entity/enums/Roles"
@@ -8,11 +9,17 @@ import {
     InternalServerError,
     NotFoundError
 } from "../middleware/helpers/ApiErrors"
+import { photoRepository } from "../repository/PhotoRepository"
 import { userRepository } from "../repository/UserRepository"
 import { saveEntityToDatabase } from "../utils/operation-functions"
-import { isPasswordStrong, isUsernameValid } from "../utils/validity-functions"
+import {
+    isPasswordStrong,
+    isUUIDValid,
+    isUsernameValid
+} from "../utils/validity-functions"
 
 export class AdminService {
+    // User related methods
     async getUserInfo(username: string) {
         const userToFetch = await userRepository
             .createQueryBuilder("user")
@@ -174,5 +181,74 @@ export class AdminService {
                 }
             }
         )
+    }
+
+    // Photo related methods
+    async deletePhoto(photoId: string, userId: string) {
+        await AppDataSource.manager.transaction(
+            async (transactionalEntityManager) => {
+                try {
+                    if (!isUUIDValid(photoId))
+                        throw new BadRequestError("Invalid photo ID.")
+                    if (!isUUIDValid(userId))
+                        throw new BadRequestError("Invalid user ID.")
+
+                    const photoToDelete = await photoRepository.findOne({
+                        where: { id: photoId },
+                        relations: ["author"]
+                    })
+                    if (!photoToDelete)
+                        throw new NotFoundError("Photo not found.")
+
+                    if (photoToDelete.author.id === userId)
+                        throw new BadRequestError(
+                            "You must use the regular photo deletion method to delete your own photos."
+                        )
+
+                    const publicId = this.extractPublicId(
+                        photoToDelete.image_url
+                    )
+                    if (!publicId)
+                        throw new InternalServerError("Invalid image.")
+
+                    await this.deletePhotoFromCloudinary(publicId)
+
+                    await transactionalEntityManager.remove(photoToDelete)
+                } catch (error) {
+                    console.error("Transaction failed:", error)
+                    throw new InternalServerError(
+                        "An error occurred during the deletion process."
+                    )
+                }
+            }
+        )
+    }
+
+    private async deletePhotoFromCloudinary(publicId: string) {
+        cloudinary.config({
+            cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+            api_key: process.env.CLOUDINARY_API_KEY,
+            api_secret: process.env.CLOUDINARY_API_SECRET
+        })
+
+        return new Promise((resolve, reject) => {
+            void cloudinary.uploader.destroy(
+                publicId,
+                (error: unknown, result?: { result?: string }) => {
+                    if (result) resolve(result)
+                    else reject(error)
+                }
+            )
+        })
+    }
+
+    private extractPublicId(imageUrl: string) {
+        const parts = imageUrl.split("/")
+        const fileName = parts.pop()
+        const folderName = parts.pop()
+
+        return folderName && fileName
+            ? `${folderName}/${fileName.split(".")[0]}`
+            : undefined
     }
 }
