@@ -12,7 +12,7 @@ const dataSourceOptions: DataSourceOptions & SeederOptions = {
     synchronize: true,
     logging: true,
     migrationsRun: true,
-    ssl: true,
+    ssl: process.env.NODE_ENV === "production",
     extra: {
         max: 100,
         iddleTimeoutMillis: 5000,
