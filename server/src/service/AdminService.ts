@@ -9,6 +9,7 @@ import {
     InternalServerError,
     NotFoundError
 } from "../middleware/helpers/ApiErrors"
+import { commentRepository } from "../repository/CommentRepository"
 import { photoRepository } from "../repository/PhotoRepository"
 import { userRepository } from "../repository/UserRepository"
 import { saveEntityToDatabase } from "../utils/operation-functions"
@@ -218,6 +219,46 @@ export class AdminService {
                     console.error("Transaction failed:", error)
                     throw new InternalServerError(
                         "An error occurred during the deletion process."
+                    )
+                }
+            }
+        )
+    }
+
+    // Comment related methods
+    async updateComment(
+        commentId: string,
+        photoId: string,
+        userId: string,
+        content: string
+    ) {
+        await AppDataSource.manager.transaction(
+            async (transactionalEntityManager) => {
+                try {
+                    if (!isUUIDValid(commentId))
+                        throw new BadRequestError("Invalid comment ID.")
+                    if (!isUUIDValid(photoId))
+                        throw new BadRequestError("Invalid photo ID.")
+
+                    const comment = await commentRepository.findOne({
+                        where: { id: commentId, photo: { id: photoId } },
+                        relations: ["author", "photo"]
+                    })
+                    if (!comment) throw new NotFoundError("Comment not found.")
+
+                    if (comment.author.id === userId)
+                        throw new BadRequestError(
+                            "Use the regular comment update method to update your own comments."
+                        )
+
+                    comment.content = content.trim()
+                    comment.was_edited = true
+
+                    await transactionalEntityManager.save(comment)
+                } catch (error) {
+                    console.error("Transaction failed:", error)
+                    throw new InternalServerError(
+                        "An error occurred during the update process."
                     )
                 }
             }

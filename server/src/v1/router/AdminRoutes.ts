@@ -32,12 +32,16 @@ routes.delete("/photos/:photoId", authMiddleware, (req, res, next) =>
 )
 
 // Ccomment related routes
-routes.put("/comments/:commentId", authMiddleware, (req, res, next) =>
-    adminController.updateComment(req, res).catch(next)
+routes.put(
+    "/photos/:photoId/comments/:commentId",
+    authMiddleware,
+    (req, res, next) => adminController.updateComment(req, res).catch(next)
 )
 
-routes.delete("/comments/:commentId", authMiddleware, (req, res, next) =>
-    adminController.deleteComment(req, res).catch(next)
+routes.delete(
+    "/photos/:photoId/comments/:commentId",
+    authMiddleware,
+    (req, res, next) => adminController.deleteComment(req, res).catch(next)
 )
 
 export default routes
