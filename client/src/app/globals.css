@@ -4,7 +4,7 @@
 
 @layer base {
     body {
-        @apply font-body;
+        @apply font-serif;
         @apply text-mantis-950;
         @apply bg-mantis-50;
 
@@ -20,7 +20,7 @@
     h6,
     a,
     button {
-        @apply font-heading;
+        @apply font-sans;
         @apply text-mantis-950;
 
         @apply dark:text-mantis-50;
