@@ -145,7 +145,37 @@ export class AdminController {
     }
 
     async deleteComment(req: Request, res: Response) {
-        // TODO: Implement this method
+        const requestingUser = req.user
+        const { commentId } = req.params
+        const { photoId } = req.params
+
+        if (!commentId) throw new BadRequestError("Comment ID is required.")
+        const { content } = req.body
+        if (!photoId) throw new BadRequestError("Photo ID is required.")
+        if (!content || content.trim() === "")
+            throw new BadRequestError(
+                "You cannot update a comment to be empty."
+            )
+        if (!requestingUser.data || !requestingUser.data.id)
+            throw new BadRequestError("You must be authenticated.")
+        if (
+            !requestingUser.is_admin ||
+            requestingUser.data.role !== UserRole.ADMIN
+        )
+            throw new ForbiddenError(
+                "You are not an administrator of this service."
+            )
+
+        await this.adminService.deleteComment(
+            commentId,
+            photoId,
+            requestingUser.data.id
+        )
+
+        return res.status(200).json({
+            status: "success",
+            message: "Comment deleted successfully."
+        })
     }
 
     private verifyRequestingUser(req: Request) {

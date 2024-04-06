@@ -265,6 +265,38 @@ export class AdminService {
         )
     }
 
+    async deleteComment(commentId: string, photoId: string, userId: string) {
+        await AppDataSource.manager.transaction(
+            async (transactionalEntityManager) => {
+                try {
+                    if (!isUUIDValid(commentId))
+                        throw new BadRequestError("Invalid comment ID.")
+                    if (!isUUIDValid(photoId))
+                        throw new BadRequestError("Invalid photo ID.")
+
+                    const commentToDelete = await commentRepository.findOne({
+                        where: { id: commentId, photo: { id: photoId } },
+                        relations: ["author", "photo"]
+                    })
+                    if (!commentToDelete)
+                        throw new NotFoundError("Comment not found.")
+
+                    if (commentToDelete.author.id === userId)
+                        throw new BadRequestError(
+                            "Use the regular comment deletion method to delete your own comments."
+                        )
+
+                    await transactionalEntityManager.remove(commentToDelete)
+                } catch (error) {
+                    console.error("Transaction failed:", error)
+                    throw new InternalServerError(
+                        "An error occurred during the deletion process."
+                    )
+                }
+            }
+        )
+    }
+
     private async deletePhotoFromCloudinary(publicId: string) {
         cloudinary.config({
             cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
