@@ -11,7 +11,7 @@ const links = {
 
 export default function Footer() {
     return (
-        <footer className="bg-green-spring-50 dark:bg-green-spring-950">
+        <footer className="mt-auto bg-green-spring-50 dark:bg-green-spring-950">
             <div className="container mx-auto px-6 py-8">
                 <div className="flex flex-col items-center text-center">
                     <Link href="/">

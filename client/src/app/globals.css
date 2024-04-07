@@ -8,6 +8,10 @@
         @apply text-mantis-950;
         @apply bg-mantis-50;
 
+        @apply min-h-dvh;
+        @apply flex;
+        @apply flex-col;
+
         @apply dark:text-mantis-50;
         @apply dark:bg-mantis-950;
     }
