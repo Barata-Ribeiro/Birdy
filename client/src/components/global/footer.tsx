@@ -1,3 +1,4 @@
+import Button from "@/components/utils/Button"
 import Image from "next/image"
 import Link from "next/link"
 import { FaGithub } from "react-icons/fa"
@@ -56,7 +57,9 @@ export default function Footer() {
 
                             <span className="mx-1">Repository</span>
                         </Link>
-                        <Link href="/sign/up">Sign Up</Link>
+                        <Button href="/sign/up" className="px-5 py-2">
+                            Sign Up
+                        </Button>
                     </div>
                 </div>
 
