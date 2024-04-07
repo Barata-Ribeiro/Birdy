@@ -1,4 +1,5 @@
 import Footer from "@/components/global/footer"
+import Header from "@/components/global/header"
 import type { Metadata } from "next"
 import { Lora, Montserrat } from "next/font/google"
 import "./globals.css"
@@ -29,6 +30,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={`${montserrat.variable} ${lora.variable}`}>
+                <Header />
                 <main className="flex-1 md:container">{children}</main>
                 <Footer />
             </body>
