@@ -22,6 +22,7 @@ export class AdminController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "User info fetched successfully.",
             data: response
         })
@@ -42,6 +43,7 @@ export class AdminController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message:
                 "User updated successfully. Inform the user of the changes and the new authentication credentials.",
             data: response
@@ -57,6 +59,7 @@ export class AdminController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "User role updated successfully."
         })
     }
@@ -68,6 +71,7 @@ export class AdminController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "User banned successfully."
         })
     }
@@ -79,6 +83,7 @@ export class AdminController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "User deleted successfully."
         })
     }
@@ -104,6 +109,7 @@ export class AdminController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "Photo deleted successfully."
         })
     }
@@ -140,6 +146,7 @@ export class AdminController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "Comment updated successfully."
         })
     }
@@ -174,6 +181,7 @@ export class AdminController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "Comment deleted successfully."
         })
     }

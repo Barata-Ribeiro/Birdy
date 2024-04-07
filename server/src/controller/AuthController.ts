@@ -24,6 +24,7 @@ export default class AuthController {
 
         return res.status(201).json({
             status: "success",
+            code: res.statusCode,
             message: "Account created successfully.",
             data: response
         })
@@ -40,6 +41,7 @@ export default class AuthController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "You have successfully logged in.",
             data: response
         })
@@ -54,6 +56,7 @@ export default class AuthController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "Token refreshed successfully.",
             data: { access_token: response }
         })
@@ -70,6 +73,7 @@ export default class AuthController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "A reset password link has been sent to your email."
         })
     }
@@ -92,6 +96,7 @@ export default class AuthController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "Your password has been reset successfully."
         })
     }

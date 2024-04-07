@@ -21,6 +21,7 @@ export class CommentController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "Comments retrieved successfully.",
             data: response
         })
@@ -39,6 +40,7 @@ export class CommentController {
 
         return res.status(201).json({
             status: "success",
+            code: res.statusCode,
             message: "Comment added successfully."
         })
     }
@@ -64,6 +66,7 @@ export class CommentController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "Comment updated successfully."
         })
     }
@@ -83,6 +86,7 @@ export class CommentController {
 
         return res.status(204).json({
             status: "success",
+            code: res.statusCode,
             message: "Comment deleted successfully."
         })
     }

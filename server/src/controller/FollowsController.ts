@@ -58,6 +58,7 @@ export default class FollowsController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "Follows retrieved successfully.",
             data,
             total,
@@ -78,6 +79,7 @@ export default class FollowsController {
 
         return res.status(201).json({
             status: "success",
+            code: res.statusCode,
             message: "You are now following this user."
         })
     }
@@ -92,6 +94,7 @@ export default class FollowsController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "You have unfollowed this user."
         })
     }

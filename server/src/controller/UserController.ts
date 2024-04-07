@@ -34,6 +34,7 @@ export default class UserController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "Users fetched successfully.",
             data: response
         })
@@ -47,6 +48,7 @@ export default class UserController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "User profile fetched successfully.",
             data: response
         })
@@ -59,6 +61,7 @@ export default class UserController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "Your profile fetched successfully.",
             data: response
         })
@@ -80,6 +83,7 @@ export default class UserController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "Your profile updated successfully.",
             data: response
         })
@@ -92,6 +96,7 @@ export default class UserController {
 
         return res.status(204).json({
             status: "success",
+            code: res.statusCode,
             message: "Your profile has been deleted successfully."
         })
     }

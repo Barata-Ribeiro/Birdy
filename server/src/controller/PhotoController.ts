@@ -41,6 +41,7 @@ export class PhotoController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "Photos retrieved successfully.",
             data: response
         })
@@ -57,6 +58,7 @@ export class PhotoController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "Photo retrieved successfully.",
             data: response
         })
@@ -76,6 +78,7 @@ export class PhotoController {
 
         return res.status(201).json({
             status: "success",
+            code: res.statusCode,
             message: "Photo uploaded successfully."
         })
     }
@@ -92,6 +95,7 @@ export class PhotoController {
 
         return res.status(204).json({
             status: "success",
+            code: res.statusCode,
             message: "Photo deleted successfully."
         })
     }
@@ -108,6 +112,7 @@ export class PhotoController {
 
         return res.status(200).json({
             status: "success",
+            code: res.statusCode,
             message: "Like toggled successfully."
         })
     }
