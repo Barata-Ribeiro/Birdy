@@ -5,7 +5,7 @@ export default function ApiError(error: unknown): State {
 
     const state: State = {
         ok: false,
-        client_error: "",
+        client_error: null,
         response: null
     }
 

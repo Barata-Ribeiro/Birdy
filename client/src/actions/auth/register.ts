@@ -1,6 +1,7 @@
 "use server"
 
-import { State } from "@/interfaces/actions"
+import { ApiResponse, State } from "@/interfaces/actions"
+import { AuthRegisterResponse } from "@/interfaces/api/auth"
 import ApiError from "@/utils/api-error"
 import { AUTH_REGISTER } from "@/utils/api-urls"
 import inputValidation from "@/utils/input-validation"
@@ -46,17 +47,19 @@ export default async function register(
             })
         })
 
-        const responseData = await response.json()
+        const responseData = (await response.json()) as ApiResponse
 
         if (!response.ok)
             throw new Error(
                 responseData.message ?? "An unknown error occurred."
             )
 
+        const data = responseData.data as AuthRegisterResponse
+
         return {
             ok: true,
-            client_error: "",
-            response: responseData
+            client_error: null,
+            response: { ...responseData, data }
         }
     } catch (error) {
         return ApiError(error)
