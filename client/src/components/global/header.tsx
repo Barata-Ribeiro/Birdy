@@ -1,7 +1,9 @@
 "use client"
 
+import getUserContext from "@/actions/user/get-user-context"
 import Button from "@/components/utils/Button"
 import useMedia from "@/hooks/use-media"
+import { UserContextResponse } from "@/interfaces/api/users"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -15,12 +17,13 @@ const links = {
     repository: "https://github.com/Barata-Ribeiro/Birdy"
 }
 
-export default function Header() {
+export default async function Header() {
     const pathname = usePathname()
     const isMobile = useMedia("(max-width: 64rem)")
     const [open, setOpen] = useState(false)
 
-    const data: any = false
+    const { response } = await getUserContext()
+    const user = response?.data as UserContextResponse
 
     useEffect(() => setOpen(!isMobile), [isMobile])
 
@@ -133,7 +136,7 @@ export default function Header() {
                                 </ul>
 
                                 <div className="border-t px-6 py-8 dark:border-green-spring-400 md:px-12 md:py-16 lg:border-l lg:border-t-0 lg:py-0 lg:pl-6 lg:pr-0">
-                                    {!data ? (
+                                    {!user ? (
                                         <>
                                             <Link
                                                 href="/sign/in"
@@ -155,18 +158,18 @@ export default function Header() {
                                     ) : (
                                         <div className="flex flex-row items-center justify-between gap-4 max-xs:flex-col xs:gap-2">
                                             <Link
-                                                href={`/dashboard/${data.username}`}
+                                                href={`/dashboard/${user.id}/${user.username}`}
                                                 className="inline-flex items-center gap-2 text-base font-normal text-green-spring-900 hover:text-bright-turquoise-500"
                                                 onClick={() => setOpen(!open)}
                                                 role="dashboard"
                                                 aria-label="User Dashboard"
                                             >
                                                 <img
-                                                    src={data.avatarUrl}
+                                                    src={user.avatar_url}
                                                     className="dark:ring-green-sping-500 size-10 rounded-full p-1 ring-2 ring-green-spring-300 dark:ring-green-spring-500"
                                                     alt=""
                                                 />
-                                                {data.username}
+                                                {user.username}
                                             </Link>
                                             <Link
                                                 href="/sign/in"

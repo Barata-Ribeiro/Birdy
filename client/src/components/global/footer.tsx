@@ -1,4 +1,6 @@
+import getUserContext from "@/actions/user/get-user-context"
 import Button from "@/components/utils/Button"
+import { UserContextResponse } from "@/interfaces/api/users"
 import Image from "next/image"
 import Link from "next/link"
 import { FaGithub } from "react-icons/fa"
@@ -9,7 +11,10 @@ const links = {
     portfolio: "https://barataribeiro.com/"
 }
 
-export default function Footer() {
+export default async function Footer() {
+    const { response } = await getUserContext()
+    const user = response?.data as UserContextResponse
+
     return (
         <footer className="mt-auto bg-green-spring-50 dark:bg-green-spring-950">
             <div className="container mx-auto px-6 py-8">
@@ -57,9 +62,11 @@ export default function Footer() {
 
                             <span className="mx-1">Repository</span>
                         </Link>
-                        <Button href="/sign/up" className="px-5 py-2">
-                            Sign Up
-                        </Button>
+                        {!user && (
+                            <Button href="/sign/up" className="px-5 py-2">
+                                Sign Up
+                            </Button>
+                        )}
                     </div>
                 </div>
 
