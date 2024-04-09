@@ -19,6 +19,10 @@ routes.get("/profile/:username/follows", (req, res, next) =>
     followsController.getAllUserFollows(req, res).catch(next)
 )
 
+routes.get("/me/context", authMiddleware, (req, res, next) =>
+    userController.getUserContext(req, res).catch(next)
+)
+
 routes.get("/me/:userId", authMiddleware, (req, res, next) =>
     userController.getPrivateProfile(req, res).catch(next)
 )

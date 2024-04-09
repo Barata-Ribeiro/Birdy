@@ -5,6 +5,7 @@ import { PrivateProfileResponseDTO } from "../dto/PrivateProfileResponseDTO"
 import { PublicProfileResponseDTO } from "../dto/PublicProfileResponseDTO"
 import { Comment } from "../entity/Comment"
 import { Photo } from "../entity/Photo"
+import { User } from "../entity/User"
 import { UserFollow } from "../entity/UserFollow"
 import { UserLike } from "../entity/UserLike"
 import { UserEditProfileBody } from "../interface/UserInterface"
@@ -15,7 +16,11 @@ import {
 } from "../middleware/helpers/ApiErrors"
 import { userRepository } from "../repository/UserRepository"
 import { saveEntityToDatabase } from "../utils/operation-functions"
-import { isPasswordStrong, isUsernameValid } from "../utils/validity-functions"
+import {
+    isPasswordStrong,
+    isUUIDValid,
+    isUsernameValid
+} from "../utils/validity-functions"
 
 export default class UserService {
     async getUserProfile(username: string): Promise<PublicProfileResponseDTO> {
@@ -68,6 +73,29 @@ export default class UserService {
         if (!user) throw new BadRequestError("User not found.")
 
         return PublicProfileResponseDTO.fromRaw(user)
+    }
+
+    async getUserContext(userId: string): Promise<User> {
+        if (!isUUIDValid(userId)) throw new BadRequestError("Invalid user ID.")
+
+        const user = await userRepository.findOne({
+            where: { id: userId },
+            select: [
+                "id",
+                "username",
+                "display_name",
+                "email",
+                "role",
+                "avatar_url",
+                "cover_image_url",
+                "bio",
+                "createdAt",
+                "updatedAt"
+            ]
+        })
+        if (!user) throw new NotFoundError("User not found.")
+
+        return user
     }
 
     async getPrivateProfile(

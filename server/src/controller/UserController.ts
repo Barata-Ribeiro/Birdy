@@ -1,7 +1,10 @@
 import type { Request, Response } from "express"
 import { SimpleUserResponseDTO } from "../dto/SimpleUserResponseDTO"
 import { UserEditProfileBody } from "../interface/UserInterface"
-import { BadRequestError } from "../middleware/helpers/ApiErrors"
+import {
+    BadRequestError,
+    UnauthorizedError
+} from "../middleware/helpers/ApiErrors"
 import { userRepository } from "../repository/UserRepository"
 import UserService from "../service/UserService"
 import { isUUIDValid } from "../utils/validity-functions"
@@ -36,6 +39,25 @@ export default class UserController {
             status: "success",
             code: res.statusCode,
             message: "Users fetched successfully.",
+            data: response
+        })
+    }
+
+    public async getUserContext(req: Request, res: Response) {
+        const requestingUser = req.user
+        if (!requestingUser || !requestingUser.data?.id)
+            throw new UnauthorizedError(
+                "You must be logged in to retrieve your user info."
+            )
+
+        const response = await this.userService.getUserContext(
+            requestingUser?.data?.id
+        )
+
+        return res.status(200).json({
+            status: "success",
+            code: res.statusCode,
+            message: "User context fetched successfully.",
             data: response
         })
     }
