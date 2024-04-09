@@ -41,15 +41,15 @@ export default async function login(state: State, formData: FormData) {
 
         cookies().set("access_token", data.access_token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: true,
             sameSite: "lax",
-            expires: Date.now() - FIFTEEN_MINUTES
+            expires: Date.now() + FIFTEEN_MINUTES
         })
         cookies().set("refresh_token", data.refresh_token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: true,
             sameSite: "lax",
-            expires: Date.now() - (remember_me ? THIRTY_DAYS : ONE_DAY)
+            expires: Date.now() + (remember_me ? THIRTY_DAYS : ONE_DAY)
         })
 
         return {
