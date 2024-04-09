@@ -1,6 +1,6 @@
 "use client"
 
-import { PrivateProfileResponse } from "@/interfaces/api/users"
+import { UserContextResponse } from "@/interfaces/api/users"
 import {
     createContext,
     useContext,
@@ -13,12 +13,12 @@ import {
 
 interface UserContextProviderProps {
     children: ReactNode
-    user: PrivateProfileResponse | null
+    user: UserContextResponse | null
 }
 
 interface UserContextType {
-    user: PrivateProfileResponse | null
-    setUser: Dispatch<SetStateAction<PrivateProfileResponse | null>>
+    user: UserContextResponse | null
+    setUser: Dispatch<SetStateAction<UserContextResponse | null>>
 }
 
 const UserContext = createContext<UserContextType | null>(null)
@@ -35,7 +35,7 @@ export function UserContextProvider({
     children,
     user
 }: UserContextProviderProps) {
-    const [currentUser, setUser] = useState<PrivateProfileResponse | null>(user)
+    const [currentUser, setUser] = useState<UserContextResponse | null>(user)
 
     useEffect(() => {
         setUser(user)

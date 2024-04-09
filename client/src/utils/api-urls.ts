@@ -16,6 +16,7 @@ export const USER_GET_PROFILE = (username: string) =>
     `${BACKEND_URL}/api/v1/users/profile/${username}`
 export const USER_GET_FOLLOWS = (username: string) =>
     `${BACKEND_URL}/api/v1/users/profile/${username}/follows`
+export const USER_GET_CONTEXT = () => `${BACKEND_URL}/api/v1/users/me/context`
 export const USER_GET_PRIVATE_PROFILE = (userId: string) =>
     `${BACKEND_URL}/api/v1/users/me/${userId}`
 export const USER_FOLLOW = (userId: string) =>

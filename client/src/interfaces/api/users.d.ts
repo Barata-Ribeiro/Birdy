@@ -1,3 +1,16 @@
+export interface UserContextResponse {
+    id: string
+    username: string
+    display_name: string
+    email: string
+    role: string
+    avatar_url?: string
+    cover_image_url?: string
+    bio?: string
+    createdAt: string
+    updatedAt: string
+}
+
 export interface PrivateProfileResponse {
     id: string
     username: string

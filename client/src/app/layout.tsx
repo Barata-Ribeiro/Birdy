@@ -1,5 +1,8 @@
+import getUserContext from "@/actions/user/get-user-context"
 import Footer from "@/components/global/footer"
 import Header from "@/components/global/header"
+import { UserContextProvider } from "@/context/user-context"
+import { UserContextResponse } from "@/interfaces/api/users"
 import type { Metadata } from "next"
 import { Lora, Montserrat } from "next/font/google"
 import "./globals.css"
@@ -22,17 +25,23 @@ export const metadata: Metadata = {
         "Welcome to Birdy! A social network platform for bird enthusiasts."
 }
 
-export default function RootLayout({
+export default async function RootLayout({
     children
 }: Readonly<{
     children: React.ReactNode
 }>) {
+    const context = await getUserContext()
+    let user: UserContextResponse | null = null
+    if (context.ok) user = context.response?.data as UserContextResponse
+
     return (
         <html lang="en">
             <body className={`${montserrat.variable} ${lora.variable}`}>
-                <Header />
-                <main className="flex-1 md:container">{children}</main>
-                <Footer />
+                <UserContextProvider user={user}>
+                    <Header />
+                    <main className="flex-1 md:container">{children}</main>
+                    <Footer />
+                </UserContextProvider>
             </body>
         </html>
     )
