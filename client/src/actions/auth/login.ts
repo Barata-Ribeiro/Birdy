@@ -6,7 +6,14 @@ import ApiError from "@/utils/api-error"
 import { AUTH_LOGIN } from "@/utils/api-urls"
 import { cookies } from "next/headers"
 
-export default async function login(state: State, formData: FormData) {
+type LoginResponse = State & {
+    username: string | null
+}
+
+export default async function login(
+    state: State,
+    formData: FormData
+): Promise<LoginResponse> {
     const URL = AUTH_LOGIN()
     const FIFTEEN_MINUTES = 15 * 60 * 1000
     const ONE_DAY = 24 * 60 * 60 * 1000
@@ -37,15 +44,16 @@ export default async function login(state: State, formData: FormData) {
                 responseData.message ?? "An unknown error occurred."
             )
 
-        const data = responseData.data as AuthLoginResponse
+        const { access_token, refresh_token } =
+            responseData.data as AuthLoginResponse
 
-        cookies().set("access_token", data.access_token, {
+        cookies().set("access_token", access_token, {
             httpOnly: true,
             secure: true,
             sameSite: "lax",
             expires: Date.now() + FIFTEEN_MINUTES
         })
-        cookies().set("refresh_token", data.refresh_token, {
+        cookies().set("refresh_token", refresh_token, {
             httpOnly: true,
             secure: true,
             sameSite: "lax",
@@ -55,9 +63,10 @@ export default async function login(state: State, formData: FormData) {
         return {
             ok: true,
             client_error: null,
-            response: null
+            response: null,
+            username
         }
     } catch (error) {
-        return ApiError(error)
+        return { ...ApiError(error), username: null }
     }
 }

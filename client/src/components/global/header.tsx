@@ -1,6 +1,5 @@
 "use client"
 
-import getUserContext from "@/actions/user/get-user-context"
 import Button from "@/components/utils/Button"
 import useMedia from "@/hooks/use-media"
 import { UserContextResponse } from "@/interfaces/api/users"
@@ -17,13 +16,10 @@ const links = {
     repository: "https://github.com/Barata-Ribeiro/Birdy"
 }
 
-export default async function Header() {
+export default function Header({ user }: { user: UserContextResponse | null }) {
     const pathname = usePathname()
     const isMobile = useMedia("(max-width: 64rem)")
     const [open, setOpen] = useState(false)
-
-    const { response } = await getUserContext()
-    const user = response?.data as UserContextResponse
 
     useEffect(() => setOpen(!isMobile), [isMobile])
 

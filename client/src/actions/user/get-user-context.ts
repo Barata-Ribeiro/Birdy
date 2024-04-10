@@ -12,7 +12,7 @@ export default async function getUserContext() {
     try {
         const access_token = cookies().get("access_token")?.value
         if (!access_token)
-            throw new Error("You must be logged in to view this page.")
+            return { ok: false, client_error: null, response: null }
 
         const response = await fetch(URL, {
             method: "GET",
@@ -34,7 +34,7 @@ export default async function getUserContext() {
             client_error: null,
             response: { ...responseData, data }
         }
-    } catch (error) {
+    } catch (error: unknown) {
         return ApiError(error)
     }
 }

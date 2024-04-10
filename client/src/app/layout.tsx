@@ -38,9 +38,9 @@ export default async function RootLayout({
         <html lang="en">
             <body className={`${montserrat.variable} ${lora.variable}`}>
                 <UserContextProvider user={user}>
-                    <Header />
+                    <Header user={user} />
                     <main className="flex-1 md:container">{children}</main>
-                    <Footer />
+                    <Footer user={user} />
                 </UserContextProvider>
             </body>
         </html>

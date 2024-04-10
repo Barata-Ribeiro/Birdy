@@ -1,4 +1,3 @@
-import getUserContext from "@/actions/user/get-user-context"
 import Button from "@/components/utils/Button"
 import { UserContextResponse } from "@/interfaces/api/users"
 import Image from "next/image"
@@ -11,10 +10,11 @@ const links = {
     portfolio: "https://barataribeiro.com/"
 }
 
-export default async function Footer() {
-    const { response } = await getUserContext()
-    const user = response?.data as UserContextResponse
-
+export default async function Footer({
+    user
+}: {
+    user: UserContextResponse | null
+}) {
     return (
         <footer className="mt-auto bg-green-spring-50 dark:bg-green-spring-950">
             <div className="container mx-auto px-6 py-8">
