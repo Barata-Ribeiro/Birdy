@@ -1,3 +1,5 @@
+import { FeedRequestParams } from "@/interfaces/api/photos"
+
 const BACKEND_URL = process.env.BACKEND_ORIGIN || "http://localhost:3000"
 
 // Auth
@@ -29,7 +31,12 @@ export const USER_DELETE_PRIVATE_PROFILE = (userId: string) =>
     `${BACKEND_URL}/api/v1/users/me/${userId}`
 
 // Photo
-export const PHOTO_GET_FEED = () => `${BACKEND_URL}/api/v1/photos`
+export const PHOTO_GET_FEED = (params: FeedRequestParams) => {
+    const { perPage, page, userId } = params
+    let url = `${BACKEND_URL}/api/v1/photos?perPage=${perPage}&page=${page}`
+    if (userId) url += `&userId=${userId}`
+    return url
+}
 export const PHOTO_GET_PHOTO = (photoId: string) =>
     `${BACKEND_URL}/api/v1/photos/${photoId}`
 export const PHOTO_GET_COMMENTS = (photoId: string) =>
