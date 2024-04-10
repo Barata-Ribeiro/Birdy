@@ -1,12 +1,12 @@
 "use server"
 
-import { ApiResponse, State } from "@/interfaces/actions"
+import { ApiResponse } from "@/interfaces/actions"
 import { PrivateProfileResponse } from "@/interfaces/api/users"
 import ApiError from "@/utils/api-error"
 import { USER_GET_PRIVATE_PROFILE } from "@/utils/api-urls"
 import { cookies } from "next/headers"
 
-export default async function getPrivateProfile(state: State, userId: string) {
+export default async function getPrivateProfile(userId: string) {
     const URL = USER_GET_PRIVATE_PROFILE(userId)
 
     try {

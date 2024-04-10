@@ -1,11 +1,11 @@
 "use server"
 
-import { ApiResponse, State } from "@/interfaces/actions"
+import { ApiResponse } from "@/interfaces/actions"
 import { PublicProfileResponse } from "@/interfaces/api/users"
 import ApiError from "@/utils/api-error"
 import { USER_GET_PROFILE } from "@/utils/api-urls"
 
-export default async function getPublicProfile(state: State, username: string) {
+export default async function getPublicProfile(username: string) {
     const URL = USER_GET_PROFILE(username)
 
     try {
@@ -22,7 +22,7 @@ export default async function getPublicProfile(state: State, username: string) {
             )
 
         const data = responseData.data as PublicProfileResponse
-        
+
         return {
             ok: true,
             client_error: null,
