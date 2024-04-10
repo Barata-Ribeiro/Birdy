@@ -30,6 +30,20 @@ export interface FeedResponse {
     slug: string
     meta: PhotoMeta
     author: PhotoAuthor
-    createdAt: Date
-    updatedAt: Date
+    createdAt: string
+    updatedAt: string
+}
+
+export interface PhotoResponse {
+    id: string
+    title: string
+    description: string
+    image_url: string
+    slug: string
+    meta: PhotoMeta
+    author: PhotoAuthor
+    likes: any[] // TODO: Define Like interface
+    comments: any[] // TODO: Define Comment interface
+    createdAt: string
+    updatedAt: string
 }
