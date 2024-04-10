@@ -1,4 +1,4 @@
-import Button from "@/components/utils/Button"
+import Button from "@/components/utils/button"
 import { UserContextResponse } from "@/interfaces/api/users"
 import Image from "next/image"
 import Link from "next/link"

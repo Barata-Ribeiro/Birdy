@@ -1,6 +1,6 @@
 "use client"
 
-import Button from "@/components/utils/Button"
+import Button from "@/components/utils/button"
 import useMedia from "@/hooks/use-media"
 import { UserContextResponse } from "@/interfaces/api/users"
 import Image from "next/image"
