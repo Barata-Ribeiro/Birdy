@@ -160,10 +160,13 @@ export default function Header({ user }: { user: UserContextResponse | null }) {
                                                 role="dashboard"
                                                 aria-label="User Dashboard"
                                             >
-                                                <img
-                                                    src={user.avatar_url}
+                                                <Image
+                                                    src={user.avatar_url || ""}
                                                     className="dark:ring-green-sping-500 size-10 rounded-full p-1 ring-2 ring-green-spring-300 dark:ring-green-spring-500"
-                                                    alt=""
+                                                    height={40}
+                                                    width={40}
+                                                    sizes="100vw"
+                                                    alt="Your avatar"
                                                 />
                                                 {user.username}
                                             </Link>
