@@ -1,3 +1,4 @@
+import logout from "@/actions/auth/logout"
 import Button from "@/components/utils/button"
 import { useUser } from "@/context/user-context"
 import { PrivateProfileResponse } from "@/interfaces/api/users"
@@ -13,7 +14,7 @@ export default function DashboardNavigation({
     const { setUser } = useUser()
 
     async function handleLogout() {
-        // await logout()
+        await logout()
         setUser(null)
     }
 
@@ -31,7 +32,7 @@ export default function DashboardNavigation({
                     <BiSolidPhotoAlbum size={18} />
                     <span className="max-sm:hidden">Photos</span>
                 </Button>
-                {user.role === "admin" && (
+                {user.role === "ADMIN" && (
                     <Button
                         href={`/dashboard/${user.id}/${user.username}/admin-panel`}
                         className={"flex items-center gap-2 px-4 py-2 text-sm"}
