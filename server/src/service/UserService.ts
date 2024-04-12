@@ -108,6 +108,7 @@ export default class UserService {
                 "user.username",
                 "user.display_name",
                 "user.email",
+                "user.role",
                 "user.avatar_url",
                 "user.cover_image_url",
                 "user.bio"
