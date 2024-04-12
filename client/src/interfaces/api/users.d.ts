@@ -3,7 +3,7 @@ export interface UserContextResponse {
     username: string
     display_name: string
     email: string
-    role: string
+    role: "NONE" | "ADMIN" | "MEMBER" | "BANNED"
     avatar_url?: string
     cover_image_url?: string
     bio?: string
@@ -29,14 +29,15 @@ export interface PrivateProfileResponse {
     username: string
     display_name: string
     email: string
+    role: "NONE" | "ADMIN" | "MEMBER" | "BANNED"
     avatar_url?: string
     cover_image_url?: string
     bio?: string
     photo_count: number
     liked_photo_count: number
-    last_liked_photos: any[]
+    last_liked_photos: any[] // TODO: Implement interface
     following_count: number
     follower_count: number
     comment_count: number
-    last_comments_made: any[]
+    last_comments_made: any[] // TODO: Implement interface
 }

@@ -54,7 +54,7 @@ export default async function DashBoardLayout({
                         >
                             {user.username}
                         </Link>
-                        {user.role === "admin" ? (
+                        {user.role === "ADMIN" ? (
                             <FaUserTie size={18} />
                         ) : (
                             <FaUser size={18} />
