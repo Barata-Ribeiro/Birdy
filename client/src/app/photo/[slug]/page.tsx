@@ -1,4 +1,5 @@
 import getPhoto from "@/actions/photos/get-photo"
+import DeleteButton from "@/components/utils/delete-button"
 import { useUser } from "@/context/user-context"
 import { PhotoResponse } from "@/interfaces/api/photos"
 import Image from "next/image"
@@ -57,13 +58,18 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
                                 @{photo.author.username}
                             </Link>
                         </div>
-
-                        {/* IMPLEMENT DELETE BUTTON */}
-                        {/* IMPLEMENT DELETE BUTTON */}
-
-                        {/* IMPLEMENT OTHER BUTTONS */}
-                        {/* IMPLEMENT OTHER BUTTONS */}
+                        {user &&
+                            (photo.author.id === user.id ||
+                                user.role === "ADMIN") && (
+                                <DeleteButton
+                                    user={user}
+                                    photo={photo}
+                                    direction="right"
+                                />
+                            )}
                     </div>
+
+                    {/* META NUMBERS */}
                 </div>
             </div>
         </section>
