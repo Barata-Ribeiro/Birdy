@@ -108,12 +108,13 @@ export class PhotoController {
         if (!photoId)
             throw new BadRequestError("The photo ID parameter is required.")
 
-        await this.photoService.toggleLike(user.data, photoId)
+        const like = await this.photoService.toggleLike(user.data, photoId)
 
         return res.status(200).json({
             status: "success",
             code: res.statusCode,
-            message: "Like toggled successfully."
+            message: "Like toggled successfully.",
+            data: like
         })
     }
 }
