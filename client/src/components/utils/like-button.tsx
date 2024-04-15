@@ -1,6 +1,7 @@
 "use client"
 
-import { PhotoResponse } from "@/interfaces/api/photos"
+import postToggleLike from "@/actions/photos/post-toggle-photo-like"
+import { PhotoResponse, ToggleLikeResponse } from "@/interfaces/api/photos"
 import { UserContextResponse } from "@/interfaces/api/users"
 import { useEffect, useState } from "react"
 import "./like-button.css"
@@ -16,7 +17,7 @@ export default function LikeButton({ user, photo }: LikeButtonProps) {
     const [loading, setLoading] = useState(false)
 
     const isPhotoLiked =
-        user && photo.likes.some((like) => like.user.id === user.id)
+        user && photo.likes.some((like) => like.user_id === user.id)
     const [likeState, setLikeState] = useState(
         isPhotoLiked ? "Liked" : "Unliked"
     )
@@ -27,7 +28,13 @@ export default function LikeButton({ user, photo }: LikeButtonProps) {
         if (loading) return
         setLoading(true)
 
-        // TODO: Implement like/unlike functionality
+        const state = await postToggleLike(photo.id)
+        const like = state.response?.data as ToggleLikeResponse
+
+        if (state.ok) {
+            setTotalLikes((prev) => (like.is_liked ? prev + 1 : prev - 1))
+            setLikeState(like.is_liked ? "Liked" : "Unliked")
+        }
 
         setLoading(false)
     }

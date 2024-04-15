@@ -16,6 +16,23 @@ export interface PhotoAuthor {
     avatar_url: string
 }
 
+export interface PhotoLike {
+    id: string
+    user_id: string
+    photo_id: string
+    liked_at: string
+}
+
+export interface PhotoComment {
+    id: string
+    content: string
+    author_id: string
+    photo_id: string
+    was_edited: boolean
+    createdAt: string
+    updatedAt: string
+}
+
 export interface FeedRequestParams {
     perPage?: number
     page?: number
@@ -42,8 +59,17 @@ export interface PhotoResponse {
     slug: string
     meta: PhotoMeta
     author: PhotoAuthor
-    likes: any[] // TODO: Define Like interface
-    comments: any[] // TODO: Define Comment interface
+    likes: PhotoLike[]
+    comments: PhotoComment[]
     createdAt: string
     updatedAt: string
+}
+
+export interface ToggleLikeResponse {
+    id: string
+    user: { id: string; username: string }
+    photo: { id: string }
+    liked_at: string
+    is_liked: boolean
+    total_likes: number
 }
