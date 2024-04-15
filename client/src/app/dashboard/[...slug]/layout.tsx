@@ -1,6 +1,7 @@
 import getPrivateProfile from "@/actions/user/get-private-profile"
 import DashboardNavigation from "@/components/dashboard/dashboard-navigation"
 import { PrivateProfileResponse } from "@/interfaces/api/users"
+import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ReactNode } from "react"
@@ -28,12 +29,16 @@ export default async function DashBoardLayout({
 
     if (!user) return notFound()
 
+    const DEFAULT_AVATAR = "/images/default-avatar.svg"
+    const DEFAULT_COVER = "https://source.unsplash.com/random/?birds"
+    const DEFAULT_BIO = "You haven't set a bio yet."
+
     return (
         <>
             <header className="bg-mantis-100 pb-8 dark:bg-mantis-800">
                 <div
                     style={{
-                        backgroundImage: `url('${user.cover_image_url}')`
+                        backgroundImage: `url('${user.cover_image_url || DEFAULT_COVER}')`
                     }}
                     className="h-[250px] w-full bg-cover bg-center"
                     role="img"
@@ -41,11 +46,16 @@ export default async function DashBoardLayout({
                 ></div>
 
                 <div className="-mt-20 flex flex-col items-center">
-                    <img
-                        src={user.avatar_url}
+                    <Image
+                        src={user.avatar_url || DEFAULT_AVATAR}
                         alt={`${user.username}, this is your avatar.`}
                         title={`${user.username}, this is your avatar.`}
+                        style={{ width: "auto", height: "auto" }}
                         className="aspect-square h-40 w-40 rounded-full border-4 border-green-spring-50 object-cover object-center align-middle italic dark:border-mantis-800"
+                        width={160}
+                        height={160}
+                        sizes="100vw"
+                        priority
                     />
                     <div className="mt-2 flex items-center space-x-2">
                         <Link
@@ -64,7 +74,7 @@ export default async function DashBoardLayout({
                         {user.email}
                     </p>
                     <p className="mb-3 mt-1 max-w-md text-center text-green-spring-700 dark:text-mantis-300">
-                        {user.bio}
+                        {user.bio || DEFAULT_BIO}
                     </p>
                     <ul className="flex flex-col items-center gap-3 sm:flex-row sm:gap-2">
                         <li>
