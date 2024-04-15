@@ -79,7 +79,7 @@ export class PhotoService {
         })
         if (!photo) throw new NotFoundError("Photo not found.")
 
-        photo.meta.total_likes = (photo.meta.total_likes || 0) + 1
+        photo.meta.total_views = (photo.meta.total_views || 0) + 1
         await saveEntityToDatabase(photoRepository, photo)
 
         return PhotoResponseDTO.fromEntity(photo)
