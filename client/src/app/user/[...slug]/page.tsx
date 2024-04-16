@@ -19,7 +19,7 @@ export async function generateMetadata({
 
     return {
         title: `${username} | Birdy`,
-        description: `This is the user page of ${username} on Birdy.`
+        description: `This is the profile page of ${username} on Birdy.`
     }
 }
 
@@ -133,15 +133,15 @@ export default async function UserPage({ params }: UserPageParams) {
                                     id="user-profile-title"
                                     className="flex items-center gap-1 text-4xl font-semibold leading-normal text-green-spring-700 dark:text-green-spring-700"
                                 >
-                                    {profile.username}
+                                    @{profile.username}
                                     {profile.role === "ADMIN" ? (
                                         <FaUserTie size={20} />
                                     ) : (
                                         <FaUser size={20} />
                                     )}
                                 </h3>
-                                <p className="flex items-center gap-2 text-sm font-bold leading-normal text-green-spring-300">
-                                    {profile.email}
+                                <p className="text-sm text-green-spring-400">
+                                    {profile.display_name}
                                 </p>
                                 <p className="mt-2 text-center leading-7 text-green-spring-600">
                                     {profile.bio}
