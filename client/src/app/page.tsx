@@ -1,7 +1,21 @@
+import getPhotosFeed from "@/actions/photos/get-photos-feed"
+import Feed from "@/components/feed/feed"
+import { FeedResponse } from "@/interfaces/api/photos"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: "Feed | Birdy",
+    description:
+        "Welcome to the Birdy social network! This is the feed with all the photos from our users."
+}
+
 export default async function Home() {
+    const state = await getPhotosFeed()
+    const photos = (state.response?.data as FeedResponse[]) ?? []
+
     return (
-        <main className="container">
-            <h1>Main page</h1>
-        </main>
+        <section className="my-4">
+            <Feed photos={photos} />
+        </section>
     )
 }
