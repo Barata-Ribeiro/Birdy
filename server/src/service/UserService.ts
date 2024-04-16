@@ -30,9 +30,11 @@ export default class UserService {
                 "user.id",
                 "user.username",
                 "user.display_name",
+                "user.role",
                 "user.avatar_url",
                 "user.cover_image_url",
-                "user.bio"
+                "user.bio",
+                "user.createdAt"
             ])
             .addSelect((subQuery) => {
                 return subQuery
