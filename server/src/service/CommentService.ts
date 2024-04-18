@@ -1,4 +1,5 @@
 import { AppDataSource } from "../database/data-source"
+import { CommentResponseDTO } from "../dto/CommentResponseDTO"
 import { User } from "../entity/User"
 import {
     BadRequestError,
@@ -60,7 +61,12 @@ export class CommentService {
             photo: { id: photoId }
         })
 
-        await saveEntityToDatabase(commentRepository, newComment)
+        const savedNewComment = await saveEntityToDatabase(
+            commentRepository,
+            newComment
+        )
+
+        return CommentResponseDTO.fromEntity(savedNewComment)
     }
 
     async updateComment(

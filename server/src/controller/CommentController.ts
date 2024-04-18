@@ -36,12 +36,17 @@ export class CommentController {
         if (!photoId)
             throw new BadRequestError("The photo ID parameter is required.")
 
-        await this.commentService.addComment(user.data, photoId, content)
+        const response = await this.commentService.addComment(
+            user.data,
+            photoId,
+            content
+        )
 
         return res.status(201).json({
             status: "success",
             code: res.statusCode,
-            message: "Comment added successfully."
+            message: "Comment added successfully.",
+            data: response
         })
     }
 
