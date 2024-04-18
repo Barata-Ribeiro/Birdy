@@ -1,8 +1,10 @@
 "use client"
 
+import adminDeleteComment from "@/actions/admin/admin-delete-comment"
 import adminDeletePhoto from "@/actions/admin/admin-delete-photo"
 import deletePhoto from "@/actions/photos/delete-photo"
-import { PhotoResponse } from "@/interfaces/api/photos"
+import deleteComment from "@/actions/photos/delete-photo-comment"
+import { PhotoComment, PhotoResponse } from "@/interfaces/api/photos"
 import { UserContextResponse } from "@/interfaces/api/users"
 import tw from "@/utils/tw"
 import { useState } from "react"
@@ -12,7 +14,7 @@ import { twMerge } from "tailwind-merge"
 interface DeleteButtonProps {
     user: UserContextResponse
     photo?: PhotoResponse
-    comment?: any
+    comment?: PhotoComment
     direction?: "left" | "right"
 }
 
@@ -39,10 +41,11 @@ export default function DeleteButton({
                 if (user.role === "ADMIN") await adminDeletePhoto(photo.id)
                 else await deletePhoto(photo.id)
             }
-            // if (comment) {
-            //     if (user.role === "ADMIN") await adminDeleteComment(comment.id)
-            //     else await deleteComment(comment.id)
-            // }
+            if (comment) {
+                if (user.role === "ADMIN")
+                    await adminDeleteComment(comment.photo_id, comment.id)
+                else await deleteComment(comment.photo_id, comment.id)
+            }
 
             setLoading(false)
 
