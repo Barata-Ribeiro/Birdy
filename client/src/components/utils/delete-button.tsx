@@ -2,8 +2,8 @@
 
 import adminDeleteComment from "@/actions/admin/admin-delete-comment"
 import adminDeletePhoto from "@/actions/admin/admin-delete-photo"
+import deleteComment from "@/actions/comments/delete-comment"
 import deletePhoto from "@/actions/photos/delete-photo"
-import deleteComment from "@/actions/photos/delete-photo-comment"
 import { PhotoComment, PhotoResponse } from "@/interfaces/api/photos"
 import { UserContextResponse } from "@/interfaces/api/users"
 import tw from "@/utils/tw"

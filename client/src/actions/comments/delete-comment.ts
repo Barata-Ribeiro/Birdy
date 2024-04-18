@@ -3,6 +3,7 @@
 import { ApiResponse } from "@/interfaces/actions"
 import ApiError from "@/utils/api-error"
 import { PHOTO_DELETE_COMMENT } from "@/utils/api-urls"
+import { revalidateTag } from "next/cache"
 
 export default async function deleteComment(
     photoId: string,
@@ -23,6 +24,7 @@ export default async function deleteComment(
                 responseData.message ?? "An unknown error occurred."
             )
 
+        revalidateTag("comment")
         return {
             ok: true,
             client_error: null,
