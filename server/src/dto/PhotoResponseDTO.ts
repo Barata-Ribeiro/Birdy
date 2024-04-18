@@ -14,8 +14,8 @@ export class PhotoResponseDTO {
     author: Partial<User>
     likes: Partial<UserLike>[]
     comments: Partial<Comment>[]
-    createdAt: Date
-    updatedAt: Date
+    created_at: Date
+    updated_at: Date
 
     static fromEntity(photo: Photo): PhotoResponseDTO {
         const dto = new PhotoResponseDTO()
@@ -44,10 +44,12 @@ export class PhotoResponseDTO {
                 id: comment.id,
                 content: comment.content,
                 author_id: comment.author.id,
+                author_username: comment.author.username,
+                author_name: comment.author.display_name,
                 photo_id: comment.photo.id,
                 was_edited: comment.was_edited,
-                createdAt: comment.createdAt,
-                updatedAt: comment.updatedAt
+                created_at: comment.createdAt,
+                updated_at: comment.updatedAt
             })) ?? []
 
         return dto

@@ -72,8 +72,10 @@ export class PhotoService {
             relations: [
                 "author",
                 "comments",
+                "comments.author",
                 "comments.photo",
                 "likes",
+                "likes.user",
                 "likes.photo"
             ]
         })
