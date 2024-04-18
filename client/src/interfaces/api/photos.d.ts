@@ -27,10 +27,12 @@ export interface PhotoComment {
     id: string
     content: string
     author_id: string
+    author_username: string
+    author_name: string
     photo_id: string
     was_edited: boolean
-    createdAt: string
-    updatedAt: string
+    created_at: string
+    updated_at: string
 }
 
 export interface FeedRequestParams {
@@ -61,8 +63,8 @@ export interface PhotoResponse {
     author: PhotoAuthor
     likes: PhotoLike[]
     comments: PhotoComment[]
-    createdAt: string
-    updatedAt: string
+    created_at: string
+    updated_at: string
 }
 
 export interface ToggleLikeResponse {

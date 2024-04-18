@@ -1,4 +1,5 @@
 import getPhoto from "@/actions/photos/get-photo"
+import PhotoComments from "@/components/photo/photo-comments"
 import DeleteButton from "@/components/utils/delete-button"
 import LikeButton from "@/components/utils/like-button"
 import { useUser } from "@/context/user-context"
@@ -49,6 +50,7 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
                     sizes="100vw"
                     priority
                 />
+
                 <div className="flex flex-col gap-3 md:gap-5">
                     {/* Title */}
                     <div className="flex items-end justify-between">
@@ -91,6 +93,32 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
                             {photo.meta.total_comments}
                         </span>
                     </div>
+
+                    {/* META BIRD INFO */}
+                    <div className="grid grid-flow-row gap-4 border-y-2 border-green-spring-100 py-3 dark:border-green-spring-500 md:py-5">
+                        <p className="flex flex-col items-center gap-1 md:items-start">
+                            <span className="font-semibold dark:text-green-spring-300">
+                                Bird Size
+                            </span>
+                            <span className="font-normal">
+                                {photo.meta.bird_size} cm
+                            </span>
+                        </p>
+                        <p className="flex flex-col items-center gap-1 md:items-start">
+                            <span className="font-semibold dark:text-green-spring-300">
+                                Habitat
+                            </span>
+                            <span className="font-normal leading-relaxed">
+                                {photo.meta.bird_habitat}
+                            </span>
+                        </p>
+                    </div>
+
+                    {/* COMMENTS */}
+                    <PhotoComments
+                        photoId={params.slug[0]}
+                        comments={photo.comments}
+                    />
                 </div>
             </div>
         </section>
