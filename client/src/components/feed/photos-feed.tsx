@@ -16,7 +16,7 @@ export default function FeedPhotos({ photos }: { photos: FeedResponse[] }) {
                     className="break-inside"
                 >
                     <Link
-                        href={`/photo/${photo.id}`}
+                        href={`/photo/${photo.id}/${photo.slug}`}
                         className="relative"
                         onPointerEnter={() => setHoveredImageId(photo.id)}
                         onPointerLeave={() => setHoveredImageId(null)}
