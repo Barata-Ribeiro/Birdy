@@ -5,14 +5,22 @@ import { ToggleLikeResponse } from "@/interfaces/api/photos"
 import ApiError from "@/utils/api-error"
 import { PHOTO_TOGGLE_LIKE } from "@/utils/api-urls"
 import { revalidateTag } from "next/cache"
+import { cookies } from "next/headers"
 
 export default async function postToggleLike(photoId: string) {
     const URL = PHOTO_TOGGLE_LIKE(photoId)
 
     try {
+        const access_token = cookies().get("access_token")?.value
+        if (!access_token)
+            throw new Error("You must be logged in to delete a photo.")
+
         const response = await fetch(URL, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + access_token
+            },
             body: JSON.stringify({})
         })
 
