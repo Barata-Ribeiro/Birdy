@@ -1,8 +1,11 @@
+import getPhotosFeed from "@/actions/photos/get-photos-feed"
 import getPublicProfile from "@/actions/user/get-public-profile"
 import { useUser } from "@/context/user-context"
+import { FeedResponse } from "@/interfaces/api/photos"
 import { PublicProfileResponse } from "@/interfaces/api/users"
 import type { Metadata } from "next"
 import Image from "next/image"
+import Link from "next/link"
 import { notFound } from "next/navigation"
 import { FaUser, FaUserTie } from "react-icons/fa"
 
@@ -25,9 +28,14 @@ export async function generateMetadata({
 
 export default async function UserPage({ params }: UserPageParams) {
     if (!params.slug) return notFound()
-    const state = await getPublicProfile(params.slug[0])
-    const profile = state.response?.data as PublicProfileResponse | null
+
+    const userState = await getPublicProfile(params.slug[0])
+    const profile = userState.response?.data as PublicProfileResponse | null
     if (!profile) return notFound()
+
+    const photosState = await getPhotosFeed({ userId: profile.id })
+    const photos = photosState.response?.data as FeedResponse[]
+
     const { user } = useUser()
 
     return (
@@ -152,7 +160,33 @@ export default async function UserPage({ params }: UserPageParams) {
                         <hr className="w-2/3 self-center" />
 
                         {/* PHOTOS */}
-                        {/* TO BE ADDED */}
+                        {photos && photos.length > 0 ? (
+                            <ul className="flex flex-wrap items-center justify-center pb-4">
+                                {photos.map((photo, i) => (
+                                    <li
+                                        key={photo.id + "_" + i}
+                                        id={photo.id + "_" + i}
+                                        className="break-inside"
+                                    >
+                                        <Link href={`/photo/${photo.id}/${photo.slug}`}>
+                                            <Image
+                                                src={photo.image_url}
+                                                alt={`Photo: ${photo.title}, by @${photo.author.username}`}
+                                                title={`Photo: ${photo.title}, by @${photo.author.username}`}
+                                                className="h-60 w-60 object-cover object-center align-middle grayscale hover:grayscale-0"
+                                                width={240}
+                                                height={240}
+                                                sizes="100vw"
+                                            />
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className="pb-4 pl-8 pr-16 text-center font-semibold text-green-spring-300">
+                                This user has no photos.
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>
