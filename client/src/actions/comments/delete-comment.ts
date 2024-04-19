@@ -4,6 +4,7 @@ import { ApiResponse } from "@/interfaces/actions"
 import ApiError from "@/utils/api-error"
 import { PHOTO_DELETE_COMMENT } from "@/utils/api-urls"
 import { revalidateTag } from "next/cache"
+import { cookies } from "next/headers"
 
 export default async function deleteComment(
     photoId: string,
@@ -12,8 +13,13 @@ export default async function deleteComment(
     const URL = PHOTO_DELETE_COMMENT(photoId, commentId)
 
     try {
+        const access_token = cookies().get("access_token")?.value
+        if (!access_token)
+            throw new Error("You must be logged in to delete a comment.")
+
         const response = await fetch(URL, {
             method: "DELETE",
+            headers: { Authorization: "Bearer " + access_token },
             next: { revalidate: 60, tags: ["comment"] }
         })
 
