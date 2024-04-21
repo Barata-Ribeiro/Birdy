@@ -18,6 +18,8 @@ export const USER_GET_PROFILE = (username: string) =>
     `${BACKEND_URL}/api/v1/users/profile/${username}`
 export const USER_GET_FOLLOWS = (username: string) =>
     `${BACKEND_URL}/api/v1/users/profile/${username}/follows`
+export const USER_CHECK_FOLLOW = (username: string, userId: string) =>
+    `${BACKEND_URL}/api/v1/users/profile/${username}/followed-by?logged_user_id=${userId}`
 export const USER_GET_CONTEXT = () => `${BACKEND_URL}/api/v1/users/me/context`
 export const USER_GET_PRIVATE_PROFILE = (userId: string) =>
     `${BACKEND_URL}/api/v1/users/me/${userId}`
@@ -26,7 +28,7 @@ export const USER_FOLLOW = (userId: string) =>
 export const USER_UPDATE_PRIVATE_PROFILE = (userId: string) =>
     `${BACKEND_URL}/api/v1/users/me/${userId}`
 export const USER_UNFOLLOW = (userId: string) =>
-    `${BACKEND_URL}/api/v1/users/me/${userId}/follow`
+    `${BACKEND_URL}/api/v1/users/me/${userId}/unfollow`
 export const USER_DELETE_PRIVATE_PROFILE = (userId: string) =>
     `${BACKEND_URL}/api/v1/users/me/${userId}`
 
