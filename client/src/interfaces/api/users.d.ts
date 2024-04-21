@@ -19,11 +19,12 @@ export interface PublicProfileResponse {
     avatar_url: string | null
     cover_image_url: string | null
     bio: string | null
+    created_at: string
     photo_count: number
     liked_photo_count: number
     following_count: number
     follower_count: number
-    created_at: string
+    comment_count: number
 }
 
 export interface PrivateProfileResponse {
