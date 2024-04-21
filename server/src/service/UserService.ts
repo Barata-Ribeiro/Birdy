@@ -69,6 +69,12 @@ export default class UserService {
                     .from(UserFollow, "userFollow")
                     .where("userFollow.followingId = user.id")
             }, "followerCount")
+            .addSelect((subQuery) => {
+                return subQuery
+                    .select("COUNT(comment.id)", "commentCount")
+                    .from(Comment, "comment")
+                    .where("comment.authorId = user.id")
+            }, "commentCount")
             .where("user.username = :username", { username })
             .getRawOne()
 
