@@ -19,6 +19,10 @@ routes.get("/profile/:username/follows", (req, res, next) =>
     followsController.getAllUserFollows(req, res).catch(next)
 )
 
+routes.get("/profile/:username/followed-by", (req, res, next) =>
+    followsController.checkIfUserIsFollowed(req, res).catch(next)
+)
+
 routes.get("/me/context", authMiddleware, (req, res, next) =>
     userController.getUserContext(req, res).catch(next)
 )
@@ -35,7 +39,7 @@ routes.put("/me/:userId", authMiddleware, (req, res, next) =>
     userController.updatePrivateProfile(req, res).catch(next)
 )
 
-routes.delete("/me/:userId/follow", authMiddleware, (req, res, next) =>
+routes.delete("/me/:userId/unfollow", authMiddleware, (req, res, next) =>
     followsController.unfollowUser(req, res).catch(next)
 )
 

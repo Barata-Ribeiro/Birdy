@@ -69,6 +69,27 @@ export default class FollowsController {
         })
     }
 
+    async checkIfUserIsFollowed(req: Request, res: Response) {
+        const { username } = req.params
+        if (!username) throw new BadRequestError("Username is required.")
+
+        const { logged_user_id } = req.query as { logged_user_id: string }
+        if (!logged_user_id)
+            throw new BadRequestError("Logged user ID is required.")
+
+        const isFollowed = await this.followService.checkIfUserIsFollowed(
+            username,
+            logged_user_id
+        )
+
+        return res.status(200).json({
+            status: "success",
+            code: res.statusCode,
+            message: "User follow status retrieved successfully.",
+            data: { followed_by_loggedIn_user: isFollowed }
+        })
+    }
+
     async followUser(req: Request, res: Response) {
         const userId = this.validateUserIdAndOwnership(req)
         const { followId } = req.body as { followId: string }
