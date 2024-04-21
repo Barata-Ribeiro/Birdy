@@ -130,6 +130,7 @@ export default function PhotoComments({
                     <FormButton
                         type="submit"
                         className="rounded-md bg-mantis-600 py-2 text-white hover:bg-mantis-700 disabled:opacity-50"
+                        aria-label="Post Comment"
                         disabled={pending}
                         aria-disabled={pending}
                     >

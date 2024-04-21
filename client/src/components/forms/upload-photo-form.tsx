@@ -97,6 +97,7 @@ export default function UploadPhotoForm({
                     <FormButton
                         type="submit"
                         className="rounded-2xl p-4 text-lg group-invalid:pointer-events-none group-invalid:opacity-30"
+                        aria-label="Post Photo"
                         disabled={pending}
                         aria-disabled={pending}
                     >

@@ -11,7 +11,7 @@ export default function FormButton({
     const mergedClassName = twMerge(sortedClasses, className)
 
     return (
-        <button className={mergedClassName} aria-label="Sign In" {...props}>
+        <button className={mergedClassName} {...props}>
             {children}
         </button>
     )

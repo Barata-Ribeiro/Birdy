@@ -102,6 +102,7 @@ export default function SignUpForm() {
                 <FormButton
                     type="submit"
                     className="rounded-2xl p-4 text-lg group-invalid:pointer-events-none group-invalid:opacity-30"
+                    aria-label="Create Account"
                     disabled={pending}
                     aria-disabled={pending}
                 >
