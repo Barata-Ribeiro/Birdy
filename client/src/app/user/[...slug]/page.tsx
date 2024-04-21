@@ -1,5 +1,6 @@
 import getPhotosFeed from "@/actions/photos/get-photos-feed"
 import getPublicProfile from "@/actions/user/get-public-profile"
+import FollowingComponent from "@/components/user/following-component"
 import { useUser } from "@/context/user-context"
 import { FeedResponse } from "@/interfaces/api/photos"
 import { PublicProfileResponse } from "@/interfaces/api/users"
@@ -101,7 +102,12 @@ export default async function UserPage({ params }: UserPageParams) {
                                 </div>
 
                                 {/* FOLLOWINGS */}
-                                {/* TO BE IMPLEMENTED */}
+                                <div className="w-full lg:order-3 lg:w-4/12 lg:self-center lg:text-right">
+                                    <FollowingComponent
+                                        profile={profile}
+                                        user={user}
+                                    />
+                                </div>
 
                                 {/* INFO */}
                                 <div className="w-full px-4 lg:order-1 lg:w-4/12">
@@ -124,8 +130,7 @@ export default async function UserPage({ params }: UserPageParams) {
                                         </div>
                                         <div className="p-3 text-center lg:mr-4">
                                             <span className="block text-xl font-bold uppercase tracking-wide text-green-spring-600">
-                                                {/* {profile.comment_count} */}
-                                                {/* TO BE ADDED */}
+                                                {profile.comment_count}
                                             </span>
                                             <span className="text-sm text-green-spring-400">
                                                 Comments
@@ -168,7 +173,9 @@ export default async function UserPage({ params }: UserPageParams) {
                                         id={photo.id + "_" + i}
                                         className="break-inside"
                                     >
-                                        <Link href={`/photo/${photo.id}/${photo.slug}`}>
+                                        <Link
+                                            href={`/photo/${photo.id}/${photo.slug}`}
+                                        >
                                             <Image
                                                 src={photo.image_url}
                                                 alt={`Photo: ${photo.title}, by @${photo.author.username}`}
