@@ -23,6 +23,8 @@ export const USER_CHECK_FOLLOW = (username: string, userId: string) =>
 export const USER_GET_CONTEXT = () => `${BACKEND_URL}/api/v1/users/me/context`
 export const USER_GET_PRIVATE_PROFILE = (userId: string) =>
     `${BACKEND_URL}/api/v1/users/me/${userId}`
+export const USER_GET_PHOTOS_STATS = (userId: string) =>
+    `${BACKEND_URL}/api/v1/users/me/${userId}/photos-stats`
 export const USER_FOLLOW = (userId: string) =>
     `${BACKEND_URL}/api/v1/users/me/${userId}/follow`
 export const USER_UPDATE_PRIVATE_PROFILE = (userId: string) =>
