@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt"
 import { AppDataSource } from "../database/data-source"
 import { EditUserResponseDTO } from "../dto/EditUserResponseDTO"
+import { PhotoStatsResponseDTO } from "../dto/PhotoStatsResponseDTO"
 import { PrivateProfileResponseDTO } from "../dto/PrivateProfileResponseDTO"
 import { PublicProfileResponseDTO } from "../dto/PublicProfileResponseDTO"
 import { Comment } from "../entity/Comment"
@@ -14,6 +15,7 @@ import {
     InternalServerError,
     NotFoundError
 } from "../middleware/helpers/ApiErrors"
+import { photoRepository } from "../repository/PhotoRepository"
 import { userRepository } from "../repository/UserRepository"
 import { saveEntityToDatabase } from "../utils/operation-functions"
 import {
@@ -186,6 +188,64 @@ export default class UserService {
         if (!user) throw new BadRequestError("User not found.")
 
         return PrivateProfileResponseDTO.fromRaw(user)
+    }
+
+    async getUserPhotosStats(userId: string) {
+        if (!isUUIDValid(userId)) throw new BadRequestError("Invalid user ID.")
+
+        const [latestPhotos, totalLatest] = await photoRepository
+            .createQueryBuilder("photo")
+            .leftJoin("photo.meta", "meta")
+            .select([
+                "photo.id",
+                "photo.title",
+                "meta.total_likes",
+                "meta.total_comments",
+                "meta.total_views",
+                "photo.createdAt"
+            ])
+            .where("photo.authorId = :userId", { userId })
+            .orderBy("photo.createdAt", "DESC")
+            .limit(3)
+            .getManyAndCount()
+
+        const latestPhotosDTO = latestPhotos.map((photo) =>
+            PhotoStatsResponseDTO.fromEntity(photo)
+        )
+
+        const [popularPhotos, totalPopular] = await photoRepository
+            .createQueryBuilder("photo")
+            .leftJoin("photo.meta", "meta")
+            .select([
+                "photo.id",
+                "photo.title",
+                "meta.total_likes",
+                "meta.total_comments",
+                "meta.total_views",
+                "photo.createdAt"
+            ])
+            .where("photo.authorId = :userId", { userId })
+            .orderBy("meta.total_views", "DESC")
+            .limit(3)
+            .getManyAndCount()
+
+        const popularPhotosDTO = popularPhotos.map((photo) =>
+            PhotoStatsResponseDTO.fromEntity(photo)
+        )
+
+        const responseData = {
+            total_photos: totalLatest + totalPopular ?? 0,
+            latest_photos: {
+                total: totalLatest ?? 0,
+                photos: latestPhotosDTO ?? []
+            },
+            popular_photos: {
+                total: totalPopular ?? 0,
+                photos: popularPhotosDTO ?? []
+            }
+        }
+
+        return responseData
     }
 
     async updatePrivateProfile(

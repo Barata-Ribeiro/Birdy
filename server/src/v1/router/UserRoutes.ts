@@ -31,6 +31,10 @@ routes.get("/me/:userId", authMiddleware, (req, res, next) =>
     userController.getPrivateProfile(req, res).catch(next)
 )
 
+routes.get("/me/:userId/photos-stats", authMiddleware, (req, res, next) =>
+    userController.getUserPhotosStats(req, res).catch(next)
+)
+
 routes.post("/me/:userId/follow", authMiddleware, (req, res, next) =>
     followsController.followUser(req, res).catch(next)
 )

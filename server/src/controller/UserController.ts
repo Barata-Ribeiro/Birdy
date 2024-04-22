@@ -89,6 +89,19 @@ export default class UserController {
         })
     }
 
+    public async getUserPhotosStats(req: Request, res: Response) {
+        const userId = this.validateUserIdAndOwnership(req)
+
+        const response = await this.userService.getUserPhotosStats(userId)
+
+        return res.status(200).json({
+            status: "success",
+            code: res.statusCode,
+            message: "User photos stats fetched successfully.",
+            data: response
+        })
+    }
+
     public async updatePrivateProfile(req: Request, res: Response) {
         const userId = this.validateUserIdAndOwnership(req)
 
