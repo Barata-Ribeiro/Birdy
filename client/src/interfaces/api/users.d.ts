@@ -44,3 +44,15 @@ export interface PrivateProfileResponse {
     comment_count: number
     last_comments_made: any[] // TODO: Implement interface
 }
+
+export interface UserPhotosStatsResponse {
+    total_photos: number
+    latest_photos: {
+        total: number
+        photos: PhotoStatsResponse[]
+    }
+    popular_photos: {
+        total: number
+        photos: PhotoStatsResponse[]
+    }
+}

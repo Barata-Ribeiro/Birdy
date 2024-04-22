@@ -75,3 +75,12 @@ export interface ToggleLikeResponse {
     is_liked: boolean
     total_likes: number
 }
+
+export interface PhotoStatsResponse {
+    id: string
+    title: string
+    total_likes: number
+    total_comments: number
+    total_views: number
+    created_at: string
+}
