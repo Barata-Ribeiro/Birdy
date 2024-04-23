@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Birdy - Frontend 🖼️
 
-## Getting Started
+The front end of Birdy is designed to provide users with an intuitive and
+responsive interface to interact with the platform. It is built using NextJs,
+allowing for a dynamic and efficient user experience, and server-side rendering
+for a faster response. The project is based on the 'Dogs' social network, which
+is also an Instagram-like app for photo sharing, with the difference being that
+'Birdy' is for bird enthusiasts while 'Dogs' is for dog enthusiasts.
 
-First, run the development server:
+## 🛠️ Tech Used
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- [NextJS](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Jose](https://github.com/panva/jose)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Victory Charts](https://formidable.com/open-source/victory/)
+- And other awesome libraries and tools listed in
+    [package.json](./package.json)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+These instructions will get you a copy of the project up and running on your
+local machine for development and testing purposes.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Installation
 
-## Learn More
+1. Clone the repository:
 
-To learn more about Next.js, take a look at the following resources:
+    ```bash
+    git clone https://github.com/Barata-Ribeiro/Birdy.git
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Navigate into project folder:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    ```bash
+    cd Birdy/client
+    ```
 
-## Deploy on Vercel
+3. Install NPM packages:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    ```bash
+    npm install
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+4. Run the develoment server:
+
+    ```bash
+    npm run dev
+    ```
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check
+[issues page](https://github.com/Barata-Ribeiro/Birdy/issues) if you want to
+contribute.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the
+[License](https://github.com/Barata-Ribeiro/Birdy/blob/main/LICENSE) file for
+details.
