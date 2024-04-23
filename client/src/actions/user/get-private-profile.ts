@@ -17,7 +17,7 @@ export default async function getPrivateProfile(userId: string) {
         const response = await fetch(URL, {
             method: "GET",
             headers: { Authorization: "Bearer " + access_token },
-            next: { revalidate: 60 }
+            next: { revalidate: 60, tags: ["profile"] }
         })
 
         const responseData = (await response.json()) as ApiResponse

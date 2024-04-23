@@ -11,7 +11,7 @@ export default async function getPublicProfile(username: string) {
     try {
         const response = await fetch(URL, {
             method: "GET",
-            next: { revalidate: 60 }
+            next: { revalidate: 60, tags: ["public-profile"] }
         })
 
         const responseData = (await response.json()) as ApiResponse
