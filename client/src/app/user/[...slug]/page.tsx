@@ -39,12 +39,15 @@ export default async function UserPage({ params }: UserPageParams) {
 
     const { user } = useUser()
 
+    const DEFAULT_AVATAR = "/images/default-avatar.svg"
+    const DEFAULT_COVER = "https://source.unsplash.com/random/?birds"
+
     return (
         <section className="my-4" aria-labelledby="user-profile-title">
             <div className="relative block h-[500px]">
                 <div
                     style={{
-                        backgroundImage: `url('${profile.cover_image_url}')`
+                        backgroundImage: `url('${profile.cover_image_url ?? DEFAULT_COVER}')`
                     }}
                     className="absolute top-0 h-full w-full bg-cover bg-center"
                     aria-hidden="true"
@@ -88,7 +91,7 @@ export default async function UserPage({ params }: UserPageParams) {
                                         <Image
                                             alt={`Avatar of ${profile.username}`}
                                             title={`Avatar of ${profile.username}`}
-                                            src={`${profile.avatar_url}`}
+                                            src={`${profile.avatar_url ?? DEFAULT_AVATAR}`}
                                             style={{
                                                 width: "auto",
                                                 height: "auto"
@@ -157,7 +160,7 @@ export default async function UserPage({ params }: UserPageParams) {
                                     {profile.display_name}
                                 </p>
                                 <p className="mt-2 text-center leading-7 text-green-spring-600">
-                                    {profile.bio}
+                                    {profile.bio ?? null}
                                 </p>
                             </div>
                         </div>
