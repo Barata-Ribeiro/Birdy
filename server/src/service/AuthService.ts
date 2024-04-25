@@ -2,6 +2,7 @@ import bcrypt from "bcrypt"
 import { sign } from "jsonwebtoken"
 import nodemailer, { SendMailOptions } from "nodemailer"
 import { AuthRegisterResponseDTO } from "../dto/AuthRegisterResponseDTO"
+import { UserRole } from "../entity/enums/Roles"
 import {
     AuthLoginServiceResponse,
     AuthUserLoginBody,
@@ -10,6 +11,7 @@ import {
 import {
     BadRequestError,
     ConflictError,
+    ForbiddenError,
     InternalServerError,
     NotFoundError,
     UnauthorizedError
@@ -78,13 +80,16 @@ export default class AuthService {
         const user = await userRepository
             .createQueryBuilder("user")
             .where("user.username = :username", { username })
-            .select(["user.id", "user.password"])
+            .select(["user.id", "user.username", "user.role", "user.password"])
             .getOne()
         if (!user) throw new NotFoundError("User not found.")
 
         const passwordMatch = await bcrypt.compare(password, user.password)
         if (!passwordMatch)
             throw new UnauthorizedError("Your password is incorrect.")
+
+        if (user.role === UserRole.BANNED)
+            throw new ForbiddenError("You are banned. You cannot log in.")
 
         const secretKey = process.env.JWT_SECRET_KEY
         if (!secretKey)
@@ -100,7 +105,11 @@ export default class AuthService {
             expiresIn: remember_me ? "30d" : "1d"
         })
 
-        return { access_token, refresh_token }
+        return {
+            access_token,
+            refresh_token,
+            user: { id: user.id, username: user.username, role: user.role }
+        }
     }
 
     async refreshToken(refreshToken: string): Promise<string> {

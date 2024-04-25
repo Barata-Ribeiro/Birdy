@@ -43,7 +43,11 @@ export default class AuthController {
             status: "success",
             code: res.statusCode,
             message: "You have successfully logged in.",
-            data: response
+            data: {
+                user: response.user,
+                access_token: response.access_token,
+                refresh_token: response.refresh_token
+            }
         })
     }
 

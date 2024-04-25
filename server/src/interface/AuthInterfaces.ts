@@ -1,3 +1,5 @@
+import { User } from "../entity/User"
+
 export interface AuthUserRegisterBody {
     username: string
     display_name: string
@@ -14,4 +16,5 @@ export interface AuthUserLoginBody {
 export interface AuthLoginServiceResponse {
     access_token: string
     refresh_token: string
+    user: Partial<User>
 }
