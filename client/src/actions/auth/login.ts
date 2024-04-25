@@ -6,14 +6,7 @@ import ApiError from "@/utils/api-error"
 import { AUTH_LOGIN } from "@/utils/api-urls"
 import { cookies } from "next/headers"
 
-type LoginResponse = State & {
-    username: string | null
-}
-
-export default async function login(
-    state: State,
-    formData: FormData
-): Promise<LoginResponse> {
+export default async function login(state: State, formData: FormData) {
     const URL = AUTH_LOGIN()
     const FIFTEEN_MINUTES = 15 * 60 * 1000
     const ONE_DAY = 24 * 60 * 60 * 1000
@@ -44,8 +37,11 @@ export default async function login(
                 responseData.message ?? "An unknown error occurred."
             )
 
-        const { access_token, refresh_token } =
+        const { access_token, refresh_token, user } =
             responseData.data as AuthLoginResponse
+
+        if (user.role === "BANNED")
+            throw new Error("You are banned. You cannot log in.")
 
         cookies().set("access_token", access_token, {
             httpOnly: true,
@@ -63,10 +59,9 @@ export default async function login(
         return {
             ok: true,
             client_error: null,
-            response: null,
-            username
+            response: { ...responseData, user }
         }
     } catch (error) {
-        return { ...ApiError(error), username: null }
+        return ApiError(error)
     }
 }

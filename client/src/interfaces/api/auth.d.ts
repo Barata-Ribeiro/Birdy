@@ -11,6 +11,11 @@ export interface AuthRegisterResponse {
 export interface AuthLoginResponse {
     access_token: string
     refresh_token: string
+    user: {
+        id: string
+        username: string
+        role: "NONE" | "ADMIN" | "MEMBER" | "BANNED"
+    }
 }
 
 export interface AuthRefresTokenhResponse {

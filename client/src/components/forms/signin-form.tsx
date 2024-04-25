@@ -13,13 +13,17 @@ export default function SignInForm() {
     const [state, action] = useFormState(login, {
         ok: false,
         client_error: null,
-        response: null,
-        username: null
+        response: null
     })
 
     useEffect(() => {
-        if (state.ok && state.username)
-            window.location.href = `/dashboard/${state.username}`
+        if (
+            state.ok &&
+            state.response &&
+            "id" in state.response &&
+            "username" in state.response
+        )
+            window.location.href = `/dashboard/${state.response.id}/${state.response.username}`
     }, [state.ok])
 
     return (
