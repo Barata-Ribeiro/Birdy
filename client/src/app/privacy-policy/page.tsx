@@ -35,7 +35,7 @@ export default async function PrivacyPolicyPage() {
                     </a>
                 </li>
                 <li>
-                    <a href="#childrens-privacy">Children's Privacy</a>
+                    <a href="#childrens-privacy">Children&apos;s Privacy</a>
                 </li>
                 <li>
                     <a href="#links-to-other-websites">
@@ -99,15 +99,15 @@ export default async function PrivacyPolicyPage() {
                             <strong className="font-bold">Affiliate</strong>{" "}
                             means an entity that controls, is controlled by or
                             is under common control with a party, where
-                            "control" means ownership of 50% or more of the
+                            &rdquo;control&ldquo; means ownership of 50% or more of the
                             shares, equity interest or other securities entitled
                             to vote for election of directors or other managing
                             authority.
                         </li>
                         <li>
                             <strong className="font-bold">Company</strong>{" "}
-                            (referred to as either "the Company", "We", "Us" or
-                            "Our" in this Agreement) refers to Birdy.
+                            (referred to as either &rdquo;the Company&ldquo;, &rdquo;We&ldquo;, &rdquo;Us&ldquo; or
+                            &rdquo;Our&ldquo; in this Agreement) refers to Birdy.
                         </li>
                         <li>
                             <strong className="font-bold">Cookies</strong> are
@@ -210,7 +210,7 @@ export default async function PrivacyPolicyPage() {
                         </p>
                         <p>
                             Usage Data may include information such as Your
-                            Device's Internet Protocol address (e.g. IP
+                            Device&apos;s Internet Protocol address (e.g. IP
                             address), browser type, browser version, the pages
                             of our Service that You visit, the time and date of
                             Your visit, the time spent on those pages, unique
@@ -278,7 +278,7 @@ export default async function PrivacyPolicyPage() {
                         </ol>
 
                         <p>
-                            Cookies can be "Persistent" or "Session" Cookies.
+                            Cookies can be &rdquo;Persistent&ldquo; or &rdquo;Session&ldquo; Cookies.
                             Persistent Cookies remain on Your personal computer
                             or mobile device when You go offline, while Session
                             Cookies are deleted as soon as You close Your web
@@ -400,7 +400,7 @@ export default async function PrivacyPolicyPage() {
                             </strong>{" "}
                             To contact You by email, telephone calls, SMS, or
                             other equivalent forms of electronic communication,
-                            such as a mobile application's push notifications
+                            such as a mobile application&apos;s push notifications
                             regarding updates or informative communications
                             related to the functionalities, products or
                             contracted services, including the security updates,
@@ -544,7 +544,7 @@ export default async function PrivacyPolicyPage() {
                     </h3>
                     <p>
                         Your information, including Personal Data, is processed
-                        at the Company's operating offices and in any other
+                        at the Company&apos;s operating offices and in any other
                         places where the parties involved in the processing are
                         located. It means that this information may be
                         transferred to — and maintained on — computers located
@@ -670,7 +670,7 @@ export default async function PrivacyPolicyPage() {
             </div>
 
             <div id="childrens-privacy" className="flex flex-col gap-4">
-                <h2 className="-mb-2 text-2xl">Children's Privacy</h2>
+                <h2 className="-mb-2 text-2xl">Children&apos;s Privacy</h2>
                 <article className="flex flex-col gap-4">
                     <p>
                         Our Service does not address anyone under the age of 18.
@@ -686,7 +686,7 @@ export default async function PrivacyPolicyPage() {
                     <p>
                         If We need to rely on consent as a legal basis for
                         processing Your information and Your country requires
-                        consent from a parent, We may require Your parent's
+                        consent from a parent, We may require Your parent&apos;s
                         consent before We collect and use that information.
                     </p>
 
@@ -705,7 +705,7 @@ export default async function PrivacyPolicyPage() {
                     <p>
                         Our Service may contain links to other websites that are
                         not operated by Us. If You click on a third party link,
-                        You will be directed to that third party's site. We
+                        You will be directed to that third party&apos;s site. We
                         strongly advise You to review the Privacy Policy of
                         every site You visit.
                     </p>
@@ -730,7 +730,7 @@ export default async function PrivacyPolicyPage() {
                     <p>
                         We will let You know via email and/or a prominent notice
                         on Our Service, prior to the change becoming effective
-                        and update the "Last updated" date at the top of this
+                        and update the &rdquo;Last updated&ldquo; date at the top of this
                         Privacy Policy.
                     </p>
                     <p>

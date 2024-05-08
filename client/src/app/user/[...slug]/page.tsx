@@ -28,6 +28,8 @@ export async function generateMetadata({
 }
 
 export default async function UserPage({ params }: UserPageParams) {
+    const { user } = useUser()
+    
     if (!params.slug) return notFound()
 
     const userState = await getPublicProfile(params.slug[0])
@@ -37,7 +39,6 @@ export default async function UserPage({ params }: UserPageParams) {
     const photosState = await getPhotosFeed({ userId: profile.id })
     const photos = photosState.response?.data as FeedResponse[]
 
-    const { user } = useUser()
 
     const DEFAULT_AVATAR = "/images/default-avatar.svg"
     const DEFAULT_COVER = "https://source.unsplash.com/random/?birds"

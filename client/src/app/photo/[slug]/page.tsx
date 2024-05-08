@@ -30,10 +30,11 @@ export async function generateMetadata({ params }: PhotoPageProps) {
 export default async function PhotoPage({ params }: PhotoPageProps) {
     const state = await getPhoto(params.slug[0])
     const photo = state.response?.data as PhotoResponse | null
+    const { user } = useUser()
+    
     if (!photo) return notFound()
 
     // Handling logged in User
-    const { user } = useUser()
     const userId = user ? user.id : null
     const isOwner = userId && photo.author.id === userId
 

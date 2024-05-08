@@ -28,7 +28,7 @@ export default async function TermsPage() {
 
                 <p>
                     These terms and conditions outline the rules and regulations
-                    for the use of Birdy's Website, located at
+                    for the use of Birdy&apos;s Website, located at
                     https://birdy-social.vercel.app/.
                 </p>
 
@@ -42,16 +42,16 @@ export default async function TermsPage() {
                 <p>
                     The following terminology applies to these Terms and
                     Conditions, Privacy Statement and Disclaimer Notice and all
-                    Agreements: "Client", "You" and "Your" refers to you, the
-                    person log on this website and compliant to the Company's
-                    terms and conditions. "The Company", "Ourselves", "We",
-                    "Our" and "Us", refers to our Company. "Party", "Parties",
-                    or "Us", refers to both the Client and ourselves. All terms
+                    Agreements: &rsquo;Client&lsquo;, &rsquo;You&lsquo; and &rsquo;Your&lsquo; refers to you, the
+                    person log on this website and compliant to the Company&apos;s
+                    terms and conditions. &rsquo;The Company&lsquo;, &rsquo;Ourselves&lsquo;, &rsquo;We&lsquo;,
+                    &rsquo;Our&lsquo; and &rsquo;Us&lsquo;, refers to our Company. &rsquo;Party&lsquo;, &rsquo;Parties&lsquo;,
+                    or &rsquo;Us&lsquo;, refers to both the Client and ourselves. All terms
                     refer to the offer, acceptance and consideration of payment
                     necessary to undertake the process of our assistance to the
                     Client in the most appropriate manner for the express
-                    purpose of meeting the Client's needs in respect of
-                    provision of the Company's stated services, in accordance
+                    purpose of meeting the Client&apos;s needs in respect of
+                    provision of the Company&apos;s stated services, in accordance
                     with and subject to, prevailing law of br. Any use of the
                     above terminology or other words in the singular, plural,
                     capitalization and/or he/she or they, are taken as
@@ -66,12 +66,12 @@ export default async function TermsPage() {
 
                 <p>
                     We employ the use of cookies. By accessing Birdy, you agreed
-                    to use cookies in agreement with the Birdy's Privacy Policy.{" "}
+                    to use cookies in agreement with the Birdy&apos;s Privacy Policy.{" "}
                 </p>
 
                 <p>
                     Most interactive websites use cookies to let us retrieve the
-                    user's details for each visit. Cookies are used by our
+                    user&apos;s details for each visit. Cookies are used by our
                     website to enable the functionality of certain areas to make
                     it easier for people visiting our website. Some of our
                     affiliate/advertising partners may also use cookies.
@@ -187,7 +187,7 @@ export default async function TermsPage() {
                     link: (a) is not in any way deceptive; (b) does not falsely
                     imply sponsorship, endorsement or approval of the linking
                     party and its products and/or services; and (c) fits within
-                    the context of the linking party's site.
+                    the context of the linking party&apos;s site.
                 </p>
 
                 <p>
@@ -225,7 +225,7 @@ export default async function TermsPage() {
                     link: (a) is not in any way deceptive; (b) does not falsely
                     imply sponsorship, endorsement or approval of the linking
                     party and its products or services; and (c) fits within the
-                    context of the linking party's site.
+                    context of the linking party&apos;s site.
                 </p>
 
                 <p>
@@ -253,12 +253,12 @@ export default async function TermsPage() {
                     <li>
                         By use of any other description of our Website being
                         linked to that makes sense within the context and format
-                        of content on the linking party's site.
+                        of content on the linking party&apos;s site.
                     </li>
                 </ol>
 
                 <p>
-                    No use of Birdy's logo or other artwork will be allowed for
+                    No use of Birdy&apos;s logo or other artwork will be allowed for
                     linking absent a license agreement.
                 </p>
             </article>
@@ -289,7 +289,7 @@ export default async function TermsPage() {
                     any particular link to our Website. You approve to
                     immediately remove all links to our Website upon request. We
                     also reserve the right to amend these terms and conditions
-                    and it's linking policy at any time. By continuously linking
+                    and it&apos;s linking policy at any time. By continuously linking
                     to our Website, you agree to be bound to and follow these
                     linking terms and conditions.
                 </p>

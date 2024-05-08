@@ -33,8 +33,8 @@ export default function DashboardDelete({
                 All your data will be{" "}
                 <span className="font-bold">permanently deleted</span>. If you
                 are sure you want to delete your account, please enter the
-                required information below and click the "Delete Account"
-                button. If you are not sure, you can click the "Cancel" button
+                required information below and click the &rdquo;Delete Account&ldquo;
+                button. If you are not sure, you can click the &rdquo;Cancel&ldquo; button
                 to return to your dashboard.
             </p>
             <form
