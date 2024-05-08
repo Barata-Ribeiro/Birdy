@@ -3,12 +3,12 @@
 import { UserContextResponse } from "@/interfaces/api/users"
 import {
     createContext,
-    useContext,
-    useEffect,
-    useState,
     type Dispatch,
     type ReactNode,
-    type SetStateAction
+    type SetStateAction,
+    useContext,
+    useEffect,
+    useState
 } from "react"
 
 interface UserContextProviderProps {

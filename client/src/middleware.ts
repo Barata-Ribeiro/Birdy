@@ -1,7 +1,7 @@
 import logout from "@/actions/auth/logout"
 import refreshToken from "@/actions/auth/refresh-token"
 import verifyToken from "@/utils/verify-token"
-import { NextResponse, type NextRequest } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 
 export async function middleware(req: NextRequest) {
     const access_token = req.cookies.get("access_token")?.value

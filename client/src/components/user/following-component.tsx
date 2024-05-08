@@ -4,11 +4,8 @@ import isUserFollowing from "@/actions/user/get-is_user_following"
 import userFollow from "@/actions/user/post-user-follow"
 import userUnfollow from "@/actions/user/post-user-unfollow"
 import FormButton from "@/components/utils/form-button"
-import {
-    PublicProfileResponse,
-    UserContextResponse
-} from "@/interfaces/api/users"
-import { useEffect, useState, type MouseEvent } from "react"
+import { PublicProfileResponse, UserContextResponse } from "@/interfaces/api/users"
+import { type MouseEvent, useEffect, useState } from "react"
 
 interface FollowingComponentProps {
     profile: PublicProfileResponse

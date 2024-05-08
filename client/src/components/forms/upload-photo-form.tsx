@@ -4,7 +4,7 @@ import postPhoto from "@/actions/photos/post-photo"
 import FormButton from "@/components/utils/form-button"
 import Input from "@/components/utils/input"
 import Image from "next/image"
-import { useEffect, useState, type ChangeEvent } from "react"
+import { type ChangeEvent, useEffect, useState } from "react"
 import { useFormState, useFormStatus } from "react-dom"
 
 export default function UploadPhotoForm({
