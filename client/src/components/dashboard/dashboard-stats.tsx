@@ -52,7 +52,7 @@ export default function DashboardStats({
         setLikes(likes)
         setComments(comments)
         setPieChart(pieChart)
-    }, [data])
+    }, [data, joinPhotosArray])
 
     return (
         <section className="my-4 grid grid-cols-1 gap-6 lg:grid-cols-2">

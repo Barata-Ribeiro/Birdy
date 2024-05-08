@@ -41,7 +41,7 @@ export default function FollowingComponent({
         }
 
         checkFollowing()
-    }, [])
+    }, [profile.username, user])
 
     const handleFollowing = async (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()

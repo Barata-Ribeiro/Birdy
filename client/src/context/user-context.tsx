@@ -39,7 +39,7 @@ export function UserContextProvider({
 
     useEffect(() => {
         setUser(user)
-    }, [currentUser])
+    }, [currentUser, user])
 
     return (
         <UserContext.Provider value={{ user: currentUser, setUser: setUser }}>

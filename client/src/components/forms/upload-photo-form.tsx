@@ -23,7 +23,7 @@ export default function UploadPhotoForm({
 
     useEffect(() => {
         if (state.ok) window.location.href = `/dashboard/${userId}/${username}`
-    }, [state.ok])
+    }, [state.ok, userId, username])
 
     const [img, setImg] = useState<{
         preview: string | undefined
