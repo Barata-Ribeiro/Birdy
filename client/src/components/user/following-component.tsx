@@ -15,7 +15,7 @@ interface FollowingComponentProps {
 export default function FollowingComponent({
     profile,
     user
-}: FollowingComponentProps) {
+}: Readonly<FollowingComponentProps>) {
     const [tooltipMessage, setTooltipMessage] = useState("")
     const [showTooltip, setShowTooltip] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -69,6 +69,8 @@ export default function FollowingComponent({
         setTimeout(() => setShowTooltip(false), 3000)
     }
 
+    let verifyIfFollowingAndSetLabel = isFollowing ? "Unfollow" : "Follow"
+    
     return (
         <div className="mt-16 flex items-center justify-between px-3 py-6 sm:mt-0">
             {showTooltip && (
@@ -80,11 +82,11 @@ export default function FollowingComponent({
             <FormButton
                 className="!w-auto rounded-lg px-4 py-2"
                 onClick={handleFollowing}
-                aria-label={isFollowing ? "Unfollow" : "Follow"}
+                aria-label={verifyIfFollowingAndSetLabel}
                 disabled={disabledFollowing}
                 aria-disabled={disabledFollowing}
             >
-                {isLoading ? "Loading..." : isFollowing ? "Unfollow" : "Follow"}
+                {isLoading ? "Loading..." : verifyIfFollowingAndSetLabel}
             </FormButton>
 
             <span className="dark:text-green-spring-600">

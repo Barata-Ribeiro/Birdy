@@ -40,9 +40,6 @@
 
 .liked .like-icon-state {
     transform: scale(0);
-}
-
-.liked .like-icon-state {
     opacity: 0;
     animation: 1.2s like-animation both cubic-bezier(0.45, 0.05, 0.55, 0.95);
 }

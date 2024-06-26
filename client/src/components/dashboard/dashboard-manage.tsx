@@ -1,7 +1,7 @@
 "use client"
 
 import putPrivateProfile from "@/actions/user/put-private-profile"
-import Error from "@/components/utils/error"
+import ErrorElement from "@/components/utils/error-element"
 import FormButton from "@/components/utils/form-button"
 import Input from "@/components/utils/input"
 import { useEffect } from "react"
@@ -10,10 +10,10 @@ import { useFormState, useFormStatus } from "react-dom"
 export default function DashboardManage({
     userId,
     username
-}: {
+}: Readonly<{
     userId: string
     username: string
-}) {
+}>) {
     const { pending } = useFormStatus()
     const [state, action] = useFormState(putPrivateProfile, {
         ok: false,
@@ -101,7 +101,7 @@ export default function DashboardManage({
                     aria-required
                 />
             </div>
-            <Error error={state.client_error} />
+            <ErrorElement error={state.client_error} />
             <div className="px-4 pb-2 pt-4">
                 <FormButton
                     type="submit"

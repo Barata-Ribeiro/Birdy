@@ -23,7 +23,7 @@ export default function DeleteButton({
     photo,
     comment,
     direction
-}: DeleteButtonProps) {
+}: Readonly<DeleteButtonProps>) {
     const [showConfirm, setShowConfirm] = useState(false)
     const [loading, setLoading] = useState(false)
 

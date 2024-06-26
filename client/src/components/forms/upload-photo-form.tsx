@@ -10,10 +10,10 @@ import { useFormState, useFormStatus } from "react-dom"
 export default function UploadPhotoForm({
     userId,
     username
-}: {
+}: Readonly<{
     userId: string
     username: string
-}) {
+}>) {
     const { pending } = useFormStatus()
     const [state, action] = useFormState(postPhoto, {
         ok: false,
@@ -35,7 +35,7 @@ export default function UploadPhotoForm({
 
     const handleImgChange = (event: ChangeEvent<HTMLInputElement>) => {
         const target = event.target as HTMLInputElement
-        if (target.files && target.files[0]) {
+        if (target.files?.[0]) {
             setImg({
                 preview: URL.createObjectURL(target.files[0]),
                 raw: target.files[0]

@@ -1,7 +1,7 @@
 "use client"
 
 import register from "@/actions/auth/register"
-import Error from "@/components/utils/error"
+import ErrorElement from "@/components/utils/error-element"
 import FormButton from "@/components/utils/form-button"
 import Input from "@/components/utils/input"
 import Link from "next/link"
@@ -109,7 +109,7 @@ export default function SignUpForm() {
                     {pending ? "Creating..." : "Create Account"}
                 </FormButton>
             </div>
-            <Error error={state.client_error} />
+            <ErrorElement error={state.client_error} />
             <div className="mt-2 text-center">
                 <Link
                     href="/sign/in"

@@ -1,6 +1,6 @@
 export default function Loading() {
     return (
-        <div role="status">
+        <output>
             <svg
                 aria-hidden="true"
                 className="inline h-14 w-14 animate-spin fill-bright-turquoise-600 text-green-spring-200 dark:text-green-spring-600"
@@ -18,6 +18,6 @@ export default function Loading() {
                 />
             </svg>
             <span className="sr-only">Loading...</span>
-        </div>
+        </output>
     )
 }

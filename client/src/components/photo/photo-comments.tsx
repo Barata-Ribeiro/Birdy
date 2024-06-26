@@ -2,7 +2,7 @@
 
 import postComment from "@/actions/comments/post-comment"
 import DeleteButton from "@/components/utils/delete-button"
-import Error from "@/components/utils/error"
+import ErrorElement from "@/components/utils/error-element"
 import FormButton from "@/components/utils/form-button"
 import { useUser } from "@/context/user-context"
 import { PhotoComment } from "@/interfaces/api/photos"
@@ -17,7 +17,7 @@ interface PhotoCommentsProps {
 export default function PhotoComments({
     photoId,
     comments: photoComments
-}: PhotoCommentsProps) {
+}: Readonly<PhotoCommentsProps>) {
     const [comments, setComments] = useState(() => photoComments)
     const commentsSection = useRef<HTMLUListElement>(null)
     const [comment, setComment] = useState("")
@@ -121,7 +121,6 @@ export default function PhotoComments({
                     name="photoId"
                     id="photoId"
                     value={photoId}
-                    aria-hidden
                 />
                 <div className="mt-2 flex items-center justify-between">
                     <p className="text-xs" aria-live="assertive">
@@ -136,7 +135,7 @@ export default function PhotoComments({
                     >
                         {pending ? "Commenting..." : "Comment"}
                     </FormButton>
-                    <Error error={state.client_error} />
+                    <ErrorElement error={state.client_error} />
                 </div>
             </form>
         </>

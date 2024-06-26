@@ -19,10 +19,10 @@ export default function Input({
             </label>
             <input
                 className={mergedClassName}
-                type={props.type || "text"}
-                name={props.name || lowerCaseLabel}
+                type={props.type ?? "text"}
+                name={props.name ?? lowerCaseLabel}
                 id={lowerCaseLabel}
-                placeholder={props.placeholder || label}
+                placeholder={props.placeholder ?? label}
                 {...props}
             />
         </>

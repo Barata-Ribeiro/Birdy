@@ -11,7 +11,7 @@ interface LikeButtonProps {
     photo: PhotoResponse
 }
 
-export default function LikeButton({ user, photo }: LikeButtonProps) {
+export default function LikeButton({ user, photo }: Readonly<LikeButtonProps>) {
     const [totalLikes, setTotalLikes] = useState(photo.likes.length)
     const [usedKeyboard, setUsedKeyboard] = useState(false)
     const [loading, setLoading] = useState(false)

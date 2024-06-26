@@ -1,7 +1,7 @@
 "use client"
 
 import login from "@/actions/auth/login"
-import Error from "@/components/utils/error"
+import ErrorElement from "@/components/utils/error-element"
 import FormButton from "@/components/utils/form-button"
 import Input from "@/components/utils/input"
 import Link from "next/link"
@@ -49,7 +49,7 @@ export default function SignInForm() {
                     aria-required
                 />
             </div>
-            <Error error={state.client_error} />
+            <ErrorElement error={state.client_error} />
             <div className="text-right">
                 <Link
                     href="/sign/password-lost"

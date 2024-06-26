@@ -11,11 +11,11 @@ export interface FeedProps {
     userId?: string | null
 }
 
-export default function Feed({ photos, userId }: FeedProps) {
+export default function Feed({ photos, userId }: Readonly<FeedProps>) {
     const [photosFeed, setPhotosFeed] = useState<FeedResponse[]>(photos)
     const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false)
-    const [infinite, setInfinite] = useState(photos.length < 6 ? false : true)
+    const [infinite, setInfinite] = useState(photos.length >= 6)
 
     const fetching = useRef(false)
 

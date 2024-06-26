@@ -9,9 +9,9 @@ import { useFormState, useFormStatus } from "react-dom"
 
 export default function DashboardDelete({
     data
-}: {
+}: Readonly<{
     data: UserContextResponse
-}) {
+}>) {
     const { pending } = useFormStatus()
     const [state, action] = useFormState(deletePrivateProfile, {
         ok: false,

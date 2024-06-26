@@ -1,6 +1,6 @@
 import { FeedRequestParams } from "@/interfaces/api/photos"
 
-const BACKEND_URL = process.env.BACKEND_ORIGIN || "http://localhost:3000"
+const BACKEND_URL = process.env.BACKEND_ORIGIN ?? "http://localhost:3000"
 
 // Auth
 export const AUTH_REGISTER = () => `${BACKEND_URL}/api/v1/auth/register`

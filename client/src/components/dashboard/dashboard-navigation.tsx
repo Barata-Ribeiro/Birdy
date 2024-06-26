@@ -8,9 +8,9 @@ import { MdAdminPanelSettings } from "react-icons/md"
 
 export default function DashboardNavigation({
     user
-}: {
+}: Readonly<{
     user: PrivateProfileResponse
-}) {
+}>) {
     const { setUser } = useUser()
 
     async function handleLogout() {

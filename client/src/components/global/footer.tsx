@@ -12,9 +12,9 @@ const links = {
 
 export default async function Footer({
     user
-}: {
+}: Readonly<{
     user: UserContextResponse | null
-}) {
+}>) {
     return (
         <footer className="mt-auto bg-green-spring-50 dark:bg-green-spring-950">
             <div className="container mx-auto px-6 py-8">

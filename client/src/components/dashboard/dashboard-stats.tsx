@@ -12,9 +12,9 @@ interface GraphData {
 
 export default function DashboardStats({
     data
-}: {
+}: Readonly<{
     data: UserPhotosStatsResponse
-}) {
+}>) {
     const [views, setViews] = useState<GraphData[]>([])
     const [likes, setLikes] = useState<GraphData[]>([])
     const [comments, setComments] = useState<GraphData[]>([])

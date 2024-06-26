@@ -16,7 +16,7 @@ const links = {
     repository: "https://github.com/Barata-Ribeiro/Birdy"
 }
 
-export default function Header({ user }: { user: UserContextResponse | null }) {
+export default function Header({ user }: Readonly<{ user: UserContextResponse | null }>) {
     const pathname = usePathname()
     const isMobile = useMedia("(max-width: 64rem)")
     const [open, setOpen] = useState(false)
@@ -32,7 +32,6 @@ export default function Header({ user }: { user: UserContextResponse | null }) {
                 <div className="flex items-center justify-between">
                     <div
                         className="relative z-50 w-32 max-w-full xs:w-40 sm:w-52"
-                        role="img"
                         aria-label="Birdy Logo"
                     >
                         <Link href="/" className="block w-full">
@@ -74,7 +73,6 @@ export default function Header({ user }: { user: UserContextResponse | null }) {
                         <label
                             htmlFor="hamburger"
                             className="peer-checked:hamburger relative z-20 -mr-6 block cursor-pointer p-6 lg:hidden"
-                            role="button"
                             aria-label="Toggle navigation"
                         >
                             <div
@@ -116,7 +114,6 @@ export default function Header({ user }: { user: UserContextResponse | null }) {
                                                                 ? "noopener noreferrer"
                                                                 : ""
                                                         }
-                                                        role="link"
                                                         onClick={() =>
                                                             setOpen(!open)
                                                         }
@@ -137,7 +134,6 @@ export default function Header({ user }: { user: UserContextResponse | null }) {
                                             <Link
                                                 href="/sign/in"
                                                 className="px-7 py-3 text-base hover:text-bright-turquoise-500"
-                                                role="link"
                                                 onClick={() => setOpen(!open)}
                                             >
                                                 Sign in
@@ -145,7 +141,6 @@ export default function Header({ user }: { user: UserContextResponse | null }) {
                                             <Button
                                                 href="/sign/up"
                                                 className="px-7 py-3 font-medium"
-                                                role="button"
                                                 onClick={() => setOpen(!open)}
                                             >
                                                 Sign Up
@@ -161,7 +156,7 @@ export default function Header({ user }: { user: UserContextResponse | null }) {
                                                 aria-label="User Dashboard"
                                             >
                                                 <Image
-                                                    src={user.avatar_url || ""}
+                                                    src={user.avatar_url ?? ""}
                                                     className="dark:ring-green-sping-500 size-10 rounded-full p-1 ring-2 ring-green-spring-300 dark:ring-green-spring-500"
                                                     height={40}
                                                     width={40}
