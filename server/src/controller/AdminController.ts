@@ -94,7 +94,7 @@ export class AdminController {
         if (!photoId) throw new BadRequestError("Photo ID is required.")
 
         const requestingUser = req.user
-        if (!requestingUser.data || !requestingUser.data.id)
+        if (!requestingUser.data?.id)
             throw new BadRequestError("You must be authenticated.")
 
         if (
@@ -127,7 +127,7 @@ export class AdminController {
             throw new BadRequestError(
                 "You cannot update a comment to be empty."
             )
-        if (!requestingUser.data || !requestingUser.data.id)
+        if (!requestingUser.data?.id)
             throw new BadRequestError("You must be authenticated.")
         if (
             !requestingUser.is_admin ||
@@ -163,7 +163,7 @@ export class AdminController {
             throw new BadRequestError(
                 "You cannot update a comment to be empty."
             )
-        if (!requestingUser.data || !requestingUser.data.id)
+        if (!requestingUser.data?.id)
             throw new BadRequestError("You must be authenticated.")
         if (
             !requestingUser.is_admin ||

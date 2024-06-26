@@ -45,7 +45,7 @@ export default class UserController {
 
     public async getUserContext(req: Request, res: Response) {
         const requestingUser = req.user
-        if (!requestingUser || !requestingUser.data?.id)
+        if (!requestingUser.data?.id)
             throw new UnauthorizedError(
                 "You must be logged in to retrieve your user info."
             )

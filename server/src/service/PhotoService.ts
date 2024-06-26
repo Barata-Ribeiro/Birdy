@@ -27,16 +27,10 @@ export class PhotoService {
         let realTake: number
 
         if (perPage) realTake = +perPage
-        else {
-            perPage = "10"
-            realTake = 10
-        }
+        else realTake = 10
 
         if (page) realPage = +page === 1 ? 0 : (+page - 1) * realTake
-        else {
-            realPage = 0
-            page = "1"
-        }
+        else realPage = 0
 
         const [photos, total] = await photoRepository
             .createQueryBuilder("photo")
@@ -257,7 +251,7 @@ export class PhotoService {
                 },
                 (error: unknown, result?: { secure_url: string }) => {
                     if (result) resolve(result)
-                    else reject(error)
+                    else reject(new Error("An error occurred during upload."))
                 }
             )
             streamifier.createReadStream(file.buffer).pipe(stream)
@@ -272,11 +266,11 @@ export class PhotoService {
         })
 
         return new Promise((resolve, reject) => {
-            void cloudinary.uploader.destroy(
+            cloudinary.uploader.destroy(
                 publicId,
                 (error: unknown, result?: { result?: string }) => {
                     if (result) resolve(result)
-                    else reject(error)
+                    else reject(new Error("An error occurred during deletion."))
                 }
             )
         })

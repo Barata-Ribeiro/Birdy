@@ -305,11 +305,11 @@ export class AdminService {
         })
 
         return new Promise((resolve, reject) => {
-            void cloudinary.uploader.destroy(
+            return cloudinary.uploader.destroy(
                 publicId,
                 (error: unknown, result?: { result?: string }) => {
                     if (result) resolve(result)
-                    else reject(error)
+                    else reject(new Error("Failed to delete image."))
                 }
             )
         })

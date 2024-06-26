@@ -18,10 +18,7 @@ export default class FollowsService {
         let realTake: number
 
         if (perPage) realTake = +perPage
-        else {
-            perPage = "10"
-            realTake = 10
-        }
+        else realTake = 10
 
         if (page) realPage = +page === 1 ? 0 : (+page - 1) * realTake
         else {

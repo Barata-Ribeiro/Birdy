@@ -234,7 +234,7 @@ export default class UserService {
         )
 
         const responseData = {
-            total_photos: totalLatest + totalPopular ?? 0,
+            total_photos: totalLatest + totalPopular,
             latest_photos: {
                 total: totalLatest ?? 0,
                 photos: latestPhotosDTO ?? []

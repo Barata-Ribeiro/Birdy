@@ -15,9 +15,9 @@ export class EditUserResponseDTO {
         dto.id = user.id
         dto.username = user.username
         dto.display_name = user.display_name
-        dto.avatar_url = user.avatar_url || undefined
-        dto.cover_image_url = user.cover_image_url || undefined
-        dto.bio = user.bio || undefined
+        dto.avatar_url = user.avatar_url ?? undefined
+        dto.cover_image_url = user.cover_image_url ?? undefined
+        dto.bio = user.bio ?? undefined
         dto.updatedAt = user.updatedAt
 
         return dto

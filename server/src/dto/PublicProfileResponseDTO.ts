@@ -38,11 +38,11 @@ export class PublicProfileResponseDTO {
         dto.avatar_url = data.avatar_url
         dto.cover_image_url = data.cover_image_url
         dto.bio = data.bio
-        dto.photo_count = +data.photoCount ?? 0
-        dto.liked_photo_count = +data.likedPhotoCount ?? 0
-        dto.following_count = +data.followingCount ?? 0
-        dto.follower_count = +data.followerCount ?? 0
-        dto.comment_count = +data.commentCount ?? 0
+        dto.photo_count = +data.photoCount
+        dto.liked_photo_count = +data.likedPhotoCount
+        dto.following_count = +data.followingCount
+        dto.follower_count = +data.followerCount
+        dto.comment_count = +data.commentCount
 
         return dto
     }
