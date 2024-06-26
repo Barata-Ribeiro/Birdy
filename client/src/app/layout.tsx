@@ -6,6 +6,7 @@ import { UserContextResponse } from "@/interfaces/api/users"
 import type { Metadata } from "next"
 import { Lora, Montserrat } from "next/font/google"
 import "./globals.css"
+import { ReactNode } from "react"
 
 const montserrat = Montserrat({
     subsets: ["latin"],
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({
     children
 }: Readonly<{
-    children: React.ReactNode
+    children: ReactNode
 }>) {
     const context = await getUserContext()
     let user: UserContextResponse | null = null

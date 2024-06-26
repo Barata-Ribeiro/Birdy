@@ -24,7 +24,7 @@ export default function SignInForm() {
             "username" in state.response
         )
             window.location.href = `/dashboard/${state.response.id}/${state.response.username}`
-    }, [state.ok])
+    }, [state.ok, state.response])
 
     return (
         <form

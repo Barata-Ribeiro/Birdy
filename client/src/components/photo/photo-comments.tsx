@@ -44,7 +44,7 @@ export default function PhotoComments({
             ])
             setComment("")
         }
-    }, [state.ok])
+    }, [state.ok, state.response?.data])
 
     function formatDate(isoString: string) {
         const options: Intl.DateTimeFormatOptions = {

@@ -23,7 +23,7 @@ export default function DashboardManage({
 
     useEffect(() => {
         if (state.ok) window.location.href = `/dashboard/${userId}/${username}`
-    }, [state.ok])
+    }, [state.ok, userId, username])
 
     return (
         <form

@@ -4,7 +4,7 @@ interface Result {
 }
 
 export default function inputValidation(input: string, type: unknown): Result {
-    if (input.length < 3 || input === null) {
+    if (input.length < 3) {
         return {
             isValid: false,
             message: "Please enter a valid input."

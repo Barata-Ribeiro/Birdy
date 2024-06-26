@@ -40,7 +40,7 @@ export default function FollowingComponent({
             }
         }
 
-        checkFollowing()
+        checkFollowing().then(r => r)
     }, [profile.username, user])
 
     const handleFollowing = async (event: MouseEvent<HTMLButtonElement>) => {

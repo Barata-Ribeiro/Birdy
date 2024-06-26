@@ -48,8 +48,8 @@ export default function Feed({ photos, userId }: Readonly<FeedProps>) {
             }
         }
 
-        fetchFeedPhotos(page)
-    }, [page])
+        fetchFeedPhotos(page).then(r => r)
+    }, [page, userId])
 
     useEffect(() => {
         if (infinite) {
