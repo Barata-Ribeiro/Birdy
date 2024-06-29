@@ -26,16 +26,7 @@ const dataSourceOptions: DataSourceOptions & SeederOptions = {
     ],
     subscribers: [
         path.join(__dirname, "..", "database", "subscribers", "*.{ts,js}")
-    ],
-    cache: {
-        type: "ioredis",
-        duration: 30000,
-        options: {
-            host: process.env.REDIS_HOST ?? "localhost",
-            password: process.env.REDIS_PASSWORD ?? "<PASSWORD>",
-            port: process.env.REDIS_HOST_PORT ?? 6379
-        }
-    }
+    ]
 }
 
 export const AppDataSource = new DataSource(dataSourceOptions)

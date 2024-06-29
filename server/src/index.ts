@@ -32,8 +32,12 @@ if (AppDataSource.options.type !== "postgres")
 
 const startServer = async () => {
     try {
+        console.log("Starting the server...")
+
         // Database Initialization
         await AppDataSource.initialize()
+
+        console.log("Database connection established successfully.")
 
         // Express App Initialization
         let app = express()
