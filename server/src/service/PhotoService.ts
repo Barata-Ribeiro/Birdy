@@ -41,13 +41,18 @@ export class PhotoService {
                 "photo.description",
                 "photo.image_url",
                 "photo.slug",
-                "photo.meta",
                 "photo.createdAt",
                 "photo.updatedAt",
                 "author.id",
                 "author.username",
                 "author.display_name",
-                "author.avatar_url"
+                "author.avatar_url",
+                "photo.meta.bird_name",
+                "photo.meta.bird_size",
+                "photo.meta.bird_habitat",
+                "photo.meta.total_comments",
+                "photo.meta.total_views",
+                "photo.meta.total_likes"
             ])
             .where(userId ? "author.id = :userId" : "1=1", { userId })
             .orderBy("photo.createdAt", "DESC")
