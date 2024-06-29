@@ -35,10 +35,10 @@ export class User {
     @Column({ type: "enum", enum: UserRole, default: UserRole.MEMBER })
     role: UserRole
 
-    @Column()
+    @Column({ nullable: true })
     avatar_url?: string
 
-    @Column()
+    @Column({ nullable: true })
     cover_image_url?: string
 
     @Column({ nullable: true, default: "I am a new member!" })

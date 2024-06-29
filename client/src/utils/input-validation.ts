@@ -19,8 +19,7 @@ export default function inputValidation(input: string, type: unknown): Result {
     }
 
     if (type === "email") {
-        const emailRegex =
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|((\w+\.)+[a-zA-Z]{2,}))$/
+        const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
         if (!emailRegex.test(input)) {
             return {
                 isValid: false,
@@ -30,8 +29,7 @@ export default function inputValidation(input: string, type: unknown): Result {
     }
 
     if (type === "password") {
-        const passwordRegex =
-            /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+        const passwordRegex = /^(?=.*[\d])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,100}$/
         if (!passwordRegex.test(input)) {
             return {
                 isValid: false,
@@ -42,8 +40,7 @@ export default function inputValidation(input: string, type: unknown): Result {
     }
 
     if (type === "username") {
-        const usernameRegex =
-            /^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9]+(?<![_.])$/
+        const usernameRegex = /^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9]+(?<![_.])$/
         if (!usernameRegex.test(input)) {
             return {
                 isValid: false,
