@@ -115,7 +115,7 @@ export default class FollowsService {
         if (checkIfAlreadyFollowing)
             throw new BadRequestError("You are already following this user.")
 
-        const newFollow = await followsRepository.create({
+        const newFollow = followsRepository.create({
             follower: { id: userId },
             following: { id: followId }
         })

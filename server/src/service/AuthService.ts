@@ -58,7 +58,7 @@ export default class AuthService {
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
-        const newUser = await userRepository.create({
+        const newUser = userRepository.create({
             username,
             display_name,
             email,
@@ -156,7 +156,7 @@ export default class AuthService {
         const token = sign(payload, signKey, { expiresIn: "15m" })
 
         const frontEndOrigin =
-            process.env.FRONTEND_ORIGIN || "https://localhost:5173/"
+            process.env.FRONTEND_ORIGIN ?? "https://localhost:5173/"
 
         const resetPasswordLink = `${frontEndOrigin}/reset-password/${user.id}/${token}`
 
