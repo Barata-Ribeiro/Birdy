@@ -1,5 +1,4 @@
 import getUserPhotosStats from "@/actions/user/get-user-photos-stats"
-import { DashboardParams } from "@/app/dashboard/[slug]/layout"
 import Loading from "@/components/utils/loading"
 import { UserPhotosStatsResponse } from "@/interfaces/api/users"
 import { Metadata } from "next"
@@ -16,8 +15,8 @@ const DashboardStats = dynamic(
     { loading: () => <Loading />, ssr: false }
 )
 
-export default async function StatsPage({ params }: DashboardParams) {
-    const state = await getUserPhotosStats(params.slug[0])
+export default async function StatsPage({ params }: { params: { userId: string, username: string } }) {
+    const state = await getUserPhotosStats(params.userId)
     const photos = state.response?.data as UserPhotosStatsResponse
 
     if (!photos) return null

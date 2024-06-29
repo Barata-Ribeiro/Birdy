@@ -1,6 +1,5 @@
 import getPhotosFeed from "@/actions/photos/get-photos-feed"
 import getPrivateProfile from "@/actions/user/get-private-profile"
-import { DashboardParams } from "@/app/dashboard/[slug]/layout"
 import Feed from "@/components/feed/feed"
 import { FeedResponse } from "@/interfaces/api/photos"
 import { PrivateProfileResponse } from "@/interfaces/api/users"
@@ -12,10 +11,8 @@ export const metadata: Metadata = {
     description: "In this page you'll find all the photos you have uploaded."
 }
 
-export default async function PrivateFeedPage({ params }: DashboardParams) {
-    const userId = params.slug[0]
-
-    const userState = await getPrivateProfile(userId)
+export default async function PrivateFeedPage({ params }: { params: { userId: string, username: string } }) {
+    const userState = await getPrivateProfile(params.userId)
     const user = userState.response?.data as PrivateProfileResponse
 
     const photosState = await getPhotosFeed({ userId: user?.id })

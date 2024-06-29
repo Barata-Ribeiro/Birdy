@@ -1,4 +1,3 @@
-import { DashboardParams } from "@/app/dashboard/[slug]/layout"
 import DashboardManage from "@/components/dashboard/dashboard-manage"
 import { Metadata } from "next"
 
@@ -7,13 +6,13 @@ export const metadata: Metadata = {
     description: "Here you can mange your profile and settings."
 }
 
-export default async function ManagePage({ params }: DashboardParams) {
+export default async function ManagePage({ params }: { params: { userId: string, username: string } }) {
     return (
         <section className="p-4 sm:px-0">
             <h1 className="text-center text-2xl">Manage your account!</h1>
             <DashboardManage
-                userId={params.slug[0]}
-                username={params.slug[1]}
+                userId={params.userId}
+                username={params.username}
             />
         </section>
     )

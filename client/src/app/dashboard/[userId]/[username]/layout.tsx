@@ -6,32 +6,24 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ReactNode } from "react"
 import { FaUser, FaUserTie } from "react-icons/fa"
-
-export interface DashboardParams {
-    params: {
-        slug: [userId: string, username: string]
-    }
-}
+import DefaultAvatar from "../../../../../public/images/default-avatar.svg"
 
 interface DashboardLayoutProps {
     children: ReactNode
-    params: DashboardParams
+    params: { userId: string, username: string }
 }
 
 export default async function DashBoardLayout({
     children,
     params
 }: DashboardLayoutProps) {
-    const userId = params.params.slug[0]
-    const username = params.params.slug[1]
-    if (!userId || !username) return notFound()
-
-    const state = await getPrivateProfile(userId)
+    if(!params.userId || !params.username) return notFound()
+    
+    const state = await getPrivateProfile(params.userId)
+    
     const user = state.response?.data as PrivateProfileResponse | null
-
     if (!user) return notFound()
 
-    const DEFAULT_AVATAR = "/images/default-avatar.svg"
     const DEFAULT_COVER = "https://source.unsplash.com/random/?birds"
     const DEFAULT_BIO = "You haven't set a bio yet."
 
@@ -40,7 +32,7 @@ export default async function DashBoardLayout({
             <header className="bg-mantis-100 pb-8 dark:bg-mantis-800">
                 <div
                     style={{
-                        backgroundImage: `url('${user.cover_image_url || DEFAULT_COVER}')`
+                        backgroundImage: `url('${user.cover_image_url ?? DEFAULT_COVER}')`
                     }}
                     className="h-[250px] w-full bg-cover bg-center"
                     role="img"
@@ -49,7 +41,7 @@ export default async function DashBoardLayout({
 
                 <div className="-mt-20 flex flex-col items-center">
                     <Image
-                        src={user.avatar_url || DEFAULT_AVATAR}
+                        src={user.avatar_url ?? DefaultAvatar}
                         alt={`${user.username}, this is your avatar.`}
                         title={`${user.username}, this is your avatar.`}
                         style={{ width: "auto", height: "auto" }}
@@ -76,7 +68,7 @@ export default async function DashBoardLayout({
                         {user.email}
                     </p>
                     <p className="mb-3 mt-1 max-w-md text-center text-green-spring-700 dark:text-mantis-300">
-                        {user.bio || DEFAULT_BIO}
+                        {user.bio ?? DEFAULT_BIO}
                     </p>
                     <ul className="flex flex-col items-center gap-3 sm:flex-row sm:gap-2">
                         <li>

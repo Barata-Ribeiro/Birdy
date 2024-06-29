@@ -1,5 +1,6 @@
 import Button from "@/components/utils/button"
 import Image from "next/image"
+import NotFoundImage from "../../public/images/not-found.jpg"
 
 export default async function NotFound() {
     return (
@@ -21,14 +22,11 @@ export default async function NotFound() {
 
                 <div className="mt-4 hidden sm:block lg:mt-0">
                     <Image
-                        src="https://source.unsplash.com/random/?bird"
-                        alt="Random bird photograph from Unsplash, https://unsplash.com/"
-                        className="aspect-square max-h-[32rem] rounded-md object-cover"
-                        priority
-                        width={512}
-                        height={512}
+                        src={NotFoundImage}
+                        alt="404 Not Found"
+                        className="aspect-square max-w-[512px] rounded-md object-cover"
                         sizes="100vw"
-                        style={{ width: "auto", height: "auto" }}
+                        priority
                     />
                 </div>
             </div>
