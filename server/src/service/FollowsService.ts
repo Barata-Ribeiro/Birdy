@@ -91,14 +91,12 @@ export default class FollowsService {
     }
 
     async checkIfUserIsFollowed(username: string, loggedUserId: string) {
-        const userFollow = await followsRepository.exists({
+        return await followsRepository.exists({
             where: {
                 follower: { id: loggedUserId },
                 following: { username }
             }
         })
-
-        return userFollow
     }
 
     async followUser(userId: string, followId: string) {

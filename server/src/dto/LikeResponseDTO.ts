@@ -12,14 +12,14 @@ export class LikeResponseDTO {
 
     static fromEntity(like: UserLike, isLiked?: boolean, totalLikes?: number) {
         const dto = new LikeResponseDTO()
-        
+
         dto.id = like.id
         dto.user = { id: like.user.id, username: like.user.username }
         dto.photo = { id: like.photo.id }
         dto.liked_at = like.liked_at
         dto.is_liked = isLiked
         dto.total_likes = totalLikes
-        
+
         return dto
     }
 }

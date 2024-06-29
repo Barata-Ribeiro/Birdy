@@ -15,8 +15,8 @@ import { userRepository } from "../repository/UserRepository"
 import { saveEntityToDatabase } from "../utils/operation-functions"
 import {
     isPasswordStrong,
-    isUUIDValid,
-    isUsernameValid
+    isUsernameValid,
+    isUUIDValid
 } from "../utils/validity-functions"
 
 export class AdminService {
@@ -111,9 +111,7 @@ export class AdminService {
                     "The password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number and one special character."
                 )
 
-            const hashedPassword = await bcrypt.hash(body.new_password, 10)
-
-            user.password = hashedPassword
+            user.password = await bcrypt.hash(body.new_password, 10)
         }
 
         const savedUser = await saveEntityToDatabase(userRepository, user)

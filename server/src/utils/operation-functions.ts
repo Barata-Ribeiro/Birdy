@@ -40,8 +40,7 @@ export async function saveEntityToDatabase<T extends ObjectLiteral>(
     entity: T
 ): Promise<T> {
     try {
-        const result = await repository.save(entity)
-        return result
+        return await repository.save(entity)
     } catch (error) {
         console.error(`Error saving the ${entity} in repository: `, error)
         if (error instanceof QueryFailedError)

@@ -37,8 +37,8 @@ const startServer = async () => {
 
         // Express App Initialization
         let app = express()
-        const PORT = process.env.PORT || 3000
-        let ENV = process.env.NODE_ENV || "development"
+        const PORT = process.env.PORT ?? 3000
+        let ENV = process.env.NODE_ENV ?? "development"
         app.set("port", PORT)
         app.set("trust proxy", 1)
 

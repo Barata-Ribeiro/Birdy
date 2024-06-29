@@ -17,16 +17,10 @@ export default class FollowsController {
         let { perPage, page } = req.query as { perPage: string; page: string }
 
         const queryWasProvided = perPage && page
-        const queryIsString =
-            typeof perPage === "string" && typeof page === "string"
         const perPageIsNumber = !isNaN(+perPage)
         const pageIsNumber = !isNaN(+page)
 
-        if (
-            queryWasProvided &&
-            queryIsString &&
-            (!perPageIsNumber || !pageIsNumber)
-        )
+        if (queryWasProvided && (!perPageIsNumber || !pageIsNumber))
             throw new BadRequestError(
                 "The query parameters 'perPage' and 'page' must be numbers."
             )
@@ -45,7 +39,7 @@ export default class FollowsController {
         )
 
         const backendOrigin =
-            process.env.BACKEND_ORIGIN || "http://localhost:3000"
+            process.env.BACKEND_ORIGIN ?? "http://localhost:3000"
 
         const nextPage = hasNextPage
             ? `${backendOrigin}/api/v1/users/profile/${username}/follows?type=${followType}&perPage=${realTake}&page=${currentPage + 1}`

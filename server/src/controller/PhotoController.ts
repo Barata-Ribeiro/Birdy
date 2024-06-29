@@ -19,16 +19,10 @@ export class PhotoController {
         const { userId } = req.query as { userId: string }
 
         const queryWasProvided = perPage && page
-        const queryIsString =
-            typeof perPage === "string" && typeof page === "string"
         const perPageIsNumber = !isNaN(+perPage)
         const pageIsNumber = !isNaN(+page)
 
-        if (
-            queryWasProvided &&
-            queryIsString &&
-            (!perPageIsNumber || !pageIsNumber)
-        )
+        if (queryWasProvided && (!perPageIsNumber || !pageIsNumber))
             throw new BadRequestError(
                 "The query parameters 'perPage' and 'page' must be numbers."
             )

@@ -5,10 +5,8 @@ import path = require("path")
 
 const dataSourceOptions: DataSourceOptions & SeederOptions = {
     type: "postgres",
-    url:
-        process.env.POSTGRES_URI ||
-        "postgres://postgres:xxxxxxxx@xxxxxxxxx:5432/test",
-    database: process.env.POSTGRES_DB || "test",
+    url: process.env.POSTGRES_URI ?? process.env.POSTGRES_URI_TEST,
+    database: process.env.POSTGRES_DB ?? "test",
     synchronize: true,
     logging: true,
     migrationsRun: true,
@@ -33,9 +31,9 @@ const dataSourceOptions: DataSourceOptions & SeederOptions = {
         type: "ioredis",
         duration: 30000,
         options: {
-            host: process.env.REDIS_HOST || "localhost",
-            password: process.env.REDIS_PASSWORD || "<PASSWORD>",
-            port: process.env.REDIS_HOST_PORT || 6379
+            host: process.env.REDIS_HOST ?? "localhost",
+            password: process.env.REDIS_PASSWORD ?? "<PASSWORD>",
+            port: process.env.REDIS_HOST_PORT ?? 6379
         }
     }
 }

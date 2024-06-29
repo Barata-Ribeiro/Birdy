@@ -23,10 +23,10 @@ import {
 import {
     isEmailValid,
     isPasswordStrong,
-    isUUIDValid,
-    isUsernameValid
+    isUsernameValid,
+    isUUIDValid
 } from "../utils/validity-functions"
-import { userRepository } from "./../repository/UserRepository"
+import { userRepository } from "../repository/UserRepository"
 
 export default class AuthService {
     async register(
@@ -125,9 +125,7 @@ export default class AuthService {
         const checkIfUserExists = await userRepository.existsBy({ id })
         if (!checkIfUserExists) throw new NotFoundError("User not found.")
 
-        const newAccessToken = sign({ id }, secretKey, { expiresIn: "15m" })
-
-        return newAccessToken
+        return sign({ id }, secretKey, { expiresIn: "15m" })
     }
 
     async forgotPassword(email: string): Promise<void> {
@@ -250,9 +248,7 @@ export default class AuthService {
                 "Your password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number and one special character."
             )
 
-        const hashedPassword = await bcrypt.hash(password, 10)
-
-        user.password = hashedPassword
+        user.password = await bcrypt.hash(password, 10)
 
         await saveEntityToDatabase(userRepository, user)
     }
