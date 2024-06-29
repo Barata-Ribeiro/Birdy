@@ -1,4 +1,4 @@
-import { DashboardParams } from "@/app/dashboard/[...slug]/layout"
+import { DashboardParams } from "@/app/dashboard/[slug]/layout"
 import DashboardManage from "@/components/dashboard/dashboard-manage"
 import { Metadata } from "next"
 

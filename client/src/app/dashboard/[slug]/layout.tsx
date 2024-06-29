@@ -23,6 +23,8 @@ export default async function DashBoardLayout({
     params
 }: DashboardLayoutProps) {
     const userId = params.params.slug[0]
+    const username = params.params.slug[1]
+    if (!userId || !username) return notFound()
 
     const state = await getPrivateProfile(userId)
     const user = state.response?.data as PrivateProfileResponse | null

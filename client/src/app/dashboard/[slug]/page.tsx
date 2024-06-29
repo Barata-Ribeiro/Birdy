@@ -1,6 +1,6 @@
 import getPhotosFeed from "@/actions/photos/get-photos-feed"
 import getPrivateProfile from "@/actions/user/get-private-profile"
-import { DashboardParams } from "@/app/dashboard/[...slug]/layout"
+import { DashboardParams } from "@/app/dashboard/[slug]/layout"
 import Feed from "@/components/feed/feed"
 import { FeedResponse } from "@/interfaces/api/photos"
 import { PrivateProfileResponse } from "@/interfaces/api/users"

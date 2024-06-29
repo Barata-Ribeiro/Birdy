@@ -1,5 +1,5 @@
 import getUserPhotosStats from "@/actions/user/get-user-photos-stats"
-import { DashboardParams } from "@/app/dashboard/[...slug]/layout"
+import { DashboardParams } from "@/app/dashboard/[slug]/layout"
 import Loading from "@/components/utils/loading"
 import { UserPhotosStatsResponse } from "@/interfaces/api/users"
 import { Metadata } from "next"

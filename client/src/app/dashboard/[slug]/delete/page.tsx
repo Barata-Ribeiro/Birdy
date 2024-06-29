@@ -1,4 +1,4 @@
-import { DashboardParams } from "@/app/dashboard/[...slug]/layout"
+import { DashboardParams } from "@/app/dashboard/[slug]/layout"
 import DashboardDelete from "@/components/dashboard/dashboard-delete"
 import { useUser } from "@/context/user-context"
 import { notFound } from "next/navigation"

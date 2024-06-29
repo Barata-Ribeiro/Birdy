@@ -1,4 +1,4 @@
-import { DashboardParams } from "@/app/dashboard/[...slug]/layout"
+import { DashboardParams } from "@/app/dashboard/[slug]/layout"
 import UploadPhotoForm from "@/components/forms/upload-photo-form"
 import { Metadata } from "next"
 
