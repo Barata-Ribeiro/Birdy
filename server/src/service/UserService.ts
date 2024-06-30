@@ -29,14 +29,14 @@ export default class UserService {
         const user = await userRepository
             .createQueryBuilder("user")
             .select([
-                "user.id",
-                "user.username",
-                "user.display_name",
-                "user.role",
-                "user.avatar_url",
-                "user.cover_image_url",
-                "user.bio",
-                "user.createdAt"
+                "user.id AS id",
+                "user.username AS username",
+                "user.display_name AS display_name",
+                "user.email AS email",
+                "user.role AS role",
+                "user.avatar_url AS avatar_url",
+                "user.cover_image_url AS cover_image_url",
+                "user.bio AS bio",
             ])
             .addSelect((subQuery) => {
                 return subQuery
@@ -46,13 +46,22 @@ export default class UserService {
             }, "photoCount")
             .addSelect((subQuery) => {
                 return subQuery
-                    .select(
-                        "COUNT(DISTINCT userLike.photoId)",
-                        "likedPhotoCount"
-                    )
-                    .from(UserLike, "userLike")
-                    .where("userLike.userId = user.id")
-            }, "likedPhotoCount")
+                    .select("json_agg(subquery) AS lastLikedPhotos")
+                    .from(qb => {
+                        return qb
+                            .select([
+                                "photo.id",
+                                "photo.title",
+                                "photo.slug",
+                                "photo.image_url"
+                            ])
+                            .from(Photo, "photo")
+                            .innerJoin(UserLike, "userLike", "userLike.photoId = photo.id")
+                            .where("userLike.userId = user.id")
+                            .orderBy("userLike.liked_at", "DESC")
+                            .limit(2)
+                    }, "subquery")
+            }, "lastLikedPhotos")
             .addSelect((subQuery) => {
                 return subQuery
                     .select(
@@ -114,14 +123,14 @@ export default class UserService {
         const user = await userRepository
             .createQueryBuilder("user")
             .select([
-                "user.id",
-                "user.username",
-                "user.display_name",
-                "user.email",
-                "user.role",
-                "user.avatar_url",
-                "user.cover_image_url",
-                "user.bio"
+                "user.id AS id",
+                "user.username AS username",
+                "user.display_name AS display_name",
+                "user.email AS email",
+                "user.role AS role",
+                "user.avatar_url AS avatar_url",
+                "user.cover_image_url AS cover_image_url",
+                "user.bio AS bio",
             ])
             .addSelect((subQuery) => {
                 return subQuery
@@ -131,26 +140,27 @@ export default class UserService {
             }, "photoCount")
             .addSelect((subQuery) => {
                 return subQuery
-                    .select(
-                        "COUNT(DISTINCT userLike.photoId)",
-                        "likedPhotoCount"
-                    )
+                    .select("COUNT(DISTINCT userLike.photoId)", "likedPhotoCount")
                     .from(UserLike, "userLike")
                     .where("userLike.userId = user.id")
             }, "likedPhotoCount")
             .addSelect((subQuery) => {
                 return subQuery
-                    .select([
-                        "photo.id",
-                        "photo.title",
-                        "photo.slug",
-                        "photo.image_url"
-                    ])
-                    .from(Photo, "photo")
-                    .innerJoin(UserLike, "like", "userLike.photoId = photo.id")
-                    .where("like.userId = user.id")
-                    .orderBy("like.liked_at", "DESC")
-                    .limit(2)
+                    .select("json_agg(subquery) AS lastLikedPhotos")
+                    .from(qb => {
+                        return qb
+                            .select([
+                                "photo.id",
+                                "photo.title",
+                                "photo.slug",
+                                "photo.image_url"
+                            ])
+                            .from(Photo, "photo")
+                            .innerJoin(UserLike, "userLike", "userLike.photoId = photo.id")
+                            .where("userLike.userId = user.id")
+                            .orderBy("userLike.liked_at", "DESC")
+                            .limit(2)
+                    }, "subquery")
             }, "lastLikedPhotos")
             .addSelect((subQuery) => {
                 return subQuery
@@ -172,22 +182,26 @@ export default class UserService {
             }, "commentCount")
             .addSelect((subQuery) => {
                 return subQuery
-                    .select([
-                        "comment.id",
-                        "comment.content",
-                        "comment.createdAt"
-                    ])
-                    .from(Comment, "comment")
-                    .where("comment.authorId = user.id")
-                    .orderBy("comment.createdAt", "DESC")
-                    .limit(2)
+                    .select("json_agg(subquery) AS lastComments")
+                    .from(qb => {
+                        return qb
+                            .select([
+                                "comment.id",
+                                "comment.content",
+                                "comment.createdAt"
+                            ])
+                            .from(Comment, "comment")
+                            .where("comment.authorId = user.id")
+                            .orderBy("comment.createdAt", "DESC")
+                            .limit(2)
+                    }, "subquery")
             }, "lastComments")
             .where("user.id = :userId", { userId })
-            .getRawOne()
+            .getRawOne();
 
-        if (!user) throw new BadRequestError("User not found.")
+        if (!user) throw new BadRequestError("User not found.");
 
-        return PrivateProfileResponseDTO.fromRaw(user)
+        return PrivateProfileResponseDTO.fromRaw(user);
     }
 
     async getUserPhotosStats(userId: string) {
