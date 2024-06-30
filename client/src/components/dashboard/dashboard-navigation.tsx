@@ -1,3 +1,5 @@
+"use client"
+
 import logout from "@/actions/auth/logout"
 import Button from "@/components/utils/button"
 import { useUser } from "@/context/user-context"
