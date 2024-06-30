@@ -55,11 +55,11 @@ export default async function login(state: State, formData: FormData) {
             sameSite: "strict",
             expires: Date.now() + (remember_me ? THIRTY_DAYS : ONE_DAY)
         })
-
+        
         return {
             ok: true,
             client_error: null,
-            response: { ...responseData, user }
+            response: { ...responseData, data: { ...user } }
         }
     } catch (error) {
         return ApiError(error)

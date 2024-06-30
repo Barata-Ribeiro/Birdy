@@ -7,8 +7,10 @@ import Input from "@/components/utils/input"
 import Link from "next/link"
 import { useEffect } from "react"
 import { useFormState, useFormStatus } from "react-dom"
+import { useRouter } from "next/navigation"
 
 export default function SignInForm() {
+    const router = useRouter()
     const { pending } = useFormStatus()
     const [state, action] = useFormState(login, {
         ok: false,
@@ -17,14 +19,15 @@ export default function SignInForm() {
     })
 
     useEffect(() => {
-        if (
-            state.ok &&
-            state.response &&
-            "id" in state.response &&
-            "username" in state.response
-        )
-            window.location.href = `/dashboard/${state.response.id}/${state.response.username}`
-    }, [state.ok, state.response])
+        if (state.ok) {
+            const data = state.response?.data as {
+                id: string
+                username: string
+                role: "NONE" | "ADMIN" | "MEMBER" | "BANNED"
+            }
+            router.push(`/dashboard/${data.id}/${data.username}`)
+        }
+    }, [router, state.ok, state.response])
 
     return (
         <form

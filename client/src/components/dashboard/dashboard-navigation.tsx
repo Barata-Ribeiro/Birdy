@@ -16,8 +16,8 @@ export default function DashboardNavigation({
     const { setUser } = useUser()
 
     async function handleLogout() {
-        await logout()
         setUser(null)
+        await logout()
     }
 
     return (
