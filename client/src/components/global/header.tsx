@@ -8,6 +8,9 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import { FaSignOutAlt } from "react-icons/fa"
+import logout from "@/actions/auth/logout"
+import { useUser } from "@/context/user-context"
+import DefaultAvatar from "../../../public/images/default-avatar.svg"
 
 const links = {
     home: "/",
@@ -16,12 +19,21 @@ const links = {
     repository: "https://github.com/Barata-Ribeiro/Birdy"
 }
 
-export default function Header({ user }: Readonly<{ user: UserContextResponse | null }>) {
+export default function Header({
+    user
+}: Readonly<{ user: UserContextResponse | null }>) {
     const pathname = usePathname()
-    const isMobile = useMedia("(max-width: 64rem)")
     const [open, setOpen] = useState(false)
+    const { setUser } = useUser()
+    const isMobile = useMedia("(max-width: 64rem)")
 
     useEffect(() => setOpen(!isMobile), [isMobile])
+
+    async function handleLogout() {
+        setOpen(!open)
+        setUser(null)
+        await logout()
+    }
 
     return (
         <header
@@ -141,7 +153,7 @@ export default function Header({ user }: Readonly<{ user: UserContextResponse | 
                                             <Button
                                                 href="/sign/up"
                                                 className="px-7 py-3 font-medium"
-                                                onClick={() => setOpen(!open)}
+                                                onClick={handleLogout}
                                             >
                                                 Sign Up
                                             </Button>
@@ -155,20 +167,25 @@ export default function Header({ user }: Readonly<{ user: UserContextResponse | 
                                                 role="dashboard"
                                                 aria-label="User Dashboard"
                                             >
-                                                <Image
-                                                    src={user.avatar_url ?? ""}
-                                                    className="dark:ring-green-sping-500 size-10 rounded-full p-1 ring-2 ring-green-spring-300 dark:ring-green-spring-500"
-                                                    height={40}
-                                                    width={40}
-                                                    sizes="100vw"
-                                                    alt="Your avatar"
-                                                />
+                                                <div className="relative size-10 antialiased">
+                                                    <Image
+                                                        src={
+                                                            user.avatar_url ??
+                                                            DefaultAvatar
+                                                        }
+                                                        alt={`${user.username}, this is your avatar.`}
+                                                        title={`${user.username}, this is your avatar.`}
+                                                        className="dark:ring-green-sping-500 rounded-full p-1 ring-2 ring-green-spring-300 dark:ring-green-spring-500"
+                                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                        fill
+                                                    />
+                                                </div>
                                                 {user.username}
                                             </Link>
                                             <Link
                                                 href="/sign/in"
                                                 className="border-green-spring-100 text-2xl text-green-spring-200 hover:text-green-spring-300 dark:border-green-spring-400 max-xs:border-t-2 max-xs:pt-4 lg:border-l-2 lg:pl-2 lg:text-xl"
-                                                onClick={() => setOpen(!open)}
+                                                onClick={handleLogout}
                                                 role="log out"
                                                 aria-label="Log out button"
                                             >

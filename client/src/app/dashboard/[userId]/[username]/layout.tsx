@@ -40,17 +40,15 @@ export default async function DashBoardLayout({
                 ></div>
 
                 <div className="-mt-20 flex flex-col items-center">
-                    <Image
+                    <div className="relative antialiased h-40 w-40"><Image
                         src={user.avatar_url ?? DefaultAvatar}
                         alt={`${user.username}, this is your avatar.`}
                         title={`${user.username}, this is your avatar.`}
-                        style={{ width: "auto", height: "auto" }}
-                        className="aspect-square h-40 w-40 rounded-full border-4 border-green-spring-50 object-cover object-center align-middle italic dark:border-mantis-800"
-                        width={160}
-                        height={160}
-                        sizes="100vw"
+                        className="aspect-square rounded-full border-4 border-green-spring-50 object-cover object-center align-middle italic dark:border-mantis-800"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         priority
-                    />
+                        fill
+                    /></div>
                     <div className="mt-2 flex items-center space-x-2">
                         <Link
                             href={`/user/${user.id}/${user.username}`}
