@@ -4,7 +4,7 @@ import { ApiResponse, State } from "@/interfaces/actions"
 import ApiError from "@/utils/api-error"
 import { USER_DELETE_PRIVATE_PROFILE } from "@/utils/api-urls"
 import { revalidateTag } from "next/cache"
-import { cookies } from "next/headers"
+import verifyAuthenticationAndReturnToken from "@/utils/verify-authentication"
 
 export default async function deletePrivateProfile(
     state: State,
@@ -16,9 +16,7 @@ export default async function deletePrivateProfile(
     const confirm_password = formData.get("confirmPassword") as string | null
 
     try {
-        const access_token = cookies().get("access_token")?.value
-        if (!access_token)
-            throw new Error("You must be logged in to view this page.")
+        const access_token = await verifyAuthenticationAndReturnToken()
 
         if (!userId) throw new Error("User ID is required.")
         const URL = USER_DELETE_PRIVATE_PROFILE(userId)

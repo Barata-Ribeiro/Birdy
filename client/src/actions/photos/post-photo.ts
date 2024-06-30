@@ -4,15 +4,13 @@ import { ApiResponse, State } from "@/interfaces/actions"
 import ApiError from "@/utils/api-error"
 import { PHOTO_UPLOAD } from "@/utils/api-urls"
 import { revalidateTag } from "next/cache"
-import { cookies } from "next/headers"
+import verifyAuthenticationAndReturnToken from "@/utils/verify-authentication"
 
 export default async function postPhoto(state: State, formData: FormData) {
     const URL = PHOTO_UPLOAD()
 
     try {
-        const access_token = cookies().get("access_token")?.value
-        if (!access_token)
-            throw new Error("You must be logged in to edit your profile.")
+        const access_token = await verifyAuthenticationAndReturnToken()
 
         if (
             !formData.has("photoTitle") ||

@@ -3,15 +3,13 @@
 import { ApiResponse } from "@/interfaces/actions"
 import ApiError from "@/utils/api-error"
 import { USER_FOLLOW } from "@/utils/api-urls"
-import { cookies } from "next/headers"
+import verifyAuthenticationAndReturnToken from "@/utils/verify-authentication"
 
 export default async function userFollow(userId: string, followId: string) {
     const URL = USER_FOLLOW(userId)
 
     try {
-        const access_token = cookies().get("access_token")?.value
-        if (!access_token)
-            throw new Error("You must be logged in to edit your profile.")
+        const access_token = await verifyAuthenticationAndReturnToken()
 
         const response = await fetch(URL, {
             method: "POST",

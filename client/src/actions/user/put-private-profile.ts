@@ -5,7 +5,7 @@ import ApiError from "@/utils/api-error"
 import { USER_UPDATE_PRIVATE_PROFILE } from "@/utils/api-urls"
 import inputValidation from "@/utils/input-validation"
 import { revalidateTag } from "next/cache"
-import { cookies } from "next/headers"
+import verifyAuthenticationAndReturnToken from "@/utils/verify-authentication"
 
 export default async function putPrivateProfile(
     state: State,
@@ -24,9 +24,7 @@ export default async function putPrivateProfile(
     const userId = formData.get("userId") as string | null
 
     try {
-        const access_token = cookies().get("access_token")?.value
-        if (!access_token)
-            throw new Error("You must be logged in to edit your profile.")
+        const access_token = await verifyAuthenticationAndReturnToken()
 
         if (!userId) throw new Error("User ID is required.")
         const URL = USER_UPDATE_PRIVATE_PROFILE(userId)

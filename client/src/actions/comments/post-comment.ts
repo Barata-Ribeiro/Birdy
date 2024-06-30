@@ -4,16 +4,14 @@ import { PhotoComment } from "@/interfaces/api/photos"
 import ApiError from "@/utils/api-error"
 import { PHOTO_ADD_COMMENT } from "@/utils/api-urls"
 import { revalidateTag } from "next/cache"
-import { cookies } from "next/headers"
+import verifyAuthenticationAndReturnToken from "@/utils/verify-authentication"
 
 export default async function postComment(state: State, formData: FormData) {
     const comment = formData.get("comment") as string | null
     const photoId = formData.get("photoId") as string
 
     try {
-        const access_token = cookies().get("access_token")?.value
-        if (!access_token)
-            throw new Error("You must be logged in to edit your profile.")
+        const access_token = await verifyAuthenticationAndReturnToken()
 
         if (!comment || comment.trim() === "")
             throw new Error("You cannot add an empty comment.")

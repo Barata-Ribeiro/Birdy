@@ -4,15 +4,13 @@ import { ApiResponse } from "@/interfaces/actions"
 import { PrivateProfileResponse } from "@/interfaces/api/users"
 import ApiError from "@/utils/api-error"
 import { USER_GET_PRIVATE_PROFILE } from "@/utils/api-urls"
-import { cookies } from "next/headers"
+import verifyAuthenticationAndReturnToken from "@/utils/verify-authentication"
 
 export default async function getPrivateProfile(userId: string) {
     const URL = USER_GET_PRIVATE_PROFILE(userId)
 
     try {
-        const access_token = cookies().get("access_token")?.value
-        if (!access_token)
-            throw new Error("You must be logged in to view this page.")
+        const access_token = await verifyAuthenticationAndReturnToken()
 
         const response = await fetch(URL, {
             method: "GET",

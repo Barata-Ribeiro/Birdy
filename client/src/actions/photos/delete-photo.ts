@@ -3,15 +3,13 @@
 import { ApiResponse } from "@/interfaces/actions"
 import ApiError from "@/utils/api-error"
 import { PHOTO_DELETE_PHOTO } from "@/utils/api-urls"
-import { cookies } from "next/headers"
+import verifyAuthenticationAndReturnToken from "@/utils/verify-authentication"
 
 export default async function deletePhoto(photoId: string) {
     const URL = PHOTO_DELETE_PHOTO(photoId)
 
     try {
-        const access_token = cookies().get("access_token")?.value
-        if (!access_token)
-            throw new Error("You must be logged in to delete a photo.")
+        const access_token = await verifyAuthenticationAndReturnToken()
 
         const response = await fetch(URL, {
             method: "DELETE",
