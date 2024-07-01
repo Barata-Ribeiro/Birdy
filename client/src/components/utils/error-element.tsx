@@ -1,4 +1,6 @@
-export default function ErrorElement({ error }: Readonly<{ error: string | null }>) {
+export default function ErrorElement({
+    error
+}: Readonly<{ error: string | null }>) {
     if (!error) return null
     return (
         <p

@@ -15,7 +15,15 @@ export default async function Home() {
 
     return (
         <section className="my-4">
-            <Feed photos={photos} />
+            {photos.length > 0 ? (
+                <Feed photos={photos} />
+            ) : (
+                <p className="my-60 text-center text-green-spring-500">
+                    No photos to show.
+                    <br />
+                    Create an account and start sharing your photos!
+                </p>
+            )}
         </section>
     )
 }

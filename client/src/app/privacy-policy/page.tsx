@@ -19,7 +19,6 @@ export default async function PrivacyPolicyPage() {
                 id="screen-reader-navigation"
                 className="sr-only"
                 aria-label="SCREEN READER NAVIGATION"
-                role="privacy policy navigation"
             >
                 <li>
                     <a href="#privacy-start">Privacy Start</a>
@@ -99,15 +98,17 @@ export default async function PrivacyPolicyPage() {
                             <strong className="font-bold">Affiliate</strong>{" "}
                             means an entity that controls, is controlled by or
                             is under common control with a party, where
-                            &rdquo;control&ldquo; means ownership of 50% or more of the
-                            shares, equity interest or other securities entitled
-                            to vote for election of directors or other managing
-                            authority.
+                            &rdquo;control&ldquo; means ownership of 50% or more
+                            of the shares, equity interest or other securities
+                            entitled to vote for election of directors or other
+                            managing authority.
                         </li>
                         <li>
                             <strong className="font-bold">Company</strong>{" "}
-                            (referred to as either &rdquo;the Company&ldquo;, &rdquo;We&ldquo;, &rdquo;Us&ldquo; or
-                            &rdquo;Our&ldquo; in this Agreement) refers to Birdy.
+                            (referred to as either &rdquo;the Company&ldquo;,
+                            &rdquo;We&ldquo;, &rdquo;Us&ldquo; or
+                            &rdquo;Our&ldquo; in this Agreement) refers to
+                            Birdy.
                         </li>
                         <li>
                             <strong className="font-bold">Cookies</strong> are
@@ -278,11 +279,12 @@ export default async function PrivacyPolicyPage() {
                         </ol>
 
                         <p>
-                            Cookies can be &rdquo;Persistent&ldquo; or &rdquo;Session&ldquo; Cookies.
-                            Persistent Cookies remain on Your personal computer
-                            or mobile device when You go offline, while Session
-                            Cookies are deleted as soon as You close Your web
-                            browser. Learn more about cookies on the{" "}
+                            Cookies can be &rdquo;Persistent&ldquo; or
+                            &rdquo;Session&ldquo; Cookies. Persistent Cookies
+                            remain on Your personal computer or mobile device
+                            when You go offline, while Session Cookies are
+                            deleted as soon as You close Your web browser. Learn
+                            more about cookies on the{" "}
                             <a
                                 href="https://www.kaspersky.com/resource-center/definitions/cookies"
                                 target="_blank"
@@ -374,6 +376,8 @@ export default async function PrivacyPolicyPage() {
                             <strong className="font-bold">
                                 To provide and maintain our Service
                             </strong>
+                            {/*
+                             */}
                             , including to monitor the usage of our Service.
                         </li>
                         <li>
@@ -400,12 +404,12 @@ export default async function PrivacyPolicyPage() {
                             </strong>{" "}
                             To contact You by email, telephone calls, SMS, or
                             other equivalent forms of electronic communication,
-                            such as a mobile application&apos;s push notifications
-                            regarding updates or informative communications
-                            related to the functionalities, products or
-                            contracted services, including the security updates,
-                            when necessary or reasonable for their
-                            implementation.
+                            such as a mobile application&apos;s push
+                            notifications regarding updates or informative
+                            communications related to the functionalities,
+                            products or contracted services, including the
+                            security updates, when necessary or reasonable for
+                            their implementation.
                         </li>
                         <li>
                             <strong className="font-bold">
@@ -439,6 +443,8 @@ export default async function PrivacyPolicyPage() {
                             <strong className="font-bold">
                                 For other purposes
                             </strong>
+                            {/*
+                             */}
                             : We may use Your information for other purposes,
                             such as data analysis, identifying usage trends,
                             determining the effectiveness of our promotional
@@ -503,6 +509,8 @@ export default async function PrivacyPolicyPage() {
                             <strong className="font-bold">
                                 With Your consent
                             </strong>
+                            {/*
+                             */}
                             : We may disclose Your personal information for any
                             other purpose with Your consent.
                         </li>
@@ -730,8 +738,8 @@ export default async function PrivacyPolicyPage() {
                     <p>
                         We will let You know via email and/or a prominent notice
                         on Our Service, prior to the change becoming effective
-                        and update the &rdquo;Last updated&ldquo; date at the top of this
-                        Privacy Policy.
+                        and update the &rdquo;Last updated&ldquo; date at the
+                        top of this Privacy Policy.
                     </p>
                     <p>
                         You are advised to review this Privacy Policy

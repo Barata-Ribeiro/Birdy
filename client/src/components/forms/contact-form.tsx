@@ -23,7 +23,7 @@ export default function ContactForm() {
                 Subject: ${messageSubject} \n
                 Message: ${message}`
             )
-            
+
             setIsLoading(false)
         }, 2500)
     }

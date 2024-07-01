@@ -15,7 +15,11 @@ const DashboardStats = dynamic(
     { loading: () => <Loading />, ssr: false }
 )
 
-export default async function StatsPage({ params }: { params: { userId: string, username: string } }) {
+export default async function StatsPage({
+    params
+}: {
+    params: { userId: string; username: string }
+}) {
     const state = await getUserPhotosStats(params.userId)
     const photos = state.response?.data as UserPhotosStatsResponse
 

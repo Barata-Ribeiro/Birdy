@@ -36,13 +36,18 @@ export function UserContextProvider({
     children,
     user
 }: Readonly<UserContextProviderProps>) {
-    const [currentUser, setCurrentUser] = useState<UserContextResponse | null>(user)
+    const [currentUser, setCurrentUser] = useState<UserContextResponse | null>(
+        user
+    )
 
     useEffect(() => {
         setCurrentUser(user)
     }, [currentUser, user])
-    
-    const userObjectMemo = useMemo(() => ({ user: currentUser, setUser: setCurrentUser }), [currentUser]);
+
+    const userObjectMemo = useMemo(
+        () => ({ user: currentUser, setUser: setCurrentUser }),
+        [currentUser]
+    )
 
     return (
         <UserContext.Provider value={userObjectMemo}>

@@ -36,7 +36,7 @@ export default class UserService {
                 "user.role AS role",
                 "user.avatar_url AS avatar_url",
                 "user.cover_image_url AS cover_image_url",
-                "user.bio AS bio",
+                "user.bio AS bio"
             ])
             .addSelect((subQuery) => {
                 return subQuery
@@ -47,7 +47,7 @@ export default class UserService {
             .addSelect((subQuery) => {
                 return subQuery
                     .select("json_agg(subquery) AS lastLikedPhotos")
-                    .from(qb => {
+                    .from((qb) => {
                         return qb
                             .select([
                                 "photo.id",
@@ -56,7 +56,11 @@ export default class UserService {
                                 "photo.image_url"
                             ])
                             .from(Photo, "photo")
-                            .innerJoin(UserLike, "userLike", "userLike.photoId = photo.id")
+                            .innerJoin(
+                                UserLike,
+                                "userLike",
+                                "userLike.photoId = photo.id"
+                            )
                             .where("userLike.userId = user.id")
                             .orderBy("userLike.liked_at", "DESC")
                             .limit(2)
@@ -130,7 +134,7 @@ export default class UserService {
                 "user.role AS role",
                 "user.avatar_url AS avatar_url",
                 "user.cover_image_url AS cover_image_url",
-                "user.bio AS bio",
+                "user.bio AS bio"
             ])
             .addSelect((subQuery) => {
                 return subQuery
@@ -140,14 +144,17 @@ export default class UserService {
             }, "photoCount")
             .addSelect((subQuery) => {
                 return subQuery
-                    .select("COUNT(DISTINCT userLike.photoId)", "likedPhotoCount")
+                    .select(
+                        "COUNT(DISTINCT userLike.photoId)",
+                        "likedPhotoCount"
+                    )
                     .from(UserLike, "userLike")
                     .where("userLike.userId = user.id")
             }, "likedPhotoCount")
             .addSelect((subQuery) => {
                 return subQuery
                     .select("json_agg(subquery) AS lastLikedPhotos")
-                    .from(qb => {
+                    .from((qb) => {
                         return qb
                             .select([
                                 "photo.id",
@@ -156,7 +163,11 @@ export default class UserService {
                                 "photo.image_url"
                             ])
                             .from(Photo, "photo")
-                            .innerJoin(UserLike, "userLike", "userLike.photoId = photo.id")
+                            .innerJoin(
+                                UserLike,
+                                "userLike",
+                                "userLike.photoId = photo.id"
+                            )
                             .where("userLike.userId = user.id")
                             .orderBy("userLike.liked_at", "DESC")
                             .limit(2)
@@ -183,7 +194,7 @@ export default class UserService {
             .addSelect((subQuery) => {
                 return subQuery
                     .select("json_agg(subquery) AS lastComments")
-                    .from(qb => {
+                    .from((qb) => {
                         return qb
                             .select([
                                 "comment.id",
@@ -197,11 +208,11 @@ export default class UserService {
                     }, "subquery")
             }, "lastComments")
             .where("user.id = :userId", { userId })
-            .getRawOne();
+            .getRawOne()
 
-        if (!user) throw new BadRequestError("User not found.");
+        if (!user) throw new BadRequestError("User not found.")
 
-        return PrivateProfileResponseDTO.fromRaw(user);
+        return PrivateProfileResponseDTO.fromRaw(user)
     }
 
     async getUserPhotosStats(userId: string) {

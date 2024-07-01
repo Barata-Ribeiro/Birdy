@@ -11,7 +11,11 @@ export const metadata: Metadata = {
     description: "In this page you'll find all the photos you have uploaded."
 }
 
-export default async function PrivateFeedPage({ params }: { params: { userId: string, username: string } }) {
+export default async function PrivateFeedPage({
+    params
+}: {
+    params: { userId: string; username: string }
+}) {
     const userState = await getPrivateProfile(params.userId)
     const user = userState.response?.data as PrivateProfileResponse
 

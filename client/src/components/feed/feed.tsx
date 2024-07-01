@@ -35,6 +35,7 @@ export default function Feed({ photos, userId }: Readonly<FeedProps>) {
 
     useEffect(() => {
         if (page === 1) return
+
         async function fetchFeedPhotos(page: number) {
             const state = await getPhotosFeed(
                 { perPage: 6, page, userId },
@@ -48,7 +49,7 @@ export default function Feed({ photos, userId }: Readonly<FeedProps>) {
             }
         }
 
-        fetchFeedPhotos(page).then(r => r)
+        fetchFeedPhotos(page).then((r) => r)
     }, [page, userId])
 
     useEffect(() => {

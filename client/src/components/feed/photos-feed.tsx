@@ -4,7 +4,9 @@ import Link from "next/link"
 import { useState } from "react"
 import { FaEye, FaHeart, FaRegComments } from "react-icons/fa"
 
-export default function FeedPhotos({ photos }: Readonly<{ photos: FeedResponse[] }>) {
+export default function FeedPhotos({
+    photos
+}: Readonly<{ photos: FeedResponse[] }>) {
     const [hoveredImageId, setHoveredImageId] = useState<string | null>(null)
 
     return (

@@ -31,7 +31,7 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
     const state = await getPhoto(params.slug[0])
     const photo = state.response?.data as PhotoResponse | null
     const { user } = useUser()
-    
+
     if (!photo) return notFound()
 
     // Handling logged in User

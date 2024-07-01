@@ -11,7 +11,7 @@ export default async function getUserContext() {
 
     try {
         const access_token = await verifyAuthenticationAndReturnToken()
-        
+
         const response = await fetch(URL, {
             method: "GET",
             headers: { Authorization: "Bearer " + access_token },

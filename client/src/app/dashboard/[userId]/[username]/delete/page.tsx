@@ -1,9 +1,12 @@
-
 import DashboardDelete from "@/components/dashboard/dashboard-delete"
 import { useUser } from "@/context/user-context"
 import { notFound } from "next/navigation"
 
-export default async function DeletePage({ params }: { params: { userId: string, username: string } }) {
+export default async function DeletePage({
+    params
+}: {
+    params: { userId: string; username: string }
+}) {
     const { user } = useUser()
     if (!user) return notFound()
     if (params.userId !== user.id) return notFound()

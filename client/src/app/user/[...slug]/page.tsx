@@ -9,6 +9,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { FaUser, FaUserTie } from "react-icons/fa"
+import DefaultAvatar from "../../../../public/images/default-avatar.svg"
+import DefaultCover from "../../../../public/images/default-cover.jpg"
 
 interface UserPageParams {
     params: {
@@ -29,7 +31,7 @@ export async function generateMetadata({
 
 export default async function UserPage({ params }: UserPageParams) {
     const { user } = useUser()
-    
+
     if (!params.slug) return notFound()
 
     const userState = await getPublicProfile(params.slug[0])
@@ -39,16 +41,12 @@ export default async function UserPage({ params }: UserPageParams) {
     const photosState = await getPhotosFeed({ userId: profile.id })
     const photos = photosState.response?.data as FeedResponse[]
 
-
-    const DEFAULT_AVATAR = "/images/default-avatar.svg"
-    const DEFAULT_COVER = "https://source.unsplash.com/random/?birds"
-
     return (
         <section className="my-4" aria-labelledby="user-profile-title">
             <div className="relative block h-[500px]">
                 <div
                     style={{
-                        backgroundImage: `url('${profile.cover_image_url ?? DEFAULT_COVER}')`
+                        backgroundImage: `url('${profile.cover_image_url ?? DefaultCover.src}')`
                     }}
                     className="absolute top-0 h-full w-full bg-cover bg-center"
                     aria-hidden="true"
@@ -87,12 +85,12 @@ export default async function UserPage({ params }: UserPageParams) {
                         <div className="px-6">
                             <div className="flex flex-wrap justify-center">
                                 {/* AVATAR */}
-                                <div className="flex w-full justify-center px-4  lg:order-2 lg:w-3/12">
+                                <div className="flex w-full justify-center px-4 lg:order-2 lg:w-3/12">
                                     <div className="relative">
                                         <Image
                                             alt={`Avatar of ${profile.username}`}
                                             title={`Avatar of ${profile.username}`}
-                                            src={`${profile.avatar_url ?? DEFAULT_AVATAR}`}
+                                            src={`${profile.avatar_url ?? DefaultAvatar}`}
                                             style={{
                                                 width: "auto",
                                                 height: "auto"

@@ -2,7 +2,13 @@
 
 import { UserPhotosStatsResponse } from "@/interfaces/api/users"
 import { useEffect, useState } from "react"
-import { VictoryBar, VictoryChart, VictoryGroup, VictoryLabel, VictoryPie } from "victory"
+import {
+    VictoryBar,
+    VictoryChart,
+    VictoryGroup,
+    VictoryLabel,
+    VictoryPie
+} from "victory"
 
 interface GraphData {
     x: string

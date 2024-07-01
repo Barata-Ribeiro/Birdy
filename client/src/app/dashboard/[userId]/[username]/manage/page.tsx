@@ -6,7 +6,11 @@ export const metadata: Metadata = {
     description: "Here you can mange your profile and settings."
 }
 
-export default async function ManagePage({ params }: { params: { userId: string, username: string } }) {
+export default async function ManagePage({
+    params
+}: {
+    params: { userId: string; username: string }
+}) {
     return (
         <section className="p-4 sm:px-0">
             <h1 className="text-center text-2xl">Manage your account!</h1>

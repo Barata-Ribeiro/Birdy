@@ -4,7 +4,10 @@ import isUserFollowing from "@/actions/user/get-is_user_following"
 import userFollow from "@/actions/user/post-user-follow"
 import userUnfollow from "@/actions/user/post-user-unfollow"
 import FormButton from "@/components/utils/form-button"
-import { PublicProfileResponse, UserContextResponse } from "@/interfaces/api/users"
+import {
+    PublicProfileResponse,
+    UserContextResponse
+} from "@/interfaces/api/users"
 import { type MouseEvent, useEffect, useState } from "react"
 
 interface FollowingComponentProps {
@@ -40,7 +43,7 @@ export default function FollowingComponent({
             }
         }
 
-        checkFollowing().then(r => r)
+        checkFollowing().then((r) => r)
     }, [profile.username, user])
 
     const handleFollowing = async (event: MouseEvent<HTMLButtonElement>) => {
@@ -70,7 +73,7 @@ export default function FollowingComponent({
     }
 
     let verifyIfFollowingAndSetLabel = isFollowing ? "Unfollow" : "Follow"
-    
+
     return (
         <div className="mt-16 flex items-center justify-between px-3 py-6 sm:mt-0">
             {showTooltip && (

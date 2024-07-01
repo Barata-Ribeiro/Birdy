@@ -20,7 +20,6 @@ export default async function TermsPage() {
                 id="screen-reader-navigation"
                 className="sr-only"
                 aria-label="SCREEN READER NAVIGATION"
-                role="terms navigation"
             ></ul>
 
             <article id="terms-start" className="flex flex-col gap-4">
@@ -42,19 +41,22 @@ export default async function TermsPage() {
                 <p>
                     The following terminology applies to these Terms and
                     Conditions, Privacy Statement and Disclaimer Notice and all
-                    Agreements: &rsquo;Client&lsquo;, &rsquo;You&lsquo; and &rsquo;Your&lsquo; refers to you, the
-                    person log on this website and compliant to the Company&apos;s
-                    terms and conditions. &rsquo;The Company&lsquo;, &rsquo;Ourselves&lsquo;, &rsquo;We&lsquo;,
-                    &rsquo;Our&lsquo; and &rsquo;Us&lsquo;, refers to our Company. &rsquo;Party&lsquo;, &rsquo;Parties&lsquo;,
-                    or &rsquo;Us&lsquo;, refers to both the Client and ourselves. All terms
-                    refer to the offer, acceptance and consideration of payment
-                    necessary to undertake the process of our assistance to the
-                    Client in the most appropriate manner for the express
-                    purpose of meeting the Client&apos;s needs in respect of
-                    provision of the Company&apos;s stated services, in accordance
-                    with and subject to, prevailing law of br. Any use of the
-                    above terminology or other words in the singular, plural,
-                    capitalization and/or he/she or they, are taken as
+                    Agreements: &rsquo;Client&lsquo;, &rsquo;You&lsquo; and
+                    &rsquo;Your&lsquo; refers to you, the person log on this
+                    website and compliant to the Company&apos;s terms and
+                    conditions. &rsquo;The Company&lsquo;,
+                    &rsquo;Ourselves&lsquo;, &rsquo;We&lsquo;, &rsquo;Our&lsquo;
+                    and &rsquo;Us&lsquo;, refers to our Company.
+                    &rsquo;Party&lsquo;, &rsquo;Parties&lsquo;, or
+                    &rsquo;Us&lsquo;, refers to both the Client and ourselves.
+                    All terms refer to the offer, acceptance and consideration
+                    of payment necessary to undertake the process of our
+                    assistance to the Client in the most appropriate manner for
+                    the express purpose of meeting the Client&apos;s needs in
+                    respect of provision of the Company&apos;s stated services,
+                    in accordance with and subject to, prevailing law of br. Any
+                    use of the above terminology or other words in the singular,
+                    plural, capitalization and/or he/she or they, are taken as
                     interchangeable and therefore as referring to same.
                 </p>
             </article>
@@ -66,7 +68,8 @@ export default async function TermsPage() {
 
                 <p>
                     We employ the use of cookies. By accessing Birdy, you agreed
-                    to use cookies in agreement with the Birdy&apos;s Privacy Policy.{" "}
+                    to use cookies in agreement with the Birdy&apos;s Privacy
+                    Policy.{" "}
                 </p>
 
                 <p>
@@ -258,8 +261,8 @@ export default async function TermsPage() {
                 </ol>
 
                 <p>
-                    No use of Birdy&apos;s logo or other artwork will be allowed for
-                    linking absent a license agreement.
+                    No use of Birdy&apos;s logo or other artwork will be allowed
+                    for linking absent a license agreement.
                 </p>
             </article>
 
@@ -289,9 +292,9 @@ export default async function TermsPage() {
                     any particular link to our Website. You approve to
                     immediately remove all links to our Website upon request. We
                     also reserve the right to amend these terms and conditions
-                    and it&apos;s linking policy at any time. By continuously linking
-                    to our Website, you agree to be bound to and follow these
-                    linking terms and conditions.
+                    and it&apos;s linking policy at any time. By continuously
+                    linking to our Website, you agree to be bound to and follow
+                    these linking terms and conditions.
                 </p>
             </article>
 

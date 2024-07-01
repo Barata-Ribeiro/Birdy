@@ -88,7 +88,7 @@ export default function DashboardManage({
                     label="Confirm Password"
                     name="confirmPassword"
                     autoComplete="off"
-                    className=" bg-mantis-200 p-4 text-lg placeholder:text-green-spring-400 dark:bg-mantis-800 dark:placeholder:text-green-spring-300"
+                    className="bg-mantis-200 p-4 text-lg placeholder:text-green-spring-400 dark:bg-mantis-800 dark:placeholder:text-green-spring-300"
                 />
             </fieldset>
             <div className="pb-2 pt-4">

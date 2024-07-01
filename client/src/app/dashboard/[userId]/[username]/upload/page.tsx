@@ -7,7 +7,11 @@ export const metadata: Metadata = {
         "In this page you can upload new bird photographs to share with the world."
 }
 
-export default async function UploadPage({ params }: { params: { userId: string, username: string } }) {
+export default async function UploadPage({
+    params
+}: {
+    params: { userId: string; username: string }
+}) {
     return (
         <section className="p-4 sm:px-0">
             <h1 className="text-center text-2xl">Post Your Picture!</h1>

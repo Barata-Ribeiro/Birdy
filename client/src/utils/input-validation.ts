@@ -29,7 +29,7 @@ export default function inputValidation(input: string, type: unknown): Result {
     }
 
     if (type === "password") {
-        const passwordRegex = /^(?=.*[\d])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,100}$/
+        const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,100}$/
         if (!passwordRegex.test(input)) {
             return {
                 isValid: false,
@@ -40,7 +40,8 @@ export default function inputValidation(input: string, type: unknown): Result {
     }
 
     if (type === "username") {
-        const usernameRegex = /^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9]+(?<![_.])$/
+        const usernameRegex =
+            /^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9]+(?<![_.])$/
         if (!usernameRegex.test(input)) {
             return {
                 isValid: false,
