@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import Image from "next/image"
+import AboutImage from "../../../public/images/about-image.jpg"
 
 export const metadata: Metadata = {
     title: "About Us | Birdy",
@@ -24,16 +25,18 @@ export default async function AboutPage() {
                         the exploration and appreciation of various bird species
                         from around the globe.
                     </p>
-                    <Image
-                        src="https://source.unsplash.com/random/?bird"
-                        alt="Random bird photograph from Unsplash, https://unsplash.com/"
-                        className="mx-auto mb-4 h-96 rounded-lg object-cover"
-                        priority
-                        height={384}
-                        width={682}
-                        sizes="100vw"
-                        style={{ width: "auto", height: "auto" }}
-                    />
+                    <div className="relative h-96">
+                        <Image
+                            src={AboutImage}
+                            alt="Gray and white bird perching on branch foto, by Ray Hennessy on Unsplash"
+                            title="Gray and white bird perching on branch foto, by Ray Hennessy on Unsplash"
+                            className="mx-auto mb-4 rounded-lg object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            quality={100}
+                            priority
+                            fill
+                        />
+                    </div>
                 </div>
                 <div>
                     <h2 className="font-semibold">Our Mission</h2>

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import { FaFolder, FaGithub, FaLinkedinIn } from "react-icons/fa"
+import SignImage from "../../../public/images/sign-image.jpg"
 
 export default async function layout({ children }: { children: ReactNode }) {
     return (
@@ -8,8 +9,7 @@ export default async function layout({ children }: { children: ReactNode }) {
             <div
                 className="relative hidden w-1/2 items-center bg-green-spring-500 bg-cover bg-no-repeat lg:flex"
                 style={{
-                    backgroundImage:
-                        "url(https://source.unsplash.com/random/?bird)",
+                    backgroundImage: `url(${SignImage.src})`,
                     backgroundSize: "cover",
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center center"
@@ -60,8 +60,7 @@ export default async function layout({ children }: { children: ReactNode }) {
                 <div
                     className="absolute inset-0 z-10 items-center bg-gray-500 bg-cover bg-no-repeat lg:hidden"
                     style={{
-                        backgroundImage:
-                            "url(https://source.unsplash.com/random/?bird)",
+                        backgroundImage: `url(${SignImage.src})`,
                         backgroundSize: "cover",
                         backgroundRepeat: "no-repeat",
                         backgroundPosition: "center center"

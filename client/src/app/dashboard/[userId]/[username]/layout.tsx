@@ -7,24 +7,24 @@ import { notFound } from "next/navigation"
 import { ReactNode } from "react"
 import { FaUser, FaUserTie } from "react-icons/fa"
 import DefaultAvatar from "../../../../../public/images/default-avatar.svg"
+import DefaultCover from "../../../../../public/images/default-cover.jpg"
 
 interface DashboardLayoutProps {
     children: ReactNode
-    params: { userId: string, username: string }
+    params: { userId: string; username: string }
 }
 
 export default async function DashBoardLayout({
     children,
     params
 }: DashboardLayoutProps) {
-    if(!params.userId || !params.username) return notFound()
-    
+    if (!params.userId || !params.username) return notFound()
+
     const state = await getPrivateProfile(params.userId)
-    
+
     const user = state.response?.data as PrivateProfileResponse | null
     if (!user) return notFound()
 
-    const DEFAULT_COVER = "https://source.unsplash.com/random/?birds"
     const DEFAULT_BIO = "You haven't set a bio yet."
 
     return (
@@ -32,23 +32,25 @@ export default async function DashBoardLayout({
             <header className="bg-mantis-100 pb-8 dark:bg-mantis-800">
                 <div
                     style={{
-                        backgroundImage: `url('${user.cover_image_url ?? DEFAULT_COVER}')`
+                        backgroundImage: `url('${user.cover_image_url ?? DefaultCover.src}')`
                     }}
-                    className="h-[250px] w-full bg-cover bg-center"
+                    className="h-[250px] w-full bg-cover bg-bottom"
                     role="img"
                     aria-label="User cover image"
                 ></div>
 
                 <div className="-mt-20 flex flex-col items-center">
-                    <div className="relative antialiased h-40 w-40"><Image
-                        src={user.avatar_url ?? DefaultAvatar}
-                        alt={`${user.username}, this is your avatar.`}
-                        title={`${user.username}, this is your avatar.`}
-                        className="aspect-square rounded-full border-4 border-green-spring-50 object-cover object-center align-middle italic dark:border-mantis-800"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        priority
-                        fill
-                    /></div>
+                    <div className="relative h-40 w-40 antialiased">
+                        <Image
+                            src={user.avatar_url ?? DefaultAvatar}
+                            alt={`${user.username}, this is your avatar.`}
+                            title={`${user.username}, this is your avatar.`}
+                            className="aspect-square rounded-full border-4 border-green-spring-50 object-cover object-center align-middle italic dark:border-mantis-800"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            priority
+                            fill
+                        />
+                    </div>
                     <div className="mt-2 flex items-center space-x-2">
                         <Link
                             href={`/user/${user.id}/${user.username}`}
