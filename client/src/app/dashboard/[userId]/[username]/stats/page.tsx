@@ -28,7 +28,7 @@ export default async function StatsPage({
             <h1 className="text-center text-2xl dark:text-mantis-50">
                 Your Stats
             </h1>
-            {photos && photos.total_photos > 0 ? (
+            {photos.total_photos > 0 ? (
                 <DashboardStats data={photos} />
             ) : (
                 <p className="mt-4 text-center text-lg text-gray-600 dark:text-mantis-300">

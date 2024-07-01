@@ -220,13 +220,12 @@ export default class UserService {
 
         const [latestPhotos, totalLatest] = await photoRepository
             .createQueryBuilder("photo")
-            .leftJoin("photo.meta", "meta")
             .select([
                 "photo.id",
                 "photo.title",
-                "meta.total_likes",
-                "meta.total_comments",
-                "meta.total_views",
+                "photo.meta.total_likes",
+                "photo.meta.total_comments",
+                "photo.meta.total_views",
                 "photo.createdAt"
             ])
             .where("photo.authorId = :userId", { userId })
@@ -240,17 +239,16 @@ export default class UserService {
 
         const [popularPhotos, totalPopular] = await photoRepository
             .createQueryBuilder("photo")
-            .leftJoin("photo.meta", "meta")
             .select([
                 "photo.id",
                 "photo.title",
-                "meta.total_likes",
-                "meta.total_comments",
-                "meta.total_views",
+                "photo.meta.total_likes",
+                "photo.meta.total_comments",
+                "photo.meta.total_views",
                 "photo.createdAt"
             ])
             .where("photo.authorId = :userId", { userId })
-            .orderBy("meta.total_views", "DESC")
+            .orderBy("photo.meta.total_views", "DESC")
             .limit(3)
             .getManyAndCount()
 
