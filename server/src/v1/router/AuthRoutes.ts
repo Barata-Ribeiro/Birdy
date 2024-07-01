@@ -1,6 +1,5 @@
 import { Router } from "express"
 import AuthController from "../../controller/AuthController"
-import authMiddleware from "../../middleware/AuthMiddleware"
 
 const routes = Router()
 const authController = new AuthController()
@@ -11,10 +10,6 @@ routes.post("/register", (req, res, next) =>
 
 routes.post("/login", (req, res, next) =>
     authController.login(req, res).catch(next)
-)
-
-routes.get("/refresh-token", authMiddleware, (req, res, next) =>
-    authController.refreshToken(req, res).catch(next)
 )
 
 routes.post("/forgot-password", (req, res, next) =>

@@ -14,7 +14,6 @@ export interface AuthUserLoginBody {
 }
 
 export interface AuthLoginServiceResponse {
-    access_token: string
-    refresh_token: string
+    auth_token: string
     user: Partial<User>
 }

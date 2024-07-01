@@ -97,35 +97,14 @@ export default class AuthService {
                 "The server is missing its JWT secret key. You should report this issue to the administrator."
             )
 
-        const access_token = sign({ id: user.id }, secretKey, {
-            expiresIn: "15m"
-        })
-
-        const refresh_token = sign({ id: user.id }, secretKey, {
+        const auth_token = sign({ id: user.id }, secretKey, {
             expiresIn: remember_me ? "30d" : "1d"
         })
 
         return {
-            access_token,
-            refresh_token,
+            auth_token,
             user: { id: user.id, username: user.username, role: user.role }
         }
-    }
-
-    async refreshToken(refreshToken: string): Promise<string> {
-        const secretKey = process.env.JWT_SECRET_KEY
-        if (!secretKey)
-            throw new NotFoundError(
-                "The server is missing its JWT secret key. You should report this issue to the administrator."
-            )
-
-        let id: string
-        id = attemptToGetUserIdFromToken(refreshToken, secretKey)
-
-        const checkIfUserExists = await userRepository.existsBy({ id })
-        if (!checkIfUserExists) throw new NotFoundError("User not found.")
-
-        return sign({ id }, secretKey, { expiresIn: "15m" })
     }
 
     async forgotPassword(email: string): Promise<void> {
