@@ -9,13 +9,13 @@ export default async function userUnfollow(userId: string, followId: string) {
     const URL = USER_UNFOLLOW(userId)
 
     try {
-        const access_token = await verifyAuthenticationAndReturnToken()
+        const auth_token = await verifyAuthenticationAndReturnToken()
 
         const response = await fetch(URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + access_token
+                Authorization: "Bearer " + auth_token
             },
             body: JSON.stringify({ followId })
         })

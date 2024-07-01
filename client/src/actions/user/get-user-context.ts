@@ -10,11 +10,11 @@ export default async function getUserContext() {
     const URL = USER_GET_CONTEXT()
 
     try {
-        const access_token = await verifyAuthenticationAndReturnToken()
+        const auth_token = await verifyAuthenticationAndReturnToken()
 
         const response = await fetch(URL, {
             method: "GET",
-            headers: { Authorization: "Bearer " + access_token },
+            headers: { Authorization: "Bearer " + auth_token },
             next: { revalidate: 60, tags: ["profile"] }
         })
 

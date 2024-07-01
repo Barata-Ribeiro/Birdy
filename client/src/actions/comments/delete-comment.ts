@@ -13,11 +13,11 @@ export default async function deleteComment(
     const URL = PHOTO_DELETE_COMMENT(photoId, commentId)
 
     try {
-        const access_token = await verifyAuthenticationAndReturnToken()
+        const auth_token = await verifyAuthenticationAndReturnToken()
 
         const response = await fetch(URL, {
             method: "DELETE",
-            headers: { Authorization: "Bearer " + access_token },
+            headers: { Authorization: "Bearer " + auth_token },
             next: { revalidate: 60, tags: ["comment"] }
         })
 

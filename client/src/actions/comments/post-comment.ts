@@ -11,7 +11,7 @@ export default async function postComment(state: State, formData: FormData) {
     const photoId = formData.get("photoId") as string
 
     try {
-        const access_token = await verifyAuthenticationAndReturnToken()
+        const auth_token = await verifyAuthenticationAndReturnToken()
 
         if (!comment || comment.trim() === "")
             throw new Error("You cannot add an empty comment.")
@@ -22,7 +22,7 @@ export default async function postComment(state: State, formData: FormData) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + access_token
+                Authorization: "Bearer " + auth_token
             },
             body: JSON.stringify({ comment })
         })

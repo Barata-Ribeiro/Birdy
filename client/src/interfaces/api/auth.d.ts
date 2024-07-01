@@ -9,8 +9,7 @@ export interface AuthRegisterResponse {
 }
 
 export interface AuthLoginResponse {
-    access_token: string
-    refresh_token: string
+    auth_token: string
     user: {
         id: string
         username: string

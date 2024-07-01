@@ -16,7 +16,7 @@ export default async function deletePrivateProfile(
     const confirm_password = formData.get("confirmPassword") as string | null
 
     try {
-        const access_token = await verifyAuthenticationAndReturnToken()
+        const auth_token = await verifyAuthenticationAndReturnToken()
 
         if (!userId) throw new Error("User ID is required.")
         const URL = USER_DELETE_PRIVATE_PROFILE(userId)
@@ -32,7 +32,7 @@ export default async function deletePrivateProfile(
 
         const response = await fetch(URL, {
             method: "DELETE",
-            headers: { Authorization: "Bearer " + access_token }
+            headers: { Authorization: "Bearer " + auth_token }
         })
 
         const responseData = (await response.json()) as ApiResponse

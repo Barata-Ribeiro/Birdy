@@ -10,11 +10,11 @@ export default async function getUserPhotosStats(userId: string) {
     const URL = USER_GET_PHOTOS_STATS(userId)
 
     try {
-        const access_token = await verifyAuthenticationAndReturnToken()
+        const auth_token = await verifyAuthenticationAndReturnToken()
 
         const response = await fetch(URL, {
             method: "GET",
-            headers: { Authorization: "Bearer " + access_token },
+            headers: { Authorization: "Bearer " + auth_token },
             next: { revalidate: 60 }
         })
 

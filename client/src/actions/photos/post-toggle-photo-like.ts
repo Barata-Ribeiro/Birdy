@@ -11,13 +11,13 @@ export default async function postToggleLike(photoId: string) {
     const URL = PHOTO_TOGGLE_LIKE(photoId)
 
     try {
-        const access_token = await verifyAuthenticationAndReturnToken()
+        const auth_token = await verifyAuthenticationAndReturnToken()
 
         const response = await fetch(URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + access_token
+                Authorization: "Bearer " + auth_token
             },
             body: JSON.stringify({})
         })

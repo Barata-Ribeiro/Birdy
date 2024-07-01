@@ -23,14 +23,12 @@ export default async function StatsPage({
     const state = await getUserPhotosStats(params.userId)
     const photos = state.response?.data as UserPhotosStatsResponse
 
-    if (!photos) return null
-
     return (
         <section className="p-4 sm:px-0">
             <h1 className="text-center text-2xl dark:text-mantis-50">
                 Your Stats
             </h1>
-            {photos.total_photos > 0 ? (
+            {photos && photos.total_photos > 0 ? (
                 <DashboardStats data={photos} />
             ) : (
                 <p className="mt-4 text-center text-lg text-gray-600 dark:text-mantis-300">

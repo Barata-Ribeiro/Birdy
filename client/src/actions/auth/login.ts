@@ -8,7 +8,6 @@ import { cookies } from "next/headers"
 
 export default async function login(state: State, formData: FormData) {
     const URL = AUTH_LOGIN()
-    const FIFTEEN_MINUTES = 15 * 60 * 1000
     const ONE_DAY = 24 * 60 * 60 * 1000
     const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000
 
@@ -37,19 +36,12 @@ export default async function login(state: State, formData: FormData) {
                 responseData.message ?? "An unknown error occurred."
             )
 
-        const { access_token, refresh_token, user } =
-            responseData.data as AuthLoginResponse
+        const { auth_token, user } = responseData.data as AuthLoginResponse
 
         if (user.role === "BANNED")
             throw new Error("You are banned. You cannot log in.")
 
-        cookies().set("access_token", access_token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "strict",
-            expires: Date.now() + FIFTEEN_MINUTES
-        })
-        cookies().set("refresh_token", refresh_token, {
+        cookies().set("auth_token", auth_token, {
             httpOnly: true,
             secure: true,
             sameSite: "strict",

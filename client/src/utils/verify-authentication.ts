@@ -1,9 +1,7 @@
 import { cookies } from "next/headers"
 
 export default async function verifyAuthentication() {
-    const access_token = cookies().get("access_token")?.value
-    if (!access_token)
-        throw new Error("You must be logged in to view this page.")
-
-    return access_token
+    const auth_token = cookies().get("auth_token")?.value
+    if (!auth_token) throw new Error("You must be logged in to view this page.")
+    return auth_token
 }

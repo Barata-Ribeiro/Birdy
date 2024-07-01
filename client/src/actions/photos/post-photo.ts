@@ -10,7 +10,7 @@ export default async function postPhoto(state: State, formData: FormData) {
     const URL = PHOTO_UPLOAD()
 
     try {
-        const access_token = await verifyAuthenticationAndReturnToken()
+        const auth_token = await verifyAuthenticationAndReturnToken()
 
         if (
             !formData.has("photoTitle") ||
@@ -29,7 +29,7 @@ export default async function postPhoto(state: State, formData: FormData) {
 
         const response = await fetch(URL, {
             method: "POST",
-            headers: { Authorization: "Bearer " + access_token },
+            headers: { Authorization: "Bearer " + auth_token },
             body: formData
         })
 

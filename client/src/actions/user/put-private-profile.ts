@@ -24,7 +24,7 @@ export default async function putPrivateProfile(
     const userId = formData.get("userId") as string | null
 
     try {
-        const access_token = await verifyAuthenticationAndReturnToken()
+        const auth_token = await verifyAuthenticationAndReturnToken()
 
         if (!userId) throw new Error("User ID is required.")
         const URL = USER_UPDATE_PRIVATE_PROFILE(userId)
@@ -65,7 +65,7 @@ export default async function putPrivateProfile(
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + access_token
+                Authorization: "Bearer " + auth_token
             },
             body: JSON.stringify({
                 username,
