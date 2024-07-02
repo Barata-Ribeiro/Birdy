@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 
 export default async function PrivateFeedPage({
     params
-}: {
+}: Readonly<{
     params: { userId: string; username: string }
-}) {
+}>) {
     const userState = await getPrivateProfile(params.userId)
     const user = userState.response?.data as PrivateProfileResponse
 

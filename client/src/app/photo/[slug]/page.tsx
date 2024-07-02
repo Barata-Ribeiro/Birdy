@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PhotoPageProps) {
     }
 }
 
-export default async function PhotoPage({ params }: PhotoPageProps) {
+export default async function PhotoPage({ params }: Readonly<PhotoPageProps>) {
     const state = await getPhoto(params.slug[0])
     const photo = state.response?.data as PhotoResponse | null
     const { user } = useUser()

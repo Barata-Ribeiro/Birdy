@@ -17,9 +17,9 @@ const DashboardStats = dynamic(
 
 export default async function StatsPage({
     params
-}: {
+}: Readonly<{
     params: { userId: string; username: string }
-}) {
+}>) {
     const state = await getUserPhotosStats(params.userId)
     const photos = state.response?.data as UserPhotosStatsResponse
 

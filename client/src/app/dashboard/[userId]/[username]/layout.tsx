@@ -17,7 +17,7 @@ interface DashboardLayoutProps {
 export default async function DashBoardLayout({
     children,
     params
-}: DashboardLayoutProps) {
+}: Readonly<DashboardLayoutProps>) {
     if (!params.userId || !params.username) return notFound()
 
     const state = await getPrivateProfile(params.userId)
@@ -35,7 +35,6 @@ export default async function DashBoardLayout({
                         backgroundImage: `url('${user.cover_image_url ?? DefaultCover.src}')`
                     }}
                     className="h-[250px] w-full bg-cover bg-bottom"
-                    role="img"
                     aria-label="User cover image"
                 ></div>
 
@@ -100,7 +99,7 @@ export default async function DashBoardLayout({
                 <DashboardNavigation user={user} />
             </header>
 
-            <section id="routes" role="main" aria-label="Dashboard routes">
+            <section id="routes" aria-label="Dashboard routes">
                 {children}
             </section>
         </>

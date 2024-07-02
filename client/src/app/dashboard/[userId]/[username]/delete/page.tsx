@@ -4,9 +4,9 @@ import { notFound } from "next/navigation"
 
 export default async function DeletePage({
     params
-}: {
+}: Readonly<{
     params: { userId: string; username: string }
-}) {
+}>) {
     const { user } = useUser()
     if (!user) return notFound()
     if (params.userId !== user.id) return notFound()

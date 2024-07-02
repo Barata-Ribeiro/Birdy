@@ -29,7 +29,7 @@ export async function generateMetadata({
     }
 }
 
-export default async function UserPage({ params }: UserPageParams) {
+export default async function UserPage({ params }: Readonly<UserPageParams>) {
     const { user } = useUser()
 
     if (!params.slug) return notFound()
