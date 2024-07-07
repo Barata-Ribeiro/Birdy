@@ -2,27 +2,29 @@
 
 import postToggleLike from "@/actions/photos/post-toggle-photo-like"
 import { PhotoResponse, ToggleLikeResponse } from "@/interfaces/api/photos"
-import { UserContextResponse } from "@/interfaces/api/users"
 import { useEffect, useState } from "react"
 import "./like-button.css"
+import { useUser } from "@/context/user-context"
 
 interface LikeButtonProps {
-    user: UserContextResponse | null
     photo: PhotoResponse
 }
 
-export default function LikeButton({ user, photo }: Readonly<LikeButtonProps>) {
+export default function LikeButton({ photo }: Readonly<LikeButtonProps>) {
     const [totalLikes, setTotalLikes] = useState(photo.likes.length)
     const [usedKeyboard, setUsedKeyboard] = useState(false)
     const [loading, setLoading] = useState(false)
+
+    // Handling logged in User
+    const { user } = useUser()
+    const userId = user ? user.id : null
+    const isOwner = userId && photo?.author.id === userId
 
     const isPhotoLiked =
         user && photo.likes.some((like) => like.user_id === user.id)
     const [likeState, setLikeState] = useState(
         isPhotoLiked ? "Liked" : "Unliked"
     )
-
-    const isOwner = user && photo.author.id === user.id
 
     async function toggleLike() {
         if (loading) return

@@ -5,27 +5,30 @@ import adminDeletePhoto from "@/actions/admin/admin-delete-photo"
 import deleteComment from "@/actions/comments/delete-comment"
 import deletePhoto from "@/actions/photos/delete-photo"
 import { PhotoComment, PhotoResponse } from "@/interfaces/api/photos"
-import { UserContextResponse } from "@/interfaces/api/users"
 import tw from "@/utils/tw"
 import { useState } from "react"
 import { FaTrash } from "react-icons/fa"
 import { twMerge } from "tailwind-merge"
+import { useUser } from "@/context/user-context"
 
 interface DeleteButtonProps {
-    user: UserContextResponse
     photo?: PhotoResponse
     comment?: PhotoComment
     direction?: "left" | "right"
 }
 
 export default function DeleteButton({
-    user,
     photo,
     comment,
     direction
 }: Readonly<DeleteButtonProps>) {
     const [showConfirm, setShowConfirm] = useState(false)
     const [loading, setLoading] = useState(false)
+
+    // Handling logged in User
+    const { user } = useUser()
+    const userId = user ? user.id : null
+    const isOwner = userId && photo?.author.id === userId
 
     const toolTipClasses = tw`absolute bottom-2 z-20 mt-2 rounded border border-green-spring-200 bg-white p-2 shadow dark:border-green-spring-600 dark:bg-green-spring-700`
     const directionClass = `${direction}-2`
@@ -56,6 +59,8 @@ export default function DeleteButton({
     }
 
     const handleCancel = () => setShowConfirm(false)
+
+    if (!isOwner || user?.role !== "ADMIN") return null
 
     return (
         <div className="relative">

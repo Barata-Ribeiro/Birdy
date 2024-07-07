@@ -4,25 +4,23 @@ import isUserFollowing from "@/actions/user/get-is_user_following"
 import userFollow from "@/actions/user/post-user-follow"
 import userUnfollow from "@/actions/user/post-user-unfollow"
 import FormButton from "@/components/utils/form-button"
-import {
-    PublicProfileResponse,
-    UserContextResponse
-} from "@/interfaces/api/users"
+import { PublicProfileResponse } from "@/interfaces/api/users"
 import { type MouseEvent, useEffect, useState } from "react"
+import { useUser } from "@/context/user-context"
 
 interface FollowingComponentProps {
     profile: PublicProfileResponse
-    user?: UserContextResponse | null
 }
 
 export default function FollowingComponent({
-    profile,
-    user
+    profile
 }: Readonly<FollowingComponentProps>) {
     const [tooltipMessage, setTooltipMessage] = useState("")
     const [showTooltip, setShowTooltip] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [isFollowing, setIsFollowing] = useState(false)
+    const { user } = useUser()
+
     const disabledFollowing = isLoading || !user || user.id === profile.id
 
     useEffect(() => {
