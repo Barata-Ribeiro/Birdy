@@ -49,7 +49,7 @@ export default function UploadPhotoForm({
                 <div className="pb-2 pt-4">
                     <Input
                         label="Photo Title"
-                        name="photoTitle"
+                        name="title"
                         className="block w-full rounded-lg bg-mantis-200 p-4 text-lg placeholder:text-green-spring-400 dark:bg-mantis-800 dark:placeholder:text-green-spring-300"
                         required
                         aria-required
@@ -58,7 +58,7 @@ export default function UploadPhotoForm({
                 <div className="pb-2 pt-4">
                     <Input
                         label="Photo Description"
-                        name="photoDescription"
+                        name="description"
                         className="block w-full rounded-lg bg-mantis-200 p-4 text-lg placeholder:text-green-spring-400 dark:bg-mantis-800 dark:placeholder:text-green-spring-300"
                         required
                         aria-required
@@ -66,8 +66,9 @@ export default function UploadPhotoForm({
                 </div>
                 <div className="pb-2 pt-4">
                     <Input
+                        type="number"
                         label="Bird Size"
-                        name="photoBirdSize"
+                        name="bird_size"
                         className="block w-full rounded-lg bg-mantis-200 p-4 text-lg placeholder:text-green-spring-400 dark:bg-mantis-800 dark:placeholder:text-green-spring-300"
                         required
                         aria-required
@@ -76,7 +77,7 @@ export default function UploadPhotoForm({
                 <div className="pb-2 pt-4">
                     <Input
                         label="Bird Habitat"
-                        name="photoBirdHabitat"
+                        name="bird_habitat"
                         className="block w-full rounded-lg bg-mantis-200 p-4 text-lg placeholder:text-green-spring-400 dark:bg-mantis-800 dark:placeholder:text-green-spring-300"
                         required
                         aria-required

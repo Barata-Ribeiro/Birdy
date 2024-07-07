@@ -13,10 +13,10 @@ export default async function postPhoto(state: State, formData: FormData) {
         const auth_token = await verifyAuthenticationAndReturnToken()
 
         if (
-            !formData.has("photoTitle") ||
-            !formData.has("photoDescription") ||
-            !formData.has("photoBirdSize") ||
-            !formData.has("photoBirdHabitat") ||
+            !formData.has("title") ||
+            !formData.has("description") ||
+            !formData.has("bird_size") ||
+            !formData.has("bird_habitat") ||
             !formData.has("photoImage")
         )
             throw new Error(
