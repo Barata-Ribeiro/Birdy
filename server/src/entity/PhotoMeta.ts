@@ -1,8 +1,8 @@
 import { Column } from "typeorm"
 
 export class PhotoMeta {
-    @Column()
-    bird_name?: string
+    @Column({ nullable: true })
+    bird_name: string
 
     @Column()
     bird_size: number

@@ -23,8 +23,11 @@ router.get("/:photoId/comments", (req, res, next) =>
     commentController.getComments(req, res).catch(next)
 )
 
-router.post("/", authMiddleware, upload.single("imageFile"), (req, res, next) =>
-    photoController.uploadNewPhoto(req, res).catch(next)
+router.post(
+    "/",
+    authMiddleware,
+    upload.single("photoImage"),
+    (req, res, next) => photoController.uploadNewPhoto(req, res).catch(next)
 )
 
 router.post("/:photoId/like", authMiddleware, (req, res, next) =>

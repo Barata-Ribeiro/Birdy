@@ -91,46 +91,62 @@ export class PhotoService {
         file: Express.Multer.File,
         requestingBody: PhotoUploadBody
     ) {
-        const checkUser = await userRepository.existsBy({
-            id: user.id,
-            username: user.username
-        })
-        if (!checkUser) throw new NotFoundError("User not found.")
+        await AppDataSource.manager.transaction(
+            async (transactionalEntityManager) => {
+                try {
+                    const checkUser = await userRepository.existsBy({
+                        id: user.id,
+                        username: user.username
+                    })
+                    if (!checkUser) throw new NotFoundError("User not found.")
 
-        if (!file.mimetype.includes("image"))
-            throw new BadRequestError(
-                "Invalid file type. Only images are allowed."
-            )
+                    if (!file.mimetype.includes("image"))
+                        throw new BadRequestError(
+                            "Invalid file type. Only images are allowed."
+                        )
 
-        const { title, description, bird_name, bird_size, bird_habitat } =
-            requestingBody
-        if (!title || !description || !bird_size || !bird_habitat)
-            throw new BadRequestError(
-                "All fields are required. Only 'bird_name' is optional."
-            )
+                    const {
+                        title,
+                        description,
+                        bird_name,
+                        bird_size,
+                        bird_habitat
+                    } = requestingBody
+                    if (!title || !description || !bird_size || !bird_habitat)
+                        throw new BadRequestError(
+                            "All fields are required. Only 'bird_name' is optional."
+                        )
 
-        const secure_url = await this.uploadPhotoToCloudinary(file)
-        const slug = title
-            .trim()
-            .toLowerCase()
-            .replace(/[^a-z0-9 -]/g, "")
-            .replace(/\s+/g, "-")
-            .replace(/-+/g, "-")
+                    const secure_url = await this.uploadPhotoToCloudinary(file)
+                    const slug = title
+                        .trim()
+                        .toLowerCase()
+                        .replace(/[^a-z0-9 -]/g, "")
+                        .replace(/\s+/g, "-")
+                        .replace(/-+/g, "-")
 
-        const newPhoto = photoRepository.create({
-            title,
-            description,
-            image_url: secure_url,
-            slug,
-            meta: {
-                bird_name,
-                bird_size,
-                bird_habitat
-            },
-            author: { id: user.id, username: user.username }
-        })
+                    const newPhoto = photoRepository.create({
+                        title,
+                        description,
+                        image_url: secure_url,
+                        slug,
+                        meta: {
+                            bird_name,
+                            bird_size,
+                            bird_habitat
+                        },
+                        author: { id: user.id, username: user.username }
+                    })
 
-        await saveEntityToDatabase(photoRepository, newPhoto)
+                    await transactionalEntityManager.save(newPhoto)
+                } catch (error) {
+                    console.error("Transaction failed:", error)
+                    throw new InternalServerError(
+                        "An error occurred during the upload process."
+                    )
+                }
+            }
+        )
     }
 
     async deletePhoto(user: Partial<User>, photoId: string) {
