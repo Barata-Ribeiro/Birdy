@@ -2,7 +2,6 @@ import getPhoto from "@/actions/photos/get-photo"
 import PhotoComments from "@/components/photo/photo-comments"
 import DeleteButton from "@/components/utils/delete-button"
 import LikeButton from "@/components/utils/like-button"
-import { useUser } from "@/context/user-context"
 import { PhotoResponse } from "@/interfaces/api/photos"
 import Image from "next/image"
 import Link from "next/link"
@@ -11,12 +10,13 @@ import { FaEye, FaRegComments } from "react-icons/fa"
 
 interface PhotoPageProps {
     params: {
-        slug: [photoId: string, slug: string]
+        photoId: string
+        slug: string
     }
 }
 
 export async function generateMetadata({ params }: PhotoPageProps) {
-    const state = await getPhoto(params.slug[0])
+    const state = await getPhoto(params.photoId)
     const photo = state.response?.data as PhotoResponse | null
 
     if (!photo) return { title: "Photo", description: "Photo Not Found..." }
@@ -28,15 +28,12 @@ export async function generateMetadata({ params }: PhotoPageProps) {
 }
 
 export default async function PhotoPage({ params }: Readonly<PhotoPageProps>) {
-    const state = await getPhoto(params.slug[0])
+    const state = await getPhoto(params.photoId)
     const photo = state.response?.data as PhotoResponse | null
-    const { user } = useUser()
+
+    console.log(photo)
 
     if (!photo) return notFound()
-
-    // Handling logged in User
-    const userId = user ? user.id : null
-    const isOwner = userId && photo.author.id === userId
 
     return (
         <section className="my-4">
@@ -67,13 +64,7 @@ export default async function PhotoPage({ params }: Readonly<PhotoPageProps>) {
                                 @{photo.author.username}
                             </Link>
                         </div>
-                        {user && (isOwner || user.role === "ADMIN") && (
-                            <DeleteButton
-                                user={user}
-                                photo={photo}
-                                direction="right"
-                            />
-                        )}
+                        <DeleteButton photo={photo} direction="right" />
                     </div>
 
                     {/* META NUMBERS */}
@@ -85,7 +76,7 @@ export default async function PhotoPage({ params }: Readonly<PhotoPageProps>) {
                             <FaEye aria-hidden="true" />
                             {photo.meta.total_views}
                         </span>
-                        <LikeButton user={user} photo={photo} />
+                        <LikeButton photo={photo} />
                         <span
                             aria-label="Number of comments"
                             className="flex items-center gap-2"
@@ -117,7 +108,7 @@ export default async function PhotoPage({ params }: Readonly<PhotoPageProps>) {
 
                     {/* COMMENTS */}
                     <PhotoComments
-                        photoId={params.slug[0]}
+                        photoId={params.photoId}
                         comments={photo.comments}
                     />
                 </div>

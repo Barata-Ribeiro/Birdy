@@ -1,7 +1,6 @@
 import getPhotosFeed from "@/actions/photos/get-photos-feed"
 import getPublicProfile from "@/actions/user/get-public-profile"
 import FollowingComponent from "@/components/user/following-component"
-import { useUser } from "@/context/user-context"
 import { FeedResponse } from "@/interfaces/api/photos"
 import { PublicProfileResponse } from "@/interfaces/api/users"
 import type { Metadata } from "next"
@@ -9,32 +8,26 @@ import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { FaUser, FaUserTie } from "react-icons/fa"
-import DefaultAvatar from "../../../../public/images/default-avatar.svg"
-import DefaultCover from "../../../../public/images/default-cover.jpg"
+import defaultAvatar from "../../../../../public/images/default-avatar.svg"
+import defaultCover from "../../../../../public/images/default-cover.jpg"
 
-interface UserPageParams {
-    params: {
-        slug: [userId: string, username: string]
-    }
+interface UserPageProps {
+    params: { userId: string; username: string }
 }
 
 export async function generateMetadata({
     params
-}: UserPageParams): Promise<Metadata> {
-    const username = params.slug[1]
-
+}: Readonly<UserPageProps>): Promise<Metadata> {
     return {
-        title: `${username} | Birdy`,
-        description: `This is the profile page of ${username} on Birdy.`
+        title: `${params.username} | Birdy`,
+        description: `This is the profile page of ${params.username} on Birdy.`
     }
 }
 
-export default async function UserPage({ params }: Readonly<UserPageParams>) {
-    const { user } = useUser()
+export default async function UserPage({ params }: Readonly<UserPageProps>) {
+    if (!params.userId || !params.username) return notFound()
 
-    if (!params.slug) return notFound()
-
-    const userState = await getPublicProfile(params.slug[0])
+    const userState = await getPublicProfile(params.username)
     const profile = userState.response?.data as PublicProfileResponse | null
     if (!profile) return notFound()
 
@@ -46,7 +39,7 @@ export default async function UserPage({ params }: Readonly<UserPageParams>) {
             <div className="relative block h-[500px]">
                 <div
                     style={{
-                        backgroundImage: `url('${profile.cover_image_url ?? DefaultCover.src}')`
+                        backgroundImage: `url(${profile.cover_image_url ?? defaultCover.src})`
                     }}
                     className="absolute top-0 h-full w-full bg-cover bg-center"
                     aria-hidden="true"
@@ -90,7 +83,10 @@ export default async function UserPage({ params }: Readonly<UserPageParams>) {
                                         <Image
                                             alt={`Avatar of ${profile.username}`}
                                             title={`Avatar of ${profile.username}`}
-                                            src={`${profile.avatar_url ?? DefaultAvatar}`}
+                                            src={
+                                                profile.avatar_url ??
+                                                defaultAvatar
+                                            }
                                             style={{
                                                 width: "auto",
                                                 height: "auto"
@@ -105,10 +101,7 @@ export default async function UserPage({ params }: Readonly<UserPageParams>) {
 
                                 {/* FOLLOWINGS */}
                                 <div className="w-full lg:order-3 lg:w-4/12 lg:self-center lg:text-right">
-                                    <FollowingComponent
-                                        profile={profile}
-                                        user={user}
-                                    />
+                                    <FollowingComponent profile={profile} />
                                 </div>
 
                                 {/* INFO */}
@@ -116,7 +109,7 @@ export default async function UserPage({ params }: Readonly<UserPageParams>) {
                                     <div className="flex justify-center py-4 lg:pt-4">
                                         <div className="mr-4 p-3 text-center">
                                             <span className="block text-xl font-bold uppercase tracking-wide text-green-spring-600">
-                                                {profile.photo_count}
+                                                {profile.photo_count ?? 0}
                                             </span>
                                             <span className="text-sm text-green-spring-400">
                                                 Photos
@@ -124,7 +117,7 @@ export default async function UserPage({ params }: Readonly<UserPageParams>) {
                                         </div>
                                         <div className="mr-4 p-3 text-center">
                                             <span className="block text-xl font-bold uppercase tracking-wide text-green-spring-600">
-                                                {profile.liked_photo_count}
+                                                {profile.liked_photo_count ?? 0}
                                             </span>
                                             <span className="text-sm text-green-spring-400">
                                                 Likes
@@ -132,7 +125,7 @@ export default async function UserPage({ params }: Readonly<UserPageParams>) {
                                         </div>
                                         <div className="p-3 text-center lg:mr-4">
                                             <span className="block text-xl font-bold uppercase tracking-wide text-green-spring-600">
-                                                {profile.comment_count}
+                                                {profile.comment_count ?? 0}
                                             </span>
                                             <span className="text-sm text-green-spring-400">
                                                 Comments
