@@ -20,6 +20,7 @@ export interface PublicProfileResponse {
     cover_image_url: string | null
     bio: string | null
     created_at: string
+    updated_at: string
     photo_count: number
     liked_photo_count: number
     following_count: number

@@ -28,7 +28,9 @@ export default class UserService {
                 "user.role AS role",
                 "user.avatar_url AS avatar_url",
                 "user.cover_image_url AS cover_image_url",
-                "user.bio AS bio"
+                "user.bio AS bio",
+                "user.createdAt AS created_at",
+                "user.updatedAt AS updated_at"
             ])
             .addSelect((subQuery) => {
                 return subQuery
@@ -69,6 +71,8 @@ export default class UserService {
             .getRawOne()
 
         if (!user) throw new BadRequestError("User not found.")
+
+        console.log(user)
 
         return PublicProfileResponseDTO.fromRaw(user)
     }
