@@ -32,8 +32,14 @@ export default async function UserPage({ params }: Readonly<UserPageProps>) {
     const photosState = await getPhotosFeed({ userId: profile.id })
     const photos = photosState.response?.data as FeedResponse[]
 
+    const formattedDate = new Date(profile.created_at).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+    })
+
     return (
-        <section className="my-4" aria-labelledby="user-profile-title">
+        <section aria-labelledby="user-profile-title">
             <div className="relative block h-[500px]">
                 <div
                     style={{
@@ -122,18 +128,27 @@ export default async function UserPage({ params }: Readonly<UserPageProps>) {
                             </div>
 
                             {/* INFO PART 2 */}
-                            <div className="mt-6 flex flex-col items-center justify-center gap-2 lg:mt-12">
+                            <div className="mt-6 flex flex-col items-center justify-center gap-2 lg:mt-8">
                                 <h3
                                     id="user-profile-title"
-                                    className="flex items-center gap-1 text-4xl font-semibold leading-normal text-green-spring-700 dark:text-green-spring-700"
+                                    className="flex flex-col text-4xl font-semibold leading-none text-green-spring-700 dark:text-green-spring-700"
                                 >
-                                    @{profile.username}
-                                    {profile.role === "1" ? <FaUserTie size={20} /> : <FaUser size={20} />}
+                                    {profile.display_name}
+                                    <span className="text-right text-xs text-green-spring-300">
+                                        Member since {formattedDate}
+                                    </span>
                                 </h3>
-                                <p className="text-sm text-green-spring-400">{profile.display_name}</p>
-                                <p className="mt-2 text-center leading-7 text-green-spring-600">
-                                    {profile.bio ?? null}
+                                <p className="flex items-center gap-1 text-base text-green-spring-500">
+                                    @{profile.username}
+                                    {profile.role === "1" ? (
+                                        <FaUserTie size={16} aria-label="Admin" title="Admin" />
+                                    ) : (
+                                        <FaUser size={16} aria-label="Member" title="Member" />
+                                    )}
                                 </p>
+                                {profile.bio && (
+                                    <p className="mt-2 text-center leading-7 text-green-spring-600">{profile.bio}</p>
+                                )}
                             </div>
                         </div>
 
@@ -149,10 +164,12 @@ export default async function UserPage({ params }: Readonly<UserPageProps>) {
                                                 src={photo.image_url}
                                                 alt={`Photo: ${photo.title}, by @${photo.author.username}`}
                                                 title={`Photo: ${photo.title}, by @${photo.author.username}`}
-                                                className="h-60 w-60 object-cover object-center align-middle grayscale hover:grayscale-0"
+                                                className="h-60 w-60 object-cover object-center align-middle grayscale transition duration-300 ease-in-out hover:grayscale-0"
                                                 width={240}
                                                 height={240}
-                                                sizes="100vw"
+                                                quality={75}
+                                                sizes="(min-width: 808px) 50vw, 100vw"
+                                                priority
                                             />
                                         </Link>
                                     </li>

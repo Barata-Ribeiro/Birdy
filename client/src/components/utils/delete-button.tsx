@@ -26,8 +26,8 @@ export default function DeleteButton({ photo, comment, direction }: Readonly<Del
     const userId = user ? user.id : null
     const isOwner = userId && photo?.author.id === userId
 
-    const toolTipClasses = tw`absolute bottom-2 z-20 mt-2 rounded border border-green-spring-200 bg-white p-2 shadow dark:border-green-spring-600 dark:bg-green-spring-700`
-    const directionClass = `${direction}-2`
+    const toolTipClasses = tw`absolute bottom-4 z-20 mt-2 rounded border border-green-spring-200 bg-white p-2 shadow dark:border-green-spring-600 dark:bg-green-spring-700`
+    const directionClass = `${direction}-6`
     const mergedClasses = twMerge(toolTipClasses, directionClass)
 
     const handleDeleteClick = () => setShowConfirm(true)
@@ -37,11 +37,11 @@ export default function DeleteButton({ photo, comment, direction }: Readonly<Del
 
         if (user) {
             if (photo) {
-                if (user.role === "1") await adminDeletePhoto(photo.id)
+                if (user.role.toString() === "1") await adminDeletePhoto(photo.id)
                 else await deletePhoto(photo.id)
             }
             if (comment) {
-                if (user.role === "1") await adminDeleteComment(comment.photo_id, comment.id)
+                if (user.role.toString() === "1") await adminDeleteComment(comment.photo_id, comment.id)
                 else await deleteComment(comment.photo_id, comment.id)
             }
 
@@ -55,10 +55,10 @@ export default function DeleteButton({ photo, comment, direction }: Readonly<Del
 
     const handleCancel = () => setShowConfirm(false)
 
-    if (!isOwner || user?.role !== "1") return null
+    if (!isOwner || user?.role.toString() !== "1") return null
 
     return (
-        <div className="relative">
+        <div className="relative self-start md:self-auto">
             <button
                 onClick={handleDeleteClick}
                 className="flex items-center justify-center p-1 text-red-600 hover:text-red-700 disabled:opacity-50 dark:text-red-500 dark:hover:text-red-600"

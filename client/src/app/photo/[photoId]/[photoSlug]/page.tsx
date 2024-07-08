@@ -40,11 +40,12 @@ export default async function PhotoPage({ params }: Readonly<PhotoPageProps>) {
             <div className="grid grid-cols-1 justify-center gap-4 max-md:items-center max-md:px-1 md:grid-cols-2 lg:justify-between">
                 <Image
                     src={photo.image_url}
-                    alt={`${photo.title}, by ${photo.author.display_name}`}
-                    title={`${photo.title}, by ${photo.author.display_name}`}
+                    alt={`${photo.title}, posted by ${photo.author.display_name}`}
+                    title={`${photo.title}, posted by ${photo.author.display_name}`}
                     className="object-cover italic md:rounded-xl"
                     width={1000}
                     height={1000}
+                    quality={100}
                     sizes="100vw"
                     priority
                 />
@@ -61,6 +62,7 @@ export default async function PhotoPage({ params }: Readonly<PhotoPageProps>) {
                             >
                                 @{photo.author.username}
                             </Link>
+                            <p className="mt-4 leading-7 text-green-spring-600">{photo.description}</p>
                         </div>
                         <DeleteButton photo={photo} direction="right" />
                     </div>
