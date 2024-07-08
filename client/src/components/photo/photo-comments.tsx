@@ -70,9 +70,9 @@ export default function PhotoComments({ photoId, comments: photoComments }: Read
                                 </time>
                             </div>
                             <p className="font-normal">{comment.content}</p>
-                            {user && (comment.author_id === user.id || user.role === "ADMIN") && (
+                            {user && (comment.author_id === user.id || user.role === "1") && (
                                 <span>
-                                    <DeleteButton direction="left" user={user} comment={comment} />
+                                    <DeleteButton direction="left" comment={comment} />
                                 </span>
                             )}
                         </li>

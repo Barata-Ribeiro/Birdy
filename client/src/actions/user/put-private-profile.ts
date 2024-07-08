@@ -49,7 +49,7 @@ export default async function putPrivateProfile(state: State, formData: FormData
         if (cover_image_url && !cover_image_url?.startsWith("https://")) throw new Error("Invalid URL.")
 
         const response = await fetch(URL, {
-            method: "POST",
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Bearer " + auth_token

@@ -27,6 +27,7 @@ export default function DashboardManage({
 
     return (
         <form action={action} className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0">
+            <input type="hidden" name="userId" value={userId} />
             <div className="pb-2 pt-4">
                 <Input
                     label="Username"
