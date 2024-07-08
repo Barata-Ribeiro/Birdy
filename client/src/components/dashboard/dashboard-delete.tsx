@@ -25,22 +25,14 @@ export default function DashboardDelete({
 
     return (
         <>
+            <p className="text-center">Are you sure you want to delete your account? This action cannot be undone.</p>
             <p className="text-center">
-                Are you sure you want to delete your account? This action cannot
-                be undone.
+                All your data will be <span className="font-bold">permanently deleted</span>. If you are sure you want
+                to delete your account, please enter the required information below and click the &rdquo;Delete
+                Account&ldquo; button. If you are not sure, you can click the &rdquo;Cancel&ldquo; button to return to
+                your dashboard.
             </p>
-            <p className="text-center">
-                All your data will be{" "}
-                <span className="font-bold">permanently deleted</span>. If you
-                are sure you want to delete your account, please enter the
-                required information below and click the &rdquo;Delete
-                Account&ldquo; button. If you are not sure, you can click the
-                &rdquo;Cancel&ldquo; button to return to your dashboard.
-            </p>
-            <form
-                action={action}
-                className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0"
-            >
+            <form action={action} className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0">
                 <div className="pb-2 pt-4">
                     <Input
                         label="Username"
@@ -71,12 +63,7 @@ export default function DashboardDelete({
                     />
                 </div>
                 <div className="flex justify-center gap-2 pt-4 sm:justify-end">
-                    <input
-                        type="hidden"
-                        name="userId"
-                        id="userId"
-                        value={data.id}
-                    />
+                    <input type="hidden" name="userId" id="userId" value={data.id} />
                     <FormButton
                         type="submit"
                         className="rounded !bg-red-600 px-4 py-2 hover:!bg-red-400 sm:!w-fit"
@@ -88,9 +75,7 @@ export default function DashboardDelete({
                     </FormButton>
                     <FormButton
                         type="button"
-                        onClick={() =>
-                            (window.location.href = `/dashboard/${data.id}/${data.username}`)
-                        }
+                        onClick={() => (window.location.href = `/dashboard/${data.id}/${data.username}`)}
                         className="dark:!hover:bg-green-spring-700 rounded !bg-green-spring-300 px-4 py-2 hover:!bg-green-spring-400 dark:!bg-green-spring-600 sm:!w-fit"
                         disabled={pending}
                         aria-disabled={pending}

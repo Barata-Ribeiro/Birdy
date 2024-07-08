@@ -19,9 +19,7 @@ const links = {
     repository: "https://github.com/Barata-Ribeiro/Birdy"
 }
 
-export default function Header({
-    user
-}: Readonly<{ user: UserContextResponse | null }>) {
+export default function Header({ user }: Readonly<{ user: UserContextResponse | null }>) {
     const pathname = usePathname()
     const [open, setOpen] = useState(false)
     const { setUser } = useUser()
@@ -42,10 +40,7 @@ export default function Header({
         >
             <div className="px-6 py-2 lg:container md:px-12 lg:mx-auto lg:px-0 lg:py-4">
                 <div className="flex items-center justify-between">
-                    <div
-                        className="relative z-50 w-32 max-w-full xs:w-40 sm:w-52"
-                        aria-label="Birdy Logo"
-                    >
+                    <div className="relative z-50 w-32 max-w-full xs:w-40 sm:w-52" aria-label="Birdy Logo">
                         <Link href="/" className="block w-full">
                             <Image
                                 src="/images/logo.svg"
@@ -104,40 +99,26 @@ export default function Header({
                                 role="navigation"
                             >
                                 <ul className="space-y-8 px-6 pt-32 text-green-spring-700 md:px-12 lg:flex lg:space-x-12 lg:space-y-0 lg:pt-0">
-                                    {Object.entries(links).map(
-                                        ([key, value]) => {
-                                            const isActive = pathname === value
-                                            return (
-                                                <li key={key} className="w-fit">
-                                                    <Link
-                                                        className={
-                                                            isActive
-                                                                ? `rounded-md bg-mantis-200 px-4 py-1 text-base font-medium text-green-spring-900 dark:text-green-spring-950`
-                                                                : `text-base font-normal text-green-spring-900 hover:text-bright-turquoise-500`
-                                                        }
-                                                        href={value}
-                                                        target={
-                                                            key === "repository"
-                                                                ? "_blank"
-                                                                : "_self"
-                                                        }
-                                                        rel={
-                                                            key === "repository"
-                                                                ? "noopener noreferrer"
-                                                                : ""
-                                                        }
-                                                        onClick={() =>
-                                                            setOpen(!open)
-                                                        }
-                                                    >
-                                                        <span className="relative">
-                                                            {key}
-                                                        </span>
-                                                    </Link>
-                                                </li>
-                                            )
-                                        }
-                                    )}
+                                    {Object.entries(links).map(([key, value]) => {
+                                        const isActive = pathname === value
+                                        return (
+                                            <li key={key} className="w-fit">
+                                                <Link
+                                                    className={
+                                                        isActive
+                                                            ? `rounded-md bg-mantis-200 px-4 py-1 text-base font-medium text-green-spring-900 dark:text-green-spring-950`
+                                                            : `text-base font-normal text-green-spring-900 hover:text-bright-turquoise-500`
+                                                    }
+                                                    href={value}
+                                                    target={key === "repository" ? "_blank" : "_self"}
+                                                    rel={key === "repository" ? "noopener noreferrer" : ""}
+                                                    onClick={() => setOpen(!open)}
+                                                >
+                                                    <span className="relative">{key}</span>
+                                                </Link>
+                                            </li>
+                                        )
+                                    })}
                                 </ul>
 
                                 <div className="border-t px-6 py-8 dark:border-green-spring-400 md:px-12 md:py-16 lg:border-l lg:border-t-0 lg:py-0 lg:pl-6 lg:pr-0">
@@ -169,10 +150,7 @@ export default function Header({
                                             >
                                                 <div className="relative size-10 antialiased">
                                                     <Image
-                                                        src={
-                                                            user.avatar_url ??
-                                                            DefaultAvatar
-                                                        }
+                                                        src={user.avatar_url ?? DefaultAvatar}
                                                         alt={`${user.username}, this is your avatar.`}
                                                         title={`${user.username}, this is your avatar.`}
                                                         className="dark:ring-green-sping-500 rounded-full p-1 ring-2 ring-green-spring-300 dark:ring-green-spring-500"

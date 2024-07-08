@@ -14,10 +14,7 @@ interface PhotoCommentsProps {
     comments: PhotoComment[]
 }
 
-export default function PhotoComments({
-    photoId,
-    comments: photoComments
-}: Readonly<PhotoCommentsProps>) {
+export default function PhotoComments({ photoId, comments: photoComments }: Readonly<PhotoCommentsProps>) {
     const [comments, setComments] = useState(() => photoComments)
     const commentsSection = useRef<HTMLUListElement>(null)
     const [comment, setComment] = useState("")
@@ -31,17 +28,12 @@ export default function PhotoComments({
     })
 
     useEffect(() => {
-        if (commentsSection.current)
-            commentsSection.current.scrollTop =
-                commentsSection.current.scrollHeight
+        if (commentsSection.current) commentsSection.current.scrollTop = commentsSection.current.scrollHeight
     }, [photoComments])
 
     useEffect(() => {
         if (state.ok) {
-            setComments((comments) => [
-                ...comments,
-                state.response?.data as PhotoComment
-            ])
+            setComments((comments) => [...comments, state.response?.data as PhotoComment])
             setComment("")
         }
     }, [state.ok, state.response?.data])
@@ -59,11 +51,7 @@ export default function PhotoComments({
         <>
             <h2 className="font-heading mb-2 text-xl font-medium">Comments</h2>
             {comments.length > 0 ? (
-                <ul
-                    ref={commentsSection}
-                    className="max-h-96 space-y-2 overflow-y-auto"
-                    aria-live="polite"
-                >
+                <ul ref={commentsSection} className="max-h-96 space-y-2 overflow-y-auto" aria-live="polite">
                     {comments.map((comment) => (
                         <li
                             key={comment.id}
@@ -82,24 +70,16 @@ export default function PhotoComments({
                                 </time>
                             </div>
                             <p className="font-normal">{comment.content}</p>
-                            {user &&
-                                (comment.author_id === user.id ||
-                                    user.role === "ADMIN") && (
-                                    <span>
-                                        <DeleteButton
-                                            direction="left"
-                                            user={user}
-                                            comment={comment}
-                                        />
-                                    </span>
-                                )}
+                            {user && (comment.author_id === user.id || user.role === "ADMIN") && (
+                                <span>
+                                    <DeleteButton direction="left" user={user} comment={comment} />
+                                </span>
+                            )}
                         </li>
                     ))}
                 </ul>
             ) : (
-                <p className="text-center text-sm text-green-spring-300">
-                    This photo has no comments yet.
-                </p>
+                <p className="text-center text-sm text-green-spring-300">This photo has no comments yet.</p>
             )}
             <form action={action} className="mt-4" aria-label="Post a comment">
                 <textarea
@@ -116,12 +96,7 @@ export default function PhotoComments({
                     aria-required
                     required
                 ></textarea>
-                <input
-                    type="hidden"
-                    name="photoId"
-                    id="photoId"
-                    value={photoId}
-                />
+                <input type="hidden" name="photoId" id="photoId" value={photoId} />
                 <div className="mt-2 flex items-center justify-between">
                     <p className="text-xs" aria-live="assertive">
                         {350 - comment.length} characters remaining

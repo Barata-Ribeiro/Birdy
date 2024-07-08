@@ -1,9 +1,6 @@
 import type { Request, Response } from "express"
 import type { PhotoUploadBody } from "../interface/PhotoInterfaces"
-import {
-    BadRequestError,
-    UnauthorizedError
-} from "../middleware/helpers/ApiErrors"
+import { BadRequestError, UnauthorizedError } from "../middleware/helpers/ApiErrors"
 import { PhotoService } from "../service/PhotoService"
 import { isUUIDValid } from "../utils/validity-functions"
 
@@ -23,15 +20,9 @@ export class PhotoController {
         const pageIsNumber = !isNaN(+page)
 
         if (queryWasProvided && (!perPageIsNumber || !pageIsNumber))
-            throw new BadRequestError(
-                "The query parameters 'perPage' and 'page' must be numbers."
-            )
+            throw new BadRequestError("The query parameters 'perPage' and 'page' must be numbers.")
 
-        const response = await this.photoService.getFeedPhotos(
-            perPage,
-            page,
-            userId
-        )
+        const response = await this.photoService.getFeedPhotos(perPage, page, userId)
 
         return res.status(200).json({
             status: "success",
@@ -43,10 +34,8 @@ export class PhotoController {
 
     async getPhoto(req: Request, res: Response) {
         const { photoId } = req.params
-        if (!photoId)
-            throw new BadRequestError("The photo ID parameter is required.")
-        if (!isUUIDValid(photoId))
-            throw new BadRequestError("Invalid photo ID.")
+        if (!photoId) throw new BadRequestError("The photo ID parameter is required.")
+        if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
 
         const response = await this.photoService.getPhoto(photoId)
 
@@ -65,8 +54,7 @@ export class PhotoController {
 
         if (!user.data) throw new UnauthorizedError("User not authenticated.")
         if (!file) throw new BadRequestError("No file provided.")
-        if (!requestingBody)
-            throw new BadRequestError("You must provide the photo details.")
+        if (!requestingBody) throw new BadRequestError("You must provide the photo details.")
 
         await this.photoService.uploadNewPhoto(user.data, file, requestingBody)
 
@@ -82,8 +70,7 @@ export class PhotoController {
         const { photoId } = req.params
 
         if (!user.data) throw new UnauthorizedError("User not authenticated.")
-        if (!photoId)
-            throw new BadRequestError("The photo ID parameter is required.")
+        if (!photoId) throw new BadRequestError("The photo ID parameter is required.")
 
         await this.photoService.deletePhoto(user.data, photoId)
 
@@ -99,8 +86,7 @@ export class PhotoController {
         const { photoId } = req.params
 
         if (!user.data) throw new UnauthorizedError("User not authenticated.")
-        if (!photoId)
-            throw new BadRequestError("The photo ID parameter is required.")
+        if (!photoId) throw new BadRequestError("The photo ID parameter is required.")
 
         const like = await this.photoService.toggleLike(user.data, photoId)
 

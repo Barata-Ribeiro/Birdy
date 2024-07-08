@@ -2,13 +2,7 @@
 
 import { UserPhotosStatsResponse } from "@/interfaces/api/users"
 import { useEffect, useState } from "react"
-import {
-    VictoryBar,
-    VictoryChart,
-    VictoryGroup,
-    VictoryLabel,
-    VictoryPie
-} from "victory"
+import { VictoryBar, VictoryChart, VictoryGroup, VictoryLabel, VictoryPie } from "victory"
 
 interface GraphData {
     x: string
@@ -26,9 +20,7 @@ export default function DashboardStats({
     const [comments, setComments] = useState<GraphData[]>([])
     const [pieChart, setPieChart] = useState<GraphData[]>([])
 
-    const joinPhotosArray = data.latest_photos.photos.concat(
-        data.popular_photos.photos
-    )
+    const joinPhotosArray = data.latest_photos.photos.concat(data.popular_photos.photos)
 
     useEffect(() => {
         if (!data) return
@@ -65,21 +57,15 @@ export default function DashboardStats({
             <div className="font-heading col-span-full flex justify-around rounded-lg p-4 font-medium shadow-lg dark:bg-green-spring-200 dark:text-green-spring-950">
                 <p>
                     Total Hits:{" "}
-                    <span className="font-body font-normal">
-                        {views.reduce((acc, item) => acc + item.y, 0)}
-                    </span>
+                    <span className="font-body font-normal">{views.reduce((acc, item) => acc + item.y, 0)}</span>
                 </p>
                 <p>
                     Total Comments:{" "}
-                    <span className="font-body font-normal">
-                        {comments.reduce((acc, item) => acc + item.y, 0)}
-                    </span>
+                    <span className="font-body font-normal">{comments.reduce((acc, item) => acc + item.y, 0)}</span>
                 </p>
                 <p>
                     Total Likes:{" "}
-                    <span className="font-body font-normal">
-                        {likes.reduce((acc, item) => acc + item.y, 0)}
-                    </span>
+                    <span className="font-body font-normal">{likes.reduce((acc, item) => acc + item.y, 0)}</span>
                 </p>
             </div>
             <div className="font-heading col-auto rounded-lg p-4 font-medium shadow-lg dark:bg-green-spring-200">

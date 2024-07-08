@@ -27,8 +27,7 @@ import usersRoutes from "./v1/router/UserRoutes"
 import { AppDataSource } from "./database/data-source"
 
 // Database Type Check
-if (AppDataSource.options.type !== "postgres")
-    throw new Error("Invalid Database Type: Only 'postgres' is supported.")
+if (AppDataSource.options.type !== "postgres") throw new Error("Invalid Database Type: Only 'postgres' is supported.")
 
 const startServer = async () => {
     try {
@@ -75,8 +74,7 @@ const startServer = async () => {
 
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}, enjoy!`)
-            if (ENV === "production")
-                console.log("Server is running in production mode.")
+            if (ENV === "production") console.log("Server is running in production mode.")
             else console.log(`Server in running in ${ENV} mode.`)
         })
     } catch (error) {

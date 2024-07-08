@@ -12,9 +12,7 @@ interface FollowingComponentProps {
     profile: PublicProfileResponse
 }
 
-export default function FollowingComponent({
-    profile
-}: Readonly<FollowingComponentProps>) {
+export default function FollowingComponent({ profile }: Readonly<FollowingComponentProps>) {
     const [tooltipMessage, setTooltipMessage] = useState("")
     const [showTooltip, setShowTooltip] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -27,10 +25,7 @@ export default function FollowingComponent({
         if (!user) return
 
         const checkFollowing = async () => {
-            const loggedInUserFollowingState = await isUserFollowing(
-                profile.username,
-                user.id
-            )
+            const loggedInUserFollowingState = await isUserFollowing(profile.username, user.id)
 
             if (loggedInUserFollowingState.ok) {
                 const data = loggedInUserFollowingState.response?.data as {
@@ -52,14 +47,9 @@ export default function FollowingComponent({
         const followId = profile.id
         const userId = user.id
 
-        const followState = isFollowing
-            ? await userFollow(userId, followId)
-            : await userUnfollow(userId, followId)
+        const followState = isFollowing ? await userFollow(userId, followId) : await userUnfollow(userId, followId)
 
-        const message =
-            followState.response?.message ??
-            followState.client_error ??
-            "Something went wrong."
+        const message = followState.response?.message ?? followState.client_error ?? "Something went wrong."
 
         if (followState.ok) setIsFollowing(!isFollowing)
 
@@ -70,7 +60,7 @@ export default function FollowingComponent({
         setTimeout(() => setShowTooltip(false), 3000)
     }
 
-    let verifyIfFollowingAndSetLabel = isFollowing ? "Unfollow" : "Follow"
+    const verifyIfFollowingAndSetLabel = isFollowing ? "Unfollow" : "Follow"
 
     return (
         <div className="mt-16 flex items-center justify-between px-3 py-6 sm:mt-0">
@@ -90,9 +80,7 @@ export default function FollowingComponent({
                 {isLoading ? "Loading..." : verifyIfFollowingAndSetLabel}
             </FormButton>
 
-            <span className="dark:text-green-spring-600">
-                {profile.follower_count} follower(s)
-            </span>
+            <span className="dark:text-green-spring-600">{profile.follower_count} follower(s)</span>
         </div>
     )
 }

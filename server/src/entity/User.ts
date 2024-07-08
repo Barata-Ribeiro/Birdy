@@ -1,12 +1,4 @@
-import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    Index,
-    OneToMany,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn
-} from "typeorm"
+import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 import { Comment } from "./Comment"
 import { Photo } from "./Photo"
 import { UserFollow } from "./UserFollow"

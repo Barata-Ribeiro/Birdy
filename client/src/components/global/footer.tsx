@@ -74,8 +74,7 @@ export default async function Footer({
 
                 <div className="flex flex-col items-center sm:flex-row sm:justify-between">
                     <p className="text-sm text-green-spring-500">
-                        © Copyright <span>{new Date().getFullYear()}</span>.
-                        All Rights Reserved.
+                        © Copyright <span>{new Date().getFullYear()}</span>. All Rights Reserved.
                     </p>
 
                     <nav className="-mx-2 mt-3 flex sm:mt-0">

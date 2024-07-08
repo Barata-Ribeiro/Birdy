@@ -7,10 +7,7 @@ import inputValidation from "@/utils/input-validation"
 import { revalidateTag } from "next/cache"
 import verifyAuthenticationAndReturnToken from "@/utils/verify-authentication"
 
-export default async function putPrivateProfile(
-    state: State,
-    formData: FormData
-) {
+export default async function putPrivateProfile(state: State, formData: FormData) {
     const DEFAULT_MESSAGE = "Please enter a valid input."
 
     const username = formData.get("username") as string | null
@@ -29,37 +26,27 @@ export default async function putPrivateProfile(
         if (!userId) throw new Error("User ID is required.")
         const URL = USER_UPDATE_PRIVATE_PROFILE(userId)
 
-        if (!password)
-            throw new Error("Password is required to update your profile.")
+        if (!password) throw new Error("Password is required to update your profile.")
 
         if (username) {
             const isUsernameValid = inputValidation(username, "username")
-            if (!isUsernameValid.isValid)
-                throw new Error(isUsernameValid.message ?? DEFAULT_MESSAGE)
+            if (!isUsernameValid.isValid) throw new Error(isUsernameValid.message ?? DEFAULT_MESSAGE)
         }
 
         if (new_password) {
             const isPasswordValid = inputValidation(new_password, "password")
-            if (!isPasswordValid.isValid)
-                throw new Error(isPasswordValid.message ?? DEFAULT_MESSAGE)
+            if (!isPasswordValid.isValid) throw new Error(isPasswordValid.message ?? DEFAULT_MESSAGE)
 
-            if (!confirm_password)
-                throw new Error("You must confirm your new password.")
+            if (!confirm_password) throw new Error("You must confirm your new password.")
 
-            if (confirm_password !== new_password)
-                throw new Error("Passwords do not match.")
+            if (confirm_password !== new_password) throw new Error("Passwords do not match.")
 
-            if (new_password === password)
-                throw new Error(
-                    "New password must be different from the old password."
-                )
+            if (new_password === password) throw new Error("New password must be different from the old password.")
         }
 
-        if (avatar_url && !avatar_url?.startsWith("https://"))
-            throw new Error("Invalid URL.")
+        if (avatar_url && !avatar_url?.startsWith("https://")) throw new Error("Invalid URL.")
 
-        if (cover_image_url && !cover_image_url?.startsWith("https://"))
-            throw new Error("Invalid URL.")
+        if (cover_image_url && !cover_image_url?.startsWith("https://")) throw new Error("Invalid URL.")
 
         const response = await fetch(URL, {
             method: "POST",
@@ -80,10 +67,7 @@ export default async function putPrivateProfile(
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok)
-            throw new Error(
-                responseData.message ?? "An unknown error occurred."
-            )
+        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
 
         revalidateTag("profile")
         revalidateTag("public-profile")

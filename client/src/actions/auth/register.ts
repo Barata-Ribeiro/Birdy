@@ -6,10 +6,7 @@ import ApiError from "@/utils/api-error"
 import { AUTH_REGISTER } from "@/utils/api-urls"
 import inputValidation from "@/utils/input-validation"
 
-export default async function register(
-    state: State,
-    formData: FormData
-): Promise<State> {
+export default async function register(state: State, formData: FormData): Promise<State> {
     const URL = AUTH_REGISTER()
     const DEFAULT_MESSAGE = "Please enter a valid input."
 
@@ -20,21 +17,16 @@ export default async function register(
     const email = formData.get("email") as string | null
 
     try {
-        if (!username || !display_name || !password || !email)
-            throw new Error("All fields are required to register.")
+        if (!username || !display_name || !password || !email) throw new Error("All fields are required to register.")
 
         const isUsernameValid = inputValidation(username, "username")
         const isPasswordValid = inputValidation(password, "password")
         const isEmailValid = inputValidation(email, "email")
 
-        if (!isUsernameValid.isValid)
-            throw new Error(isUsernameValid.message ?? DEFAULT_MESSAGE)
-        if (!isPasswordValid.isValid)
-            throw new Error(isPasswordValid.message ?? DEFAULT_MESSAGE)
-        if (password !== confirm_password)
-            throw new Error("Passwords do not match.")
-        if (!isEmailValid.isValid)
-            throw new Error(isEmailValid.message ?? DEFAULT_MESSAGE)
+        if (!isUsernameValid.isValid) throw new Error(isUsernameValid.message ?? DEFAULT_MESSAGE)
+        if (!isPasswordValid.isValid) throw new Error(isPasswordValid.message ?? DEFAULT_MESSAGE)
+        if (password !== confirm_password) throw new Error("Passwords do not match.")
+        if (!isEmailValid.isValid) throw new Error(isEmailValid.message ?? DEFAULT_MESSAGE)
 
         const response = await fetch(URL, {
             method: "POST",
@@ -49,10 +41,7 @@ export default async function register(
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok)
-            throw new Error(
-                responseData.message ?? "An unknown error occurred."
-            )
+        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
 
         const data = responseData.data as AuthRegisterResponse
 

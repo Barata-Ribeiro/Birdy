@@ -19,13 +19,10 @@ export default async function postPhoto(state: State, formData: FormData) {
             !formData.has("bird_habitat") ||
             !formData.has("photoImage")
         )
-            throw new Error(
-                "All fields are required. Only the bird name is optional."
-            )
+            throw new Error("All fields are required. Only the bird name is optional.")
 
         const image = formData.get("photoImage") as File
-        if (image instanceof File && image.size === 0)
-            throw new Error("The image file is empty.")
+        if (image instanceof File && image.size === 0) throw new Error("The image file is empty.")
 
         const response = await fetch(URL, {
             method: "POST",
@@ -35,10 +32,7 @@ export default async function postPhoto(state: State, formData: FormData) {
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok)
-            throw new Error(
-                responseData.message ?? "An unknown error occurred."
-            )
+        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
         revalidateTag("photos")
         return {
             ok: true,

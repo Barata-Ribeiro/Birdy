@@ -13,8 +13,7 @@ export default async function postComment(state: State, formData: FormData) {
     try {
         const auth_token = await verifyAuthenticationAndReturnToken()
 
-        if (!comment || comment.trim() === "")
-            throw new Error("You cannot add an empty comment.")
+        if (!comment || comment.trim() === "") throw new Error("You cannot add an empty comment.")
 
         const URL = PHOTO_ADD_COMMENT(photoId)
 
@@ -29,10 +28,7 @@ export default async function postComment(state: State, formData: FormData) {
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok)
-            throw new Error(
-                responseData.message ?? "An unknown error occurred."
-            )
+        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
 
         const data = responseData.data as PhotoComment
 

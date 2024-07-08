@@ -20,9 +20,7 @@ export default async function layout({ children }: { children: ReactNode }) {
                     <h1 className="text-left text-5xl font-bold tracking-wide text-bright-turquoise-500">
                         Keep it special
                     </h1>
-                    <p className="my-4 text-3xl">
-                        Capture your personal memory in unique way, anywhere.
-                    </p>
+                    <p className="my-4 text-3xl">Capture your personal memory in unique way, anywhere.</p>
                 </div>
                 <div className="absolute inset-x-0 bottom-0 flex justify-center space-x-4 p-4 text-center">
                     <a

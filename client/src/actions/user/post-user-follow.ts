@@ -22,10 +22,7 @@ export default async function userFollow(userId: string, followId: string) {
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok)
-            throw new Error(
-                responseData.message ?? "An unknown error occurred."
-            )
+        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
 
         return {
             ok: true,

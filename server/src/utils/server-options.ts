@@ -4,13 +4,7 @@ import type { SessionOptions } from "express-session"
 export const corsOptions: CorsOptions = {
     origin: process.env.CORS_ORIGIN ?? true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: [
-        "Accept",
-        "Authorization",
-        "Cache-Control",
-        "Content-Type",
-        "X-Refresh-Token"
-    ],
+    allowedHeaders: ["Accept", "Authorization", "Cache-Control", "Content-Type", "X-Refresh-Token"],
     credentials: true,
     preflightContinue: false
 }

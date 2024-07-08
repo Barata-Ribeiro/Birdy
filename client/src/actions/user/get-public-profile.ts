@@ -16,10 +16,7 @@ export default async function getPublicProfile(username: string) {
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok)
-            throw new Error(
-                responseData.message ?? "An unknown error occurred."
-            )
+        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
 
         const data = responseData.data as PublicProfileResponse
 

@@ -1,19 +1,11 @@
 import { AppDataSource } from "../database/data-source"
-import {
-    BadRequestError,
-    InternalServerError
-} from "../middleware/helpers/ApiErrors"
+import { BadRequestError, InternalServerError } from "../middleware/helpers/ApiErrors"
 import { followsRepository } from "../repository/FollowsRepository"
 import { saveEntityToDatabase } from "../utils/operation-functions"
 import { isUUIDValid } from "../utils/validity-functions"
 
 export default class FollowsService {
-    async getAllUserFollows(
-        username: string,
-        followType: string,
-        perPage: string,
-        page: string
-    ) {
+    async getAllUserFollows(username: string, followType: string, perPage: string, page: string) {
         let realPage: number
         let realTake: number
 
@@ -33,12 +25,7 @@ export default class FollowsService {
             ;[users, total] = await followsRepository
                 .createQueryBuilder("userFollow")
                 .leftJoinAndSelect("userFollow.follower", "follower")
-                .select([
-                    "follower.id",
-                    "follower.username",
-                    "follower.display_name",
-                    "follower.avatar_url"
-                ])
+                .select(["follower.id", "follower.username", "follower.display_name", "follower.avatar_url"])
                 .leftJoin("userFollow.following", "following")
                 .where("following.username = :username", { username })
                 .orderBy("userFollow.started_following", "DESC")
@@ -49,28 +36,17 @@ export default class FollowsService {
             ;[users, total] = await followsRepository
                 .createQueryBuilder("userFollow")
                 .leftJoinAndSelect("userFollow.following", "following")
-                .select([
-                    "following.id",
-                    "following.username",
-                    "following.display_name",
-                    "following.avatar_url"
-                ])
+                .select(["following.id", "following.username", "following.display_name", "following.avatar_url"])
                 .leftJoin("userFollow.follower", "follower")
                 .where("follower.username = :username", { username })
                 .orderBy("userFollow.started_following", "DESC")
                 .skip(realPage)
                 .take(realTake)
                 .getManyAndCount()
-        } else
-            throw new BadRequestError(
-                "Invalid follow type. Use 'followers' or 'followings'."
-            )
+        } else throw new BadRequestError("Invalid follow type. Use 'followers' or 'followings'.")
 
         const result = users.map((userFollow) => {
-            const user =
-                followType === "followers"
-                    ? userFollow.follower
-                    : userFollow.following
+            const user = followType === "followers" ? userFollow.follower : userFollow.following
             return {
                 id: user.id,
                 username: user.username,
@@ -100,18 +76,15 @@ export default class FollowsService {
     }
 
     async followUser(userId: string, followId: string) {
-        if (userId === followId)
-            throw new BadRequestError("You cannot follow yourself.")
+        if (userId === followId) throw new BadRequestError("You cannot follow yourself.")
 
-        if (!isUUIDValid(followId))
-            throw new BadRequestError("Invalid user ID.")
+        if (!isUUIDValid(followId)) throw new BadRequestError("Invalid user ID.")
 
         const checkIfAlreadyFollowing = await followsRepository.exists({
             where: { follower: { id: userId }, following: { id: followId } },
             relations: ["follower", "following"]
         })
-        if (checkIfAlreadyFollowing)
-            throw new BadRequestError("You are already following this user.")
+        if (checkIfAlreadyFollowing) throw new BadRequestError("You are already following this user.")
 
         const newFollow = followsRepository.create({
             follower: { id: userId },
@@ -122,32 +95,25 @@ export default class FollowsService {
     }
 
     async unfollowUser(userId: string, followId: string) {
-        if (userId === followId)
-            throw new BadRequestError("You cannot unfollow yourself.")
-        if (!isUUIDValid(followId))
-            throw new BadRequestError("Invalid user ID.")
+        if (userId === followId) throw new BadRequestError("You cannot unfollow yourself.")
+        if (!isUUIDValid(followId)) throw new BadRequestError("Invalid user ID.")
 
-        await AppDataSource.manager.transaction(
-            async (transactionalEntityManager) => {
-                try {
-                    const followToDelete = await followsRepository.findOne({
-                        where: {
-                            follower: { id: userId },
-                            following: { id: followId }
-                        },
-                        relations: ["follower", "following"]
-                    })
-                    if (!followToDelete)
-                        throw new BadRequestError(
-                            "You are not following this user."
-                        )
+        await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
+            try {
+                const followToDelete = await followsRepository.findOne({
+                    where: {
+                        follower: { id: userId },
+                        following: { id: followId }
+                    },
+                    relations: ["follower", "following"]
+                })
+                if (!followToDelete) throw new BadRequestError("You are not following this user.")
 
-                    await transactionalEntityManager.remove(followToDelete)
-                } catch (error) {
-                    console.error("Transaction failed:", error)
-                    throw new InternalServerError("Failed to unfollow user.")
-                }
+                await transactionalEntityManager.remove(followToDelete)
+            } catch (error) {
+                console.error("Transaction failed:", error)
+                throw new InternalServerError("Failed to unfollow user.")
             }
-        )
+        })
     }
 }

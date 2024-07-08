@@ -6,10 +6,7 @@ import { USER_DELETE_PRIVATE_PROFILE } from "@/utils/api-urls"
 import { revalidateTag } from "next/cache"
 import verifyAuthenticationAndReturnToken from "@/utils/verify-authentication"
 
-export default async function deletePrivateProfile(
-    state: State,
-    formData: FormData
-) {
+export default async function deletePrivateProfile(state: State, formData: FormData) {
     const userId = formData.get("userId") as string
     const username = formData.get("username") as string | null
     const password = formData.get("password") as string | null
@@ -21,14 +18,11 @@ export default async function deletePrivateProfile(
         if (!userId) throw new Error("User ID is required.")
         const URL = USER_DELETE_PRIVATE_PROFILE(userId)
 
-        if (!username)
-            throw new Error("Username is required to delete your profile.")
+        if (!username) throw new Error("Username is required to delete your profile.")
 
-        if (!password)
-            throw new Error("Password is required to delete your profile.")
+        if (!password) throw new Error("Password is required to delete your profile.")
 
-        if (confirm_password !== password)
-            throw new Error("Passwords do not match.")
+        if (confirm_password !== password) throw new Error("Passwords do not match.")
 
         const response = await fetch(URL, {
             method: "DELETE",
@@ -37,10 +31,7 @@ export default async function deletePrivateProfile(
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok)
-            throw new Error(
-                responseData.message ?? "An unknown error occurred."
-            )
+        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
 
         revalidateTag("public-profile")
 

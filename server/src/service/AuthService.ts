@@ -3,11 +3,7 @@ import { sign } from "jsonwebtoken"
 import nodemailer, { SendMailOptions } from "nodemailer"
 import { AuthRegisterResponseDTO } from "../dto/AuthRegisterResponseDTO"
 import { UserRole } from "../entity/enums/Roles"
-import {
-    AuthLoginServiceResponse,
-    AuthUserLoginBody,
-    AuthUserRegisterBody
-} from "../interface/AuthInterfaces"
+import { AuthLoginServiceResponse, AuthUserLoginBody, AuthUserRegisterBody } from "../interface/AuthInterfaces"
 import {
     BadRequestError,
     ConflictError,
@@ -16,27 +12,15 @@ import {
     NotFoundError,
     UnauthorizedError
 } from "../middleware/helpers/ApiErrors"
-import {
-    attemptToGetUserIdFromToken,
-    saveEntityToDatabase
-} from "../utils/operation-functions"
-import {
-    isEmailValid,
-    isPasswordStrong,
-    isUsernameValid,
-    isUUIDValid
-} from "../utils/validity-functions"
+import { attemptToGetUserIdFromToken, saveEntityToDatabase } from "../utils/operation-functions"
+import { isEmailValid, isPasswordStrong, isUsernameValid, isUUIDValid } from "../utils/validity-functions"
 import { userRepository } from "../repository/UserRepository"
 
 export default class AuthService {
-    async register(
-        body: AuthUserRegisterBody
-    ): Promise<AuthRegisterResponseDTO> {
+    async register(body: AuthUserRegisterBody): Promise<AuthRegisterResponseDTO> {
         const { username, display_name, password, email } = body
         if (!username || !display_name || !password || !email)
-            throw new Error(
-                "You must provide all credentials to create an account."
-            )
+            throw new Error("You must provide all credentials to create an account.")
 
         if (!isUsernameValid(username))
             throw new BadRequestError(
@@ -51,10 +35,7 @@ export default class AuthService {
         const checkIfUserExists = await userRepository.exists({
             where: [{ username }, { email }]
         })
-        if (checkIfUserExists)
-            throw new ConflictError(
-                "An account already exists with the provided credentials."
-            )
+        if (checkIfUserExists) throw new ConflictError("An account already exists with the provided credentials.")
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
@@ -72,10 +53,7 @@ export default class AuthService {
 
     async login(body: AuthUserLoginBody): Promise<AuthLoginServiceResponse> {
         const { username, password, remember_me } = body
-        if (!username || !password)
-            throw new BadRequestError(
-                "You must provide your username and password to login."
-            )
+        if (!username || !password) throw new BadRequestError("You must provide your username and password to login.")
 
         const user = await userRepository
             .createQueryBuilder("user")
@@ -85,11 +63,9 @@ export default class AuthService {
         if (!user) throw new NotFoundError("User not found.")
 
         const passwordMatch = await bcrypt.compare(password, user.password)
-        if (!passwordMatch)
-            throw new UnauthorizedError("Your password is incorrect.")
+        if (!passwordMatch) throw new UnauthorizedError("Your password is incorrect.")
 
-        if (user.role === UserRole.BANNED)
-            throw new ForbiddenError("You are banned. You cannot log in.")
+        if (user.role === UserRole.BANNED) throw new ForbiddenError("You are banned. You cannot log in.")
 
         const secretKey = process.env.JWT_SECRET_KEY
         if (!secretKey)
@@ -111,12 +87,7 @@ export default class AuthService {
         const user = await userRepository
             .createQueryBuilder("user")
             .where("user.email = :email", { email })
-            .select([
-                "user.id",
-                "user.display_name",
-                "user.email",
-                "user.password"
-            ])
+            .select(["user.id", "user.display_name", "user.email", "user.password"])
             .getOne()
         if (!user) throw new NotFoundError("User not found.")
 
@@ -132,8 +103,7 @@ export default class AuthService {
 
         const token = sign(payload, signKey, { expiresIn: "15m" })
 
-        const frontEndOrigin =
-            process.env.FRONTEND_ORIGIN ?? "https://localhost:5173/"
+        const frontEndOrigin = process.env.FRONTEND_ORIGIN ?? "https://localhost:5173/"
 
         const resetPasswordLink = `${frontEndOrigin}/reset-password/${user.id}/${token}`
 
@@ -196,11 +166,7 @@ export default class AuthService {
         }
     }
 
-    async resetPassword(
-        userId: string,
-        token: string,
-        password: string
-    ): Promise<void> {
+    async resetPassword(userId: string, token: string, password: string): Promise<void> {
         if (!isUUIDValid(userId)) throw new BadRequestError("Invalid user ID.")
 
         const user = await userRepository
@@ -219,8 +185,7 @@ export default class AuthService {
         const signKey = secretKey + user.password
 
         const idFromToken = attemptToGetUserIdFromToken(token, signKey)
-        if (idFromToken !== userId)
-            throw new UnauthorizedError("Invalid or expired token.")
+        if (idFromToken !== userId) throw new UnauthorizedError("Invalid or expired token.")
 
         if (!isPasswordStrong(password))
             throw new BadRequestError(

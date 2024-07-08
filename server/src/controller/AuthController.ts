@@ -1,8 +1,5 @@
 import type { Request, Response } from "express"
-import {
-    AuthUserLoginBody,
-    AuthUserRegisterBody
-} from "../interface/AuthInterfaces"
+import { AuthUserLoginBody, AuthUserRegisterBody } from "../interface/AuthInterfaces"
 import { BadRequestError } from "../middleware/helpers/ApiErrors"
 import AuthService from "../service/AuthService"
 
@@ -15,10 +12,7 @@ export default class AuthController {
 
     async register(req: Request, res: Response) {
         const requestingBody = req.body as AuthUserRegisterBody
-        if (!requestingBody)
-            throw new BadRequestError(
-                "You must provide your credentials to create an account."
-            )
+        if (!requestingBody) throw new BadRequestError("You must provide your credentials to create an account.")
 
         const response = await this.authService.register(requestingBody)
 
@@ -32,10 +26,7 @@ export default class AuthController {
 
     async login(req: Request, res: Response) {
         const requestingBody = req.body as AuthUserLoginBody
-        if (!requestingBody)
-            throw new BadRequestError(
-                "You must provide your credentials to login."
-            )
+        if (!requestingBody) throw new BadRequestError("You must provide your credentials to login.")
 
         const response = await this.authService.login(requestingBody)
 
@@ -49,10 +40,7 @@ export default class AuthController {
 
     async forgotPassword(req: Request, res: Response) {
         const { email } = req.body
-        if (!email)
-            throw new BadRequestError(
-                "You must provide an email to reset password."
-            )
+        if (!email) throw new BadRequestError("You must provide an email to reset password.")
 
         await this.authService.forgotPassword(email)
 
@@ -68,14 +56,10 @@ export default class AuthController {
             userId: string
             token: string
         }
-        if (!userId || !token)
-            throw new BadRequestError(
-                "You must provide a user ID and token to reset password."
-            )
+        if (!userId || !token) throw new BadRequestError("You must provide a user ID and token to reset password.")
 
         const { password } = req.body as { password: string }
-        if (!password)
-            throw new BadRequestError("You must provide a new password.")
+        if (!password) throw new BadRequestError("You must provide a new password.")
 
         await this.authService.resetPassword(userId, token, password)
 

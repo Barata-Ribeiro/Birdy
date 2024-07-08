@@ -14,10 +14,7 @@ export default async function ManagePage({
     return (
         <section className="p-4 sm:px-0">
             <h1 className="text-center text-2xl">Manage your account!</h1>
-            <DashboardManage
-                userId={params.userId}
-                username={params.username}
-            />
+            <DashboardManage userId={params.userId} username={params.username} />
         </section>
     )
 }

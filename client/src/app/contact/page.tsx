@@ -11,10 +11,9 @@ export default async function ContactPage() {
     return (
         <section className="container mx-auto px-5 py-10">
             <p className="mx-auto mb-4 max-w-3xl leading-relaxed">
-                The Birdy team is always looking for feedback and ways of
-                improving its users experiences. If you have any questions,
-                requests, or suggestions, please contact us using either the
-                contact form bellow or through our{" "}
+                The Birdy team is always looking for feedback and ways of improving its users experiences. If you have
+                any questions, requests, or suggestions, please contact us using either the contact form bellow or
+                through our{" "}
                 <Link
                     href="https://github.com/Barata-Ribeiro/Birdy/issues"
                     target="_blank"

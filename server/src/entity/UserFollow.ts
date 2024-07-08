@@ -1,11 +1,4 @@
-import {
-    CreateDateColumn,
-    Entity,
-    Index,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-    Unique
-} from "typeorm"
+import { CreateDateColumn, Entity, Index, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm"
 import { User } from "./User"
 
 @Entity("birdy_user_follows")

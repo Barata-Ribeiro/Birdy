@@ -21,9 +21,7 @@ export default class FollowsController {
         const pageIsNumber = !isNaN(+page)
 
         if (queryWasProvided && (!perPageIsNumber || !pageIsNumber))
-            throw new BadRequestError(
-                "The query parameters 'perPage' and 'page' must be numbers."
-            )
+            throw new BadRequestError("The query parameters 'perPage' and 'page' must be numbers.")
 
         const {
             data,
@@ -31,15 +29,9 @@ export default class FollowsController {
             perPage: realTake,
             currentPage,
             hasNextPage
-        } = await this.followService.getAllUserFollows(
-            username,
-            followType,
-            perPage,
-            page
-        )
+        } = await this.followService.getAllUserFollows(username, followType, perPage, page)
 
-        const backendOrigin =
-            process.env.BACKEND_ORIGIN ?? "http://localhost:3000"
+        const backendOrigin = process.env.BACKEND_ORIGIN ?? "http://localhost:3000"
 
         const nextPage = hasNextPage
             ? `${backendOrigin}/api/v1/users/profile/${username}/follows?type=${followType}&perPage=${realTake}&page=${currentPage + 1}`
@@ -68,13 +60,9 @@ export default class FollowsController {
         if (!username) throw new BadRequestError("Username is required.")
 
         const { logged_user_id } = req.query as { logged_user_id: string }
-        if (!logged_user_id)
-            throw new BadRequestError("Logged user ID is required.")
+        if (!logged_user_id) throw new BadRequestError("Logged user ID is required.")
 
-        const isFollowed = await this.followService.checkIfUserIsFollowed(
-            username,
-            logged_user_id
-        )
+        const isFollowed = await this.followService.checkIfUserIsFollowed(username, logged_user_id)
 
         return res.status(200).json({
             status: "success",
@@ -87,8 +75,7 @@ export default class FollowsController {
     async followUser(req: Request, res: Response) {
         const userId = this.validateUserIdAndOwnership(req)
         const { followId } = req.body as { followId: string }
-        if (!followId)
-            throw new BadRequestError("You must provide a user ID to follow.")
+        if (!followId) throw new BadRequestError("You must provide a user ID to follow.")
 
         await this.followService.followUser(userId, followId)
 
@@ -102,8 +89,7 @@ export default class FollowsController {
     async unfollowUser(req: Request, res: Response) {
         const userId = this.validateUserIdAndOwnership(req)
         const { followId } = req.body as { followId: string }
-        if (!followId)
-            throw new BadRequestError("You must provide a user ID to unfollow.")
+        if (!followId) throw new BadRequestError("You must provide a user ID to unfollow.")
 
         await this.followService.unfollowUser(userId, followId)
 
@@ -120,10 +106,7 @@ export default class FollowsController {
 
         if (!isUUIDValid(userId)) throw new BadRequestError("Invalid user ID.")
 
-        if (req.user.data?.id !== userId)
-            throw new BadRequestError(
-                "You are not authorized to delete this profile."
-            )
+        if (req.user.data?.id !== userId) throw new BadRequestError("You are not authorized to delete this profile.")
 
         return userId
     }

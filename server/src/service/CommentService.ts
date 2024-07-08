@@ -1,11 +1,7 @@
 import { AppDataSource } from "../database/data-source"
 import { CommentResponseDTO } from "../dto/CommentResponseDTO"
 import { User } from "../entity/User"
-import {
-    BadRequestError,
-    InternalServerError,
-    NotFoundError
-} from "../middleware/helpers/ApiErrors"
+import { BadRequestError, InternalServerError, NotFoundError } from "../middleware/helpers/ApiErrors"
 import { commentRepository } from "../repository/CommentRepository"
 import { photoRepository } from "../repository/PhotoRepository"
 import { userRepository } from "../repository/UserRepository"
@@ -14,8 +10,7 @@ import { isUUIDValid } from "../utils/validity-functions"
 
 export class CommentService {
     async getComments(photoId: string) {
-        if (!isUUIDValid(photoId))
-            throw new BadRequestError("Invalid photo ID.")
+        if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
 
         const [comments, total] = await commentRepository
             .createQueryBuilder("comment")
@@ -39,11 +34,9 @@ export class CommentService {
     }
 
     async addComment(author: Partial<User>, photoId: string, content: string) {
-        if (!isUUIDValid(photoId))
-            throw new BadRequestError("Invalid photo ID.")
+        if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
 
-        if (!content || content.trim() === "")
-            throw new BadRequestError("You cannot add an empty comment.")
+        if (!content || content.trim() === "") throw new BadRequestError("You cannot add an empty comment.")
 
         const checkIfPhotoExists = await photoRepository.existsBy({
             id: photoId
@@ -61,29 +54,16 @@ export class CommentService {
             photo: { id: photoId }
         })
 
-        const savedNewComment = await saveEntityToDatabase(
-            commentRepository,
-            newComment
-        )
+        const savedNewComment = await saveEntityToDatabase(commentRepository, newComment)
 
         return CommentResponseDTO.fromEntity(savedNewComment)
     }
 
-    async updateComment(
-        author: Partial<User>,
-        photoId: string,
-        commentId: string,
-        content: string
-    ) {
-        if (!isUUIDValid(photoId))
-            throw new BadRequestError("Invalid photo ID.")
-        if (!isUUIDValid(commentId))
-            throw new BadRequestError("Invalid comment ID.")
+    async updateComment(author: Partial<User>, photoId: string, commentId: string, content: string) {
+        if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
+        if (!isUUIDValid(commentId)) throw new BadRequestError("Invalid comment ID.")
 
-        if (!content || content.trim() === "")
-            throw new BadRequestError(
-                "You cannot update a comment to be empty."
-            )
+        if (!content || content.trim() === "") throw new BadRequestError("You cannot update a comment to be empty.")
 
         const checkIfPhotoExists = await photoRepository.existsBy({
             id: photoId
@@ -111,52 +91,40 @@ export class CommentService {
         await saveEntityToDatabase(commentRepository, comment)
     }
 
-    async deleteComment(
-        author: Partial<User>,
-        photoId: string,
-        commentId: string
-    ) {
-        await AppDataSource.manager.transaction(
-            async (transactionalEntityManager) => {
-                try {
-                    if (!isUUIDValid(photoId) || !isUUIDValid(commentId))
-                        throw new BadRequestError(
-                            "Invalid photo ID or comment ID."
-                        )
+    async deleteComment(author: Partial<User>, photoId: string, commentId: string) {
+        await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
+            try {
+                if (!isUUIDValid(photoId) || !isUUIDValid(commentId))
+                    throw new BadRequestError("Invalid photo ID or comment ID.")
 
-                    const checkIfAuthorExists = await userRepository.existsBy({
-                        id: author.id
-                    })
-                    if (!checkIfAuthorExists)
-                        throw new NotFoundError("User not found.")
+                const checkIfAuthorExists = await userRepository.existsBy({
+                    id: author.id
+                })
+                if (!checkIfAuthorExists) throw new NotFoundError("User not found.")
 
-                    const checkIfPhotoExists = await photoRepository.existsBy({
-                        id: photoId
-                    })
-                    if (!checkIfPhotoExists)
-                        throw new NotFoundError("Photo not found.")
+                const checkIfPhotoExists = await photoRepository.existsBy({
+                    id: photoId
+                })
+                if (!checkIfPhotoExists) throw new NotFoundError("Photo not found.")
 
-                    const comment = await commentRepository.findOne({
-                        where: {
-                            id: commentId,
-                            author: {
-                                id: author.id,
-                                username: author.username
-                            },
-                            photo: { id: photoId }
+                const comment = await commentRepository.findOne({
+                    where: {
+                        id: commentId,
+                        author: {
+                            id: author.id,
+                            username: author.username
                         },
-                        relations: ["author", "photo"]
-                    })
-                    if (!comment) throw new NotFoundError("Comment not found.")
+                        photo: { id: photoId }
+                    },
+                    relations: ["author", "photo"]
+                })
+                if (!comment) throw new NotFoundError("Comment not found.")
 
-                    await transactionalEntityManager.remove(comment)
-                } catch (error) {
-                    console.error("Transaction failed:", error)
-                    throw new InternalServerError(
-                        "An error occurred during the deletion process."
-                    )
-                }
+                await transactionalEntityManager.remove(comment)
+            } catch (error) {
+                console.error("Transaction failed:", error)
+                throw new InternalServerError("An error occurred during the deletion process.")
             }
-        )
+        })
     }
 }

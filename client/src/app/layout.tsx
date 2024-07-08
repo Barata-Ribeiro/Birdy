@@ -22,8 +22,7 @@ const lora = Lora({
 
 export const metadata: Metadata = {
     title: "Birdy",
-    description:
-        "Welcome to Birdy! A social network platform for bird enthusiasts."
+    description: "Welcome to Birdy! A social network platform for bird enthusiasts."
 }
 
 export default async function RootLayout({

@@ -4,10 +4,7 @@ import { ApiResponse } from "@/interfaces/actions"
 import ApiError from "@/utils/api-error"
 import { ADMIN_DELETE_COMMENT } from "@/utils/api-urls"
 
-export default async function adminDeleteComment(
-    photoId: string,
-    commentId: string
-) {
+export default async function adminDeleteComment(photoId: string, commentId: string) {
     const URL = ADMIN_DELETE_COMMENT(photoId, commentId)
 
     try {
@@ -18,10 +15,7 @@ export default async function adminDeleteComment(
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok)
-            throw new Error(
-                responseData.message ?? "An unknown error occurred."
-            )
+        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
 
         return {
             ok: true,

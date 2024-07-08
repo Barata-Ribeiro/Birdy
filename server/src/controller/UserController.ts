@@ -1,10 +1,7 @@
 import type { Request, Response } from "express"
 import { SimpleUserResponseDTO } from "../dto/SimpleUserResponseDTO"
 import { UserEditProfileBody } from "../interface/UserInterface"
-import {
-    BadRequestError,
-    UnauthorizedError
-} from "../middleware/helpers/ApiErrors"
+import { BadRequestError, UnauthorizedError } from "../middleware/helpers/ApiErrors"
 import { userRepository } from "../repository/UserRepository"
 import UserService from "../service/UserService"
 import { isUUIDValid } from "../utils/validity-functions"
@@ -18,22 +15,11 @@ export default class UserController {
 
     public async getAllUsers(_req: Request, res: Response) {
         const users = await userRepository.find({
-            select: [
-                "id",
-                "username",
-                "display_name",
-                "email",
-                "role",
-                "avatar_url",
-                "createdAt",
-                "updatedAt"
-            ],
+            select: ["id", "username", "display_name", "email", "role", "avatar_url", "createdAt", "updatedAt"],
             order: { createdAt: "DESC" },
             cache: true
         })
-        const response = users.map((user) =>
-            SimpleUserResponseDTO.fromEntity(user)
-        )
+        const response = users.map((user) => SimpleUserResponseDTO.fromEntity(user))
 
         return res.status(200).json({
             status: "success",
@@ -45,14 +31,9 @@ export default class UserController {
 
     public async getUserContext(req: Request, res: Response) {
         const requestingUser = req.user
-        if (!requestingUser.data?.id)
-            throw new UnauthorizedError(
-                "You must be logged in to retrieve your user info."
-            )
+        if (!requestingUser.data?.id) throw new UnauthorizedError("You must be logged in to retrieve your user info.")
 
-        const response = await this.userService.getUserContext(
-            requestingUser?.data?.id
-        )
+        const response = await this.userService.getUserContext(requestingUser?.data?.id)
 
         return res.status(200).json({
             status: "success",
@@ -106,15 +87,9 @@ export default class UserController {
         const userId = this.validateUserIdAndOwnership(req)
 
         const requestingBody = req.body as UserEditProfileBody
-        if (!requestingBody)
-            throw new BadRequestError(
-                "You must provide data to update your profile."
-            )
+        if (!requestingBody) throw new BadRequestError("You must provide data to update your profile.")
 
-        const response = await this.userService.updatePrivateProfile(
-            userId,
-            requestingBody
-        )
+        const response = await this.userService.updatePrivateProfile(userId, requestingBody)
 
         return res.status(200).json({
             status: "success",
@@ -142,10 +117,7 @@ export default class UserController {
 
         if (!isUUIDValid(userId)) throw new BadRequestError("Invalid user ID.")
 
-        if (req.user.data?.id !== userId)
-            throw new BadRequestError(
-                "You are not authorized to delete this profile."
-            )
+        if (req.user.data?.id !== userId) throw new BadRequestError("You are not authorized to delete this profile.")
 
         return userId
     }

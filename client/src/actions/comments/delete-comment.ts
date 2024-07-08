@@ -6,10 +6,7 @@ import { PHOTO_DELETE_COMMENT } from "@/utils/api-urls"
 import { revalidateTag } from "next/cache"
 import verifyAuthenticationAndReturnToken from "@/utils/verify-authentication"
 
-export default async function deleteComment(
-    photoId: string,
-    commentId: string
-) {
+export default async function deleteComment(photoId: string, commentId: string) {
     const URL = PHOTO_DELETE_COMMENT(photoId, commentId)
 
     try {
@@ -23,10 +20,7 @@ export default async function deleteComment(
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok)
-            throw new Error(
-                responseData.message ?? "An unknown error occurred."
-            )
+        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
 
         revalidateTag("comment")
         return {

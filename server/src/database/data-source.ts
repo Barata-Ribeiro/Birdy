@@ -21,12 +21,8 @@ const dataSourceOptions: DataSourceOptions & SeederOptions = {
         path.join(__dirname, "..", "entity", "**", "*.{ts,js}"),
         path.join(__dirname, "..", "entity", "*.{ts,js}")
     ],
-    migrations: [
-        path.join(__dirname, "..", "database", "migrations", "*.{ts,js}")
-    ],
-    subscribers: [
-        path.join(__dirname, "..", "database", "subscribers", "*.{ts,js}")
-    ]
+    migrations: [path.join(__dirname, "..", "database", "migrations", "*.{ts,js}")],
+    subscribers: [path.join(__dirname, "..", "database", "subscribers", "*.{ts,js}")]
 }
 
 export const AppDataSource = new DataSource(dataSourceOptions)

@@ -16,8 +16,7 @@ export default async function login(state: State, formData: FormData) {
     const remember_me = formData.get("rememberMe") === "on"
 
     try {
-        if (!username || !password)
-            throw new Error("All fields are required to login.")
+        if (!username || !password) throw new Error("All fields are required to login.")
 
         const response = await fetch(URL, {
             method: "POST",
@@ -31,15 +30,11 @@ export default async function login(state: State, formData: FormData) {
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok)
-            throw new Error(
-                responseData.message ?? "An unknown error occurred."
-            )
+        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
 
         const { auth_token, user } = responseData.data as AuthLoginResponse
 
-        if (user.role === "BANNED")
-            throw new Error("You are banned. You cannot log in.")
+        if (user.role === "BANNED") throw new Error("You are banned. You cannot log in.")
 
         cookies().set("auth_token", auth_token, {
             httpOnly: true,

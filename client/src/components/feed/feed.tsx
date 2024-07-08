@@ -37,10 +37,7 @@ export default function Feed({ photos, userId }: Readonly<FeedProps>) {
         if (page === 1) return
 
         async function fetchFeedPhotos(page: number) {
-            const state = await getPhotosFeed(
-                { perPage: 6, page, userId },
-                { cache: "no-store" }
-            )
+            const state = await getPhotosFeed({ perPage: 6, page, userId }, { cache: "no-store" })
             const data = state.response?.data as FeedResponse[] | null
 
             if (state && data) {

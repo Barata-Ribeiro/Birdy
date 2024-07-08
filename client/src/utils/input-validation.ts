@@ -40,13 +40,11 @@ export default function inputValidation(input: string, type: unknown): Result {
     }
 
     if (type === "username") {
-        const usernameRegex =
-            /^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9]+(?<![_.])$/
+        const usernameRegex = /^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9]+(?<![_.])$/
         if (!usernameRegex.test(input)) {
             return {
                 isValid: false,
-                message:
-                    "Username must be between 4 and 20 characters long and can only contain letters and numbers."
+                message: "Username must be between 4 and 20 characters long and can only contain letters and numbers."
             }
         }
     }

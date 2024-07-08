@@ -17,11 +17,7 @@ interface DeleteButtonProps {
     direction?: "left" | "right"
 }
 
-export default function DeleteButton({
-    photo,
-    comment,
-    direction
-}: Readonly<DeleteButtonProps>) {
+export default function DeleteButton({ photo, comment, direction }: Readonly<DeleteButtonProps>) {
     const [showConfirm, setShowConfirm] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -45,8 +41,7 @@ export default function DeleteButton({
                 else await deletePhoto(photo.id)
             }
             if (comment) {
-                if (user.role === "ADMIN")
-                    await adminDeleteComment(comment.photo_id, comment.id)
+                if (user.role === "ADMIN") await adminDeleteComment(comment.photo_id, comment.id)
                 else await deleteComment(comment.photo_id, comment.id)
             }
 
@@ -77,9 +72,7 @@ export default function DeleteButton({
 
             {showConfirm && (
                 <div className={mergedClasses}>
-                    <p className="text-sm text-green-spring-700 dark:text-green-spring-300">
-                        Confirm deletion?
-                    </p>
+                    <p className="text-sm text-green-spring-700 dark:text-green-spring-300">Confirm deletion?</p>
                     <div className="mt-2 flex justify-end space-x-2">
                         <button
                             onClick={handleCancel}

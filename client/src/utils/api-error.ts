@@ -11,9 +11,6 @@ export default function ApiError(error: unknown): State {
 
     return {
         ...state,
-        client_error:
-            error instanceof Error
-                ? error.message
-                : "An unknown error occurred."
+        client_error: error instanceof Error ? error.message : "An unknown error occurred."
     }
 }

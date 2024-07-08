@@ -10,19 +10,11 @@ import { User } from "../entity/User"
 import { UserFollow } from "../entity/UserFollow"
 import { UserLike } from "../entity/UserLike"
 import { UserEditProfileBody } from "../interface/UserInterface"
-import {
-    BadRequestError,
-    InternalServerError,
-    NotFoundError
-} from "../middleware/helpers/ApiErrors"
+import { BadRequestError, InternalServerError, NotFoundError } from "../middleware/helpers/ApiErrors"
 import { photoRepository } from "../repository/PhotoRepository"
 import { userRepository } from "../repository/UserRepository"
 import { saveEntityToDatabase } from "../utils/operation-functions"
-import {
-    isPasswordStrong,
-    isUsernameValid,
-    isUUIDValid
-} from "../utils/validity-functions"
+import { isPasswordStrong, isUsernameValid, isUUIDValid } from "../utils/validity-functions"
 
 export default class UserService {
     async getUserProfile(username: string): Promise<PublicProfileResponseDTO> {
@@ -45,42 +37,25 @@ export default class UserService {
                     .where("photo.authorId = user.id")
             }, "photoCount")
             .addSelect((subQuery) => {
-                return subQuery
-                    .select("json_agg(subquery) AS lastLikedPhotos")
-                    .from((qb) => {
-                        return qb
-                            .select([
-                                "photo.id",
-                                "photo.title",
-                                "photo.slug",
-                                "photo.image_url"
-                            ])
-                            .from(Photo, "photo")
-                            .innerJoin(
-                                UserLike,
-                                "userLike",
-                                "userLike.photoId = photo.id"
-                            )
-                            .where("userLike.userId = user.id")
-                            .orderBy("userLike.liked_at", "DESC")
-                            .limit(2)
-                    }, "subquery")
+                return subQuery.select("json_agg(subquery) AS lastLikedPhotos").from((qb) => {
+                    return qb
+                        .select(["photo.id", "photo.title", "photo.slug", "photo.image_url"])
+                        .from(Photo, "photo")
+                        .innerJoin(UserLike, "userLike", "userLike.photoId = photo.id")
+                        .where("userLike.userId = user.id")
+                        .orderBy("userLike.liked_at", "DESC")
+                        .limit(2)
+                }, "subquery")
             }, "lastLikedPhotos")
             .addSelect((subQuery) => {
                 return subQuery
-                    .select(
-                        "COUNT(DISTINCT userFollow.followingId)",
-                        "followingCount"
-                    )
+                    .select("COUNT(DISTINCT userFollow.followingId)", "followingCount")
                     .from(UserFollow, "userFollow")
                     .where("userFollow.followerId = user.id")
             }, "followingCount")
             .addSelect((subQuery) => {
                 return subQuery
-                    .select(
-                        "COUNT(DISTINCT userFollow.followerId)",
-                        "followerCount"
-                    )
+                    .select("COUNT(DISTINCT userFollow.followerId)", "followerCount")
                     .from(UserFollow, "userFollow")
                     .where("userFollow.followingId = user.id")
             }, "followerCount")
@@ -121,9 +96,7 @@ export default class UserService {
         return user
     }
 
-    async getPrivateProfile(
-        userId: string
-    ): Promise<PrivateProfileResponseDTO> {
+    async getPrivateProfile(userId: string): Promise<PrivateProfileResponseDTO> {
         const user = await userRepository
             .createQueryBuilder("user")
             .select([
@@ -144,34 +117,20 @@ export default class UserService {
             }, "photoCount")
             .addSelect((subQuery) => {
                 return subQuery
-                    .select(
-                        "COUNT(DISTINCT userLike.photoId)",
-                        "likedPhotoCount"
-                    )
+                    .select("COUNT(DISTINCT userLike.photoId)", "likedPhotoCount")
                     .from(UserLike, "userLike")
                     .where("userLike.userId = user.id")
             }, "likedPhotoCount")
             .addSelect((subQuery) => {
-                return subQuery
-                    .select("json_agg(subquery) AS lastLikedPhotos")
-                    .from((qb) => {
-                        return qb
-                            .select([
-                                "photo.id",
-                                "photo.title",
-                                "photo.slug",
-                                "photo.image_url"
-                            ])
-                            .from(Photo, "photo")
-                            .innerJoin(
-                                UserLike,
-                                "userLike",
-                                "userLike.photoId = photo.id"
-                            )
-                            .where("userLike.userId = user.id")
-                            .orderBy("userLike.liked_at", "DESC")
-                            .limit(2)
-                    }, "subquery")
+                return subQuery.select("json_agg(subquery) AS lastLikedPhotos").from((qb) => {
+                    return qb
+                        .select(["photo.id", "photo.title", "photo.slug", "photo.image_url"])
+                        .from(Photo, "photo")
+                        .innerJoin(UserLike, "userLike", "userLike.photoId = photo.id")
+                        .where("userLike.userId = user.id")
+                        .orderBy("userLike.liked_at", "DESC")
+                        .limit(2)
+                }, "subquery")
             }, "lastLikedPhotos")
             .addSelect((subQuery) => {
                 return subQuery
@@ -192,20 +151,14 @@ export default class UserService {
                     .where("comment.authorId = user.id")
             }, "commentCount")
             .addSelect((subQuery) => {
-                return subQuery
-                    .select("json_agg(subquery) AS lastComments")
-                    .from((qb) => {
-                        return qb
-                            .select([
-                                "comment.id",
-                                "comment.content",
-                                "comment.createdAt"
-                            ])
-                            .from(Comment, "comment")
-                            .where("comment.authorId = user.id")
-                            .orderBy("comment.createdAt", "DESC")
-                            .limit(2)
-                    }, "subquery")
+                return subQuery.select("json_agg(subquery) AS lastComments").from((qb) => {
+                    return qb
+                        .select(["comment.id", "comment.content", "comment.createdAt"])
+                        .from(Comment, "comment")
+                        .where("comment.authorId = user.id")
+                        .orderBy("comment.createdAt", "DESC")
+                        .limit(2)
+                }, "subquery")
             }, "lastComments")
             .where("user.id = :userId", { userId })
             .getRawOne()
@@ -233,9 +186,7 @@ export default class UserService {
             .limit(3)
             .getManyAndCount()
 
-        const latestPhotosDTO = latestPhotos.map((photo) =>
-            PhotoStatsResponseDTO.fromEntity(photo)
-        )
+        const latestPhotosDTO = latestPhotos.map((photo) => PhotoStatsResponseDTO.fromEntity(photo))
 
         const [popularPhotos, totalPopular] = await photoRepository
             .createQueryBuilder("photo")
@@ -252,9 +203,7 @@ export default class UserService {
             .limit(3)
             .getManyAndCount()
 
-        const popularPhotosDTO = popularPhotos.map((photo) =>
-            PhotoStatsResponseDTO.fromEntity(photo)
-        )
+        const popularPhotosDTO = popularPhotos.map((photo) => PhotoStatsResponseDTO.fromEntity(photo))
 
         return {
             total_photos: totalLatest + totalPopular,
@@ -269,31 +218,17 @@ export default class UserService {
         }
     }
 
-    async updatePrivateProfile(
-        userId: string,
-        body: UserEditProfileBody
-    ): Promise<EditUserResponseDTO> {
-        if (!body.password)
-            throw new BadRequestError("You must provide your current password.")
+    async updatePrivateProfile(userId: string, body: UserEditProfileBody): Promise<EditUserResponseDTO> {
+        if (!body.password) throw new BadRequestError("You must provide your current password.")
 
         const user = await userRepository.findOne({
             where: { id: userId },
-            select: [
-                "id",
-                "username",
-                "display_name",
-                "password",
-                "avatar_url",
-                "cover_image_url",
-                "bio",
-                "updatedAt"
-            ]
+            select: ["id", "username", "display_name", "password", "avatar_url", "cover_image_url", "bio", "updatedAt"]
         })
         if (!user) throw new NotFoundError("User not found.")
 
         const passwordMatch = await bcrypt.compare(body.password, user.password)
-        if (!passwordMatch)
-            throw new BadRequestError("Your password is incorrect.")
+        if (!passwordMatch) throw new BadRequestError("Your password is incorrect.")
 
         if (body.username) {
             if (!isUsernameValid(body.username))
@@ -304,8 +239,7 @@ export default class UserService {
             const usernameExists = await userRepository.existsBy({
                 username: body.username
             })
-            if (usernameExists)
-                throw new BadRequestError("Username already in use.")
+            if (usernameExists) throw new BadRequestError("Username already in use.")
 
             user.username = body.username.toLowerCase().trim()
         }
@@ -313,32 +247,24 @@ export default class UserService {
         if (body.display_name) user.display_name = body.display_name.trim()
 
         if (body.avatar_url) {
-            if (body.avatar_url === user.avatar_url)
-                throw new BadRequestError("You are already using this avatar.")
+            if (body.avatar_url === user.avatar_url) throw new BadRequestError("You are already using this avatar.")
 
-            if (!body.avatar_url.startsWith("https://"))
-                throw new BadRequestError("Invalid URL.")
+            if (!body.avatar_url.startsWith("https://")) throw new BadRequestError("Invalid URL.")
 
             user.avatar_url = String(body.avatar_url.trim())
         }
 
         if (body.cover_image_url) {
             if (body.cover_image_url === user.cover_image_url)
-                throw new BadRequestError(
-                    "You are already using this cover image."
-                )
+                throw new BadRequestError("You are already using this cover image.")
 
-            if (!body.cover_image_url.startsWith("https://"))
-                throw new BadRequestError("Invalid URL.")
+            if (!body.cover_image_url.startsWith("https://")) throw new BadRequestError("Invalid URL.")
 
             user.cover_image_url = String(body.cover_image_url.trim())
         }
 
         if (body.bio) {
-            if (body.bio.length > 200)
-                throw new BadRequestError(
-                    "Bio must be less than 200 characters."
-                )
+            if (body.bio.length > 200) throw new BadRequestError("Bio must be less than 200 characters.")
 
             user.bio = body.bio.trim()
         }
@@ -358,23 +284,18 @@ export default class UserService {
     }
 
     async deletePrivateProfile(userId: string): Promise<void> {
-        await AppDataSource.manager.transaction(
-            async (transactionalEntityManager) => {
-                try {
-                    const userToDelete = await userRepository.findOneBy({
-                        id: userId
-                    })
-                    if (!userToDelete)
-                        throw new NotFoundError("User not found.")
+        await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
+            try {
+                const userToDelete = await userRepository.findOneBy({
+                    id: userId
+                })
+                if (!userToDelete) throw new NotFoundError("User not found.")
 
-                    await transactionalEntityManager.remove(userToDelete)
-                } catch (error) {
-                    console.error("Transaction failed:", error)
-                    throw new InternalServerError(
-                        "An error occurred during the deletion process."
-                    )
-                }
+                await transactionalEntityManager.remove(userToDelete)
+            } catch (error) {
+                console.error("Transaction failed:", error)
+                throw new InternalServerError("An error occurred during the deletion process.")
             }
-        )
+        })
     }
 }

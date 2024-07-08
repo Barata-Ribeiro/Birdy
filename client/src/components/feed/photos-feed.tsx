@@ -4,19 +4,13 @@ import Link from "next/link"
 import { useState } from "react"
 import { FaEye, FaHeart, FaRegComments } from "react-icons/fa"
 
-export default function FeedPhotos({
-    photos
-}: Readonly<{ photos: FeedResponse[] }>) {
+export default function FeedPhotos({ photos }: Readonly<{ photos: FeedResponse[] }>) {
     const [hoveredImageId, setHoveredImageId] = useState<string | null>(null)
 
     return (
         <ul className="masonry sm:masonry-sm md:masonry-md px-4 sm:px-0 [&>li:not(:first-child)]:mt-4">
             {photos.map((photo, i) => (
-                <li
-                    key={photo.id + "_" + i}
-                    id={photo.id + "_" + i}
-                    className="break-inside"
-                >
+                <li key={photo.id + "_" + i} id={photo.id + "_" + i} className="break-inside">
                     <Link
                         href={`/photo/${photo.id}/${photo.slug}`}
                         className="relative"

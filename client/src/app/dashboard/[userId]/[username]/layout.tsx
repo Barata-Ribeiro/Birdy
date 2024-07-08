@@ -14,10 +14,7 @@ interface DashboardLayoutProps {
     params: { userId: string; username: string }
 }
 
-export default async function DashBoardLayout({
-    children,
-    params
-}: Readonly<DashboardLayoutProps>) {
+export default async function DashBoardLayout({ children, params }: Readonly<DashboardLayoutProps>) {
     if (!params.userId || !params.username) return notFound()
 
     const state = await getPrivateProfile(params.userId)
@@ -57,15 +54,9 @@ export default async function DashBoardLayout({
                         >
                             {user.username}
                         </Link>
-                        {user.role === "ADMIN" ? (
-                            <FaUserTie size={18} />
-                        ) : (
-                            <FaUser size={18} />
-                        )}
+                        {user.role === "ADMIN" ? <FaUserTie size={18} /> : <FaUser size={18} />}
                     </div>
-                    <p className="text-green-spring-700 dark:text-mantis-300">
-                        {user.email}
-                    </p>
+                    <p className="text-green-spring-700 dark:text-mantis-300">{user.email}</p>
                     <p className="mb-3 mt-1 max-w-md text-center text-green-spring-700 dark:text-mantis-300">
                         {user.bio ?? DEFAULT_BIO}
                     </p>

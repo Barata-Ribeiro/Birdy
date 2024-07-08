@@ -4,10 +4,7 @@ import { ApiResponse } from "@/interfaces/actions"
 import ApiError from "@/utils/api-error"
 import { USER_CHECK_FOLLOW } from "@/utils/api-urls"
 
-export default async function isUserFollowing(
-    username: string,
-    userId: string
-) {
+export default async function isUserFollowing(username: string, userId: string) {
     const URL = USER_CHECK_FOLLOW(username, userId)
     try {
         const response = await fetch(URL, {
@@ -17,10 +14,7 @@ export default async function isUserFollowing(
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok)
-            throw new Error(
-                responseData.message ?? "An unknown error occurred."
-            )
+        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
 
         const data = responseData.data as { followed_by_loggedIn_user: boolean }
 

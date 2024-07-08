@@ -53,9 +53,7 @@ export default async function PhotoPage({ params }: Readonly<PhotoPageProps>) {
                     {/* Title */}
                     <div className="flex items-end justify-between">
                         <div className="mb-2 flex flex-col items-start justify-start gap-1 leading-none">
-                            <h1 className="text-4xl font-semibold">
-                                {photo.title}
-                            </h1>
+                            <h1 className="text-4xl font-semibold">{photo.title}</h1>
                             <Link
                                 className="text-xs text-green-spring-400 dark:text-green-spring-300"
                                 href={`/user/${photo.author.id}/${photo.author.username}`}
@@ -69,18 +67,12 @@ export default async function PhotoPage({ params }: Readonly<PhotoPageProps>) {
 
                     {/* META NUMBERS */}
                     <div className="order-first flex justify-between md:order-none md:justify-start md:gap-4">
-                        <span
-                            aria-label="Number of views"
-                            className="flex items-center gap-2"
-                        >
+                        <span aria-label="Number of views" className="flex items-center gap-2">
                             <FaEye aria-hidden="true" />
                             {photo.meta.total_views}
                         </span>
                         <LikeButton photo={photo} />
-                        <span
-                            aria-label="Number of comments"
-                            className="flex items-center gap-2"
-                        >
+                        <span aria-label="Number of comments" className="flex items-center gap-2">
                             <FaRegComments aria-hidden="true" />
                             {photo.meta.total_comments}
                         </span>
@@ -89,28 +81,17 @@ export default async function PhotoPage({ params }: Readonly<PhotoPageProps>) {
                     {/* META BIRD INFO */}
                     <div className="grid grid-flow-row gap-4 border-y-2 border-green-spring-100 py-3 dark:border-green-spring-500 md:py-5">
                         <p className="flex flex-col items-center gap-1 md:items-start">
-                            <span className="font-semibold dark:text-green-spring-300">
-                                Bird Size
-                            </span>
-                            <span className="font-normal">
-                                {photo.meta.bird_size} cm
-                            </span>
+                            <span className="font-semibold dark:text-green-spring-300">Bird Size</span>
+                            <span className="font-normal">{photo.meta.bird_size} cm</span>
                         </p>
                         <p className="flex flex-col items-center gap-1 md:items-start">
-                            <span className="font-semibold dark:text-green-spring-300">
-                                Habitat
-                            </span>
-                            <span className="font-normal leading-relaxed">
-                                {photo.meta.bird_habitat}
-                            </span>
+                            <span className="font-semibold dark:text-green-spring-300">Habitat</span>
+                            <span className="font-normal leading-relaxed">{photo.meta.bird_habitat}</span>
                         </p>
                     </div>
 
                     {/* COMMENTS */}
-                    <PhotoComments
-                        photoId={params.photoId}
-                        comments={photo.comments}
-                    />
+                    <PhotoComments photoId={params.photoId} comments={photo.comments} />
                 </div>
             </div>
         </section>

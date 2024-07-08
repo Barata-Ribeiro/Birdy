@@ -5,8 +5,7 @@ import { Metadata } from "next"
 
 export const metadata: Metadata = {
     title: "Feed | Birdy",
-    description:
-        "Welcome to the Birdy social network! This is the feed with all the photos from our users."
+    description: "Welcome to the Birdy social network! This is the feed with all the photos from our users."
 }
 
 export default async function Home() {

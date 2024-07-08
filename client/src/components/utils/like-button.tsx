@@ -20,11 +20,8 @@ export default function LikeButton({ photo }: Readonly<LikeButtonProps>) {
     const userId = user ? user.id : null
     const isOwner = userId && photo?.author.id === userId
 
-    const isPhotoLiked =
-        user && photo.likes.some((like) => like.user_id === user.id)
-    const [likeState, setLikeState] = useState(
-        isPhotoLiked ? "Liked" : "Unliked"
-    )
+    const isPhotoLiked = user && photo.likes.some((like) => like.user_id === user.id)
+    const [likeState, setLikeState] = useState(isPhotoLiked ? "Liked" : "Unliked")
 
     async function toggleLike() {
         if (loading) return
@@ -48,10 +45,7 @@ export default function LikeButton({ photo }: Readonly<LikeButtonProps>) {
     }, [])
 
     return (
-        <span
-            aria-label="Number of likes and like button"
-            className="flex items-center gap-1"
-        >
+        <span aria-label="Number of likes and like button" className="flex items-center gap-1">
             <button
                 className={`like ${likeState.toLowerCase()} ${
                     !usedKeyboard && "focus:outline-none"
@@ -59,11 +53,7 @@ export default function LikeButton({ photo }: Readonly<LikeButtonProps>) {
                 onClick={toggleLike}
                 disabled={loading || !!isOwner}
             >
-                <span
-                    className="like-icon like-icon-state"
-                    aria-label={likeState}
-                    aria-live="polite"
-                >
+                <span className="like-icon like-icon-state" aria-label={likeState} aria-live="polite">
                     {likeState}
                 </span>
             </button>

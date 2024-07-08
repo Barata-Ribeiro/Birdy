@@ -29,10 +29,7 @@ export default function ContactForm() {
     }
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="mx-auto flex max-w-md flex-col gap-4"
-        >
+        <form onSubmit={handleSubmit} className="mx-auto flex max-w-md flex-col gap-4">
             <Input
                 label="Name"
                 name="name"

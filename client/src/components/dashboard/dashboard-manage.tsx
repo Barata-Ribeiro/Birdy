@@ -26,10 +26,7 @@ export default function DashboardManage({
     }, [state.ok, userId, username])
 
     return (
-        <form
-            action={action}
-            className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0"
-        >
+        <form action={action} className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0">
             <div className="pb-2 pt-4">
                 <Input
                     label="Username"
@@ -73,9 +70,7 @@ export default function DashboardManage({
                 ></textarea>
             </div>
             <fieldset className="pb-2 pt-4">
-                <p className="mb-1 block text-green-spring-700 dark:text-green-spring-500">
-                    Change Password?
-                </p>
+                <p className="mb-1 block text-green-spring-700 dark:text-green-spring-500">Change Password?</p>
                 <Input
                     type="password"
                     label="New Password"

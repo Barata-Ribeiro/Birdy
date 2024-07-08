@@ -1,10 +1,4 @@
-import {
-    CreateDateColumn,
-    Entity,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-    Unique
-} from "typeorm"
+import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm"
 import { Photo } from "./Photo"
 import { User } from "./User"
 

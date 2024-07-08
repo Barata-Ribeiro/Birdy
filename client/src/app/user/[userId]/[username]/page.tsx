@@ -15,9 +15,7 @@ interface UserPageProps {
     params: { userId: string; username: string }
 }
 
-export async function generateMetadata({
-    params
-}: Readonly<UserPageProps>): Promise<Metadata> {
+export async function generateMetadata({ params }: Readonly<UserPageProps>): Promise<Metadata> {
     return {
         title: `${params.username} | Birdy`,
         description: `This is the profile page of ${params.username} on Birdy.`
@@ -63,10 +61,7 @@ export default async function UserPage({ params }: Readonly<UserPageProps>) {
                         x="0"
                         y="0"
                     >
-                        <polygon
-                            className="fill-current text-green-spring-50"
-                            points="2560 0 2560 100 0 100"
-                        ></polygon>
+                        <polygon className="fill-current text-green-spring-50" points="2560 0 2560 100 0 100"></polygon>
                     </svg>
                 </div>
             </div>
@@ -83,10 +78,7 @@ export default async function UserPage({ params }: Readonly<UserPageProps>) {
                                         <Image
                                             alt={`Avatar of ${profile.username}`}
                                             title={`Avatar of ${profile.username}`}
-                                            src={
-                                                profile.avatar_url ??
-                                                defaultAvatar
-                                            }
+                                            src={profile.avatar_url ?? defaultAvatar}
                                             style={{
                                                 width: "auto",
                                                 height: "auto"
@@ -111,25 +103,19 @@ export default async function UserPage({ params }: Readonly<UserPageProps>) {
                                             <span className="block text-xl font-bold uppercase tracking-wide text-green-spring-600">
                                                 {profile.photo_count ?? 0}
                                             </span>
-                                            <span className="text-sm text-green-spring-400">
-                                                Photos
-                                            </span>
+                                            <span className="text-sm text-green-spring-400">Photos</span>
                                         </div>
                                         <div className="mr-4 p-3 text-center">
                                             <span className="block text-xl font-bold uppercase tracking-wide text-green-spring-600">
                                                 {profile.liked_photo_count ?? 0}
                                             </span>
-                                            <span className="text-sm text-green-spring-400">
-                                                Likes
-                                            </span>
+                                            <span className="text-sm text-green-spring-400">Likes</span>
                                         </div>
                                         <div className="p-3 text-center lg:mr-4">
                                             <span className="block text-xl font-bold uppercase tracking-wide text-green-spring-600">
                                                 {profile.comment_count ?? 0}
                                             </span>
-                                            <span className="text-sm text-green-spring-400">
-                                                Comments
-                                            </span>
+                                            <span className="text-sm text-green-spring-400">Comments</span>
                                         </div>
                                     </div>
                                 </div>
@@ -142,15 +128,9 @@ export default async function UserPage({ params }: Readonly<UserPageProps>) {
                                     className="flex items-center gap-1 text-4xl font-semibold leading-normal text-green-spring-700 dark:text-green-spring-700"
                                 >
                                     @{profile.username}
-                                    {profile.role === "ADMIN" ? (
-                                        <FaUserTie size={20} />
-                                    ) : (
-                                        <FaUser size={20} />
-                                    )}
+                                    {profile.role === "ADMIN" ? <FaUserTie size={20} /> : <FaUser size={20} />}
                                 </h3>
-                                <p className="text-sm text-green-spring-400">
-                                    {profile.display_name}
-                                </p>
+                                <p className="text-sm text-green-spring-400">{profile.display_name}</p>
                                 <p className="mt-2 text-center leading-7 text-green-spring-600">
                                     {profile.bio ?? null}
                                 </p>
@@ -163,14 +143,8 @@ export default async function UserPage({ params }: Readonly<UserPageProps>) {
                         {photos && photos.length > 0 ? (
                             <ul className="flex flex-wrap items-center justify-center pb-4">
                                 {photos.map((photo, i) => (
-                                    <li
-                                        key={photo.id + "_" + i}
-                                        id={photo.id + "_" + i}
-                                        className="break-inside"
-                                    >
-                                        <Link
-                                            href={`/photo/${photo.id}/${photo.slug}`}
-                                        >
+                                    <li key={photo.id + "_" + i} id={photo.id + "_" + i} className="break-inside">
+                                        <Link href={`/photo/${photo.id}/${photo.slug}`}>
                                             <Image
                                                 src={photo.image_url}
                                                 alt={`Photo: ${photo.title}, by @${photo.author.username}`}

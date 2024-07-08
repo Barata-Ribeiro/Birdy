@@ -30,10 +30,7 @@ export default function SignInForm() {
     }, [router, state.ok, state.response])
 
     return (
-        <form
-            action={action}
-            className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0"
-        >
+        <form action={action} className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0">
             <div className="pb-2 pt-4">
                 <Input
                     label="Username"
