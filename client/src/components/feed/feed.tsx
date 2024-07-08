@@ -70,7 +70,7 @@ export default function Feed({ photos, userId }: Readonly<FeedProps>) {
                 {infinite ? (
                     loading && <Loading />
                 ) : (
-                    <p className="pb-0 pl-8 pr-16 pt-4 text-center font-semibold text-green-spring-300">
+                    <p className="mx-auto pb-0 pl-8 pr-16 pt-4 text-center font-semibold text-green-spring-300">
                         You have reached the end of the feed.
                     </p>
                 )}

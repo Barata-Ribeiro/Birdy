@@ -17,7 +17,7 @@ export default async function Home() {
             {photos.length > 0 ? (
                 <Feed photos={photos} />
             ) : (
-                <p className="my-60 text-center text-green-spring-500">
+                <p className="mx-auto my-60 w-max text-center text-green-spring-500">
                     No photos to show.
                     <br />
                     Create an account and start sharing your photos!

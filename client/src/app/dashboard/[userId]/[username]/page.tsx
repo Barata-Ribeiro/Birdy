@@ -28,10 +28,10 @@ export default async function PrivateFeedPage({
             {photos.length > 0 ? (
                 <Feed photos={photos} userId={user.id} />
             ) : (
-                <p className="mt-4 text-center text-lg text-gray-600">
+                <p className="mt-4 text-center text-lg text-green-spring-500">
                     You have no photos! Go to{" "}
                     <Link
-                        className="text-green-spring-50 transition-colors duration-300 hover:text-bright-turquoise-500 dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600"
+                        className="text-green-spring-600 transition-colors duration-300 hover:text-bright-turquoise-500 dark:text-green-spring-400 dark:hover:text-bright-turquoise-200"
                         href={`/dashboard/${user.id}/${user.username}/upload`}
                     >
                         &apos;New Post&apos;
