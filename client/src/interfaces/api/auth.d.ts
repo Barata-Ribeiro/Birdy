@@ -13,7 +13,7 @@ export interface AuthLoginResponse {
     user: {
         id: string
         username: string
-        role: "NONE" | "ADMIN" | "MEMBER" | "BANNED"
+        role: "0" | "1" | "2" | "3"
     }
 }
 

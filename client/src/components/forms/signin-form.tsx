@@ -23,7 +23,7 @@ export default function SignInForm() {
             const data = state.response?.data as {
                 id: string
                 username: string
-                role: "NONE" | "ADMIN" | "MEMBER" | "BANNED"
+                role: "0" | "1" | "2" | "3"
             }
             router.push(`/dashboard/${data.id}/${data.username}`)
         }

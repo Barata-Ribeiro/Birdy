@@ -54,7 +54,7 @@ export default async function DashBoardLayout({ children, params }: Readonly<Das
                         >
                             {user.username}
                         </Link>
-                        {user.role === "ADMIN" ? <FaUserTie size={18} /> : <FaUser size={18} />}
+                        {user.role === "1" ? <FaUserTie size={18} /> : <FaUser size={18} />}
                     </div>
                     <p className="text-green-spring-700 dark:text-mantis-300">{user.email}</p>
                     <p className="mb-3 mt-1 max-w-md text-center text-green-spring-700 dark:text-mantis-300">

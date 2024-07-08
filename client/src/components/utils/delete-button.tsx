@@ -37,11 +37,11 @@ export default function DeleteButton({ photo, comment, direction }: Readonly<Del
 
         if (user) {
             if (photo) {
-                if (user.role === "ADMIN") await adminDeletePhoto(photo.id)
+                if (user.role === "1") await adminDeletePhoto(photo.id)
                 else await deletePhoto(photo.id)
             }
             if (comment) {
-                if (user.role === "ADMIN") await adminDeleteComment(comment.photo_id, comment.id)
+                if (user.role === "1") await adminDeleteComment(comment.photo_id, comment.id)
                 else await deleteComment(comment.photo_id, comment.id)
             }
 
@@ -55,7 +55,7 @@ export default function DeleteButton({ photo, comment, direction }: Readonly<Del
 
     const handleCancel = () => setShowConfirm(false)
 
-    if (!isOwner || user?.role !== "ADMIN") return null
+    if (!isOwner || user?.role !== "1") return null
 
     return (
         <div className="relative">

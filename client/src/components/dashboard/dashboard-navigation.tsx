@@ -34,7 +34,7 @@ export default function DashboardNavigation({
                     <BiSolidPhotoAlbum size={18} />
                     <span className="max-sm:hidden">Photos</span>
                 </Button>
-                {user.role === "ADMIN" && (
+                {user.role === "1" && (
                     <Button
                         href={`/dashboard/${user.id}/${user.username}/admin-panel`}
                         className={"flex items-center gap-2 px-4 py-2 text-sm"}

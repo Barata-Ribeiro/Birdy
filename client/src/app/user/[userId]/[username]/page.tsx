@@ -128,7 +128,7 @@ export default async function UserPage({ params }: Readonly<UserPageProps>) {
                                     className="flex items-center gap-1 text-4xl font-semibold leading-normal text-green-spring-700 dark:text-green-spring-700"
                                 >
                                     @{profile.username}
-                                    {profile.role === "ADMIN" ? <FaUserTie size={20} /> : <FaUser size={20} />}
+                                    {profile.role === "1" ? <FaUserTie size={20} /> : <FaUser size={20} />}
                                 </h3>
                                 <p className="text-sm text-green-spring-400">{profile.display_name}</p>
                                 <p className="mt-2 text-center leading-7 text-green-spring-600">

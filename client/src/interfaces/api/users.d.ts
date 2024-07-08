@@ -3,7 +3,7 @@ export interface UserContextResponse {
     username: string
     display_name: string
     email: string
-    role: "NONE" | "ADMIN" | "MEMBER" | "BANNED"
+    role: "0" | "1" | "2" | "3"
     avatar_url: string | null
     cover_image_url: string | null
     bio: string | null
@@ -15,7 +15,7 @@ export interface PublicProfileResponse {
     id: string
     username: string
     display_name: string
-    role: "NONE" | "ADMIN" | "MEMBER" | "BANNED"
+    role: "0" | "1" | "2" | "3"
     avatar_url: string | null
     cover_image_url: string | null
     bio: string | null
@@ -32,7 +32,7 @@ export interface PrivateProfileResponse {
     username: string
     display_name: string
     email: string
-    role: "NONE" | "ADMIN" | "MEMBER" | "BANNED"
+    role: "0" | "1" | "2" | "3"
     avatar_url: string | null
     cover_image_url: string | null
     bio: string | null
