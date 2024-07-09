@@ -20,29 +20,32 @@ export default function DashboardStats({
     const [comments, setComments] = useState<GraphData[]>([])
     const [pieChart, setPieChart] = useState<GraphData[]>([])
 
-    const joinPhotosArray = data.latest_photos.photos.concat(data.popular_photos.photos)
-
     useEffect(() => {
         if (!data) return
 
-        const views = joinPhotosArray.map((photo) => ({
+        const joinPhotosArray = data.latest_photos.photos.concat(data.popular_photos.photos)
+        const filteredPhotosArray = joinPhotosArray.filter(
+            (photo, index, self) => self.findIndex((p) => p.id === photo.id) === index
+        )
+
+        const views = filteredPhotosArray.map((photo) => ({
             x: photo.title,
-            y: photo.meta.total_views,
+            y: photo.total_views,
             label: "Views"
         }))
-        const likes = joinPhotosArray.map((photo) => ({
+        const likes = filteredPhotosArray.map((photo) => ({
             x: photo.title,
-            y: photo.meta.total_likes,
+            y: photo.total_likes,
             label: "Likes"
         }))
-        const comments = joinPhotosArray.map((photo) => ({
+        const comments = filteredPhotosArray.map((photo) => ({
             x: photo.title,
-            y: photo.meta.total_comments,
+            y: photo.total_comments,
             label: "Comments"
         }))
-        const pieChart = joinPhotosArray.map((photo) => ({
+        const pieChart = filteredPhotosArray.map((photo) => ({
             x: photo.title,
-            y: photo.meta.total_views,
+            y: photo.total_views,
             label: photo.title
         }))
 
@@ -50,7 +53,7 @@ export default function DashboardStats({
         setLikes(likes)
         setComments(comments)
         setPieChart(pieChart)
-    }, [data, joinPhotosArray])
+    }, [data])
 
     return (
         <section className="my-4 grid grid-cols-1 gap-6 lg:grid-cols-2">
