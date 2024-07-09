@@ -32,7 +32,6 @@ export default async function DashBoardLayout({ children, params }: Readonly<Das
                         backgroundImage: `url('${user.cover_image_url ?? DefaultCover.src}')`
                     }}
                     className="h-[250px] w-full bg-cover bg-bottom"
-                    aria-label="User cover image"
                 ></div>
 
                 <div className="-mt-20 flex flex-col items-center">
@@ -51,10 +50,15 @@ export default async function DashBoardLayout({ children, params }: Readonly<Das
                         <Link
                             href={`/user/${user.id}/${user.username}`}
                             className="font-body text-2xl dark:text-mantis-50"
+                            aria-label="User profile"
                         >
                             {user.username}
                         </Link>
-                        {user.role === "1" ? <FaUserTie size={18} /> : <FaUser size={18} />}
+                        {user.role === "1" ? (
+                            <FaUserTie size={18} aria-label="Admin" title="Admin" />
+                        ) : (
+                            <FaUser size={18} aria-label="Member" title="Member" />
+                        )}
                     </div>
                     <p className="text-green-spring-700 dark:text-mantis-300">{user.email}</p>
                     <p className="mb-3 mt-1 max-w-md text-center text-green-spring-700 dark:text-mantis-300">
