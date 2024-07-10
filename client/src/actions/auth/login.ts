@@ -34,7 +34,7 @@ export default async function login(state: State, formData: FormData) {
 
         const { auth_token, user } = responseData.data as AuthLoginResponse
 
-        if (user.role === "BANNED") throw new Error("You are banned. You cannot log in.")
+        if (user.role === "3") throw new Error("You are banned. You cannot log in.")
 
         cookies().set("auth_token", auth_token, {
             httpOnly: true,

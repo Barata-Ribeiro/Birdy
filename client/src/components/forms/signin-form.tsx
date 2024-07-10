@@ -49,15 +49,26 @@ export default function SignInForm() {
                     aria-required
                 />
             </div>
-            <ErrorElement error={state.client_error} />
-            <div className="text-right">
+            <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 text-green-spring-50 dark:text-green-spring-400 lg:text-green-spring-600">
+                    <input
+                        className="h-4 w-4 rounded border-green-spring-300 bg-green-spring-100 text-bright-turquoise-600 focus:ring-2 focus:ring-bright-turquoise-500 dark:border-green-spring-600 dark:bg-green-spring-700 dark:ring-offset-green-spring-800 dark:focus:ring-bright-turquoise-600"
+                        type="checkbox"
+                        name="rememberMe"
+                        id="rememberMe"
+                    />
+                    {/* */}
+                    Remember me
+                </label>
+
                 <Link
                     href="/sign/password-lost"
-                    className="text-green-spring-50 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600"
+                    className="leading-none text-green-spring-50 transition-colors duration-300 hover:text-bright-turquoise-500 hover:underline dark:text-green-spring-400 dark:hover:text-bright-turquoise-200 lg:text-green-spring-600"
                 >
                     Forgot your password?
                 </Link>
             </div>
+            <ErrorElement error={state.client_error} />
             <div className="px-4 pb-2 pt-4">
                 <FormButton
                     type="submit"
