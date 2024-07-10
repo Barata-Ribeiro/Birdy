@@ -95,7 +95,7 @@ export default function SignUpForm() {
                     .
                 </label>
             </div>
-            <div className="px-4 pb-2 pt-4">
+            <div className="my-4">
                 <FormButton
                     type="submit"
                     className="rounded-2xl p-4 text-lg group-invalid:pointer-events-none group-invalid:opacity-30"

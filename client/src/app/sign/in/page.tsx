@@ -9,7 +9,9 @@ export const metadata: Metadata = {
 export default function SignInPage() {
     return (
         <>
-            <h1 className="my-6 text-2xl">Birdy</h1>
+            <h1 className="my-6 font-sans text-3xl font-semibold text-green-spring-50 lg:text-green-spring-950">
+                Sign in to your account
+            </h1>
             <SignInForm />
         </>
     )
