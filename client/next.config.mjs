@@ -1,5 +1,14 @@
-/** @type {import('next').NextConfig} */
+/** @type {import("next").NextConfig} */
 const nextConfig = {
+    reactStrictMode: true,
+    swcMinify: true,
+    trailingSlash: false,
+    skipTrailingSlashRedirect: true,
+    experimental: {
+        optimizePackageImports: [
+            "tailwindcss", "react-icons/bi", "react-icons/fa", "react-icons/md", "react-icons/fa6"
+        ]
+    },
     images: {
         remotePatterns: [
             {
@@ -10,9 +19,7 @@ const nextConfig = {
             },
             {
                 protocol: "https",
-                hostname: "source.unsplash.com",
-                port: "",
-                pathname: "/random/**"
+                hostname: "**"
             }
         ]
     }
