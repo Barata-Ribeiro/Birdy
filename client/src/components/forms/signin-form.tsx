@@ -8,6 +8,7 @@ import Link from "next/link"
 import { useEffect } from "react"
 import { useFormState, useFormStatus } from "react-dom"
 import { useRouter } from "next/navigation"
+import FormSocialButtons from "@/components/utils/form-social-buttons"
 
 export default function SignInForm() {
     const router = useRouter()
@@ -88,6 +89,8 @@ export default function SignInForm() {
                     Don&apos;t have an account? Sign Up!
                 </Link>
             </div>
+            
+            <FormSocialButtons />
         </form>
     )
 }

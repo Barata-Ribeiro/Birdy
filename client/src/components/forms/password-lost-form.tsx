@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import Input from "@/components/utils/input"
 import FormButton from "@/components/utils/form-button"
 import passwordLost from "@/actions/auth/password-lost"
+import FormSocialButtons from "@/components/utils/form-social-buttons"
 
 export default function PasswordLostForm() {
     const router = useRouter()
@@ -46,6 +47,8 @@ export default function PasswordLostForm() {
                     {pending ? "Sending..." : "Send Link"}
                 </FormButton>
             </div>
+
+            <FormSocialButtons />
         </form>
     )
 }
