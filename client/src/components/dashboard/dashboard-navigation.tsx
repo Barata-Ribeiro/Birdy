@@ -7,17 +7,20 @@ import { PrivateProfileResponse } from "@/interfaces/api/users"
 import { BiSolidPhotoAlbum } from "react-icons/bi"
 import { FaChartPie, FaSignOutAlt, FaUpload } from "react-icons/fa"
 import { MdAdminPanelSettings } from "react-icons/md"
+import { useRouter } from "next/navigation"
 
 export default function DashboardNavigation({
     user
 }: Readonly<{
     user: PrivateProfileResponse
 }>) {
+    const router = useRouter()
     const { setUser } = useUser()
 
     async function handleLogout() {
         setUser(null)
         await logout()
+        router.refresh()
     }
 
     return (
@@ -29,7 +32,8 @@ export default function DashboardNavigation({
                 <Button
                     href={`/dashboard/${user.id}/${user.username}`}
                     className={"flex items-center gap-2 px-4 py-2 text-sm"}
-                    aria-label="Photos"
+                    aria-label="Your Photos"
+                    title="Your Photos"
                 >
                     <BiSolidPhotoAlbum size={18} />
                     <span className="max-sm:hidden">Photos</span>
@@ -38,7 +42,8 @@ export default function DashboardNavigation({
                     <Button
                         href={`/dashboard/${user.id}/${user.username}/admin-panel`}
                         className={"flex items-center gap-2 px-4 py-2 text-sm"}
-                        aria-label="Admin"
+                        aria-label="Admin Panel"
+                        title="Admin Panel"
                     >
                         <MdAdminPanelSettings size={18} />
                         <span className="max-sm:hidden">Admin</span>
@@ -48,6 +53,7 @@ export default function DashboardNavigation({
                     href={`/dashboard/${user.id}/${user.username}/stats`}
                     className="flex items-center gap-2 px-4 py-2 text-sm"
                     aria-label="Stats"
+                    title="Stats"
                 >
                     <FaChartPie size={18} />
                     <span className="max-sm:hidden">Stats</span>
@@ -56,6 +62,7 @@ export default function DashboardNavigation({
                     href={`/dashboard/${user.id}/${user.username}/upload`}
                     className={"flex items-center gap-2 px-4 py-2 text-sm"}
                     aria-label="New Post"
+                    title="New Post"
                 >
                     <FaUpload size={18} />
                     <span className="max-sm:hidden">New Post</span>
@@ -66,6 +73,7 @@ export default function DashboardNavigation({
                     className={"flex items-center gap-2 px-4 py-2 text-sm"}
                     aria-label="Sign Out"
                     aria-current="page"
+                    title="Sign Out"
                 >
                     <FaSignOutAlt size={18} />
                     <span className="max-sm:hidden">Sign Out</span>

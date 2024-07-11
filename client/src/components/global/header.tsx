@@ -92,7 +92,7 @@ export default function Header({ user }: Readonly<{ user: UserContextResponse | 
                             ></div>
                         </label>
 
-                        <div className="fixed inset-0 w-[calc(100%-6rem)] translate-x-[-100%] border-r bg-white text-mantis-50 shadow-xl transition duration-300 peer-checked:translate-x-0 dark:border-green-spring-400 dark:bg-green-spring-700 lg:static lg:w-auto lg:translate-x-0 lg:border-r-0 lg:bg-transparent lg:shadow-none lg:dark:bg-transparent">
+                        <div className="fixed inset-0 w-[calc(100%-6rem)] translate-x-[-100%] border-r bg-white text-mantis-50 shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition duration-300 peer-checked:translate-x-0 dark:border-green-spring-400 dark:bg-green-spring-700 lg:static lg:w-auto lg:translate-x-0 lg:border-r-0 lg:bg-transparent lg:shadow-none lg:dark:bg-transparent">
                             <nav
                                 className="flex h-full flex-col justify-between lg:flex-row lg:items-center"
                                 id="primary-navigation"

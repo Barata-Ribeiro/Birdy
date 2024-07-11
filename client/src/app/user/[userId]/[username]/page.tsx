@@ -17,8 +17,8 @@ interface UserPageProps {
 
 export async function generateMetadata({ params }: Readonly<UserPageProps>): Promise<Metadata> {
     return {
-        title: params.username,
-        description: `This is the profile page of ${params.username} on Birdy.`
+        title: "@" + params.username,
+        description: `This is the profile page of ${params.username} on Birdy. Here you can see all the photos uploaded by ${params.username}.`
     }
 }
 
@@ -74,7 +74,7 @@ export default async function UserPage({ params }: Readonly<UserPageProps>) {
 
             <div className="relative py-16">
                 <div className="container mx-auto md:px-4">
-                    <div className="relative -mt-64 mb-6 flex w-full min-w-0 flex-col gap-4 break-words rounded-lg bg-green-spring-50 shadow-xl">
+                    <div className="relative -mt-64 mb-6 flex w-full min-w-0 flex-col gap-4 break-words rounded-lg bg-green-spring-50 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]">
                         {/* PROFILE INFO */}
                         <div className="px-6">
                             <div className="flex flex-wrap justify-center">

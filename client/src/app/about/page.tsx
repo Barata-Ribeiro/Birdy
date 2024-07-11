@@ -49,7 +49,7 @@ export default async function AboutPage() {
                         frontend and backend systems to deliver an seamless user experience.
                     </p>
                     <div className="my-2 flex flex-wrap items-center">
-                        <div className="px-4 md:w-1/2">
+                        <div className="mb-2 px-4 md:mb-0 md:w-1/2">
                             <div className="flex h-full flex-col rounded-lg bg-mantis-100 p-8 dark:bg-mantis-900">
                                 <div className="mb-3 flex items-center">
                                     <h2 className="title-font text-xl font-medium text-green-spring-900 dark:text-green-spring-100">

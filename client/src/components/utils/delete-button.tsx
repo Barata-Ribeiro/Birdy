@@ -61,7 +61,7 @@ export default function DeleteButton({ photo, comment, direction }: Readonly<Del
         <div className="relative self-start md:self-auto">
             <button
                 onClick={handleDeleteClick}
-                className="flex items-center justify-center p-1 text-red-600 hover:text-red-700 disabled:opacity-50 dark:text-red-500 dark:hover:text-red-600"
+                className="flex items-center justify-center rounded bg-mantis-100 p-2 text-red-600 hover:bg-red-100 hover:text-red-700 active:bg-red-200 disabled:opacity-50 dark:text-red-500 dark:hover:text-red-600"
                 aria-label="Delete"
                 title="Delete"
                 disabled={loading || showConfirm}

@@ -1,8 +1,8 @@
 "use client"
 
 import FormButton from "@/components/utils/form-button"
-import Input from "@/components/utils/input"
 import { FormEvent, useState } from "react"
+import Input from "@/components/utils/input"
 
 export default function ContactForm() {
     const [isLoading, setIsLoading] = useState(false)
@@ -69,7 +69,7 @@ export default function ContactForm() {
                 required
                 aria-required
             ></textarea>
-            <div className="px-4 pb-2 pt-4">
+            <div className="mt-4">
                 <FormButton
                     type="submit"
                     className="rounded-2xl p-4 text-lg group-invalid:pointer-events-none group-invalid:opacity-30"
