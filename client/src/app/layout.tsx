@@ -21,7 +21,10 @@ const lora = Lora({
 })
 
 export const metadata: Metadata = {
-    title: "Birdy",
+    title: {
+        default: "Birdy",
+        template: "%s | Birdy"
+    },
     description: "Welcome to Birdy! A social network platform for bird enthusiasts."
 }
 

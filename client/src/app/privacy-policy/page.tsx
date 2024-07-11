@@ -1,7 +1,8 @@
 import { Metadata } from "next"
+import Link from "next/link"
 
 export const metadata: Metadata = {
-    title: "Privacy Policy | Birdy",
+    title: "Privacy Policy",
     description:
         "This is the privacy policy of our site. As a user of our site, you must ensure that you read the privacy policy and understand how we store, use, and/or maintain your information."
 }
@@ -15,25 +16,25 @@ export default async function PrivacyPolicyPage() {
 
             <ul id="screen-reader-navigation" className="sr-only" aria-label="SCREEN READER NAVIGATION">
                 <li>
-                    <a href="#privacy-start">Privacy Start</a>
+                    <Link href="#privacy-start">Privacy Start</Link>
                 </li>
                 <li>
-                    <a href="#interpretation-and-definitions">Interpretation and Definitions</a>
+                    <Link href="#interpretation-and-definitions">Interpretation and Definitions</Link>
                 </li>
                 <li>
-                    <a href="#collecting-using-personal-data">Collecting and Using Your Personal Data</a>
+                    <Link href="#collecting-using-personal-data">Collecting and Using Your Personal Data</Link>
                 </li>
                 <li>
-                    <a href="#childrens-privacy">Children&apos;s Privacy</a>
+                    <Link href="#childrens-privacy">Children&apos;s Privacy</Link>
                 </li>
                 <li>
-                    <a href="#links-to-other-websites">Links to Other Websites</a>
+                    <Link href="#links-to-other-websites">Links to Other Websites</Link>
                 </li>
                 <li>
-                    <a href="#change-privacy-policy">Changes to this Privacy Policy</a>
+                    <Link href="#change-privacy-policy">Changes to this Privacy Policy</Link>
                 </li>
                 <li>
-                    <a href="#contact-us">Contact Us</a>
+                    <Link href="#contact-us">Contact Us</Link>
                 </li>
             </ul>
 
@@ -113,9 +114,13 @@ export default async function PrivacyPolicyPage() {
                         </li>
                         <li>
                             <strong className="font-bold">Website</strong> refers to Birdy, accessible from{" "}
-                            <a href="https://birdy-social.vercel.app/" rel="external nofollow noopener" target="_blank">
+                            <Link
+                                href="https://birdy-social.vercel.app/"
+                                rel="external nofollow noopener"
+                                target="_blank"
+                            >
                                 https://birdy-social.vercel.app/
-                            </a>
+                            </Link>
                         </li>
                         <li>
                             <strong className="font-bold">You</strong> means the individual accessing or using the
@@ -197,13 +202,13 @@ export default async function PrivacyPolicyPage() {
                             Cookies can be &rdquo;Persistent&ldquo; or &rdquo;Session&ldquo; Cookies. Persistent Cookies
                             remain on Your personal computer or mobile device when You go offline, while Session Cookies
                             are deleted as soon as You close Your web browser. Learn more about cookies on the{" "}
-                            <a
+                            <Link
                                 href="https://www.kaspersky.com/resource-center/definitions/cookies"
                                 target="_blank"
                                 rel="external nofollow noopener"
                             >
                                 Kaspersky - What are Cookies?
-                            </a>{" "}
+                            </Link>{" "}
                             article.
                         </p>
 
@@ -515,21 +520,21 @@ export default async function PrivacyPolicyPage() {
                     <ol className="ml-4 flex list-inside list-decimal flex-col gap-2">
                         <li>
                             By visiting this page on our website:{" "}
-                            <a
+                            <Link
                                 href="https://birdy-social.vercel.app/contact"
                                 rel="external nofollow noopener"
                                 target="_blank"
                             >
                                 https://birdy-social.vercel.app/contact
-                            </a>
+                            </Link>
                         </li>
                     </ol>
                 </article>
             </div>
 
-            <a className="sr-only" href="#screen-reader-navigation">
+            <Link className="sr-only" href="#screen-reader-navigation">
                 Go back to navigation
-            </a>
+            </Link>
         </section>
     )
 }

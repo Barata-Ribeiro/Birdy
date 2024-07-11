@@ -2,7 +2,7 @@ import SignInForm from "@/components/forms/signin-form"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-    title: "Sign In | Birdy",
+    title: "Sign In",
     description: "Login to your Birdy account to start posting photos."
 }
 

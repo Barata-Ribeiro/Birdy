@@ -7,7 +7,7 @@ import { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-    title: "Private Feed | Birdy",
+    title: "Private Feed",
     description: "In this page you'll find all the photos you have uploaded."
 }
 

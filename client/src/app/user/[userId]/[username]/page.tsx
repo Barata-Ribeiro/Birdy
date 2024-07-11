@@ -17,7 +17,7 @@ interface UserPageProps {
 
 export async function generateMetadata({ params }: Readonly<UserPageProps>): Promise<Metadata> {
     return {
-        title: `${params.username} | Birdy`,
+        title: params.username,
         description: `This is the profile page of ${params.username} on Birdy.`
     }
 }

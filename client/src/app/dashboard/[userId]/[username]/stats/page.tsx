@@ -5,7 +5,7 @@ import { Metadata } from "next"
 import dynamic from "next/dynamic"
 
 export const metadata: Metadata = {
-    title: "Stats | Birdy",
+    title: "Stats",
     description: "In this page, you have access to your profile stats such as your total hits, likes, and comments."
 }
 

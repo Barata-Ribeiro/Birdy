@@ -2,7 +2,7 @@ import UploadPhotoForm from "@/components/forms/upload-photo-form"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-    title: "Upload | Birdy",
+    title: "Upload",
     description: "In this page you can upload new bird photographs to share with the world."
 }
 

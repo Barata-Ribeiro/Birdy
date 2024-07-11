@@ -3,7 +3,7 @@ import { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-    title: "Contact | Birdy",
+    title: "Contact",
     description: "Contact page for Birdy. Contact us for feedback and support."
 }
 

@@ -1,11 +1,17 @@
 import { notFound } from "next/navigation"
 import PasswordResetForm from "@/components/forms/password-reset-form"
+import { Metadata } from "next"
 
 interface PasswordResetPageProps {
     params: {
         userId: string
         token: string
     }
+}
+
+export const metadata: Metadata = {
+    title: "Password Reset",
+    description: "Reset your password to regain access to your Birdy account."
 }
 
 export default async function PasswordResetPage({ params }: Readonly<PasswordResetPageProps>) {

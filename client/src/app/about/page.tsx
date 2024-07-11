@@ -3,7 +3,7 @@ import Image from "next/image"
 import AboutImage from "../../../public/images/about-image.jpg"
 
 export const metadata: Metadata = {
-    title: "About Us | Birdy",
+    title: "About Us",
     description: "This is the about us page of the website. Find out how Birdy was created and who is behind it."
 }
 

@@ -2,7 +2,7 @@ import DashboardManage from "@/components/dashboard/dashboard-manage"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-    title: "Manage | Birdy",
+    title: "Settings",
     description: "Here you can mange your profile and settings."
 }
 

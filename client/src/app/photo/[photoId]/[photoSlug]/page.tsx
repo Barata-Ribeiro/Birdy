@@ -22,8 +22,8 @@ export async function generateMetadata({ params }: PhotoPageProps) {
     if (!photo) return { title: "Photo", description: "Photo Not Found..." }
 
     return {
-        title: photo.title + " | Birdy",
-        description: `photo${photo.title} taken by ${photo.author.display_name}.`
+        title: photo.title,
+        description: `${photo.title}, posted by ${photo.author.display_name}.`
     }
 }
 

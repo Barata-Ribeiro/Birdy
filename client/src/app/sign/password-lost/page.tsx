@@ -1,4 +1,10 @@
 import PasswordLostForm from "@/components/forms/password-lost-form"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: "Password Lost",
+    description: "Forgot your password? Type your email address and we will send you a link to reset your password."
+}
 
 export default async function PasswordLostPage() {
     return (

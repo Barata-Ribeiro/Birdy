@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-    title: "Terms of Use | Birdy",
+    title: "Terms of Use",
     description:
         "This are the terms of use of Birdy. This page is protected by copyright and trademark laws. Please read these terms carefully."
 }

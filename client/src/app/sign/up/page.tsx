@@ -2,7 +2,7 @@ import SignUpForm from "@/components/forms/signup-form"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-    title: "Sign Up | Birdy",
+    title: "Sign Up",
     description: "Create an account to start posting photos and interacting within Birdy."
 }
 
