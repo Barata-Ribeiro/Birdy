@@ -1,4 +1,16 @@
-export default async function PasswordResetPage() {
+import { notFound } from "next/navigation"
+import PasswordResetForm from "@/components/forms/password-reset-form"
+
+interface PasswordResetPageProps {
+    params: {
+        userId: string
+        token: string
+    }
+}
+
+export default async function PasswordResetPage({ params }: Readonly<PasswordResetPageProps>) {
+    if (!params.userId || !params.token) return notFound()
+
     return (
         <>
             <div className="my-6 flex flex-col gap-2">
@@ -10,7 +22,7 @@ export default async function PasswordResetPage() {
                 </h2>
             </div>
 
-            <form>{/*TODO: Add Reset password component*/}</form>
+            <PasswordResetForm userId={params.userId} token={params.token} />
         </>
     )
 }
