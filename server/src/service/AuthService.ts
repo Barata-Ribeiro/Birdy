@@ -108,8 +108,8 @@ export default class AuthService {
         const resetPasswordLink = `${frontEndOrigin}/reset-password/${user.id}/${token}`
 
         const emailMessage = `Hello🖖, there, ${user.display_name}!\n\n
-        We have received a request to reset your password. Please click on the following link to reset your password: ${resetPasswordLink}\n\n
-        This link will expire in 15 minutes. If you did not request this, please ignore this email and your password will remain unchanged.\n\n`
+        We have received a request to reset your password. Please, click on the following link to reset your password: ${resetPasswordLink}\n\n
+        This link will expire in 15 minutes. If you did not request this, please ignore this email; your password will remain unchanged.\n\n`
 
         const emailHTML = `
         <!DOCTYPE html>
@@ -117,37 +117,53 @@ export default class AuthService {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Birdy - Password Reset</title>
             <style>
                 body {
-                    font-family: Arial, sans-serif;
-                    padding: 20px;
-                    color: #333;
+                    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+                    padding-top: 1rem;
+                    margin: 0 auto;
+                    color: hsl(108, 5%, 20%);
                 }
                 .container {
                     max-width: 600px;
                     margin: 0 auto;
-                    border: 1px solid #ddd;
-                    padding: 20px;
-                    border-radius: 5px;
-                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                    padding: 16px;
+                    border-radius: 8px;
+                    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.06),
+                                  0 1px 1px -0.5px rgb(0 0 0 / 0.06),
+                                  0 3px 3px -1.5px rgb(0 0 0 / 0.06), 
+                                  0 6px 6px -3px rgb(0 0 0 / 0.06),
+                                  0 12px 12px -6px rgb(0 0 0 / 0.06),
+                                  0 24px 24px -12px rgb(0 0 0 / 0.06);
+                }
+                .container h1 {
+                    font-size: 28px;
                 }
                 .button {
                     display: inline-block;
                     padding: 10px 20px;
                     margin: 20px 0;
-                    color: #fff;
-                    background-color: #007BFF;
-                    border-radius: 5px;
+                    font-weight: 500;
+                    color: hsl(60, 6%, 97%);
+                    background-color: hsl(103, 43%, 36%);
+                    border-radius: 8px;
                     text-decoration: none;
+                }
+                .button:hover {
+                    background-color: hsl(103, 41%, 29%);
+                }
+                .button:active {
+                    background-color: hsl(103, 37%, 24%);
                 }
             </style>
         </head>
         <body>
             <div class="container">
-                <h2>Hello🖖, there, ${user.display_name}!</h2>
-                <p>We have received a request to reset your password. Please click on the following link to reset your password:</p>
-                <a href="${resetPasswordLink}" class="button" target="_blank" rel="noopener noreferrer">Reset Password</a>
-                <p>This link will expire in 15 minutes. If you did not request this, please ignore this email and your password will remain unchanged.</p>
+                <h1>Hello🖖, there, ${user.display_name}!</h1>
+                <p>We have received a request to reset your password. Please, click on the following link to reset your password:</p>
+                <a href="${resetPasswordLink}" class="button" target="_blank" rel="external noopener noreferrer">Reset Password</a>
+                <p>This link will expire in 15 minutes. If you did not request this, please ignore this email; your password will remain unchanged.</p>
             </div>
         </body>
         </html>`
