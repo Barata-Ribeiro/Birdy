@@ -1,3 +1,5 @@
+import PasswordLostForm from "@/components/forms/password-lost-form"
+
 export default async function PasswordLostPage() {
     return (
         <>
@@ -10,7 +12,7 @@ export default async function PasswordLostPage() {
                 </h2>
             </div>
 
-            <form>{/*TODO: Add PasswordLostForm component*/}</form>
+            <PasswordLostForm />
         </>
     )
 }
