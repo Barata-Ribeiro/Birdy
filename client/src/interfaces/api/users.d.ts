@@ -28,6 +28,19 @@ export interface PublicProfileResponse {
     comment_count: number
 }
 
+export interface ProfileCommentMade {
+    id: string
+    content: string
+    created_at: string
+}
+
+export interface ProfileLastLikedPhoto {
+    id: string
+    title: string
+    slug: string
+    image_url: string
+}
+
 export interface PrivateProfileResponse {
     id: string
     username: string
@@ -39,11 +52,11 @@ export interface PrivateProfileResponse {
     bio: string | null
     photo_count: number
     liked_photo_count: number
-    last_liked_photos: any[] // TODO: Implement interface
+    last_liked_photos: ProfileLastLikedPhoto[]
     following_count: number
     follower_count: number
     comment_count: number
-    last_comments_made: any[] // TODO: Implement interface
+    last_comments_made: ProfileCommentMade[]
 }
 
 export interface UserPhotosStatsResponse {
