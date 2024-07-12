@@ -37,9 +37,10 @@
         "start": "node dist/src/index.js",
         "start:tsnode": "ts-node src/index.ts",
         "dev": "nodemon src/index.ts",
-        "build": "rm -rf dist && tsc --build",
+        "build": "tsc --build && npm run copy-public",
         "typeorm": "typeorm-ts-node-commonjs",
-        "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
+        "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
+        "copy-public": "cp -r public dist/public"
     },
     "devDependencies": {
         "@types/bcrypt": "^5.0.2",
