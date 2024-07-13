@@ -52,6 +52,9 @@ export default function UploadPhotoForm({
                 preview: URL.createObjectURL(event.dataTransfer.files[0]),
                 raw: event.dataTransfer.files[0]
             })
+
+            const fileInput = document.getElementById("photoImage") as HTMLInputElement
+            fileInput.files = event.dataTransfer.files
         }
     }
 
@@ -73,32 +76,41 @@ export default function UploadPhotoForm({
                     />
                 </div>
                 <div className="pb-2 pt-4">
-                    <Input
-                        label="Photo Description"
+                    <label className="sr-only capitalize" htmlFor="description">
+                        Description
+                    </label>
+                    <textarea
+                        className="peer block w-full resize-none rounded-lg border-green-spring-50 bg-mantis-200 p-4 text-lg text-mantis-950 placeholder:text-green-spring-400 focus:border-bright-turquoise-500 dark:bg-mantis-800 dark:text-mantis-50 dark:placeholder:text-green-spring-300"
                         name="description"
-                        className="block w-full rounded-lg bg-mantis-200 p-4 text-lg placeholder:text-green-spring-400 dark:bg-mantis-800 dark:placeholder:text-green-spring-300"
-                        required
-                        aria-required
-                    />
+                        id="description"
+                        placeholder="Photo Description"
+                        cols={30}
+                        rows={4}
+                    ></textarea>
                 </div>
                 <div className="pb-2 pt-4">
                     <Input
                         type="number"
-                        label="Bird Size"
+                        label="Bird Size (in cm)"
                         name="bird_size"
                         className="block w-full rounded-lg bg-mantis-200 p-4 text-lg placeholder:text-green-spring-400 dark:bg-mantis-800 dark:placeholder:text-green-spring-300"
+                        step="1"
                         required
                         aria-required
                     />
                 </div>
                 <div className="pb-2 pt-4">
-                    <Input
-                        label="Bird Habitat"
+                    <label className="sr-only capitalize" htmlFor="bird_habitat">
+                        Bird Habitat
+                    </label>
+                    <textarea
+                        className="peer block w-full resize-none rounded-lg border-green-spring-50 bg-mantis-200 p-4 text-lg text-mantis-950 placeholder:text-green-spring-400 focus:border-bright-turquoise-500 dark:bg-mantis-800 dark:text-mantis-50 dark:placeholder:text-green-spring-300"
                         name="bird_habitat"
-                        className="block w-full rounded-lg bg-mantis-200 p-4 text-lg placeholder:text-green-spring-400 dark:bg-mantis-800 dark:placeholder:text-green-spring-300"
-                        required
-                        aria-required
-                    />
+                        id="bird_habitat"
+                        placeholder="Bird Habitat"
+                        cols={30}
+                        rows={4}
+                    ></textarea>
                 </div>
                 <button
                     type="button"
@@ -112,7 +124,7 @@ export default function UploadPhotoForm({
                         type="file"
                         name="photoImage"
                         id="photoImage"
-                        className="hidden"
+                        className="sr-only"
                         required
                         aria-required
                     />
