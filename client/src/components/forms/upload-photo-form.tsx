@@ -5,8 +5,8 @@ import FormButton from "@/components/utils/form-button"
 import Input from "@/components/utils/input"
 import Image from "next/image"
 import { type ChangeEvent, type DragEvent, useEffect, useState } from "react"
-import { useFormState, useFormStatus } from "react-dom"
 import { FaCloudArrowUp } from "react-icons/fa6"
+import { useForm } from "@/hooks/use-form"
 
 export default function UploadPhotoForm({
     userId,
@@ -15,16 +15,15 @@ export default function UploadPhotoForm({
     userId: string
     username: string
 }>) {
-    const { pending } = useFormStatus()
-    const [state, action] = useFormState(postPhoto, {
+    const { isPending, formState, formAction, onSubmit } = useForm(postPhoto, {
         ok: false,
         client_error: null,
         response: null
     })
 
     useEffect(() => {
-        if (state.ok) window.location.href = `/dashboard/${userId}/${username}`
-    }, [state.ok, userId, username])
+        if (formState.ok) window.location.href = `/dashboard/${userId}/${username}`
+    }, [formState.ok, userId, username])
 
     const [img, setImg] = useState<{
         preview: string | undefined
@@ -65,7 +64,7 @@ export default function UploadPhotoForm({
 
     return (
         <div className="mx-auto grid grid-cols-1 items-center gap-4 pt-4 lg:grid-cols-2">
-            <form action={action} className="flex w-full flex-col gap-4">
+            <form action={formAction} onSubmit={onSubmit} className="flex w-full flex-col gap-4">
                 <div className="pb-2 pt-4">
                     <Input
                         label="Photo Title"
@@ -154,10 +153,10 @@ export default function UploadPhotoForm({
                         type="submit"
                         className="rounded-2xl p-4 text-lg group-invalid:pointer-events-none group-invalid:opacity-30"
                         aria-label="Post Photo"
-                        disabled={pending}
-                        aria-disabled={pending}
+                        disabled={isPending}
+                        aria-disabled={isPending}
                     >
-                        {pending ? "Uploading..." : "Post Photo"}
+                        {isPending ? "Uploading..." : "Post Photo"}
                     </FormButton>
                 </div>
             </form>

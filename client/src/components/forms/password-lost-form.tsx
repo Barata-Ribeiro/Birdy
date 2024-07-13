@@ -1,31 +1,30 @@
 "use client"
 
-import { useFormState, useFormStatus } from "react-dom"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Input from "@/components/utils/input"
 import FormButton from "@/components/utils/form-button"
 import passwordLost from "@/actions/auth/password-lost"
 import FormSocialButtons from "@/components/utils/form-social-buttons"
+import { useForm } from "@/hooks/use-form"
 
 export default function PasswordLostForm() {
     const router = useRouter()
-    const { pending } = useFormStatus()
-    const [state, action] = useFormState(passwordLost, {
+    const { isPending, formState, formAction, onSubmit } = useForm(passwordLost, {
         ok: false,
         client_error: null,
         response: null
     })
 
     useEffect(() => {
-        if (state.ok) {
-            const userConfirmed = window.confirm(state.response?.message + "\nClick OK to go to the homepage.")
+        if (formState.ok) {
+            const userConfirmed = window.confirm(formState.response?.message + "\nClick OK to go to the homepage.")
             if (userConfirmed) router.push("/")
         }
-    }, [router, state])
+    }, [router, formState])
 
     return (
-        <form className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0" action={action}>
+        <form className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0" action={formAction} onSubmit={onSubmit}>
             <div className="pb-2 pt-4">
                 <Input
                     type="email"
@@ -41,10 +40,10 @@ export default function PasswordLostForm() {
                     type="submit"
                     className="rounded-2xl p-4 text-lg group-invalid:pointer-events-none group-invalid:opacity-30"
                     aria-label="Send password reset link"
-                    disabled={pending}
-                    aria-disabled={pending}
+                    disabled={isPending}
+                    aria-disabled={isPending}
                 >
-                    {pending ? "Sending..." : "Send Link"}
+                    {isPending ? "Sending..." : "Send Link"}
                 </FormButton>
             </div>
 

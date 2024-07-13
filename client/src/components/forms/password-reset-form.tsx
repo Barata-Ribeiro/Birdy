@@ -1,13 +1,13 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useFormState, useFormStatus } from "react-dom"
 import passwordReset from "@/actions/auth/password-reset"
 import { useEffect } from "react"
 import Input from "@/components/utils/input"
 import FormButton from "@/components/utils/form-button"
 import ErrorElement from "@/components/utils/error-element"
 import FormSocialButtons from "@/components/utils/form-social-buttons"
+import { useForm } from "@/hooks/use-form"
 
 interface PasswordResetFormProps {
     userId: string
@@ -16,22 +16,21 @@ interface PasswordResetFormProps {
 
 export default function PasswordResetForm({ userId, token }: Readonly<PasswordResetFormProps>) {
     const router = useRouter()
-    const { pending } = useFormStatus()
-    const [state, action] = useFormState(passwordReset, {
+    const { isPending, formState, formAction, onSubmit } = useForm(passwordReset, {
         ok: false,
         client_error: null,
         response: null
     })
 
     useEffect(() => {
-        if (state.ok) {
-            const userConfirmed = window.confirm(state.response?.message + "\nClick OK to go to the sign in page.")
+        if (formState.ok) {
+            const userConfirmed = window.confirm(formState.response?.message + "\nClick OK to go to the sign in page.")
             if (userConfirmed) router.push("/sign/in")
         }
-    }, [router, state])
+    }, [router, formState])
 
     return (
-        <form className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0" action={action}>
+        <form className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0" action={formAction} onSubmit={onSubmit}>
             <input type="hidden" name="userId" value={userId} />
             <input type="hidden" name="token" value={token} />
             <div className="pb-2 pt-4">
@@ -60,13 +59,13 @@ export default function PasswordResetForm({ userId, token }: Readonly<PasswordRe
                     type="submit"
                     className="rounded-2xl p-4 text-lg group-invalid:pointer-events-none group-invalid:opacity-30"
                     aria-label="Submit password reset form"
-                    disabled={pending}
-                    aria-disabled={pending}
+                    disabled={isPending}
+                    aria-disabled={isPending}
                 >
-                    {pending ? "Reseting..." : "Reset Password"}
+                    {isPending ? "Processing..." : "Reset Password"}
                 </FormButton>
             </div>
-            <ErrorElement error={state.client_error} />
+            <ErrorElement error={formState.client_error} />
 
             <FormSocialButtons />
         </form>

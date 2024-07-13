@@ -6,32 +6,31 @@ import FormButton from "@/components/utils/form-button"
 import Input from "@/components/utils/input"
 import Link from "next/link"
 import { useEffect } from "react"
-import { useFormState, useFormStatus } from "react-dom"
 import { useRouter } from "next/navigation"
 import FormSocialButtons from "@/components/utils/form-social-buttons"
+import { useForm } from "@/hooks/use-form"
 
 export default function SignInForm() {
     const router = useRouter()
-    const { pending } = useFormStatus()
-    const [state, action] = useFormState(login, {
+    const { isPending, formState, formAction, onSubmit } = useForm(login, {
         ok: false,
         client_error: null,
         response: null
     })
 
     useEffect(() => {
-        if (state.ok) {
-            const data = state.response?.data as {
+        if (formState.ok) {
+            const data = formState.response?.data as {
                 id: string
                 username: string
                 role: "0" | "1" | "2" | "3"
             }
             router.push(`/dashboard/${data.id}/${data.username}`)
         }
-    }, [router, state.ok, state.response])
+    }, [router, formState])
 
     return (
-        <form action={action} className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0">
+        <form action={formAction} onSubmit={onSubmit} className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0">
             <div className="pb-2 pt-4">
                 <Input
                     label="Username"
@@ -69,16 +68,16 @@ export default function SignInForm() {
                     Forgot your password?
                 </Link>
             </div>
-            <ErrorElement error={state.client_error} />
+            <ErrorElement error={formState.client_error} />
             <div className="my-4">
                 <FormButton
                     type="submit"
                     className="rounded-2xl p-4 text-lg group-invalid:pointer-events-none group-invalid:opacity-30"
                     aria-label="Sign In"
-                    disabled={pending}
-                    aria-disabled={pending}
+                    disabled={isPending}
+                    aria-disabled={isPending}
                 >
-                    {pending ? "Loading..." : "Sign In"}
+                    {isPending ? "Loading..." : "Sign In"}
                 </FormButton>
             </div>
             <div className="mt-2 text-center">
@@ -89,7 +88,7 @@ export default function SignInForm() {
                     Don&apos;t have an account? Sign Up!
                 </Link>
             </div>
-            
+
             <FormSocialButtons />
         </form>
     )

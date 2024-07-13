@@ -6,23 +6,22 @@ import FormButton from "@/components/utils/form-button"
 import Input from "@/components/utils/input"
 import Link from "next/link"
 import { useEffect } from "react"
-import { useFormState, useFormStatus } from "react-dom"
 import FormSocialButtons from "@/components/utils/form-social-buttons"
+import { useForm } from "@/hooks/use-form"
 
 export default function SignUpForm() {
-    const { pending } = useFormStatus()
-    const [state, action] = useFormState(register, {
+    const { isPending, formState, formAction, onSubmit } = useForm(register, {
         ok: false,
         client_error: null,
         response: null
     })
 
     useEffect(() => {
-        if (state.ok) window.location.href = "/sign/in"
-    }, [state.ok])
+        if (formState.ok) window.location.href = "/sign/in"
+    }, [formState.ok])
 
     return (
-        <form action={action} className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0">
+        <form action={formAction} onSubmit={onSubmit} className="group mx-auto w-full px-4 sm:w-2/3 lg:px-0">
             <div className="pb-2 pt-4">
                 <Input
                     label="Username"
@@ -100,13 +99,13 @@ export default function SignUpForm() {
                     type="submit"
                     className="rounded-2xl p-4 text-lg group-invalid:pointer-events-none group-invalid:opacity-30"
                     aria-label="Create Account"
-                    disabled={pending}
-                    aria-disabled={pending}
+                    disabled={isPending}
+                    aria-disabled={isPending}
                 >
-                    {pending ? "Creating..." : "Create Account"}
+                    {isPending ? "Creating..." : "Create Account"}
                 </FormButton>
             </div>
-            <ErrorElement error={state.client_error} />
+            <ErrorElement error={formState.client_error} />
             <div className="mt-2 text-center">
                 <Link
                     href="/sign/in"
