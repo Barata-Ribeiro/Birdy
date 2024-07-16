@@ -38,10 +38,10 @@ export class CommentService {
 
         if (!content || content.trim() === "") throw new BadRequestError("You cannot add an empty comment.")
 
-        const checkIfPhotoExists = await photoRepository.existsBy({
+        const photo = await photoRepository.findOneBy({
             id: photoId
         })
-        if (!checkIfPhotoExists) throw new NotFoundError("Photo not found.")
+        if (!photo) throw new NotFoundError("Photo not found.")
 
         const checkIfAuthorExists = await userRepository.existsBy({
             id: author.id
@@ -54,6 +54,8 @@ export class CommentService {
             photo: { id: photoId }
         })
 
+        photo.meta.total_comments = (photo.meta.total_comments ?? 0) + 1
+        await saveEntityToDatabase(photoRepository, photo)
         const savedNewComment = await saveEntityToDatabase(commentRepository, newComment)
 
         return CommentResponseDTO.fromEntity(savedNewComment)
