@@ -7,14 +7,14 @@ import { revalidateTag } from "next/cache"
 import { cookies } from "next/headers"
 
 export default async function postComment(state: State, formData: FormData) {
-    const comment = formData.get("comment") as string | null
     const photoId = formData.get("photoId") as string
     const auth_token = cookies().get("auth_token")?.value
 
     try {
         if (!auth_token) return ApiError(new Error("You are not authenticated."))
 
-        if (!comment || comment.trim() === "") return ApiError(new Error("You cannot add an empty comment."))
+        const content = formData.get("comment") as string | null
+        if (!content || content.trim() === "") return ApiError(new Error("You cannot add an empty content."))
 
         const URL = PHOTO_ADD_COMMENT(photoId)
 
@@ -24,7 +24,7 @@ export default async function postComment(state: State, formData: FormData) {
                 "Content-Type": "application/json",
                 Authorization: "Bearer " + auth_token
             },
-            body: JSON.stringify({ comment })
+            body: JSON.stringify({ content })
         })
 
         const responseData = (await response.json()) as ApiResponse
@@ -34,6 +34,7 @@ export default async function postComment(state: State, formData: FormData) {
         const data = responseData.data as PhotoComment
 
         revalidateTag("comment")
+
         return {
             ok: true,
             client_error: null,

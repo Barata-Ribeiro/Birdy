@@ -18,8 +18,9 @@ export default function LikeButton({ photo }: Readonly<LikeButtonProps>) {
     // Handling logged in User
     const { user } = useUser()
     const userId = user ? user.id : null
-    const isOwner = userId && photo?.author.id === userId
-
+    const isPhotoOwner = userId && photo?.author.id === userId
+    const isAdmin = user?.role.toString() === "1"
+    
     const isPhotoLiked = user && photo.likes.some((like) => like.user_id === user.id)
     const [likeState, setLikeState] = useState(isPhotoLiked ? "Liked" : "Unliked")
 
@@ -51,7 +52,7 @@ export default function LikeButton({ photo }: Readonly<LikeButtonProps>) {
                     !usedKeyboard && "focus:outline-none"
                 } disabled:cursor-not-allowed`}
                 onClick={toggleLike}
-                disabled={loading || !!isOwner}
+                disabled={loading || !!isPhotoOwner || isAdmin}
             >
                 <span className="like-icon like-icon-state" aria-label={likeState} aria-live="polite">
                     {likeState}

@@ -12,6 +12,7 @@ import { photoRepository } from "../repository/PhotoRepository"
 import { userRepository } from "../repository/UserRepository"
 import { saveEntityToDatabase } from "../utils/operation-functions"
 import { isUUIDValid } from "../utils/validity-functions"
+import { UserLike } from "../entity/UserLike"
 
 export class PhotoService {
     async getFeedPhotos(perPage: string, page: string, userId: string): Promise<FeedResponseDTO[]> {
@@ -146,42 +147,40 @@ export class PhotoService {
     }
 
     async toggleLike(user: Partial<User>, photoId: string) {
-        const checkUser = await userRepository.existsBy({
-            id: user.id,
-            username: user.username
-        })
-        if (!checkUser) throw new NotFoundError("User not found.")
+        await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
+            if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
 
-        if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
-
-        const photo = await photoRepository.findOne({
-            where: { id: photoId },
-            relations: ["likes", "author"]
-        })
-        if (!photo) throw new NotFoundError("Photo not found.")
-        if (photo.author.id === user.id) throw new BadRequestError("You cannot like your own photo.")
-
-        const userLike = await likeRepository.findOne({
-            where: { user: { id: user.id }, photo: { id: photoId } }
-        })
-
-        if (userLike) {
-            await likeRepository.remove(userLike)
-            photo.meta.total_likes = (photo.meta.total_likes ?? 0) - 1
-            const editedPhoto = await saveEntityToDatabase(photoRepository, photo)
-            return LikeResponseDTO.fromEntity(userLike, false, editedPhoto.meta.total_likes)
-        } else {
-            const newLike = likeRepository.create({
-                user: { id: user.id, username: user.username },
-                photo: { id: photoId }
+            const photo = await photoRepository.findOne({
+                where: { id: photoId },
+                relations: ["likes", "author"]
             })
-            await saveEntityToDatabase(likeRepository, newLike)
+            if (!photo) throw new NotFoundError("Photo not found.")
+            if (photo.author.id === user.id) throw new BadRequestError("You cannot like your own photo.")
 
-            photo.meta.total_likes = (photo.meta.total_likes ?? 0) + 1
-            const editedPhoto = await saveEntityToDatabase(photoRepository, photo)
+            let newLike: UserLike | null
+            let savedLike: UserLike | null
+            const existingLike = await likeRepository.findOne({
+                where: { user: { id: user.id }, photo: { id: photoId } }
+            })
 
-            return LikeResponseDTO.fromEntity(newLike, true, editedPhoto.meta.total_likes)
-        }
+            if (existingLike) {
+                await transactionalEntityManager.remove(existingLike)
+                photo.meta.total_likes = Math.max(0, (photo.meta.total_likes ?? 0) - 1)
+            } else {
+                newLike = likeRepository.create({
+                    user: { id: user.id },
+                    photo: { id: photoId }
+                })
+                savedLike = await saveEntityToDatabase(likeRepository, newLike)
+                photo.meta.total_likes = (photo.meta.total_likes ?? 0) + 1
+            }
+
+            await saveEntityToDatabase(photoRepository, photo)
+
+            return existingLike
+                ? LikeResponseDTO.fromEntity(existingLike, false, photo.meta.total_likes)
+                : LikeResponseDTO.fromEntity(savedLike!, true, photo.meta.total_likes)
+        })
     }
 
     private async uploadPhotoToCloudinary(file: Express.Multer.File): Promise<string> {
