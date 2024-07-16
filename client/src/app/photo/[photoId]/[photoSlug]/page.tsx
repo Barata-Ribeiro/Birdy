@@ -30,9 +30,6 @@ export async function generateMetadata({ params }: PhotoPageProps) {
 export default async function PhotoPage({ params }: Readonly<PhotoPageProps>) {
     const state = await getPhoto(params.photoId)
     const photo = state.response?.data as PhotoResponse | null
-
-    console.log(photo)
-
     if (!photo) return notFound()
 
     return (
