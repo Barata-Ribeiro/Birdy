@@ -7,6 +7,7 @@ import Image from "next/image"
 import { type ChangeEvent, type DragEvent, useEffect, useState } from "react"
 import { FaCloudArrowUp } from "react-icons/fa6"
 import { useForm } from "@/hooks/use-form"
+import ErrorElement from "@/components/utils/error-element"
 
 export default function UploadPhotoForm({
     userId,
@@ -148,6 +149,7 @@ export default function UploadPhotoForm({
                         )}
                     </label>
                 </button>
+                <ErrorElement error={formState.client_error} />
                 <div className="px-4 pb-2 pt-4">
                     <FormButton
                         type="submit"
