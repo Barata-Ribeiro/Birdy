@@ -20,23 +20,28 @@ export default function LikeButton({ photo }: Readonly<LikeButtonProps>) {
     const userId = user ? user.id : null
     const isPhotoOwner = userId && photo?.author.id === userId
     const isAdmin = user?.role.toString() === "1"
-    
+
     const isPhotoLiked = user && photo.likes.some((like) => like.user_id === user.id)
     const [likeState, setLikeState] = useState(isPhotoLiked ? "Liked" : "Unliked")
 
     async function toggleLike() {
         if (loading) return
-        setLoading(true)
 
-        const state = await postToggleLike(photo.id)
-        const like = state.response?.data as ToggleLikeResponse
+        try {
+            setLoading(true)
 
-        if (state.ok) {
-            setTotalLikes((prev) => (like.is_liked ? prev + 1 : prev - 1))
-            setLikeState(like.is_liked ? "Liked" : "Unliked")
+            const state = await postToggleLike(photo.id)
+            const like = state.response?.data as ToggleLikeResponse
+
+            if (state.ok) {
+                setTotalLikes((prev) => (like.is_liked ? prev + 1 : prev - 1))
+                setLikeState(like.is_liked ? "Liked" : "Unliked")
+            }
+        } catch (error) {
+            console.error("Error while toggling like: ", error)
+        } finally {
+            setLoading(false)
         }
-
-        setLoading(false)
     }
 
     useEffect(() => {

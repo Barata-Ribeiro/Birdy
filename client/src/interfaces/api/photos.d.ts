@@ -68,10 +68,10 @@ export interface PhotoResponse {
 }
 
 export interface ToggleLikeResponse {
-    id: string
-    user: { id: string; username: string }
-    photo: { id: string }
-    liked_at: string
+    id?: string
+    user?: { id: string; username: string }
+    photo?: { id: string }
+    liked_at?: string
     is_liked: boolean
     total_likes: number
 }

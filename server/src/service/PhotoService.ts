@@ -2,17 +2,18 @@ import { v2 as cloudinary } from "cloudinary"
 import streamifier from "streamifier"
 import { AppDataSource } from "../database/data-source"
 import { FeedResponseDTO } from "../dto/FeedResponseDTO"
-import { LikeResponseDTO } from "../dto/LikeResponseDTO"
 import { PhotoResponseDTO } from "../dto/PhotoResponseDTO"
 import { User } from "../entity/User"
 import { PhotoUploadBody } from "../interface/PhotoInterfaces"
 import { BadRequestError, InternalServerError, NotFoundError } from "../middleware/helpers/ApiErrors"
-import { likeRepository } from "../repository/LikeRepository"
 import { photoRepository } from "../repository/PhotoRepository"
 import { userRepository } from "../repository/UserRepository"
 import { saveEntityToDatabase } from "../utils/operation-functions"
 import { isUUIDValid } from "../utils/validity-functions"
 import { UserLike } from "../entity/UserLike"
+import { LikeResponseDTO } from "../dto/LikeResponseDTO"
+import { likeRepository } from "../repository/LikeRepository"
+import { Photo } from "../entity/Photo"
 
 export class PhotoService {
     async getFeedPhotos(perPage: string, page: string, userId: string): Promise<FeedResponseDTO[]> {
@@ -147,39 +148,31 @@ export class PhotoService {
     }
 
     async toggleLike(user: Partial<User>, photoId: string) {
-        await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
+        return await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
             if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
 
-            const photo = await photoRepository.findOne({
-                where: { id: photoId },
-                relations: ["likes", "author"]
-            })
+            const photo = await photoRepository.findOne({ where: { id: photoId }, relations: ["meta"] })
             if (!photo) throw new NotFoundError("Photo not found.")
-            if (photo.author.id === user.id) throw new BadRequestError("You cannot like your own photo.")
 
-            let newLike: UserLike | null
-            let savedLike: UserLike | null
-            const existingLike = await likeRepository.findOne({
-                where: { user: { id: user.id }, photo: { id: photoId } }
-            })
+            let like = await likeRepository.findOne({ where: { user: { id: user.id }, photo: { id: photoId } } })
 
-            if (existingLike) {
-                await transactionalEntityManager.remove(existingLike)
-                photo.meta.total_likes = Math.max(0, (photo.meta.total_likes ?? 0) - 1)
+            if (like) {
+                await transactionalEntityManager.remove(like)
+                photo.meta.total_likes = (photo.meta.total_likes || 0) - 1
+                await transactionalEntityManager.save(photo)
+                return {
+                    is_liked: false,
+                    total_likes: photo.meta.total_likes
+                }
             } else {
-                newLike = likeRepository.create({
-                    user: { id: user.id },
-                    photo: { id: photoId }
-                })
-                savedLike = await saveEntityToDatabase(likeRepository, newLike)
-                photo.meta.total_likes = (photo.meta.total_likes ?? 0) + 1
+                like = new UserLike()
+                like.user = user as User
+                like.photo = photo as Photo
+                await transactionalEntityManager.save(like)
+                photo.meta.total_likes = (photo.meta.total_likes || 0) + 1
+                await transactionalEntityManager.save(photo)
+                return LikeResponseDTO.fromEntity(like, true, photo.meta.total_likes)
             }
-
-            await saveEntityToDatabase(photoRepository, photo)
-
-            return existingLike
-                ? LikeResponseDTO.fromEntity(existingLike, false, photo.meta.total_likes)
-                : LikeResponseDTO.fromEntity(savedLike!, true, photo.meta.total_likes)
         })
     }
 
