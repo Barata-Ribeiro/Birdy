@@ -15,7 +15,7 @@ export default async function adminDeleteComment(photoId: string, commentId: str
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
+        if (!response.ok) return ApiError(new Error(responseData.message ?? "An unknown error occurred."))
 
         return {
             ok: true,

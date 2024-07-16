@@ -5,13 +5,14 @@ import { ToggleLikeResponse } from "@/interfaces/api/photos"
 import ApiError from "@/utils/api-error"
 import { PHOTO_TOGGLE_LIKE } from "@/utils/api-urls"
 import { revalidateTag } from "next/cache"
-import verifyAuthenticationAndReturnToken from "@/utils/verify-authentication"
+import { cookies } from "next/headers"
 
 export default async function postToggleLike(photoId: string) {
     const URL = PHOTO_TOGGLE_LIKE(photoId)
+    const auth_token = cookies().get("auth_token")?.value
 
     try {
-        const auth_token = await verifyAuthenticationAndReturnToken()
+        if (!auth_token) return ApiError(new Error("You are not authenticated."))
 
         const response = await fetch(URL, {
             method: "POST",
@@ -24,7 +25,7 @@ export default async function postToggleLike(photoId: string) {
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
+        if (!response.ok) return ApiError(new Error(responseData.message ?? "An unknown error occurred."))
 
         const data = responseData.data as ToggleLikeResponse
 

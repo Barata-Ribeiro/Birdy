@@ -13,8 +13,13 @@ export default async function passwordReset(state: State, formData: FormData) {
 
         const URL = AUTH_RESETPASSWORD(userId, token)
 
-        if (!password || !confirmPassword) throw new Error("Your new password and confirmation password are required.")
-        if (password !== confirmPassword) throw new Error("Your new password and confirmation password do not match.")
+        if (!password || !confirmPassword) {
+            return ApiError(new Error("Your new password and confirmation password are required."))
+        }
+
+        if (password !== confirmPassword) {
+            return ApiError(new Error("Your new password and confirmation password do not match."))
+        }
 
         const response = await fetch(URL, {
             method: "POST",
@@ -24,7 +29,7 @@ export default async function passwordReset(state: State, formData: FormData) {
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
+        if (!response.ok) return ApiError(new Error(responseData.message ?? "An unknown error occurred."))
 
         return { ok: true, client_error: null, response: responseData }
     } catch (error: unknown) {

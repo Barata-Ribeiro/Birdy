@@ -4,16 +4,17 @@ import { PhotoComment } from "@/interfaces/api/photos"
 import ApiError from "@/utils/api-error"
 import { PHOTO_ADD_COMMENT } from "@/utils/api-urls"
 import { revalidateTag } from "next/cache"
-import verifyAuthenticationAndReturnToken from "@/utils/verify-authentication"
+import { cookies } from "next/headers"
 
 export default async function postComment(state: State, formData: FormData) {
     const comment = formData.get("comment") as string | null
     const photoId = formData.get("photoId") as string
+    const auth_token = cookies().get("auth_token")?.value
 
     try {
-        const auth_token = await verifyAuthenticationAndReturnToken()
+        if (!auth_token) return ApiError(new Error("You are not authenticated."))
 
-        if (!comment || comment.trim() === "") throw new Error("You cannot add an empty comment.")
+        if (!comment || comment.trim() === "") return ApiError(new Error("You cannot add an empty comment."))
 
         const URL = PHOTO_ADD_COMMENT(photoId)
 
@@ -28,7 +29,7 @@ export default async function postComment(state: State, formData: FormData) {
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
+        if (!response.ok) return ApiError(new Error(responseData.message ?? "An unknown error occurred."))
 
         const data = responseData.data as PhotoComment
 

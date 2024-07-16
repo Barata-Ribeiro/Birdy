@@ -11,12 +11,12 @@ export default async function login(state: State, formData: FormData) {
     const ONE_DAY = 24 * 60 * 60 * 1000
     const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000
 
-    const username = formData.get("username") as string | null
-    const password = formData.get("password") as string | null
-    const remember_me = formData.get("rememberMe") === "on"
-
     try {
-        if (!username || !password) throw new Error("All fields are required to login.")
+        const username = formData.get("username") as string | null
+        const password = formData.get("password") as string | null
+        const remember_me = formData.get("rememberMe") === "on"
+
+        if (!username || !password) return ApiError(new Error("Username and password are required."))
 
         const response = await fetch(URL, {
             method: "POST",
@@ -30,11 +30,11 @@ export default async function login(state: State, formData: FormData) {
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
+        if (!response.ok) return ApiError(new Error(responseData.message ?? "An unknown error occurred."))
 
         const { auth_token, user } = responseData.data as AuthLoginResponse
 
-        if (user.role === "3") throw new Error("You are banned. You cannot log in.")
+        if (user.role === "3") return ApiError(new Error("You are banned. You cannot log in."))
 
         cookies().set("auth_token", auth_token, {
             httpOnly: true,

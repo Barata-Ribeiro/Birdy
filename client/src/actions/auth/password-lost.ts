@@ -9,7 +9,7 @@ export default async function passwordLost(state: State, formData: FormData): Pr
         const URL = AUTH_FORGOTPASSWORD()
         const email = formData.get("email") as string | null
 
-        if (!email) throw new Error("Email is required to send a password reset link.")
+        if (!email) return ApiError(new Error("Email is required to send a password reset link."))
 
         const response = await fetch(URL, {
             method: "POST",
@@ -19,7 +19,7 @@ export default async function passwordLost(state: State, formData: FormData): Pr
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
+        if (!response.ok) return ApiError(new Error(responseData.message ?? "An unknown error occurred."))
 
         return { ok: true, client_error: null, response: responseData }
     } catch (error: unknown) {

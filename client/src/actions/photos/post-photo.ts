@@ -4,13 +4,14 @@ import { ApiResponse, State } from "@/interfaces/actions"
 import ApiError from "@/utils/api-error"
 import { PHOTO_UPLOAD } from "@/utils/api-urls"
 import { revalidateTag } from "next/cache"
-import verifyAuthenticationAndReturnToken from "@/utils/verify-authentication"
+import { cookies } from "next/headers"
 
 export default async function postPhoto(state: State, formData: FormData) {
     const URL = PHOTO_UPLOAD()
+    const auth_token = cookies().get("auth_token")?.value
 
     try {
-        const auth_token = await verifyAuthenticationAndReturnToken()
+        if (!auth_token) return ApiError(new Error("You are not authenticated."))
 
         if (
             !formData.has("title") ||
@@ -19,10 +20,10 @@ export default async function postPhoto(state: State, formData: FormData) {
             !formData.has("bird_habitat") ||
             !formData.has("photoImage")
         )
-            throw new Error("All fields are required. Only the bird name is optional.")
+            return ApiError(new Error("All fields are required. Only the bird name is optional."))
 
         const image = formData.get("photoImage") as File
-        if (image instanceof File && image.size === 0) throw new Error("The image file is empty.")
+        if (image instanceof File && image.size === 0) return ApiError(new Error("The image is required."))
 
         const response = await fetch(URL, {
             method: "POST",
@@ -32,7 +33,7 @@ export default async function postPhoto(state: State, formData: FormData) {
 
         const responseData = (await response.json()) as ApiResponse
 
-        if (!response.ok) throw new Error(responseData.message ?? "An unknown error occurred.")
+        if (!response.ok) return ApiError(new Error(responseData.message ?? "An unknown error occurred."))
         revalidateTag("photos")
         return {
             ok: true,
