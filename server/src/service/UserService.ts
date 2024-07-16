@@ -34,36 +34,31 @@ export default class UserService {
             ])
             .addSelect((subQuery) => {
                 return subQuery
-                    .select("COUNT(photo.id)", "photoCount")
+                    .select("COUNT(DISTINCT photo.id)", "photoCount")
                     .from(Photo, "photo")
                     .where("photo.authorId = user.id")
             }, "photoCount")
             .addSelect((subQuery) => {
-                return subQuery.select("json_agg(subquery) AS lastLikedPhotos").from((qb) => {
-                    return qb
-                        .select(["photo.id", "photo.title", "photo.slug", "photo.image_url"])
-                        .from(Photo, "photo")
-                        .innerJoin(UserLike, "userLike", "userLike.photoId = photo.id")
-                        .where("userLike.userId = user.id")
-                        .orderBy("userLike.liked_at", "DESC")
-                        .limit(2)
-                }, "subquery")
-            }, "lastLikedPhotos")
+                return subQuery
+                    .select("COUNT(DISTINCT userLike.id)", "likedPhotoCount")
+                    .from(UserLike, "userLike")
+                    .where("userLike.userId = user.id")
+            }, "likedPhotoCount")
             .addSelect((subQuery) => {
                 return subQuery
-                    .select("COUNT(DISTINCT userFollow.followingId)", "followingCount")
-                    .from(UserFollow, "userFollow")
-                    .where("userFollow.followerId = user.id")
-            }, "followingCount")
-            .addSelect((subQuery) => {
-                return subQuery
-                    .select("COUNT(DISTINCT userFollow.followerId)", "followerCount")
-                    .from(UserFollow, "userFollow")
-                    .where("userFollow.followingId = user.id")
+                    .select("COUNT(DISTINCT follower.id)", "followerCount")
+                    .from(UserFollow, "follower")
+                    .where("follower.followingId = user.id")
             }, "followerCount")
             .addSelect((subQuery) => {
                 return subQuery
-                    .select("COUNT(comment.id)", "commentCount")
+                    .select("COUNT(DISTINCT following.id)", "followingCount")
+                    .from(UserFollow, "following")
+                    .where("following.followerId = user.id")
+            }, "followingCount")
+            .addSelect((subQuery) => {
+                return subQuery
+                    .select("COUNT(DISTINCT comment.id)", "commentCount")
                     .from(Comment, "comment")
                     .where("comment.authorId = user.id")
             }, "commentCount")
@@ -71,8 +66,6 @@ export default class UserService {
             .getRawOne()
 
         if (!user) throw new BadRequestError("User not found.")
-
-        console.log(user)
 
         return PublicProfileResponseDTO.fromRaw(user)
     }
@@ -115,13 +108,13 @@ export default class UserService {
             ])
             .addSelect((subQuery) => {
                 return subQuery
-                    .select("COUNT(photo.id)", "photoCount")
+                    .select("COUNT(DISTINCT photo.id)", "photoCount")
                     .from(Photo, "photo")
                     .where("photo.authorId = user.id")
             }, "photoCount")
             .addSelect((subQuery) => {
                 return subQuery
-                    .select("COUNT(DISTINCT userLike.photoId)", "likedPhotoCount")
+                    .select("COUNT(DISTINCT userLike.id)", "likedPhotoCount")
                     .from(UserLike, "userLike")
                     .where("userLike.userId = user.id")
             }, "likedPhotoCount")
@@ -150,7 +143,7 @@ export default class UserService {
             }, "followingCount")
             .addSelect((subQuery) => {
                 return subQuery
-                    .select("COUNT(comment.id)", "commentCount")
+                    .select("COUNT(DISTINCT comment.id)", "commentCount")
                     .from(Comment, "comment")
                     .where("comment.authorId = user.id")
             }, "commentCount")
