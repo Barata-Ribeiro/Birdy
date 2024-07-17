@@ -47,8 +47,6 @@ export default function PhotoComments({ photoId, comments: photoComments }: Read
         return new Date(isoString).toLocaleDateString("en-US", options)
     }
 
-    console.log(comments)
-
     return (
         <>
             <h2 className="font-heading mb-2 text-xl font-medium">Comments</h2>

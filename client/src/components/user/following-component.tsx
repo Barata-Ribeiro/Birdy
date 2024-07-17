@@ -15,8 +15,9 @@ interface FollowingComponentProps {
 export default function FollowingComponent({ profile }: Readonly<FollowingComponentProps>) {
     const [tooltipMessage, setTooltipMessage] = useState("")
     const [showTooltip, setShowTooltip] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [isFollowing, setIsFollowing] = useState(false)
+    const [followerCount, setFollowerCount] = useState(profile.follower_count)
     const { user } = useUser()
 
     const disabledFollowing = isLoading || !user || user.id === profile.id
@@ -33,6 +34,7 @@ export default function FollowingComponent({ profile }: Readonly<FollowingCompon
                 }
 
                 setIsFollowing(data.followed_by_loggedIn_user)
+                setIsLoading(false)
             }
         }
 
@@ -47,11 +49,13 @@ export default function FollowingComponent({ profile }: Readonly<FollowingCompon
         const followId = profile.id
         const userId = user.id
 
-        const followState = isFollowing ? await userFollow(userId, followId) : await userUnfollow(userId, followId)
-
+        const followState = isFollowing ? await userUnfollow(userId, followId) : await userFollow(userId, followId)
         const message = followState.response?.message ?? followState.client_error ?? "Something went wrong."
 
-        if (followState.ok) setIsFollowing(!isFollowing)
+        if (followState.ok) {
+            setIsFollowing(!isFollowing)
+            setFollowerCount((prev) => (isFollowing ? prev - 1 : prev + 1))
+        }
 
         setTooltipMessage(message)
         setShowTooltip(true)
@@ -80,7 +84,7 @@ export default function FollowingComponent({ profile }: Readonly<FollowingCompon
                 {isLoading ? "Loading..." : verifyIfFollowingAndSetLabel}
             </FormButton>
 
-            <span className="dark:text-green-spring-600">{profile.follower_count} follower(s)</span>
+            <span className="dark:text-green-spring-600">{followerCount} follower(s)</span>
         </div>
     )
 }
