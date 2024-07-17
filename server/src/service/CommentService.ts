@@ -95,37 +95,37 @@ export class CommentService {
 
     async deleteComment(author: Partial<User>, photoId: string, commentId: string) {
         await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
-            try {
-                if (!isUUIDValid(photoId) || !isUUIDValid(commentId))
-                    throw new BadRequestError("Invalid photo ID or comment ID.")
+            if (!isUUIDValid(photoId) || !isUUIDValid(commentId))
+                throw new BadRequestError("Invalid photo ID or comment ID.")
 
-                const checkIfAuthorExists = await userRepository.existsBy({
-                    id: author.id
-                })
-                if (!checkIfAuthorExists) throw new NotFoundError("User not found.")
+            const checkIfAuthorExists = await userRepository.existsBy({
+                id: author.id
+            })
+            if (!checkIfAuthorExists) throw new NotFoundError("User not found.")
 
-                const checkIfPhotoExists = await photoRepository.existsBy({
-                    id: photoId
-                })
-                if (!checkIfPhotoExists) throw new NotFoundError("Photo not found.")
+            const checkIfPhotoExists = await photoRepository.existsBy({
+                id: photoId
+            })
+            if (!checkIfPhotoExists) throw new NotFoundError("Photo not found.")
 
-                const comment = await commentRepository.findOne({
-                    where: {
-                        id: commentId,
-                        author: {
-                            id: author.id,
-                            username: author.username
-                        },
-                        photo: { id: photoId }
+            const comment = await commentRepository.findOne({
+                where: {
+                    id: commentId,
+                    author: {
+                        id: author.id,
+                        username: author.username
                     },
-                    relations: ["author", "photo"]
-                })
-                if (!comment) throw new NotFoundError("Comment not found.")
+                    photo: { id: photoId }
+                },
+                relations: ["author", "photo"]
+            })
+            if (!comment) throw new NotFoundError("Comment not found.")
 
+            try {
                 await transactionalEntityManager.remove(comment)
             } catch (error) {
-                console.error("Transaction failed:", error)
-                throw new InternalServerError("An error occurred during the deletion process.")
+                console.error("Transaction failed: ", error)
+                throw new InternalServerError("Failed to delete comment.")
             }
         })
     }

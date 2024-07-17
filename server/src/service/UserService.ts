@@ -281,16 +281,16 @@ export default class UserService {
     }
 
     async deletePrivateProfile(userId: string): Promise<void> {
-        await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
-            try {
-                const userToDelete = await userRepository.findOneBy({
-                    id: userId
-                })
-                if (!userToDelete) throw new NotFoundError("User not found.")
+        await AppDataSource.manager.transaction("SERIALIZABLE", async (transactionalEntityManager) => {
+            const userToDelete = await userRepository.findOneBy({
+                id: userId
+            })
+            if (!userToDelete) throw new NotFoundError("User not found.")
 
+            try {
                 await transactionalEntityManager.remove(userToDelete)
             } catch (error) {
-                console.error("Transaction failed:", error)
+                console.error("Transaction failed: ", error)
                 throw new InternalServerError("An error occurred during the deletion process.")
             }
         })

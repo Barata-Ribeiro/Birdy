@@ -74,20 +74,20 @@ export class PhotoService {
 
     async uploadNewPhoto(user: Partial<User>, file: Express.Multer.File, requestingBody: PhotoUploadBody) {
         await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
+            const checkUser = await userRepository.existsBy({
+                id: user.id,
+                username: user.username
+            })
+            if (!checkUser) throw new NotFoundError("User not found.")
+
+            if (!file.mimetype.includes("image"))
+                throw new BadRequestError("Invalid file type. Only images are allowed.")
+
+            const { title, description, bird_name, bird_size, bird_habitat } = requestingBody
+            if (!title || !description || !bird_size || !bird_habitat)
+                throw new BadRequestError("All fields are required. Only 'bird_name' is optional.")
+
             try {
-                const checkUser = await userRepository.existsBy({
-                    id: user.id,
-                    username: user.username
-                })
-                if (!checkUser) throw new NotFoundError("User not found.")
-
-                if (!file.mimetype.includes("image"))
-                    throw new BadRequestError("Invalid file type. Only images are allowed.")
-
-                const { title, description, bird_name, bird_size, bird_habitat } = requestingBody
-                if (!title || !description || !bird_size || !bird_habitat)
-                    throw new BadRequestError("All fields are required. Only 'bird_name' is optional.")
-
                 const secure_url = await this.uploadPhotoToCloudinary(file)
                 const slug = title
                     .trim()
@@ -96,7 +96,7 @@ export class PhotoService {
                     .replace(/\s+/g, "-")
                     .replace(/-+/g, "-")
 
-                const newPhoto = photoRepository.create({
+                const newPhoto = transactionalEntityManager.create(Photo, {
                     title,
                     description,
                     image_url: secure_url,
@@ -111,32 +111,32 @@ export class PhotoService {
 
                 await transactionalEntityManager.save(newPhoto)
             } catch (error) {
-                console.error("Transaction failed:", error)
+                console.error("Transaction failed: ", error)
                 throw new InternalServerError("An error occurred during the upload process.")
             }
         })
     }
 
     async deletePhoto(user: Partial<User>, photoId: string) {
-        await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
+        await AppDataSource.manager.transaction("SERIALIZABLE", async (transactionalEntityManager) => {
+            const checkUser = await userRepository.existsBy({
+                id: user.id,
+                username: user.username
+            })
+            if (!checkUser) throw new NotFoundError("User not found.")
+
+            if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
+
+            const photoToDelete = await photoRepository.findOne({
+                where: { id: photoId, author: { id: user.id } },
+                relations: ["author"]
+            })
+            if (!photoToDelete) throw new NotFoundError("Photo not found.")
+
+            const publicId = this.extractPublicId(photoToDelete.image_url)
+            if (!publicId) throw new InternalServerError("Invalid image.")
+
             try {
-                const checkUser = await userRepository.existsBy({
-                    id: user.id,
-                    username: user.username
-                })
-                if (!checkUser) throw new NotFoundError("User not found.")
-
-                if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
-
-                const photoToDelete = await photoRepository.findOne({
-                    where: { id: photoId, author: { id: user.id } },
-                    relations: ["author"]
-                })
-                if (!photoToDelete) throw new NotFoundError("Photo not found.")
-
-                const publicId = this.extractPublicId(photoToDelete.image_url)
-                if (!publicId) throw new InternalServerError("Invalid image.")
-
                 await this.deletePhotoFromCloudinary(publicId)
 
                 await transactionalEntityManager.remove(photoToDelete)
@@ -148,7 +148,7 @@ export class PhotoService {
     }
 
     async toggleLike(user: Partial<User>, photoId: string) {
-        return await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
+        return await AppDataSource.manager.transaction("SERIALIZABLE", async (transactionalEntityManager) => {
             if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
 
             const photo = await photoRepository.findOne({ where: { id: photoId }, relations: ["meta"] })
@@ -156,22 +156,27 @@ export class PhotoService {
 
             let like = await likeRepository.findOne({ where: { user: { id: user.id }, photo: { id: photoId } } })
 
-            if (like) {
-                await transactionalEntityManager.remove(like)
-                photo.meta.total_likes = (photo.meta.total_likes || 0) - 1
-                await transactionalEntityManager.save(photo)
-                return {
-                    is_liked: false,
-                    total_likes: photo.meta.total_likes
+            try {
+                if (like) {
+                    await transactionalEntityManager.remove(like)
+                    photo.meta.total_likes = (photo.meta.total_likes || 0) - 1
+                    await transactionalEntityManager.save(photo)
+                    return {
+                        is_liked: false,
+                        total_likes: photo.meta.total_likes
+                    }
+                } else {
+                    like = new UserLike()
+                    like.user = user as User
+                    like.photo = photo as Photo
+                    await transactionalEntityManager.save(like)
+                    photo.meta.total_likes = (photo.meta.total_likes || 0) + 1
+                    await transactionalEntityManager.save(photo)
+                    return LikeResponseDTO.fromEntity(like, true, photo.meta.total_likes)
                 }
-            } else {
-                like = new UserLike()
-                like.user = user as User
-                like.photo = photo as Photo
-                await transactionalEntityManager.save(like)
-                photo.meta.total_likes = (photo.meta.total_likes || 0) + 1
-                await transactionalEntityManager.save(photo)
-                return LikeResponseDTO.fromEntity(like, true, photo.meta.total_likes)
+            } catch (error) {
+                console.error("Transaction failed: ", error)
+                throw new InternalServerError("An error occurred during the like process.")
             }
         })
     }

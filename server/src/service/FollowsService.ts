@@ -1,8 +1,8 @@
 import { AppDataSource } from "../database/data-source"
 import { BadRequestError, InternalServerError } from "../middleware/helpers/ApiErrors"
 import { followsRepository } from "../repository/FollowsRepository"
-import { saveEntityToDatabase } from "../utils/operation-functions"
 import { isUUIDValid } from "../utils/validity-functions"
+import { UserFollow } from "../entity/UserFollow"
 
 export default class FollowsService {
     async getAllUserFollows(username: string, followType: string, perPage: string, page: string) {
@@ -76,42 +76,48 @@ export default class FollowsService {
     }
 
     async followUser(userId: string, followId: string) {
-        if (userId === followId) throw new BadRequestError("You cannot follow yourself.")
+        await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
+            if (userId === followId) throw new BadRequestError("You cannot follow yourself.")
 
-        if (!isUUIDValid(followId)) throw new BadRequestError("Invalid user ID.")
+            if (!isUUIDValid(followId)) throw new BadRequestError("Invalid user ID.")
 
-        const checkIfAlreadyFollowing = await followsRepository.exists({
-            where: { follower: { id: userId }, following: { id: followId } },
-            relations: ["follower", "following"]
+            const checkIfAlreadyFollowing = await followsRepository.exists({
+                where: { follower: { id: userId }, following: { id: followId } },
+                relations: ["follower", "following"]
+            })
+            if (checkIfAlreadyFollowing) throw new BadRequestError("You are already following this user.")
+
+            try {
+                const newFollow = transactionalEntityManager.create(UserFollow, {
+                    follower: { id: userId },
+                    following: { id: followId }
+                })
+
+                await transactionalEntityManager.save(newFollow)
+            } catch (error) {
+                console.error("Transaction failed: ", error)
+                throw new InternalServerError("Failed to follow user.")
+            }
         })
-        if (checkIfAlreadyFollowing) throw new BadRequestError("You are already following this user.")
-
-        const newFollow = followsRepository.create({
-            follower: { id: userId },
-            following: { id: followId }
-        })
-
-        await saveEntityToDatabase(followsRepository, newFollow)
     }
 
     async unfollowUser(userId: string, followId: string) {
-        if (userId === followId) throw new BadRequestError("You cannot unfollow yourself.")
-        if (!isUUIDValid(followId)) throw new BadRequestError("Invalid user ID.")
-
         await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
-            try {
-                const followToDelete = await followsRepository.findOne({
-                    where: {
-                        follower: { id: userId },
-                        following: { id: followId }
-                    },
-                    relations: ["follower", "following"]
-                })
-                if (!followToDelete) throw new BadRequestError("You are not following this user.")
+            if (userId === followId) throw new BadRequestError("You cannot unfollow yourself.")
+            if (!isUUIDValid(followId)) throw new BadRequestError("Invalid user ID.")
+            const followToDelete = await followsRepository.findOne({
+                where: {
+                    follower: { id: userId },
+                    following: { id: followId }
+                },
+                relations: ["follower", "following"]
+            })
+            if (!followToDelete) throw new BadRequestError("You are not following this user.")
 
+            try {
                 await transactionalEntityManager.remove(followToDelete)
             } catch (error) {
-                console.error("Transaction failed:", error)
+                console.error("Transaction failed: ", error)
                 throw new InternalServerError("Failed to unfollow user.")
             }
         })
