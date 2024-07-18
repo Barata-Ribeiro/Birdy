@@ -8,6 +8,7 @@ import { type ChangeEvent, type DragEvent, useEffect, useState } from "react"
 import { FaCloudArrowUp } from "react-icons/fa6"
 import { useForm } from "@/hooks/use-form"
 import ErrorElement from "@/components/utils/error-element"
+import { PhotoResponse } from "@/interfaces/api/photos"
 
 export default function UploadPhotoForm({
     userId,
@@ -23,8 +24,11 @@ export default function UploadPhotoForm({
     })
 
     useEffect(() => {
-        if (formState.ok) window.location.href = `/dashboard/${userId}/${username}`
-    }, [formState.ok, userId, username])
+        if (formState.ok) {
+            const data = formState.response?.data as PhotoResponse
+            window.location.href = "/photo/" + data.id + "/" + data.slug
+        }
+    }, [formState, userId, username])
 
     const [img, setImg] = useState<{
         preview: string | undefined

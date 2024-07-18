@@ -73,7 +73,7 @@ export class PhotoService {
     }
 
     async uploadNewPhoto(user: Partial<User>, file: Express.Multer.File, requestingBody: PhotoUploadBody) {
-        await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
+        return await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
             const checkUser = await userRepository.existsBy({
                 id: user.id,
                 username: user.username
@@ -110,6 +110,8 @@ export class PhotoService {
                 })
 
                 await transactionalEntityManager.save(newPhoto)
+                
+                return PhotoResponseDTO.fromEntity(newPhoto)
             } catch (error) {
                 console.error("Transaction failed: ", error)
                 throw new InternalServerError("An error occurred during the upload process.")

@@ -5,6 +5,7 @@ import ApiError from "@/utils/api-error"
 import { PHOTO_UPLOAD } from "@/utils/api-urls"
 import { revalidateTag } from "next/cache"
 import { cookies } from "next/headers"
+import { PhotoResponse } from "@/interfaces/api/photos"
 
 export default async function postPhoto(state: State, formData: FormData) {
     const URL = PHOTO_UPLOAD()
@@ -34,11 +35,15 @@ export default async function postPhoto(state: State, formData: FormData) {
         const responseData = (await response.json()) as ApiResponse
 
         if (!response.ok) return ApiError(new Error(responseData.message ?? "An unknown error occurred."))
+
+        const data = responseData.data as PhotoResponse
+
         revalidateTag("photos")
+
         return {
             ok: true,
             client_error: null,
-            response: null
+            response: { ...responseData, data }
         }
     } catch (error) {
         return ApiError(error)

@@ -56,12 +56,13 @@ export class PhotoController {
         if (!file) throw new BadRequestError("No file provided.")
         if (!requestingBody) throw new BadRequestError("You must provide the photo details.")
 
-        await this.photoService.uploadNewPhoto(user.data, file, requestingBody)
+        const response = await this.photoService.uploadNewPhoto(user.data, file, requestingBody)
 
         return res.status(201).json({
             status: "success",
             code: res.statusCode,
-            message: "Photo uploaded successfully."
+            message: "Photo uploaded successfully.",
+            data: response
         })
     }
 

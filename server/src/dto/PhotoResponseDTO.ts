@@ -51,6 +51,8 @@ export class PhotoResponseDTO {
                 created_at: comment.createdAt,
                 updated_at: comment.updatedAt
             })) ?? []
+        dto.created_at = photo.createdAt
+        dto.updated_at = photo.updatedAt
 
         return dto
     }
