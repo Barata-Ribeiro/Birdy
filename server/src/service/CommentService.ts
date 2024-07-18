@@ -50,7 +50,7 @@ export class CommentService {
 
         const newComment = commentRepository.create({
             content: content.trim(),
-            author: { id: author.id, username: author.username },
+            author: { id: author.id, username: author.username, display_name: author.display_name },
             photo: { id: photoId }
         })
 

@@ -134,12 +134,12 @@ export class AdminService {
 
     async deleteUserAccount(username: string) {
         await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
-            try {
-                const userToDelete = await userRepository.findOneBy({
-                    username
-                })
-                if (!userToDelete) throw new NotFoundError("User not found.")
+            const userToDelete = await userRepository.findOneBy({
+                username
+            })
+            if (!userToDelete) throw new NotFoundError("User not found.")
 
+            try {
                 await transactionalEntityManager.remove(userToDelete)
             } catch (error) {
                 console.error("Transaction failed:", error)
@@ -151,24 +151,22 @@ export class AdminService {
     // Photo related methods
     async deletePhoto(photoId: string, userId: string) {
         await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
+            if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
+            if (!isUUIDValid(userId)) throw new BadRequestError("Invalid user ID.")
+
+            const photoToDelete = await photoRepository.findOne({
+                where: { id: photoId },
+                relations: ["author"]
+            })
+            if (!photoToDelete) throw new NotFoundError("Photo not found.")
+
+            if (photoToDelete.author.id === userId)
+                throw new BadRequestError("You must use the regular photo deletion method to delete your own photos.")
+
+            const publicId = this.extractPublicId(photoToDelete.image_url)
+            if (!publicId) throw new InternalServerError("Invalid image.")
+
             try {
-                if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
-                if (!isUUIDValid(userId)) throw new BadRequestError("Invalid user ID.")
-
-                const photoToDelete = await photoRepository.findOne({
-                    where: { id: photoId },
-                    relations: ["author"]
-                })
-                if (!photoToDelete) throw new NotFoundError("Photo not found.")
-
-                if (photoToDelete.author.id === userId)
-                    throw new BadRequestError(
-                        "You must use the regular photo deletion method to delete your own photos."
-                    )
-
-                const publicId = this.extractPublicId(photoToDelete.image_url)
-                if (!publicId) throw new InternalServerError("Invalid image.")
-
                 await this.deletePhotoFromCloudinary(publicId)
 
                 await transactionalEntityManager.remove(photoToDelete)
@@ -182,22 +180,22 @@ export class AdminService {
     // Comment related methods
     async updateComment(commentId: string, photoId: string, userId: string, content: string) {
         await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
+            if (!isUUIDValid(commentId)) throw new BadRequestError("Invalid comment ID.")
+            if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
+
+            const comment = await commentRepository.findOne({
+                where: { id: commentId, photo: { id: photoId } },
+                relations: ["author", "photo"]
+            })
+            if (!comment) throw new NotFoundError("Comment not found.")
+
+            if (comment.author.id === userId)
+                throw new BadRequestError("Use the regular comment update method to update your own comments.")
+
+            comment.content = content.trim()
+            comment.was_edited = true
+
             try {
-                if (!isUUIDValid(commentId)) throw new BadRequestError("Invalid comment ID.")
-                if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
-
-                const comment = await commentRepository.findOne({
-                    where: { id: commentId, photo: { id: photoId } },
-                    relations: ["author", "photo"]
-                })
-                if (!comment) throw new NotFoundError("Comment not found.")
-
-                if (comment.author.id === userId)
-                    throw new BadRequestError("Use the regular comment update method to update your own comments.")
-
-                comment.content = content.trim()
-                comment.was_edited = true
-
                 await transactionalEntityManager.save(comment)
             } catch (error) {
                 console.error("Transaction failed:", error)
@@ -208,19 +206,19 @@ export class AdminService {
 
     async deleteComment(commentId: string, photoId: string, userId: string) {
         await AppDataSource.manager.transaction(async (transactionalEntityManager) => {
+            if (!isUUIDValid(commentId)) throw new BadRequestError("Invalid comment ID.")
+            if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
+
+            const commentToDelete = await commentRepository.findOne({
+                where: { id: commentId, photo: { id: photoId } },
+                relations: ["author", "photo"]
+            })
+            if (!commentToDelete) throw new NotFoundError("Comment not found.")
+
+            if (commentToDelete.author.id === userId)
+                throw new BadRequestError("Use the regular comment deletion method to delete your own comments.")
+
             try {
-                if (!isUUIDValid(commentId)) throw new BadRequestError("Invalid comment ID.")
-                if (!isUUIDValid(photoId)) throw new BadRequestError("Invalid photo ID.")
-
-                const commentToDelete = await commentRepository.findOne({
-                    where: { id: commentId, photo: { id: photoId } },
-                    relations: ["author", "photo"]
-                })
-                if (!commentToDelete) throw new NotFoundError("Comment not found.")
-
-                if (commentToDelete.author.id === userId)
-                    throw new BadRequestError("Use the regular comment deletion method to delete your own comments.")
-
                 await transactionalEntityManager.remove(commentToDelete)
             } catch (error) {
                 console.error("Transaction failed:", error)

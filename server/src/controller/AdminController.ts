@@ -128,9 +128,7 @@ export class AdminController {
         const { photoId } = req.params
 
         if (!commentId) throw new BadRequestError("Comment ID is required.")
-        const { content } = req.body
         if (!photoId) throw new BadRequestError("Photo ID is required.")
-        if (!content || content.trim() === "") throw new BadRequestError("You cannot update a comment to be empty.")
         if (!requestingUser.data?.id) throw new BadRequestError("You must be authenticated.")
         if (!requestingUser.is_admin || requestingUser.data.role !== UserRole.ADMIN)
             throw new ForbiddenError("You are not an administrator of this service.")
