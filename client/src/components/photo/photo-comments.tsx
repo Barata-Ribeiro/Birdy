@@ -73,7 +73,7 @@ export default function PhotoComments({ photoId, comments: photoComments }: Read
                                 </time>
                             </div>
                             <p className="text-pretty font-normal leading-7">{comment.content}</p>
-                            <DeleteButton direction="right" comment={comment} />
+                            <DeleteButton direction="left" comment={comment} />
                         </li>
                     ))}
                 </ul>
