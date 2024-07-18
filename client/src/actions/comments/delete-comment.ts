@@ -15,7 +15,10 @@ export default async function deleteComment(photoId: string, commentId: string) 
 
         const response = await fetch(URL, {
             method: "DELETE",
-            headers: { Authorization: "Bearer " + auth_token },
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + auth_token
+            },
             next: { revalidate: 60, tags: ["comment"] }
         })
 
@@ -24,6 +27,7 @@ export default async function deleteComment(photoId: string, commentId: string) 
         if (!response.ok) return ApiError(new Error(responseData.message ?? "An unknown error occurred."))
 
         revalidateTag("comment")
+
         return {
             ok: true,
             client_error: null,
