@@ -104,7 +104,7 @@ export default class UserController {
 
         await this.userService.deletePrivateProfile(userId)
 
-        return res.status(204).json({
+        return res.status(200).json({
             status: "success",
             code: res.statusCode,
             message: "Your profile has been deleted successfully."

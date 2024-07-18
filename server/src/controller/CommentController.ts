@@ -71,7 +71,7 @@ export class CommentController {
 
         await this.commentService.deleteComment(user.data, photoId, commentId)
 
-        return res.status(204).json({
+        return res.status(200).json({
             status: "success",
             code: res.statusCode,
             message: "Comment deleted successfully."

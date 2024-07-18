@@ -74,7 +74,7 @@ export class PhotoController {
 
         await this.photoService.deletePhoto(user.data, photoId)
 
-        return res.status(204).json({
+        return res.status(200).json({
             status: "success",
             code: res.statusCode,
             message: "Photo deleted successfully."
