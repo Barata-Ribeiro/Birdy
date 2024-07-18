@@ -18,8 +18,9 @@ export default function LikeButton({ photo }: Readonly<LikeButtonProps>) {
     // Handling logged in User
     const { user } = useUser()
     const userId = user ? user.id : null
-    const isPhotoOwner = userId && photo?.author.id === userId
+    const isPhotoOwner = photo?.author.id === userId
     const isAdmin = user?.role.toString() === "1"
+    const disabledCondition = loading || isPhotoOwner || (isAdmin && isPhotoOwner)
 
     const isPhotoLiked = user && photo.likes.some((like) => like.user_id === user.id)
     const [likeState, setLikeState] = useState(isPhotoLiked ? "Liked" : "Unliked")
@@ -55,9 +56,9 @@ export default function LikeButton({ photo }: Readonly<LikeButtonProps>) {
             <button
                 className={`like ${likeState.toLowerCase()} ${
                     !usedKeyboard && "focus:outline-none"
-                } disabled:cursor-not-allowed`}
+                } disabled:cursor-default disabled:opacity-50`}
                 onClick={toggleLike}
-                disabled={loading || !!isPhotoOwner || isAdmin}
+                disabled={disabledCondition}
             >
                 <span className="like-icon like-icon-state" aria-label={likeState} aria-live="polite">
                     {likeState}

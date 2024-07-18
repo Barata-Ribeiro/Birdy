@@ -32,9 +32,20 @@ export default async function PhotoPage({ params }: Readonly<PhotoPageProps>) {
     const photo = state.response?.data as PhotoResponse | null
     if (!photo) return notFound()
 
+    function formatDate(isoString: string) {
+        const options: Intl.DateTimeFormatOptions = {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric"
+        }
+        return new Date(isoString).toLocaleDateString("en-US", options)
+    }
+
     return (
         <section className="my-4">
-            <div className="grid grid-cols-1 justify-center gap-4 max-md:items-center max-md:px-1 md:grid-cols-2 lg:justify-between">
+            <div className="grid grid-cols-1 justify-center gap-4 max-md:items-center max-md:px-1 lg:grid-cols-2 lg:justify-between">
                 <Image
                     src={photo.image_url}
                     alt={`${photo.title}, posted by ${photo.author.display_name}`}
@@ -50,15 +61,25 @@ export default async function PhotoPage({ params }: Readonly<PhotoPageProps>) {
                 <div className="flex flex-col gap-3 md:gap-5">
                     {/* Title */}
                     <div className="flex items-end justify-between">
-                        <div className="mb-2 flex flex-col items-start justify-start gap-1 leading-none">
-                            <h1 className="text-4xl font-semibold">{photo.title}</h1>
-                            <Link
-                                className="text-xs text-green-spring-400 dark:text-green-spring-300"
-                                href={`/user/${photo.author.id}/${photo.author.username}`}
-                                aria-label={`Profile Author: ${photo.author.username}`}
-                            >
-                                @{photo.author.username}
-                            </Link>
+                        <div className="relative mb-2 flex flex-col items-start justify-start gap-1 leading-none">
+                            <div>
+                                <h1 className="w-max text-4xl font-semibold">{photo.title}</h1>
+                                <span className="flex w-full items-center justify-between">
+                                    <Link
+                                        className="text-xs text-green-spring-400 dark:text-green-spring-300"
+                                        href={`/user/${photo.author.id}/${photo.author.username}`}
+                                        aria-label={`Profile Author: ${photo.author.username}`}
+                                    >
+                                        @{photo.author.username}
+                                    </Link>
+                                    <time
+                                        dateTime={photo.created_at}
+                                        className="text-xs text-green-spring-400 dark:text-green-spring-300"
+                                    >
+                                        Posted on {formatDate(photo.created_at)}
+                                    </time>
+                                </span>
+                            </div>
                             <p className="mt-4 leading-7 text-green-spring-600">{photo.description}</p>
                         </div>
                         <DeleteButton photo={photo} direction="right" />
