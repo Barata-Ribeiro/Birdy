@@ -2,9 +2,9 @@
 
 import getPhotosFeed from "@/actions/photos/get-photos-feed"
 import FeedPhotos from "@/components/feed/photos-feed"
-import Loading from "@/components/utils/loading"
 import { FeedResponse } from "@/interfaces/api/photos"
 import { useEffect, useRef, useState } from "react"
+import Loading from "@/components/utils/loading"
 
 export interface FeedProps {
     photos: FeedResponse[]
@@ -66,11 +66,11 @@ export default function Feed({ photos, userId }: Readonly<FeedProps>) {
     return (
         <>
             <FeedPhotos photos={photosFeed} />
-            <div className="mx-auto my-1 flex h-24">
+            <div className="mx-auto flex h-max w-max py-4">
                 {infinite ? (
                     loading && <Loading />
                 ) : (
-                    <p className="mx-auto pb-0 pl-8 pr-16 pt-4 text-center font-semibold text-green-spring-300">
+                    <p className="mx-auto text-center font-semibold text-green-spring-300">
                         You have reached the end of the feed.
                     </p>
                 )}
